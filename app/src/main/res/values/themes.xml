@@ -13,4 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/statusBarColor</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.FilterStyle" parent="Theme.Itteitheapps">
+        <item name="android:background">@drawable/shape_round_on_primary</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:fontFamily">@font/googlesans_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

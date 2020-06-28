@@ -24,7 +24,7 @@ import retrofit2.Retrofit
 val dashboardModule = module {
     viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
-    single { NotificationPresentationMapper() }
+    single { NotificationPresentationMapper(get()) }
     single { AnnouncementPresentationMapper(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { AnnouncementMapper() }

@@ -24,13 +24,10 @@
 
     <TextView
         android:id="@+id/notificationCategory"
-        android:layout_width="0dp"
+        style="@style/Theme.FilterStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/notificationTitle"

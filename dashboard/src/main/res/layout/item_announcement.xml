@@ -23,32 +23,13 @@
         tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
     <TextView
-        android:id="@+id/announcementPublisher"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/announcementTitle"
-        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
-        app:layout_constraintWidth_percent="0.5"
-        tools:text="Κ. ΒΙΤΣΑΣ" />
-
-    <TextView
         android:id="@+id/announcementCategory"
-        android:layout_width="0dp"
+        style="@style/Theme.FilterStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
-        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
+        app:layout_constraintStart_toStartOf="@id/announcementContent"
+        app:layout_constraintEnd_toEndOf="@id/announcementContent"
         app:layout_constraintTop_toBottomOf="@id/announcementTitle"
         tools:text="6ο ΕΞΑΜΗΝΟ" />
 
@@ -59,8 +40,26 @@
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/announcementPublisher"
+        app:layout_constraintTop_toBottomOf="@id/announcementCategory"
         tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
+
+    <TextView
+        android:id="@+id/announcementPublisher"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/googlesans_regular"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/announcementTitle"
+        app:layout_constraintTop_toBottomOf="@id/announcementContent"
+        app:layout_constraintWidth_percent="0.5"
+        tools:text="Κ. ΒΙΤΣΑΣ" />
 
     <TextView
         android:id="@+id/announcementDate"
@@ -74,7 +73,7 @@
         android:paddingBottom="16dp"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/announcementContent"
-        app:layout_constraintStart_toStartOf="@id/announcementContent"
+        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementContent"
         tools:text="1/1/2020" />
 </androidx.constraintlayout.widget.ConstraintLayout>

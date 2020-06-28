@@ -9,7 +9,7 @@ class AnnouncementPresentationMapper(private val dateFormatter: DateFormatter) {
         return AnnouncementPresentation(
             id = announcement.id,
             title = announcement.title,
-            date = announcement.date,
+            date = dateFormatter(announcement.date, "dd MMMM yyyy"),
             category = announcement.category,
             publisherName = announcement.publisherName,
             content = announcement.text
