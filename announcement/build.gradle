@@ -1,0 +1,14 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+apply from: '../shared_dependencies.gradle'
+
+dependencies {
+    implementation project(":app")
+    implementation project(":core")
+    implementation project(":common")
+}

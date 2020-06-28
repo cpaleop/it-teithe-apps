@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name=".presentation.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/splash_to_authentication"
+            app:destination="@id/authenticationActivity" />
+
+        <action
+            android:id="@+id/splash_to_dashboard"
+            app:destination="@id/dashboardActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/authenticationActivity"
+        android:name="gr.cpaleop.authentication.presentation.AuthenticationActivity"
+        android:label="AuthenticationActivity"
+        app:moduleName="authentication" />
+
+    <activity
+        android:id="@+id/dashboardActivity"
+        android:name="gr.cpaleop.dashboard.presentation.DashboardActivity"
+        android:label="DashboardActivity"
+        app:moduleName="dashboard" />
+</navigation>

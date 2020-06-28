@@ -1,0 +1,76 @@
+package gr.cpaleop.dashboard.presentation.announcements
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+@ExperimentalPagingApi
+class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
+
+    private val viewModel: AnnouncementsViewModel by viewModel()
+    private val navController: NavController by lazy { findNavController() }
+    private var announcementAdapter: AnnouncementAdapter? = null
+
+    override fun inflateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAnnouncementsBinding {
+        return FragmentAnnouncementsBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupPagingAdapter()
+        setupViews()
+        observeViewModel()
+        viewModel.presentAnnouncements()
+    }
+
+    private fun setupPagingAdapter() {
+        announcementAdapter = AnnouncementAdapter(::navigateToAnnouncement)
+        binding.announcementsRecyclerView.adapter =
+            announcementAdapter?.withLoadStateHeaderAndFooter(
+                header = AnnouncementsStateAdapter { announcementAdapter?.retry() },
+                footer = AnnouncementsStateAdapter { announcementAdapter?.retry() }
+            )
+        announcementAdapter?.addLoadStateListener { loadState ->
+            binding.announcementsSwipeRefreshLayout.isRefreshing =
+                loadState.refresh is LoadState.Loading
+        }
+    }
+
+    private fun setupViews() {
+        binding.announcementsSwipeRefreshLayout.setOnRefreshListener {
+            announcementAdapter?.refresh()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.run {
+            announcements.observe(viewLifecycleOwner, Observer(::updateAnnouncements))
+        }
+    }
+
+    private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            announcementAdapter?.submitData(announcements)
+        }
+    }
+
+    private fun navigateToAnnouncement(announcementId: String) {
+        val directions = AnnouncementsFragmentDirections.announcementsToAnnouncement(announcementId)
+        navController.navigate(directions)
+    }
+}

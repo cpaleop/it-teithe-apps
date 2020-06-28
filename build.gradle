@@ -1,0 +1,107 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.3.72"
+    ext.nav_version = '2.3.0-alpha06'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.0-alpha02"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${nav_version}"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+// Appends the following properties to each module to maintain everything in one place.
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileSdkVersion 29
+                buildToolsVersion "29.0.3"
+
+                defaultConfig {
+                    minSdkVersion 21
+                    targetSdkVersion 29
+                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                    vectorDrawables.useSupportLibrary = true
+                    versionCode 110
+                    versionName "11.0.0"
+                }
+
+                signingConfigs {
+                    release {
+                        /*storeFile file('keystore/opapkey')*/
+                        keyAlias 'opap'
+                        storePassword 'opap2014!'
+                        keyPassword 'opap2014!'
+                    }
+
+                    debug {
+                        /*storeFile file('keystore/debug.keystore')*/
+                        keyAlias 'androiddebugkey'
+                        storePassword 'android'
+                        keyPassword 'android'
+                    }
+                }
+
+                buildFeatures {
+                    viewBinding = true
+                }
+
+                flavorDimensions "env"
+                productFlavors {
+                    dEV {
+                        buildConfigField "String", "CLIENT_ID", '"5bb53d855183de5aaf19357a"'
+                        buildConfigField "String", "CLIENT_SECRET", '"4w12weqlfo75xsoceb91uwgmu91c57j8rkwiqtimizd8tactf3"'
+                        buildConfigField "String", "CALLBACK_URL", '"appsservice://callback"'
+                        buildConfigField "String", "LOGIN_URL", '"https://login.it.teithe.gr/"'
+                        buildConfigField "String", "BASE_URL", '"https://api.it.teithe.gr/"'
+                    }
+
+                    pROD {
+                        buildConfigField "String", "CLIENT_ID", '"5bb53d855183de5aaf19357a"'
+                        buildConfigField "String", "CLIENT_SECRET", '"4w12weqlfo75xsoceb91uwgmu91c57j8rkwiqtimizd8tactf3"'
+                        buildConfigField "String", "CALLBACK_URL", '"appsservice://callback"'
+                        buildConfigField "String", "LOGIN_URL", '"https://login.it.teithe.gr/authorization/"'
+                        buildConfigField "String", "BASE_URL", '"https://api.it.teithe.gr/"'
+                    }
+                }
+
+                android.variantFilter { variant ->
+                    if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'dev') {
+                        variant.setIgnore(true)
+                    } else if (variant.buildType.name == 'debug' && variant.getFlavors().get(0).name == 'prod') {
+                        variant.setIgnore(true)
+                    }
+                }
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+
+                tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+                    kotlinOptions {
+                        jvmTarget = "1.8"
+                    }
+                }
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

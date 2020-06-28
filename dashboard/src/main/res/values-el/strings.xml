@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="announcements_bottom_navigation_menu_title">Announcements</string>
+    <string name="profile_bottom_navigation_menu_title">Profile</string>
+    <string name="notifications_bottom_navigation_menu_title">Notifications</string>
+    <string name="catalog_bottom_navigation_menu_title">Catalog</string>
+    <string name="announcements_error_message">Κάτι πήγε στραβά</string>
+</resources>
