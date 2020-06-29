@@ -4,6 +4,8 @@ import gr.cpaleop.common.extensions.safe
 import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.dashboard.data.model.remote.RemoteProfile
 import gr.cpaleop.dashboard.domain.entities.Profile
+import gr.cpaleop.dashboard.domain.entities.ProfileAcademicDetails
+import gr.cpaleop.dashboard.domain.entities.ProfilePersonalDetails
 import gr.cpaleop.dashboard.domain.entities.SocialMedia
 import gr.cpaleop.dashboard.domain.repositories.PreferencesRepository
 
@@ -39,19 +41,27 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
             }
         }
 
-        return Profile(
-            username = remoteProfile.username.safe(),
-            description = description,
-            am = remoteProfile.am.safe(),
-            currentSemester = remoteProfile.sem.safe(),
-            displayName = displayName,
-            givenName = givenName,
+        val personalDetails = ProfilePersonalDetails(
             lastName = surname,
-            registeredYear = remoteProfile.regyear.safe(),
-            telephoneNumber = remoteProfile.telephoneNumber.safe(),
-            type = remoteProfile.eduPersonAffiliation.safe(),
+            givenName = givenName,
             websiteUrl = remoteProfile.labeledURI.safe(),
+            description = description,
             profileImageUrl = /*remoteProfile.profilePhoto.safe()*/ "https://pbs.twimg.com/profile_images/712048543670730753/D24VsCTN_400x400.jpg",
+            telephoneNumber = remoteProfile.telephoneNumber.safe()
+        )
+
+        val academidDetails = ProfileAcademicDetails(
+            am = remoteProfile.am.safe(),
+            type = remoteProfile.eduPersonAffiliation.safe(),
+            username = remoteProfile.username.safe(),
+            displayName = displayName,
+            currentSemester = remoteProfile.sem.safe(),
+            registeredYear = remoteProfile.regyear.safe()
+        )
+
+        return Profile(
+            personalDetails = personalDetails,
+            academicDetails = academidDetails,
             socialMedia = SocialMedia(
                 github = remoteProfile.socialMedia?.github.safe(),
                 facebook = remoteProfile.socialMedia?.facebook.safe(),

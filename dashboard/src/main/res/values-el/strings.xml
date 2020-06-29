@@ -6,4 +6,29 @@
     <string name="notifications_bottom_navigation_menu_title">Notifications</string>
     <string name="catalog_bottom_navigation_menu_title">Catalog</string>
     <string name="announcements_error_message">Κάτι πήγε στραβά</string>
+
+    <!-- Profile -->
+    <!-- Personal details -->
+    <string name="profile_personal_details_title">Προσωπικά στοιχεία</string>
+    <string name="profile_personal_lastname_title">Επώνυμο</string>
+    <string name="profile_personal_givenName_title">Δεδομένο όνομα</string>
+    <string name="profile_personal_website_title">Ιστότοπος</string>
+    <string name="profile_personal_description_title">Περιγραφή</string>
+    <string name="profile_personal_telephoneNumber_title">Προσωπικό τηλέφωνο</string>
+
+    <!-- Academic details -->
+    <string name="profile_academic_details_title">Ακαδημαϊκά στοιχεία</string>
+    <string name="profile_academic_username_title">Όνομα χρήστη</string>
+    <string name="profile_academic_type_title">Τύπος</string>
+    <string name="profile_academic_am_title">ΑΜ</string>
+    <string name="profile_academic_displayName_title">Εμφανιζόμενο όνομα</string>
+    <string name="profile_academic_registeredYear_title">Χρονιά εγγραφής</string>
+    <string name="profile_academic_currentSemester_title">Τρέχον εξάμηνο</string>
+
+    <!-- Social -->
+    <string name="profile_socials_title">Μέσα κοινωνικής δικτύωσης</string>
+    <string name="profile_socials_facebook_title" translatable="false">Facebook</string>
+    <string name="profile_socials_github_title" translatable="false">Github</string>
+    <string name="profile_socials_twitter_title" translatable="false">Twitter</string>
+    <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
 </resources>

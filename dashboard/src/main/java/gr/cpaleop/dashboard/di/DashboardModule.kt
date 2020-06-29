@@ -20,6 +20,7 @@ import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationM
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,7 +29,8 @@ import retrofit2.Retrofit
 val dashboardModule = module {
     viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
+    single { ProfilePresentationMapper(get()) }
     single { NotificationPresentationMapper(get()) }
     single { AnnouncementPresentationMapper(get()) }
     single<DateFormatter> { DateFormatterImpl() }

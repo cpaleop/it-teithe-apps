@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.databinding.FragmentProfileBinding
-import gr.cpaleop.dashboard.domain.entities.Profile
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val viewModel: ProfileViewModel by viewModel()
+    private var profileAdapter: ProfileAdapter? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -25,8 +26,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViews()
         observeViewModel()
         viewModel.presentProfile()
+    }
+
+    private fun setupViews() {
+        profileAdapter = ProfileAdapter()
+        binding.profileRecyclerView.run {
+            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+            adapter = profileAdapter
+        }
     }
 
     private fun observeViewModel() {
@@ -35,10 +45,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
     }
 
-    private fun updateProfile(profile: Profile) {
-        binding.profilePictureImageView.load(profile.profileImageUrl) {
+    private fun updateProfile(profilePresentation: ProfilePresentation) {
+        binding.profilePictureImageView.load(profilePresentation.profilePhotoUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
+        val detailsList = mutableListOf<ProfilePresentationDetails>().apply {
+            addAll(profilePresentation.academicDetails)
+            addAll(profilePresentation.personalDetails)
+            addAll(profilePresentation.social)
+        }
+        profileAdapter?.submitList(detailsList)
     }
 }

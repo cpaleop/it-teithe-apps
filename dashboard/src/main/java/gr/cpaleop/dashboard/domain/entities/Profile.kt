@@ -1,19 +1,27 @@
 package gr.cpaleop.dashboard.domain.entities
 
 data class Profile(
-    val username: String,
+    val personalDetails: ProfilePersonalDetails,
+    val academicDetails: ProfileAcademicDetails,
+    val socialMedia: SocialMedia
+)
+
+data class ProfileAcademicDetails(
     val am: String,
     val type: String,
-    val givenName: String,
-    val lastName: String,
-    val websiteUrl: String,
+    val username: String,
     val displayName: String,
-    val description: String,
     val registeredYear: String,
-    val currentSemester: String,
-    val telephoneNumber: String,
+    val currentSemester: String
+)
+
+data class ProfilePersonalDetails(
+    val lastName: String,
+    val givenName: String,
+    val websiteUrl: String,
+    val description: String,
     val profileImageUrl: String,
-    val socialMedia: SocialMedia
+    val telephoneNumber: String
 )
 
 data class SocialMedia(
@@ -21,5 +29,5 @@ data class SocialMedia(
     val twitter: String,
     val github: String,
     val googlePlus: String,
-    val linkedIn: String?
+    val linkedIn: String
 )
