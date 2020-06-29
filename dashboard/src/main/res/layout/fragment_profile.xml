@@ -49,11 +49,11 @@
                     android:id="@+id/profilePictureImageView"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="6dp"
-                    android:layout_marginBottom="6dp"
+                    android:layout_margin="16dp"
+                    android:layout_marginBottom="16dp"
                     android:contentDescription="@string/empty"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="16:9"
+                    app:layout_constraintDimensionRatio="16:8"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
