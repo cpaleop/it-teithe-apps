@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
+        binding.notificationsShimmerLayout.startShimmer()
         viewModel.presentNotifications()
     }
 
@@ -48,6 +50,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     }
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
+        binding.notificationsShimmerLayout.apply {
+            stopShimmer()
+            isVisible = false
+        }
         notificationAdapter?.submitList(notifications)
     }
 
