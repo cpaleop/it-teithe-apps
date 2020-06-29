@@ -54,21 +54,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
-            profile.observe(viewLifecycleOwner, Observer(::updateProfile))
+            profilePictureUrl.observe(viewLifecycleOwner, Observer(::updateProfilePicture))
+            profileDetails.observe(viewLifecycleOwner, Observer(::updateProfileDetails))
         }
     }
 
-    private fun updateProfile(profilePresentation: ProfilePresentation) {
-        binding.profilePictureImageView.load(profilePresentation.profilePhotoUrl) {
+    private fun updateProfilePicture(pictureUrl: String) {
+        binding.profilePictureImageView.load(pictureUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
-        val detailsList = mutableListOf<ProfilePresentationDetails>().apply {
-            addAll(profilePresentation.academicDetails)
-            addAll(profilePresentation.personalDetails)
-            addAll(profilePresentation.social)
-        }
-        profileAdapter?.submitList(detailsList)
+    }
+
+    private fun updateProfileDetails(profileDetails: MutableList<ProfilePresentationDetails>) {
+        profileAdapter?.submitList(profileDetails)
     }
 
     private fun toggleLoading(shouldLoad: Boolean) {
