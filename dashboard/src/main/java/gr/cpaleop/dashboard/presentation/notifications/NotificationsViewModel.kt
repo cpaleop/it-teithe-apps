@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,7 +25,6 @@ class NotificationsViewModel(
         viewModelScope.launch {
             try {
                 _loading.value = true
-                delay(4000)
                 _notifications.value =
                     getNotificationsUseCase().mapAsyncSuspended(notificationPresentationMapper::invoke)
             } catch (t: Throwable) {

@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetProfileUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -43,7 +42,6 @@ class ProfileViewModel(
     fun presentProfile() {
         viewModelScope.launch {
             try {
-                delay(4000)
                 _loading.value = true
                 _profile.value = profilePresentationMapper(getProfileUseCase())
             } catch (t: Throwable) {
