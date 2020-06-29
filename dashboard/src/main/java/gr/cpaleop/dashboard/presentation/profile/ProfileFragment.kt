@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import coil.api.load
 import coil.transform.CircleCropTransformation
@@ -15,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val viewModel: ProfileViewModel by viewModel()
+    private val navController: NavController by lazy { findNavController() }
     private var profileAdapter: ProfileAdapter? = null
 
     override fun inflateViewBinding(
@@ -36,6 +39,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.profileRecyclerView.run {
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
             adapter = profileAdapter
+        }
+
+        binding.profileSettingsImageView.setOnClickListener {
+            val directions = ProfileFragmentDirections.profileToSettings()
+            navController.navigate(directions)
         }
     }
 

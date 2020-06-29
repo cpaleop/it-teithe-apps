@@ -37,7 +37,12 @@
         android:id="@+id/profileFragment"
         android:name="gr.cpaleop.dashboard.presentation.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/profileToSettings"
+            app:destination="@id/settingsActivity" />
+    </fragment>
 
     <activity
         android:id="@+id/announcementActivity"
@@ -49,4 +54,9 @@
             app:argType="string"
             app:nullable="false" />
     </activity>
+
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="gr.cpaleop.dashboard.presentation.profile.settings.SettingsActivity"
+        android:label="SettingsActivity" />
 </navigation>

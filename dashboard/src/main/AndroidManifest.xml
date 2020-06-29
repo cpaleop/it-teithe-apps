@@ -13,8 +13,14 @@
     </dist:module>
 
     <application android:name="gr.cpaleop.teithe_apps.AppsApplication">
+
         <activity
             android:name=".presentation.DashboardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Itteitheapps" />
+
+        <activity
+            android:name=".presentation.profile.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Itteitheapps" />
     </application>
