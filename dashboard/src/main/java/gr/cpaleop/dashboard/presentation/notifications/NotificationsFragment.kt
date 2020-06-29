@@ -42,6 +42,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     private fun observeViewModel() {
         viewModel.run {
+            loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
             notifications.observe(viewLifecycleOwner, Observer(::updateNotifications))
         }
     }
@@ -53,5 +54,9 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     private fun navigateToAnnouncement(announcementId: String) {
         val directions = NotificationsFragmentDirections.announcementsToAnnouncement(announcementId)
         navController.navigate(directions)
+    }
+
+    private fun toggleLoading(shouldLoad: Boolean) {
+        binding.notificationsSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }
