@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface NotificationsApi {
 
     @GET("notifications")
-    suspend fun getNotifications(): NotificationsResponse
+    suspend fun fetchNotifications(): NotificationsResponse
 }

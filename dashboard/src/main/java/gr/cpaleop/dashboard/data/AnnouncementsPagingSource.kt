@@ -22,7 +22,7 @@ class AnnouncementsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Announcement> {
         val page = params.key ?: STARTING_PAGE
         return try {
-            val remoteAnnouncementList = announcementsApi.getAnnouncements(PAGE_SIZE, page)
+            val remoteAnnouncementList = announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
             if (categoryList.isEmpty()) {
                 categoryList = categoriesApi.getCategories()
                 appDatabase.remoteCategoryDao().insert(categoryList)

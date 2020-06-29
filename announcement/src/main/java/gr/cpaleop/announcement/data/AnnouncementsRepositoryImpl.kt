@@ -19,7 +19,7 @@ class AnnouncementsRepositoryImpl(
         withContext(Dispatchers.IO) {
             val localRemoteAnnouncements = appDatabase.remoteAnnouncementsDao().getFromId(id)
             val remoteAnnouncement = if (localRemoteAnnouncements.isNullOrEmpty()) {
-                announcementsApi.getAnnouncementById(id)
+                announcementsApi.fetchAnnouncementById(id)
             } else {
                 localRemoteAnnouncements.firstOrNull()
                     ?: throw IllegalArgumentException("No announcement found with id $id")

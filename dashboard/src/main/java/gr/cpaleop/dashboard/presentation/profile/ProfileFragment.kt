@@ -1,19 +1,20 @@
 package gr.cpaleop.dashboard.presentation.profile
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
-import gr.cpaleop.core.domain.repositories.PreferencesRepository
+import androidx.lifecycle.Observer
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.databinding.FragmentProfileBinding
-import org.koin.android.ext.android.inject
+import gr.cpaleop.dashboard.domain.entities.Profile
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
-    private val preferencesRepository: PreferencesRepository by inject()
+    private val viewModel: ProfileViewModel by viewModel()
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -24,33 +25,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+        viewModel.presentProfile()
+    }
 
-        binding.switchThemeButton.setOnClickListener {
-            val currentNightMode =
-                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (currentNightMode) {
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    preferencesRepository.putInt(
-                        PreferencesRepository.NIGHT_MODE,
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    )
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    preferencesRepository.putInt(
-                        PreferencesRepository.NIGHT_MODE,
-                        AppCompatDelegate.MODE_NIGHT_NO
-                    )
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-                Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                    preferencesRepository.putInt(
-                        PreferencesRepository.NIGHT_MODE,
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    )
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-            }
+    private fun observeViewModel() {
+        viewModel.run {
+            profile.observe(viewLifecycleOwner, Observer(::updateProfile))
+        }
+    }
+
+    private fun updateProfile(profile: Profile) {
+        binding.profilePictureImageView.load(profile.profileImageUrl) {
+            crossfade(true)
+            transformations(CircleCropTransformation())
         }
     }
 }

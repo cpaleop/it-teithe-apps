@@ -8,11 +8,11 @@ import retrofit2.http.Query
 interface AnnouncementsApi {
 
     @GET("announcements")
-    suspend fun getAnnouncements(
+    suspend fun fetchAnnouncements(
         @Query("pageSize") pageSize: Int,
         @Query("page") page: Int
     ): List<RemoteAnnouncement>
 
     @GET("announcements/{announcementId}")
-    suspend fun getAnnouncementById(@Path("announcementId") announcementId: String): RemoteAnnouncement
+    suspend fun fetchAnnouncementById(@Path("announcementId") announcementId: String): RemoteAnnouncement
 }
