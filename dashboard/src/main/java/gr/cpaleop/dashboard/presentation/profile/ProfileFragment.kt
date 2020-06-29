@@ -45,10 +45,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             val directions = ProfileFragmentDirections.profileToSettings()
             navController.navigate(directions)
         }
+
+        binding.profileSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.presentProfile()
+        }
     }
 
     private fun observeViewModel() {
         viewModel.run {
+            loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
             profile.observe(viewLifecycleOwner, Observer(::updateProfile))
         }
     }
@@ -64,5 +69,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             addAll(profilePresentation.social)
         }
         profileAdapter?.submitList(detailsList)
+    }
+
+    private fun toggleLoading(shouldLoad: Boolean) {
+        binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }

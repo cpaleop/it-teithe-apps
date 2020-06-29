@@ -14,15 +14,21 @@ class ProfileViewModel(
     private val profilePresentationMapper: ProfilePresentationMapper
 ) : ViewModel() {
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading.toSingleEvent()
+
     private val _profile = MutableLiveData<ProfilePresentation>()
     val profile: LiveData<ProfilePresentation> = _profile.toSingleEvent()
 
     fun presentProfile() {
         viewModelScope.launch {
             try {
+                _loading.value = true
                 _profile.value = profilePresentationMapper(getProfileUseCase())
             } catch (t: Throwable) {
                 Timber.e(t)
+            } finally {
+                _loading.value = false
             }
         }
     }
