@@ -25,4 +25,19 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <!-- Easier to extend Chip.Choice because it includes some desired color effects. -->
+    <style name="Widget.IOSched.FilterChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipIcon">@drawable/ic_launcher_background</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeColor">@color/colorPrimaryVariant</item>
+        <item name="textStartPadding">0dp</item>
+    </style>
+
+    <style name="Widget.IOSched.FilterChip.Closeable">
+        <item name="chipIcon">@drawable/ic_chip_dot</item>
+        <item name="closeIcon">@drawable/ic_chip_clear</item>
+        <item name="closeIconVisible">true</item>
+        <item name="textEndPadding">2dp</item>
+    </style>
 </resources>

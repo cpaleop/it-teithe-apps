@@ -16,6 +16,7 @@
     <application android:name="gr.cpaleop.teithe_apps.AppsApplication">
         <activity
             android:name=".presentation.AuthenticationActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Itteitheapps">
 
@@ -27,8 +28,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="twitter.com/cpaleop"
-                    android:scheme="https" />
+                    android:host="callback"
+                    android:scheme="appsservice" />
             </intent-filter>
         </activity>
     </application>

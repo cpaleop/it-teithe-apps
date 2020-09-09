@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.0-alpha02"
+        classpath 'com.android.tools.build:gradle:4.2.0-alpha10'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${nav_version}"
 
@@ -63,16 +63,16 @@ subprojects {
                 flavorDimensions "env"
                 productFlavors {
                     dEV {
-                        buildConfigField "String", "CLIENT_ID", '"5bb53d855183de5aaf19357a"'
-                        buildConfigField "String", "CLIENT_SECRET", '"4w12weqlfo75xsoceb91uwgmu91c57j8rkwiqtimizd8tactf3"'
+                        buildConfigField "String", "CLIENT_ID", '"5bd3ab44ae4ff2273941c011"'
+                        buildConfigField "String", "CLIENT_SECRET", '"1q1e6piho2rvwt1cdzfcc3bs8urfh5i9j3x7wcyy5y6uyxqc96"'
                         buildConfigField "String", "CALLBACK_URL", '"appsservice://callback"'
                         buildConfigField "String", "LOGIN_URL", '"https://login.it.teithe.gr/"'
                         buildConfigField "String", "BASE_URL", '"https://api.it.teithe.gr/"'
                     }
 
                     pROD {
-                        buildConfigField "String", "CLIENT_ID", '"5bb53d855183de5aaf19357a"'
-                        buildConfigField "String", "CLIENT_SECRET", '"4w12weqlfo75xsoceb91uwgmu91c57j8rkwiqtimizd8tactf3"'
+                        buildConfigField "String", "CLIENT_ID", '"5bd3ab44ae4ff2273941c011"'
+                        buildConfigField "String", "CLIENT_SECRET", '"1q1e6piho2rvwt1cdzfcc3bs8urfh5i9j3x7wcyy5y6uyxqc96"'
                         buildConfigField "String", "CALLBACK_URL", '"appsservice://callback"'
                         buildConfigField "String", "LOGIN_URL", '"https://login.it.teithe.gr/authorization/"'
                         buildConfigField "String", "BASE_URL", '"https://api.it.teithe.gr/"'

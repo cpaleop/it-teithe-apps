@@ -1,5 +1,6 @@
 package gr.cpaleop.authentication.domain.usecases
 
+import gr.cpaleop.authentication.BuildConfig
 import gr.cpaleop.core.domain.Scope
 
 class BuildUriUseCaseImpl : BuildUriUseCase {
@@ -15,6 +16,7 @@ class BuildUriUseCaseImpl : BuildUriUseCase {
                 "${Scope.EDIT_PROFILE}," +
                 "${Scope.NOTIFICATIONS}," +
                 "${Scope.PROFILE}," +
-                Scope.REFRESH_TOKEN
+                Scope.REFRESH_TOKEN +
+                "&redirect_uri=${BuildConfig.CALLBACK_URL}"
     }
 }

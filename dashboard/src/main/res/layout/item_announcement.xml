@@ -76,4 +76,18 @@
         app:layout_constraintStart_toEndOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementContent"
         tools:text="1/1/2020" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/announcementChip"
+        style="@style/Widget.IOSched.FilterChip.Closeable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SKATASKATASKATA"
+        android:textColor="@color/colorOnPrimary"
+        app:chipIconEnabled="true"
+        app:chipStrokeColor="@color/colorPrimaryVariant"
+        app:chipStrokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/announcementDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

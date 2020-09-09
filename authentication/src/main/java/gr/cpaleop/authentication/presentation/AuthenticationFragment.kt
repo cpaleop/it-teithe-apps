@@ -60,6 +60,8 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>() {
     }
 
     private fun navigateToDashboard() {
-        //TODO("Navigate to Dashboard")
+        val directions = AuthenticationFragmentDirections.authenticationToDashboard()
+        navController.navigate(directions)
+        activity?.finishAffinity()
     }
 }

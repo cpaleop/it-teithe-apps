@@ -10,5 +10,15 @@
         android:name="gr.cpaleop.authentication.presentation.AuthenticationFragment"
         android:label="AuthenticationFragment"
         app:moduleName="authentication"
-        tools:layout="@layout/fragment_authentication" />
+        tools:layout="@layout/fragment_authentication">
+
+        <action
+            android:id="@+id/authenticationToDashboard"
+            app:destination="@id/dashboardActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/dashboardActivity"
+        android:name="gr.cpaleop.dashboard.presentation.DashboardActivity"
+        app:moduleName="dashboard" />
 </navigation>

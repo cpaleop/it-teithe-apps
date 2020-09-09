@@ -83,7 +83,7 @@ private fun provideOkHttpClient(
         .writeTimeout(15, TimeUnit.SECONDS)
 
     if (BuildConfig.DEBUG) {
-        okHttpClient.addNetworkInterceptor(httpLoggingInterceptor)
+        okHttpClient.addInterceptor(httpLoggingInterceptor)
     }
 
     return okHttpClient.build()
@@ -108,7 +108,7 @@ private fun provideAuthenticationOkHttpClient(
         .writeTimeout(15, TimeUnit.SECONDS)
 
     if (BuildConfig.DEBUG) {
-        okHttpClient.addNetworkInterceptor(httpLoggingInterceptor)
+        okHttpClient.addInterceptor(httpLoggingInterceptor)
     }
 
     return okHttpClient.build()
