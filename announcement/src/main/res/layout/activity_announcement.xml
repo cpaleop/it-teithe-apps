@@ -58,7 +58,8 @@
         android:id="@+id/announcementScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementCategory">
 
         <TextView
@@ -67,7 +68,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/googlesans_regular"
-            android:padding="16dp"
             android:textColor="@color/colorOnPrimary"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
     </ScrollView>

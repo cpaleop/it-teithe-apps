@@ -20,7 +20,6 @@ import java.io.File
 class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private val viewModel: FilesViewModel by viewModel()
-
     @Authority
     private val authority: String by inject(named<Authority>())
     private var filesAdapter: FilesAdapter? = null
@@ -42,6 +41,10 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     private fun setupViews() {
         filesAdapter = FilesAdapter(::openFile)
         binding.documentsRecyclerView.adapter = filesAdapter
+
+        binding.documentsSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.presentDocuments()
+        }
     }
 
     private fun observeViewModel() {
@@ -71,6 +74,6 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     }
 
     private fun toggleLoad(shouldLoad: Boolean) {
-
+        binding.documentsSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }
