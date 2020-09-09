@@ -1,11 +1,16 @@
 package gr.cpaleop.announcement.presentation
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.announcement.databinding.ActivityAnnouncementBinding
 import gr.cpaleop.announcement.di.announcementModule
 import gr.cpaleop.core.presentation.BaseActivity
+import gr.cpaleop.download.presentation.DownloadFileWorker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -33,6 +38,16 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         super.onDestroy()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            viewModel.downloadAttachments()
+        }
+    }
+
     private fun handleIntent() {
         announcementId = intent.getStringExtra(ANNOUNCEMENT_ID) ?: ""
     }
@@ -43,12 +58,30 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         }
 
         binding.announcementDownloadAttachmentButton.setOnClickListener {
-            viewModel.downloadAttachments()
+            if (ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                viewModel.downloadAttachments()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE
+                )
+                /*Toast.makeText(
+                    applicationContext,
+                    applicationContext.getString(R.string.announcement_permission_toast_message),
+                    Toast.LENGTH_LONG
+                ).show()*/
+            }
         }
     }
 
     private fun observeViewModel() {
         viewModel.announcement.observe(this, Observer(::showAnnouncement))
+        viewModel.attachmentFileId.observe(this, Observer(::initiateDownload))
     }
 
     private fun showAnnouncement(announcement: AnnouncementDetails) {
@@ -61,8 +94,13 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
             announcement.attachments.isNotEmpty()
     }
 
+    private fun initiateDownload(fileId: String) {
+        DownloadFileWorker.enqueue(applicationContext, fileId)
+    }
+
     companion object {
 
         private const val ANNOUNCEMENT_ID = "announcementId"
+        private const val PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1227
     }
 }

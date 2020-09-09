@@ -31,8 +31,6 @@ class RefreshTokenInterceptor(
                         )
                     )
                 saveToken(newToken)
-
-                Timber.e("SKATA RETRY REQUEST WITH NEW TOKEN ${newToken.accessToken}")
                 return@runBlocking chain.proceed(originalRequest)
             }
         } else {

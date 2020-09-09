@@ -3,6 +3,7 @@ package gr.cpaleop.teithe_apps
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
+import gr.cpaleop.download.di.downloadModule
 import gr.cpaleop.teithe_apps.di.coreModule
 import gr.cpaleop.teithe_apps.di.networkModule
 import org.koin.android.ext.android.inject
@@ -19,7 +20,7 @@ class AppsApplication : Application() {
 
         startKoin {
             androidContext(this@AppsApplication)
-            modules(networkModule, coreModule)
+            modules(networkModule, coreModule, downloadModule)
         }
 
         if (BuildConfig.DEBUG) {

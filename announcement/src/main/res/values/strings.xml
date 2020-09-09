@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="announcement_permission_toast_message">You need to grand permissions in order to download the attachment</string>
+</resources>

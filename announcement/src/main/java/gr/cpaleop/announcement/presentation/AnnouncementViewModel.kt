@@ -17,6 +17,9 @@ class AnnouncementViewModel(
     private val _announcement = MutableLiveData<AnnouncementDetails>()
     val announcement: LiveData<AnnouncementDetails> = _announcement.toSingleEvent()
 
+    private val _attachmentFileId = MutableLiveData<String>()
+    val attachmentFileId: LiveData<String> = _attachmentFileId.toSingleEvent()
+
     fun presentAnnouncement(id: String) {
         viewModelScope.launch {
             try {
@@ -30,7 +33,8 @@ class AnnouncementViewModel(
     fun downloadAttachments() {
         viewModelScope.launch {
             try {
-
+                _attachmentFileId.value =
+                    announcement.value?.attachments?.firstOrNull() ?: return@launch
             } catch (t: Throwable) {
 
             }
