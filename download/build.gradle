@@ -8,6 +8,7 @@ apply from: '../shared_dependencies.gradle'
 
 dependencies {
     implementation project(':core')
+    implementation project(':common')
 
     /**
      * WorkManager; Kotlin + coroutines

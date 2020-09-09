@@ -49,6 +49,12 @@ val networkModule = module {
     }
     single { provideAuthenticationApi(get(named<Authentication>())) }
     single(named<DownloadFolder>()) { provideDownloadFolder(get()) }
+    single(named<Authority>()) { provideAuthority(get()) }
+}
+
+@Authority
+private fun provideAuthority(applicationContext: Context): String {
+    return applicationContext.packageName + ".fileprovider"
 }
 
 @DownloadFolder

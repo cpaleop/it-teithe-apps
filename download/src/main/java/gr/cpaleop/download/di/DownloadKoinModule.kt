@@ -19,7 +19,12 @@ val downloadModule = module {
     single<DownloadNotificationManager> { DownloadNotificationManagerImpl(get()) }
     single<DownloadFileUseCase> { DownloadFileUseCaseImpl(get(), get()) }
     single { DownloadedFileMapper() }
-    single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get(named<DownloadFolder>())) }
+    single<DeviceStorageRepository> {
+        DeviceStorageRepositoryImpl(
+            get(named<DownloadFolder>()),
+            get()
+        )
+    }
     single<FileRepository> { FileRepositoryImpl(get(), get()) }
     single { provideDownloadApi(get()) }
 }

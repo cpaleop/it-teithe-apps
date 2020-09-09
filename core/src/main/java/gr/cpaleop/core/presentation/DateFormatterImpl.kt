@@ -59,6 +59,15 @@ class DateFormatterImpl : DateFormatter {
         ).format(calendar.timeInMillis)
     }
 
+    override fun fileFormat(time: Long, format: String): String {
+        val calendar = Calendar.getInstance(Locale.getDefault())
+        calendar.timeInMillis = time/* * 1000*/
+        return SimpleDateFormat(
+            format,
+            Locale.getDefault()
+        ).format(calendar.timeInMillis)
+    }
+
     companion object {
 
         /*private const val FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ssZ"*/
