@@ -17,10 +17,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/catalogFragment"
-        android:name="gr.cpaleop.dashboard.presentation.catalog.CatalogFragment"
+        android:id="@+id/filesFragment"
+        android:name="gr.cpaleop.dashboard.presentation.files.FilesFragment"
         android:label="CatalogFragment"
-        tools:layout="@layout/fragment_catalog" />
+        tools:layout="@layout/fragment_files" />
 
     <fragment
         android:id="@+id/notificationsFragment"

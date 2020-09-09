@@ -1,6 +1,6 @@
 package gr.cpaleop.download.domain.usecases
 
-import gr.cpaleop.download.domain.repositories.DeviceStorageRepository
+import gr.cpaleop.core.domain.repositories.DeviceStorageRepository
 import gr.cpaleop.download.domain.repositories.FileRepository
 
 class DownloadFileUseCaseImpl(
@@ -10,6 +10,6 @@ class DownloadFileUseCaseImpl(
 
     override suspend fun invoke(fileId: String) {
         val downloadedFile = fileRepository.getFile(fileId)
-        deviceStorageRepository.saveFile(downloadedFile)
+        deviceStorageRepository.saveFile(downloadedFile.name, downloadedFile.data.toByteArray())
     }
 }

@@ -1,5 +1,7 @@
 package gr.cpaleop.teithe_apps.di
 
+import android.content.Context
+import android.os.Environment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
@@ -8,6 +10,7 @@ import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
 import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.remote.AuthenticationApi
 import gr.cpaleop.core.domain.behavior.Authentication
+import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.teithe_apps.BuildConfig
@@ -19,6 +22,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 val networkModule = module {
@@ -44,6 +48,13 @@ val networkModule = module {
         )
     }
     single { provideAuthenticationApi(get(named<Authentication>())) }
+    single(named<DownloadFolder>()) { provideDownloadFolder(get()) }
+}
+
+@DownloadFolder
+private fun provideDownloadFolder(applicationContext: Context): File {
+    return applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+        ?: applicationContext.cacheDir
 }
 
 private fun provideAuthenticationApi(retrofit: Retrofit): AuthenticationApi {
