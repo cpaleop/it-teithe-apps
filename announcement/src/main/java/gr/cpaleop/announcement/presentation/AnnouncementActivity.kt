@@ -94,8 +94,8 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
             announcement.attachments.isNotEmpty()
     }
 
-    private fun initiateDownload(fileId: String) {
-        DownloadFileWorker.enqueue(applicationContext, fileId)
+    private fun initiateDownload(files: Array<String>) {
+        DownloadFileWorker.enqueue(applicationContext, files)
     }
 
     companion object {

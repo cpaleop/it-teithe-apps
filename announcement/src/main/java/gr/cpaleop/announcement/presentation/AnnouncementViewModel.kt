@@ -17,8 +17,8 @@ class AnnouncementViewModel(
     private val _announcement = MutableLiveData<AnnouncementDetails>()
     val announcement: LiveData<AnnouncementDetails> = _announcement.toSingleEvent()
 
-    private val _attachmentFileId = MutableLiveData<String>()
-    val attachmentFileId: LiveData<String> = _attachmentFileId.toSingleEvent()
+    private val _attachmentFileId = MutableLiveData<Array<String>>()
+    val attachmentFileId: LiveData<Array<String>> = _attachmentFileId.toSingleEvent()
 
     fun presentAnnouncement(id: String) {
         viewModelScope.launch {
@@ -34,7 +34,7 @@ class AnnouncementViewModel(
         viewModelScope.launch {
             try {
                 _attachmentFileId.value =
-                    announcement.value?.attachments?.firstOrNull() ?: return@launch
+                    announcement.value?.attachments?.toTypedArray() ?: return@launch
             } catch (t: Throwable) {
 
             }
