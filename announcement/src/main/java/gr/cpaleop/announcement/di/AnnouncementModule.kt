@@ -5,12 +5,14 @@ import gr.cpaleop.announcement.data.AnnouncementsRepositoryImpl
 import gr.cpaleop.announcement.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCaseImpl
+import gr.cpaleop.announcement.presentation.AnnouncementDetailsMapper
 import gr.cpaleop.announcement.presentation.AnnouncementViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val announcementModule = module {
-    viewModel { AnnouncementViewModel(get()) }
+    viewModel { AnnouncementViewModel(get(), get()) }
+    single { AnnouncementDetailsMapper(get()) }
     single<GetAnnouncementUseCase> { GetAnnouncementUseCaseImpl(get()) }
     single { AnnouncementMapper() }
     single<AnnouncementsRepository> { AnnouncementsRepositoryImpl(get(), get(), get(), get()) }

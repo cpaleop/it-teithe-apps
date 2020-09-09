@@ -1,6 +1,6 @@
-package gr.cpaleop.core.domain.entities
+package gr.cpaleop.announcement.presentation
 
-data class Announcement(
+data class AnnouncementDetails(
     val id: String,
     val category: String,
     val publisherName: String,

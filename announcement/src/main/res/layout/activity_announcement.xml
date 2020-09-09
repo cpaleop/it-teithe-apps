@@ -5,17 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/announcementBackButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/empty"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back_round"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.1" />
+
+    <ImageView
+        android:id="@+id/announcementDownloadAttachmentButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/empty"
+        android:padding="8dp"
+        android:src="@drawable/ic_download"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.1" />
+
     <TextView
         android:id="@+id/announcementTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/googlesans_medium"
+        android:fontFamily="@font/googlesans_bold"
         android:gravity="center"
         android:padding="16dp"
         android:textColor="@color/colorOnPrimary"
         android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/announcementBackButton"
         tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
+
+    <TextView
+        android:id="@+id/announcementCategory"
+        style="@style/Theme.FilterStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
+        tools:text="6ο ΕΞΑΜΗΝΟ" />
+
+    <ScrollView
+        android:id="@+id/announcementScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/announcementCategory">
+
+        <TextView
+            android:id="@+id/announcementContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="16dp"
+            android:textColor="@color/colorOnPrimary"
+            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
+    </ScrollView>
 
     <TextView
         android:id="@+id/announcementPublisher"
@@ -25,44 +80,14 @@
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
         android:padding="8dp"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/announcementTitle"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/announcementTitle"
-        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.5"
         tools:text="Κ. ΒΙΤΣΑΣ" />
-
-    <TextView
-        android:id="@+id/announcementCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
-        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
-        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
-        tools:text="6ο ΕΞΑΜΗΝΟ" />
-
-    <ScrollView
-        android:id="@+id/announcementScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/announcementDate"
-        app:layout_constraintTop_toBottomOf="@id/announcementPublisher">
-
-        <TextView
-            android:id="@+id/announcementContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/googlesans_regular"
-            android:padding="16dp"
-            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
-    </ScrollView>
 
     <TextView
         android:id="@+id/announcementDate"
@@ -72,9 +97,10 @@
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
         android:padding="8dp"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
         tools:text="1/1/2020" />
 </androidx.constraintlayout.widget.ConstraintLayout>

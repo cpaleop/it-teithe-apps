@@ -20,7 +20,8 @@ class AnnouncementMapper {
             date = remoteAnnouncement.date ?: "",
             text = remoteAnnouncement.textEn ?: "",
             category = category?.name ?: "",
-            publisherName = remoteAnnouncement.publisher?.name ?: ""
+            publisherName = remoteAnnouncement.publisher?.name ?: "",
+            attachments = remoteAnnouncement.attachments?.filterNotNull() ?: emptyList()
         )
     }
 }

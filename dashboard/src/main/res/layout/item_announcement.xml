@@ -14,7 +14,7 @@
         android:id="@+id/announcementTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/googlesans_medium"
+        android:fontFamily="@font/googlesans_bold"
         android:gravity="center"
         android:padding="16dp"
         android:textColor="@color/colorOnPrimary"
@@ -37,9 +37,11 @@
         android:id="@+id/announcementContent"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/announcementCategory"
         tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
@@ -50,9 +52,8 @@
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:padding="14dp"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/announcementTitle"
         app:layout_constraintHorizontal_bias="0"
@@ -68,16 +69,15 @@
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:padding="14dp"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/announcementContent"
         app:layout_constraintStart_toEndOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementContent"
         tools:text="1/1/2020" />
 
-    <com.google.android.material.chip.Chip
+    <!--<com.google.android.material.chip.Chip
         android:id="@+id/announcementChip"
         style="@style/Widget.IOSched.FilterChip.Closeable"
         android:layout_width="wrap_content"
@@ -89,5 +89,5 @@
         app:chipStrokeWidth="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/announcementDate" />
+        app:layout_constraintTop_toBottomOf="@id/announcementDate" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

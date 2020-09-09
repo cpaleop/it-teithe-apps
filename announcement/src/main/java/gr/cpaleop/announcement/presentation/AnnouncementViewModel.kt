@@ -6,22 +6,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class AnnouncementViewModel(private val getAnnouncementUseCase: GetAnnouncementUseCase) :
-    ViewModel() {
+class AnnouncementViewModel(
+    private val getAnnouncementUseCase: GetAnnouncementUseCase,
+    private val announcementDetailsMapper: AnnouncementDetailsMapper
+) : ViewModel() {
 
-    private val _announcement = MutableLiveData<Announcement>()
-    val announcement: LiveData<Announcement> = _announcement.toSingleEvent()
+    private val _announcement = MutableLiveData<AnnouncementDetails>()
+    val announcement: LiveData<AnnouncementDetails> = _announcement.toSingleEvent()
 
     fun presentAnnouncement(id: String) {
         viewModelScope.launch {
             try {
-                _announcement.value = getAnnouncementUseCase(id)
+                _announcement.value = announcementDetailsMapper(getAnnouncementUseCase(id))
             } catch (t: Throwable) {
                 Timber.e(t)
+            }
+        }
+    }
+
+    fun downloadAttachments() {
+        viewModelScope.launch {
+            try {
+
+            } catch (t: Throwable) {
+
             }
         }
     }
