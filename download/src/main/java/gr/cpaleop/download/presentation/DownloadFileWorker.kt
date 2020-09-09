@@ -29,6 +29,7 @@ class DownloadFileWorker(
                 downloadFilesUseCase(fileId)
                 downloadNotificationManager.showProgress(index + 1, files.size)
             }
+            downloadNotificationManager.cancelProgress()
             downloadNotificationManager.showSuccess(files.size)
             Result.success()
         } catch (t: Throwable) {
