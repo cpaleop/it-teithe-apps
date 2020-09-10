@@ -10,84 +10,93 @@
     android:layout_marginBottom="8dp"
     android:background="@drawable/shape_round_outline_ripple">
 
-    <TextView
-        android:id="@+id/announcementTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/googlesans_bold"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="@color/colorOnPrimary"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
-
-    <TextView
-        android:id="@+id/announcementCategory"
-        style="@style/Theme.FilterStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="@id/announcementContent"
-        app:layout_constraintStart_toStartOf="@id/announcementContent"
-        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
-        tools:text="6ο ΕΞΑΜΗΝΟ" />
-
-    <TextView
-        android:id="@+id/announcementContent"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:fontFamily="@font/googlesans_regular"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:textColor="@color/colorOnPrimary"
-        app:layout_constraintTop_toBottomOf="@id/announcementCategory"
-        tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
-
-    <TextView
-        android:id="@+id/announcementPublisher"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="14dp"
-        android:textColor="@color/colorOnPrimary"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/announcementTitle"
-        app:layout_constraintTop_toBottomOf="@id/announcementContent"
-        app:layout_constraintWidth_percent="0.5"
-        tools:text="Κ. ΒΙΤΣΑΣ" />
-
-    <TextView
-        android:id="@+id/announcementDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
-        android:gravity="center"
-        android:padding="14dp"
-        android:textColor="@color/colorOnPrimary"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/announcementContent"
-        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
-        app:layout_constraintTop_toBottomOf="@id/announcementContent"
-        tools:text="1/1/2020" />
-
-    <!--<com.google.android.material.chip.Chip
-        android:id="@+id/announcementChip"
-        style="@style/Widget.IOSched.FilterChip.Closeable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SKATASKATASKATA"
-        android:textColor="@color/colorOnPrimary"
-        app:chipIconEnabled="true"
-        app:chipStrokeColor="@color/colorPrimaryVariant"
-        app:chipStrokeWidth="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/announcementDate" />-->
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/announcementTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
+
+        <TextView
+            android:id="@+id/announcementCategory"
+            style="@style/Theme.FilterStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintStart_toStartOf="@id/announcementContent"
+            app:layout_constraintTop_toBottomOf="@id/announcementTitle"
+            tools:text="6ο ΕΞΑΜΗΝΟ" />
+
+        <TextView
+            android:id="@+id/announcementContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/colorOnPrimary"
+            app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/announcementCategory"
+            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
+
+        <TextView
+            android:id="@+id/announcementPublisher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_regular"
+            android:gravity="center"
+            android:padding="14dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/announcementTitle"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Κ. ΒΙΤΣΑΣ" />
+
+        <TextView
+            android:id="@+id/announcementDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_regular"
+            android:gravity="center"
+            android:padding="14dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintStart_toEndOf="@id/announcementPublisher"
+            tools:text="1/1/2020" />
+
+        <!--<com.google.android.material.chip.Chip
+            android:id="@+id/announcementChip"
+            style="@style/Widget.IOSched.FilterChip.Closeable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SKATASKATASKATA"
+            android:textColor="@color/colorOnPrimary"
+            app:chipIconEnabled="true"
+            app:chipStrokeColor="@color/colorPrimaryVariant"
+            app:chipStrokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/announcementDate" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
