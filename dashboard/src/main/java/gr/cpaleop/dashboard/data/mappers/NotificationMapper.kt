@@ -8,8 +8,6 @@ import kotlinx.coroutines.withContext
 
 class NotificationMapper {
 
-    private var last = false
-
     suspend operator fun invoke(
         remoteNotificationDetails: RemoteNotificationDetails
     ): Notification =
@@ -24,11 +22,9 @@ class NotificationMapper {
                     ?: ""
             )
 
-            val new = !last
-            last = new
             Notification(
                 id = remoteNotificationDetails.id,
-                seen = /*remoteNotificationDetails.seen ?: false*/ new,
+                seen = remoteNotificationDetails.seen ?: false/* new*/,
                 announcement = relatedAnnouncement
             )
         }
