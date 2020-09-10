@@ -7,8 +7,12 @@
     <string name="saved_files_bottom_navigation_menu_title">Saved Files</string>
     <string name="announcements_error_message">Something went wrong</string>
 
+    <!-- Announcements -->
+    <string name="announcements_search">Search announcements</string>
+
     <!-- Notifications -->
     <string name="notifications_empty">No available notifications</string>
+    <string name="notifications_search">Search notifications</string>
 
     <!-- Profile -->
     <!-- Personal details -->
@@ -37,6 +41,7 @@
     <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
 
     <!-- Files -->
+    <string name="files_search">Search documents</string>
     <string name="files_modified">Last Modified: %1$s</string>
     <string name="files_empty">No downloaded documents</string>
     <string name="files_choose_file">Open file with</string>
