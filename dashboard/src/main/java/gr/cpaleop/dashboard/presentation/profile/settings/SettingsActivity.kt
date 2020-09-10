@@ -7,6 +7,7 @@ import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.presentation.BaseActivity
 import gr.cpaleop.dashboard.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject
+import gr.cpaleop.teithe_apps.R as appR
 
 class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
@@ -19,6 +20,11 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViews()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 
     private fun setupViews() {

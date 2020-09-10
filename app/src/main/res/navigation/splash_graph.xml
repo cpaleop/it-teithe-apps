@@ -13,11 +13,19 @@
 
         <action
             android:id="@+id/splash_to_authentication"
-            app:destination="@id/authenticationActivity" />
+            app:destination="@id/authenticationActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
 
         <action
             android:id="@+id/splash_to_dashboard"
-            app:destination="@id/dashboardActivity" />
+            app:destination="@id/dashboardActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <activity

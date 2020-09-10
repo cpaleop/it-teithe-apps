@@ -15,7 +15,7 @@ class AnnouncementDetailsMapper(private val dateFormatter: DateFormatter) {
                 text = announcement.text,
                 category = announcement.category,
                 publisherName = announcement.publisherName,
-                date = dateFormatter(announcement.date, "dd MMMM yyyy"),
+                date = dateFormatter(announcement.date, "dd MMMM yyyy HH:mm"),
                 attachments = announcement.attachments
             )
         }

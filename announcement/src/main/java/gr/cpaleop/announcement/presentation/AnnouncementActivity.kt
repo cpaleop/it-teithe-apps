@@ -14,6 +14,7 @@ import gr.cpaleop.download.presentation.DownloadFileWorker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import gr.cpaleop.teithe_apps.R as appR
 
 class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
@@ -46,6 +47,11 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         if (requestCode == PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             viewModel.downloadAttachments()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 
     private fun handleIntent() {

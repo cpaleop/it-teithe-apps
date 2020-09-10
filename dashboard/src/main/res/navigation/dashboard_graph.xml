@@ -13,7 +13,11 @@
 
         <action
             android:id="@+id/announcementsToAnnouncement"
-            app:destination="@id/announcementActivity" />
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -30,7 +34,11 @@
 
         <action
             android:id="@+id/announcementsToAnnouncement"
-            app:destination="@id/announcementActivity" />
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -41,7 +49,11 @@
 
         <action
             android:id="@+id/profileToSettings"
-            app:destination="@id/settingsActivity" />
+            app:destination="@id/settingsActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <activity
