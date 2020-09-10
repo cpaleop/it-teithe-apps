@@ -3,13 +3,13 @@
     android:ordering="together">
 
     <objectAnimator
-        android:duration="600"
+        android:duration="500"
         android:propertyName="trimPathStart"
         android:valueFrom="0.4"
         android:valueTo="0" />
 
     <objectAnimator
-        android:duration="450"
+        android:duration="350"
         android:propertyName="trimPathEnd"
         android:valueFrom="1"
         android:valueTo="0.4" />

@@ -2,16 +2,18 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:ordering="sequentially">
 
+    <!-- No need cause I'm a genius - cpaleop -->
+
     <!-- first we need to immediately reset state -->
-    <objectAnimator
+    <!--<objectAnimator
         android:duration="0"
         android:propertyName="trimPathStart"
         android:valueFrom="0.45"
-        android:valueTo="0.45" />
+        android:valueTo="0.45" />-->
 
     <!-- then run the animation after a delay -->
     <objectAnimator
-        android:duration="300"
+        android:duration="200"
         android:interpolator="@android:interpolator/fast_out_slow_in"
         android:propertyName="trimPathStart"
         android:startOffset="250"

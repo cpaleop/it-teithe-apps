@@ -13,7 +13,7 @@
 
     <!-- then run the animation after a delay -->
     <objectAnimator
-        android:duration="300"
+        android:duration="200"
         android:interpolator="@android:interpolator/fast_out_slow_in"
         android:propertyName="trimPathStart"
         android:startOffset="250"
