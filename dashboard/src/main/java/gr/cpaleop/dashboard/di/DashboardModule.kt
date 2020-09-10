@@ -24,7 +24,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val dashboardModule = module {
-    viewModel { AnnouncementsViewModel(get(), get()) }
+    viewModel { AnnouncementsViewModel(get(), get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel { FilesViewModel(get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
@@ -37,6 +37,7 @@ val dashboardModule = module {
     single { NotificationMapper() }
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
+    single<SearchAnnouncementUseCase> { SearchAnnouncementUseCaseImpl(get()) }
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }

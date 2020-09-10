@@ -34,4 +34,9 @@ class AnnouncementsRepositoryImpl(
                 }
             ).flow
         }
+
+    override suspend fun getAnnouncementsSearchResults(query: String): List<Announcement> =
+        withContext(Dispatchers.IO) {
+            TODO("Implementation of AnnouncementsApi\$fetchFilteredAnnouncements")
+        }
 }

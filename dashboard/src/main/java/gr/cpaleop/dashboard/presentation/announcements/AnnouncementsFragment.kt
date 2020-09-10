@@ -80,7 +80,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
 
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
-                    /*viewModel.searchDocuments(text.toString())*/
+                    viewModel.searchAnnouncements(text.toString())
 
                     val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
                     val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
