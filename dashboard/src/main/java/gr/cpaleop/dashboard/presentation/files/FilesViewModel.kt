@@ -1,9 +1,6 @@
 package gr.cpaleop.dashboard.presentation.files
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetSavedDocumentsUseCase
@@ -20,6 +17,14 @@ class FilesViewModel(
 
     private val _documents = MutableLiveData<List<FileDocument>>()
     val documents: LiveData<List<FileDocument>> = _documents.toSingleEvent()
+
+    val documentsEmpty: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(_documents) {
+                this.value = it.isEmpty()
+            }
+        }
+    }
 
     fun presentDocuments() {
         viewModelScope.launch {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.core.presentation.BaseFragment
@@ -51,6 +52,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoad))
             documents.observe(viewLifecycleOwner, Observer(::showDocuments))
+            documentsEmpty.observe(viewLifecycleOwner, Observer(::showEmptyDocuments))
         }
     }
 
@@ -71,6 +73,10 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private fun showDocuments(documents: List<FileDocument>) {
         filesAdapter?.submitList(documents)
+    }
+
+    private fun showEmptyDocuments(documentsEmpty: Boolean) {
+        binding.documentsEmptyTextView.isVisible = documentsEmpty
     }
 
     private fun toggleLoad(shouldLoad: Boolean) {

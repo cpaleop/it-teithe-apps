@@ -35,5 +35,6 @@
 
     <!-- Files -->
     <string name="files_modified">Last Modified: %1$s</string>
+    <string name="files_empty">No downloaded documents</string>
     <string name="files_choose_file">Open file with</string>
 </resources>

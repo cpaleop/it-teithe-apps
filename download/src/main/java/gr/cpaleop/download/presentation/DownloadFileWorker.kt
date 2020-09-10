@@ -25,7 +25,7 @@ class DownloadFileWorker(
         setupNotification(files.size)
         try {
             files.forEachIndexed { index, fileId ->
-                delay(5000)
+                delay(1000)
                 downloadFilesUseCase(fileId)
                 downloadNotificationManager.showProgress(index + 1, files.size)
             }
