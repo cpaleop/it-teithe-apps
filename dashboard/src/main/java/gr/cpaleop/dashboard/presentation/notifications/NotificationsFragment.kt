@@ -1,6 +1,5 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
@@ -23,6 +24,8 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     private val viewModel: NotificationsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
     private var notificationAdapter: NotificationAdapter? = null
+    private var hasSearchViewAnimatedToCancel: Boolean = false
+    private var hasSearchViewAnimatedToSearch: Boolean = false
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -39,7 +42,6 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         viewModel.presentNotifications()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
         notificationAdapter = NotificationAdapter(::navigateToAnnouncement)
         binding.notificationsRecyclerView.adapter = notificationAdapter
@@ -50,13 +52,17 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         }
 
         binding.notificationsSearchTextView.run {
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
-                } else {
-                    this.animate().scaleXBy(-0.03f).scaleYBy(-0.03f).start()
-                }
-            }
+            val endDrawable = AnimatedVectorDrawableCompat.create(
+                requireContext(),
+                R.drawable.search_to_cancel
+            )
+            setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                endDrawable,
+                null
+            )
+
             setOnTouchListener(
                 OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
                     text.clear()
@@ -70,7 +76,48 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                 if (text != null) {
                     viewModel.searchNotifications(text.toString())
 
-                    val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                    var animDrawable: AnimatedVectorDrawableCompat? = null
+                    if (text.isEmpty()) {
+                        (compoundDrawables[2] as Animatable2Compat).apply {
+                            if (!hasSearchViewAnimatedToSearch) {
+                                animDrawable = AnimatedVectorDrawableCompat.create(
+                                    requireContext(),
+                                    R.drawable.cancel_to_search
+                                )
+                                setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    animDrawable,
+                                    null
+                                )
+
+                                animDrawable?.start()
+                                hasSearchViewAnimatedToCancel = false
+                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
+                            }
+                        }
+                    } else {
+                        (compoundDrawables[2] as Animatable2Compat).apply {
+                            if (!hasSearchViewAnimatedToCancel) {
+                                animDrawable = AnimatedVectorDrawableCompat.create(
+                                    requireContext(),
+                                    R.drawable.search_to_cancel
+                                )
+                                setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    animDrawable,
+                                    null
+                                )
+
+                                animDrawable?.start()
+                                hasSearchViewAnimatedToSearch = false
+                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
+                            }
+                        }
+                    }
+
+                    /*val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
                     val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
                     if (text.isEmpty()) {
                         binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
@@ -86,7 +133,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                             clearDrawable,
                             null
                         )
-                    }
+                    }*/
                 }
             }
         }

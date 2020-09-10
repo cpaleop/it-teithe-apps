@@ -29,7 +29,7 @@ class OnCompoundDrawableClickListener(
         }
 
         if (event.action == MotionEvent.ACTION_DOWN) {
-            val compoundDrawable = view.compoundDrawables[compoundDrawablePosition]
+            val compoundDrawable = view.compoundDrawables[compoundDrawablePosition] ?: return false
 
             val rightCalc = view.right - compoundDrawable.bounds.width() - view.paddingRight
             val leftCalc = view.left + compoundDrawable.bounds.width() + view.paddingLeft
@@ -50,10 +50,5 @@ class OnCompoundDrawableClickListener(
             return false
         }
         return false
-    }
-
-    interface CompoundDrawableCallback {
-
-        fun onCompoundDrawableClicked()
     }
 }

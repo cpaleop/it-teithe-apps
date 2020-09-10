@@ -1,6 +1,5 @@
 package gr.cpaleop.dashboard.presentation.files
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +9,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
@@ -30,6 +31,8 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     @Authority
     private val authority: String by inject(named<Authority>())
     private var filesAdapter: FilesAdapter? = null
+    private var hasSearchViewAnimatedToCancel: Boolean = false
+    private var hasSearchViewAnimatedToSearch: Boolean = false
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -46,7 +49,6 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         viewModel.presentDocuments()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
         filesAdapter = FilesAdapter(::openFile)
         binding.documentsRecyclerView.adapter = filesAdapter
@@ -57,13 +59,16 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         }
 
         binding.documentsSearchTextView.run {
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
-                } else {
-                    this.animate().scaleXBy(-0.03f).scaleYBy(-0.03f).start()
-                }
-            }
+            val endDrawable = AnimatedVectorDrawableCompat.create(
+                requireContext(),
+                R.drawable.search_to_cancel
+            )
+            setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                endDrawable,
+                null
+            )
 
             setOnTouchListener(
                 OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
@@ -78,7 +83,48 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                 if (text != null) {
                     viewModel.searchDocuments(text.toString())
 
-                    val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                    var animDrawable: AnimatedVectorDrawableCompat? = null
+                    if (text.isEmpty()) {
+                        (compoundDrawables[2] as Animatable2Compat).apply {
+                            if (!hasSearchViewAnimatedToSearch) {
+                                animDrawable = AnimatedVectorDrawableCompat.create(
+                                    requireContext(),
+                                    R.drawable.cancel_to_search
+                                )
+                                setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    animDrawable,
+                                    null
+                                )
+
+                                animDrawable?.start()
+                                hasSearchViewAnimatedToCancel = false
+                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
+                            }
+                        }
+                    } else {
+                        (compoundDrawables[2] as Animatable2Compat).apply {
+                            if (!hasSearchViewAnimatedToCancel) {
+                                animDrawable = AnimatedVectorDrawableCompat.create(
+                                    requireContext(),
+                                    R.drawable.search_to_cancel
+                                )
+                                setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    animDrawable,
+                                    null
+                                )
+
+                                animDrawable?.start()
+                                hasSearchViewAnimatedToSearch = false
+                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
+                            }
+                        }
+                    }
+
+                    /*val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
                     val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
                     if (text.isEmpty()) {
                         binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
@@ -94,7 +140,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                             clearDrawable,
                             null
                         )
-                    }
+                    }*/
                 }
             }
         }
