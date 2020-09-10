@@ -46,6 +46,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
             notifications.observe(viewLifecycleOwner, Observer(::updateNotifications))
+            notificationsEmpty.observe(viewLifecycleOwner, Observer(::showNotificationsEmpty))
         }
     }
 
@@ -55,6 +56,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             isVisible = false
         }
         notificationAdapter?.submitList(notifications)
+    }
+
+    private fun showNotificationsEmpty(notificationsEmpty: Boolean) {
+        binding.notificationsEmptyTextView.isVisible = notificationsEmpty
     }
 
     private fun navigateToAnnouncement(announcementId: String) {

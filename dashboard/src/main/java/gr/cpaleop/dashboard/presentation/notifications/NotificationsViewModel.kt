@@ -1,9 +1,6 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
@@ -20,6 +17,14 @@ class NotificationsViewModel(
 
     private val _notifications = MutableLiveData<List<NotificationPresentation>>()
     val notifications: LiveData<List<NotificationPresentation>> = _notifications.toSingleEvent()
+
+    val notificationsEmpty: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(_notifications) {
+                this.value = it.isEmpty()
+            }
+        }
+    }
 
     fun presentNotifications() {
         viewModelScope.launch {

@@ -7,6 +7,9 @@
     <string name="saved_files_bottom_navigation_menu_title">Saved Files</string>
     <string name="announcements_error_message">Something went wrong</string>
 
+    <!-- Notifications -->
+    <string name="notifications_empty">No available notifications</string>
+
     <!-- Profile -->
     <!-- Personal details -->
     <string name="profile_personal_details_title">Personal details</string>

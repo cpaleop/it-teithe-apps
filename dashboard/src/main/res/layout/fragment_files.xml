@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/googlesans_medium"
         android:text="@string/files_empty"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

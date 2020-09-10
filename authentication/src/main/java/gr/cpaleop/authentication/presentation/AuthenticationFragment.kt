@@ -1,14 +1,11 @@
 package gr.cpaleop.authentication.presentation
 
-import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -42,21 +39,9 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>() {
     }
 
     private fun openCustomTab(uri: Uri) {
-        val connection = object : CustomTabsServiceConnection() {
-            override fun onCustomTabsServiceConnected(
-                name: ComponentName,
-                client: CustomTabsClient
-            ) {
-                val builder = CustomTabsIntent.Builder()
-                val customTabsIntent = builder.build()
-                client.warmup(0L)
-                customTabsIntent.launchUrl(requireContext(), uri)
-            }
-
-            override fun onServiceDisconnected(p0: ComponentName?) {}
-        }
-
-        CustomTabsClient.bindCustomTabsService(requireContext(), "com.android.chrome", connection)
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(requireContext(), uri)
     }
 
     private fun navigateToDashboard() {
