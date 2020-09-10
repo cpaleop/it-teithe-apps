@@ -17,6 +17,7 @@ import gr.cpaleop.dashboard.presentation.files.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.files.FilesViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import gr.cpaleop.dashboard.presentation.options.OptionsViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -24,6 +25,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val dashboardModule = module {
+    viewModel { OptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel { FilesViewModel(get(), get()) }

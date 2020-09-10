@@ -20,6 +20,7 @@ import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
+import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -82,6 +83,10 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
+        binding.announcementsSortingTextView.setOnClickListener {
+            openOptionsDialog()
+        }
+
         binding.announcementsSwipeRefreshLayout.setOnRefreshListener {
             announcementAdapter?.refresh()
         }
@@ -134,6 +139,11 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View
         viewModel.run {
             announcements.observe(viewLifecycleOwner, Observer(::updateAnnouncements))
         }
+    }
+
+    private fun openOptionsDialog() {
+        val optionsDialogFragment = OptionsDialogFragment()
+        optionsDialogFragment.show(childFragmentManager, "BOTTOM_DIALOG")
     }
 
     private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {

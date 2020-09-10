@@ -47,20 +47,56 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/announcementsSwipeRefreshLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="14dp"
-        android:fitsSystemWindows="false"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintTop_toBottomOf="@id/annnouncementsSearchTextView">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/announcementsRecyclerView"
+        <TextView
+            android:id="@+id/announcementsSortingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/googlesans_regular"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Date published"
+            android:textColor="@color/colorOnPrimaryOpaque"
+            app:layout_constraintBottom_toTopOf="@id/announcementsSwipeRefreshLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/announcementsSortingImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/empty"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_down"
+            app:layout_constraintBottom_toBottomOf="@id/announcementsSortingTextView"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/announcementsSortingTextView"
+            app:layout_constraintTop_toTopOf="@id/announcementsSortingTextView" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/announcementsSwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_announcement" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:fitsSystemWindows="false"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintTop_toBottomOf="@id/announcementsSortingTextView">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/announcementsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_announcement" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

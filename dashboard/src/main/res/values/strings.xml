@@ -47,4 +47,10 @@
     <string name="files_empty">No downloaded documents</string>
     <string name="files_not_found">No documents found</string>
     <string name="files_choose_file">Open file with</string>
+
+    <!-- Options -->
+    <string name="option_sort_title">Sort by</string>
+    <string name="option_sort_by_date_published">Date published</string>
+    <string name="option_sort_by_category">Semester</string>
+    <string name="option_sort_by_publisher">Publisher</string>
 </resources>
