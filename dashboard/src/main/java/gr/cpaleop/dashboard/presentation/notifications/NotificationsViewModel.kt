@@ -4,7 +4,9 @@ import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class NotificationsViewModel(
@@ -16,7 +18,14 @@ class NotificationsViewModel(
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
     private val _notifications = MutableLiveData<List<NotificationPresentation>>()
-    val notifications: LiveData<List<NotificationPresentation>> = _notifications.toSingleEvent()
+
+    val notifications: MediatorLiveData<List<NotificationPresentation>> by lazy {
+        MediatorLiveData<List<NotificationPresentation>>().apply {
+            addSource(_notifications) {
+                this.value = it
+            }
+        }
+    }
 
     val notificationsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
@@ -36,6 +45,18 @@ class NotificationsViewModel(
                 Timber.e(t)
             } finally {
                 _loading.value = false
+            }
+        }
+    }
+
+    fun searchNotifications(query: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                notifications.postValue(_notifications.value?.filter {
+                    it.announcement.title.contains(query, true) ||
+                            it.announcement.category.contains(query, true) ||
+                            it.announcement.date.contains(query, true)
+                })
             }
         }
     }

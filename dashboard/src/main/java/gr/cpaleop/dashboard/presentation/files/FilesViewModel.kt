@@ -4,7 +4,9 @@ import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.GetSavedDocumentsUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class FilesViewModel(
@@ -16,7 +18,13 @@ class FilesViewModel(
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
     private val _documents = MutableLiveData<List<FileDocument>>()
-    val documents: LiveData<List<FileDocument>> = _documents.toSingleEvent()
+    val documents: MediatorLiveData<List<FileDocument>> by lazy {
+        MediatorLiveData<List<FileDocument>>().apply {
+            addSource(_documents) {
+                this.value = it
+            }
+        }
+    }
 
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
@@ -36,6 +44,16 @@ class FilesViewModel(
                 Timber.e(t)
             } finally {
                 _loading.value = false
+            }
+        }
+    }
+
+    fun searchDocuments(query: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                documents.postValue(_documents.value?.filter {
+                    it.name.contains(query, true) || it.absolutePath.contains(query, true)
+                })
             }
         }
     }

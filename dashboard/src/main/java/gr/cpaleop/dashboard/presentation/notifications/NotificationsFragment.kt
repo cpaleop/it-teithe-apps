@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -39,6 +40,28 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
         binding.notificationsSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentNotifications()
+        }
+
+        binding.notificationsSearchTextView.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                viewModel.searchNotifications(text.toString())
+
+                /*if (text.isEmpty()) {
+                    binding.notificationsSearchTextView.setCompoundDrawables(
+                        null,
+                        null,
+                        getDrawable(requireContext(), R.drawable.ic_search),
+                        null
+                    )
+                } else {
+                    binding.notificationsSearchTextView.setCompoundDrawables(
+                        null,
+                        null,
+                        getDrawable(requireContext(), R.drawable.ic_close),
+                        null
+                    )
+                }*/
+            }
         }
     }
 

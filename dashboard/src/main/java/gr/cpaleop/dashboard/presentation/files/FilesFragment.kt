@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.core.presentation.BaseFragment
@@ -45,6 +46,28 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentDocuments()
+        }
+
+        binding.documentsSearchTextView.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                viewModel.searchDocuments(text.toString())
+
+                /*if (text.isEmpty()) {
+                    binding.documentsSearchTextView.setCompoundDrawables(
+                        null,
+                        null,
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_search),
+                        null
+                    )
+                } else {
+                    binding.documentsSearchTextView.setCompoundDrawables(
+                        null,
+                        null,
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close),
+                        null
+                    )
+                }*/
+            }
         }
     }
 
