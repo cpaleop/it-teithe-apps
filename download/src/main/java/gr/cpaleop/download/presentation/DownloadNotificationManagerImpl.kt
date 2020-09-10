@@ -67,7 +67,7 @@ class DownloadNotificationManagerImpl(
 
     override fun showProgress(current: Int, total: Int) {
         val title = context.getString(R.string.download_notification_title)
-        val text = context.getString(R.string.download_notification_text)
+        val text = context.getString(R.string.download_notification_text, current, total)
         val percent = ((current.toFloat() / total.toFloat()) * 100).toInt()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -91,7 +91,7 @@ class DownloadNotificationManagerImpl(
         val text = context.getString(R.string.download_notification_success_tap_to_navigate)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.ic_done)
             .setContentTitle(title)
             .setContentText(text)
             /*.setStyle(getInboxStyle(filenames, totalSize, sizeMessage))*/
