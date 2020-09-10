@@ -7,8 +7,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="colorOnPrimary">#283E4A</color>
-    <color name="colorOnPrimaryOpaque">#99283E4A</color>
+    <color name="colorOnPrimary">#3C4043</color>
+    <color name="colorOnPrimaryOpaque">#80868B</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
