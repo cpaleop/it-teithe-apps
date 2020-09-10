@@ -70,11 +70,6 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE
                 )
-                /*Toast.makeText(
-                    applicationContext,
-                    applicationContext.getString(R.string.announcement_permission_toast_message),
-                    Toast.LENGTH_LONG
-                ).show()*/
             }
         }
     }
@@ -100,7 +95,7 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     companion object {
 
-        private const val ANNOUNCEMENT_ID = "announcementId"
+        private const val ANNOUNCEMENT_ID = "ANNOUNCEMENT_ID"
         private const val PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1227
     }
 }

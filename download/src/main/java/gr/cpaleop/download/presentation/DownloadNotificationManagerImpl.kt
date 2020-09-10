@@ -19,7 +19,6 @@ class DownloadNotificationManagerImpl(
 
     private val notificationManager = NotificationManagerCompat.from(context)
 
-    // TODO: Same as ScanNotificationManager
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val primaryChannel = NotificationChannel(
@@ -85,7 +84,7 @@ class DownloadNotificationManagerImpl(
         notificationManager.cancel(DOWNLOAD_ID)
     }
 
-    // TODO: Show downloads folder on click
+    // TODO: Show documents fragment on click
     override fun showSuccess(filesSize: Int) {
         val title = context.getString(R.string.download_notification_success_title, filesSize)
         val text = context.getString(R.string.download_notification_success_tap_to_navigate)
@@ -94,52 +93,9 @@ class DownloadNotificationManagerImpl(
             .setSmallIcon(R.drawable.ic_done)
             .setContentTitle(title)
             .setContentText(text)
-            /*.setStyle(getInboxStyle(filenames, totalSize, sizeMessage))*/
             .setAutoCancel(true)
 
         notificationManager.notify(MESSAGE_ID, builder.build())
-    }
-
-    private fun getTitle(filenames: List<String>): String {
-        return if (filenames.size == 1) {
-            filenames[0]
-        } else {
-            context.getString(R.string.download_notification_success_title, filenames.size)
-        }
-    }
-
-    private fun getInboxStyle(
-        filenames: List<String>,
-        totalSize: String,
-        sizeMessage: String
-    ): NotificationCompat.InboxStyle {
-        val inboxStyle = NotificationCompat.InboxStyle()
-            .setSummaryText(
-                context.getString(R.string.download_notification_success_summary, totalSize)
-            )
-
-        when {
-            // If it's only one item, show the size
-            filenames.size == 1 -> {
-                inboxStyle.addLine(sizeMessage)
-            }
-            // If it's 5 or less items, show them all
-            filenames.size < 6 -> {
-                filenames.forEach { inboxStyle.addLine(it) }
-            }
-            // If it's more than 5 items, show the first 4 and merge the rest in a single line
-            else -> {
-                filenames.forEachIndexed { index, s ->
-                    if (index < 4) inboxStyle.addLine(s)
-                }
-                val size = filenames.size - 4
-                inboxStyle.addLine(
-                    context.getString(R.string.download_notification_success_items, size)
-                )
-            }
-        }
-
-        return inboxStyle
     }
 
     override fun showNoSpace(filename: String) {
@@ -166,6 +122,6 @@ class DownloadNotificationManagerImpl(
         const val MESSAGE_ID = 2 // TODO: Same as ScanNotificationManager
         private const val CHANNEL_ID = "primary_channel"
         private const val CHANNEL_NAME = "Primary Channel"
-        private const val ACTION_CANCEL = "net.arx.download.download.ACTION_CANCEL"
+        const val ACTION_SHOW_DOCUMENTS = "gr.cpaleop.download.ACTION_SHOW_DOCUMENTS"
     }
 }
