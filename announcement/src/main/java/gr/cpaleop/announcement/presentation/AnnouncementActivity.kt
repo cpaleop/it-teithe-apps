@@ -95,7 +95,7 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     companion object {
 
-        private const val ANNOUNCEMENT_ID = "ANNOUNCEMENT_ID"
+        private const val ANNOUNCEMENT_ID = "announcementId"
         private const val PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1227
     }
 }

@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import gr.cpaleop.common.extensions.getMimeType
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
@@ -39,6 +40,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
         viewModel.presentDocuments()
@@ -54,32 +56,42 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
             viewModel.presentDocuments()
         }
 
-        binding.documentsSearchTextView.setOnTouchListener(
-            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                binding.documentsSearchTextView.text.clear()
-            }
-        )
-
-        binding.documentsSearchTextView.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
-                viewModel.searchDocuments(text.toString())
-
-                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                if (text.isEmpty()) {
-                    binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        searchDrawable,
-                        null
-                    )
+        binding.documentsSearchTextView.run {
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
                 } else {
-                    binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        clearDrawable,
-                        null
-                    )
+                    this.animate().scaleXBy(-0.03f).scaleYBy(-0.03f).start()
+                }
+            }
+
+            setOnTouchListener(
+                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                    binding.documentsSearchTextView.text.clear()
+                }
+            )
+
+            doOnTextChanged { text, _, _, _ ->
+                if (text != null) {
+                    viewModel.searchDocuments(text.toString())
+
+                    val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                    if (text.isEmpty()) {
+                        binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            searchDrawable,
+                            null
+                        )
+                    } else {
+                        binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            clearDrawable,
+                            null
+                        )
+                    }
                 }
             }
         }
@@ -111,7 +123,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private fun showDocuments(documents: List<FileDocument>) {
         filesAdapter?.submitList(documents) {
-            binding.documentsRecyclerView.smoothScrollToPosition(0)
+            binding.documentsRecyclerView.scrollToPosition(0)
         }
     }
 

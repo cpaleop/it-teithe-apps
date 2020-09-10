@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
@@ -36,6 +37,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.root.hideKeyboard()
         setupPagingAdapter()
         setupViews()
         observeViewModel()
@@ -67,26 +69,36 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
             }
         )
 
-        binding.annnouncementsSearchTextView.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
-                /*viewModel.searchDocuments(text.toString())*/
-
-                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                if (text.isEmpty()) {
-                    binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        searchDrawable,
-                        null
-                    )
+        binding.annnouncementsSearchTextView.run {
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
                 } else {
-                    binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        clearDrawable,
-                        null
-                    )
+                    this.animate().scaleXBy(-0.03f).scaleYBy(-0.03f).start()
+                }
+            }
+
+            doOnTextChanged { text, _, _, _ ->
+                if (text != null) {
+                    /*viewModel.searchDocuments(text.toString())*/
+
+                    val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                    if (text.isEmpty()) {
+                        binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            searchDrawable,
+                            null
+                        )
+                    } else {
+                        binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            clearDrawable,
+                            null
+                        )
+                    }
                 }
             }
         }

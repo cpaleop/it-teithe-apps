@@ -37,11 +37,12 @@
                     android:maxLines="1"
                     android:padding="12dp"
                     android:textColor="@color/colorOnPrimary"
+                    android:textColorHint="@color/colorOnPrimary"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.95" />
+                    app:layout_constraintWidth_percent="0.9" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

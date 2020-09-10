@@ -10,6 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
@@ -32,6 +33,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
         viewModel.presentNotifications()
@@ -47,32 +49,41 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             viewModel.presentNotifications()
         }
 
-        binding.notificationsSearchTextView.setOnTouchListener(
-            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                binding.notificationsSearchTextView.text.clear()
-            }
-        )
-
-        binding.notificationsSearchTextView.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
-                viewModel.searchNotifications(text.toString())
-
-                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                if (text.isEmpty()) {
-                    binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        searchDrawable,
-                        null
-                    )
+        binding.notificationsSearchTextView.run {
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
                 } else {
-                    binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        clearDrawable,
-                        null
-                    )
+                    this.animate().scaleXBy(-0.03f).scaleYBy(-0.03f).start()
+                }
+            }
+            setOnTouchListener(
+                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                    binding.notificationsSearchTextView.text.clear()
+                }
+            )
+
+            doOnTextChanged { text, _, _, _ ->
+                if (text != null) {
+                    viewModel.searchNotifications(text.toString())
+
+                    val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                    if (text.isEmpty()) {
+                        binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            searchDrawable,
+                            null
+                        )
+                    } else {
+                        binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            clearDrawable,
+                            null
+                        )
+                    }
                 }
             }
         }
@@ -92,7 +103,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
         notificationAdapter?.submitList(notifications) {
-            binding.notificationsRecyclerView.smoothScrollToPosition(0)
+            binding.notificationsRecyclerView.scrollToPosition(0)
         }
     }
 
