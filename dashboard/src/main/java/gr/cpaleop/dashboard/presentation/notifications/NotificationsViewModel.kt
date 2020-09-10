@@ -35,6 +35,14 @@ class NotificationsViewModel(
         }
     }
 
+    val notificationsFilterEmpty: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(notifications) {
+                this.value = it.isEmpty()
+            }
+        }
+    }
+
     fun presentNotifications() {
         viewModelScope.launch {
             try {

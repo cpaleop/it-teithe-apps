@@ -34,6 +34,14 @@ class FilesViewModel(
         }
     }
 
+    val documentsFilterEmpty: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(documents) {
+                this.value = it.isEmpty()
+            }
+        }
+    }
+
     fun presentDocuments() {
         viewModelScope.launch {
             try {

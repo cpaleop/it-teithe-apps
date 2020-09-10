@@ -1,9 +1,11 @@
 package gr.cpaleop.dashboard.presentation.announcements
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -12,7 +14,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
+import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,9 +55,40 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
         binding.announcementsSwipeRefreshLayout.setOnRefreshListener {
             announcementAdapter?.refresh()
+        }
+
+        binding.annnouncementsSearchTextView.setOnTouchListener(
+            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                binding.annnouncementsSearchTextView.text.clear()
+            }
+        )
+
+        binding.annnouncementsSearchTextView.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                /*viewModel.searchDocuments(text.toString())*/
+
+                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                if (text.isEmpty()) {
+                    binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        searchDrawable,
+                        null
+                    )
+                } else {
+                    binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        clearDrawable,
+                        null
+                    )
+                }
+            }
         }
     }
 

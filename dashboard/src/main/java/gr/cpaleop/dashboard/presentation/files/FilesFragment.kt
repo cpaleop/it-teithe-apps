@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation.files
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,15 +14,18 @@ import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
+import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import java.io.File
+import gr.cpaleop.teithe_apps.R as appR
 
 class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private val viewModel: FilesViewModel by viewModel()
+
     @Authority
     private val authority: String by inject(named<Authority>())
     private var filesAdapter: FilesAdapter? = null
@@ -40,33 +44,43 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         viewModel.presentDocuments()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
         filesAdapter = FilesAdapter(::openFile)
         binding.documentsRecyclerView.adapter = filesAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
+            binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
             viewModel.presentDocuments()
         }
+
+        binding.documentsSearchTextView.setOnTouchListener(
+            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                binding.documentsSearchTextView.text.clear()
+            }
+        )
 
         binding.documentsSearchTextView.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchDocuments(text.toString())
 
-                /*if (text.isEmpty()) {
-                    binding.documentsSearchTextView.setCompoundDrawables(
+                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                if (text.isEmpty()) {
+                    binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_search),
+                        searchDrawable,
                         null
                     )
                 } else {
-                    binding.documentsSearchTextView.setCompoundDrawables(
+                    binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close),
+                        clearDrawable,
                         null
                     )
-                }*/
+                }
             }
         }
     }
@@ -76,6 +90,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoad))
             documents.observe(viewLifecycleOwner, Observer(::showDocuments))
             documentsEmpty.observe(viewLifecycleOwner, Observer(::showEmptyDocuments))
+            documentsFilterEmpty.observe(viewLifecycleOwner, Observer(::showDocumentsNotFound))
         }
     }
 
@@ -95,11 +110,23 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     }
 
     private fun showDocuments(documents: List<FileDocument>) {
-        filesAdapter?.submitList(documents)
+        filesAdapter?.submitList(documents) {
+            binding.documentsRecyclerView.smoothScrollToPosition(0)
+        }
     }
 
     private fun showEmptyDocuments(documentsEmpty: Boolean) {
-        binding.documentsEmptyTextView.isVisible = documentsEmpty
+        binding.documentsEmptyTextView.run {
+            text = requireContext().getString(R.string.files_empty)
+            isVisible = documentsEmpty
+        }
+    }
+
+    private fun showDocumentsNotFound(documentsNotFound: Boolean) {
+        binding.documentsEmptyTextView.run {
+            text = requireContext().getString(R.string.files_not_found)
+            isVisible = documentsNotFound
+        }
     }
 
     private fun toggleLoad(shouldLoad: Boolean) {

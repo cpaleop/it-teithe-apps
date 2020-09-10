@@ -24,14 +24,14 @@ class NotificationAdapter(private val onClickListener: (String) -> Unit) :
                     oldItem: NotificationPresentation,
                     newItem: NotificationPresentation
                 ): Boolean {
-                    return oldItem == newItem
+                    return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
                     oldItem: NotificationPresentation,
                     newItem: NotificationPresentation
                 ): Boolean {
-                    return oldItem.id == newItem.id
+                    return oldItem == newItem
                 }
             }
     }

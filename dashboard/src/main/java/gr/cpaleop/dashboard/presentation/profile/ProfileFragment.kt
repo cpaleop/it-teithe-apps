@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -33,8 +32,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         setupViews()
         observeViewModel()
         viewModel.presentProfile()
-        binding.profilePictureShimmerLayout.startShimmer()
-        binding.profileDetailsShimmerLayout.startShimmer()
     }
 
     private fun setupViews() {
@@ -74,12 +71,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun toggleLoading(shouldLoad: Boolean) {
-        if (!shouldLoad) {
-            binding.profilePictureShimmerLayout.stopShimmer()
-            binding.profileDetailsShimmerLayout.stopShimmer()
-            binding.profilePictureShimmerLayout.isVisible = false
-            binding.profileDetailsShimmerLayout.isVisible = false
-        }
         binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }

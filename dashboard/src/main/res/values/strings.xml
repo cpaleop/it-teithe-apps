@@ -12,6 +12,7 @@
 
     <!-- Notifications -->
     <string name="notifications_empty">No available notifications</string>
+    <string name="notifications_not_found">No notifications found</string>
     <string name="notifications_search">Search notifications</string>
 
     <!-- Profile -->
@@ -44,5 +45,6 @@
     <string name="files_search">Search documents</string>
     <string name="files_modified">Last Modified: %1$s</string>
     <string name="files_empty">No downloaded documents</string>
+    <string name="files_not_found">No documents found</string>
     <string name="files_choose_file">Open file with</string>
 </resources>

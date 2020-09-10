@@ -47,9 +47,6 @@ dependencies {
     def paging_version = "3.0.0-alpha01"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
-    //Shimmer
-    implementation "com.facebook.shimmer:shimmer:0.5.0"
-
     implementation "com.afollestad.material-dialogs:core:0.9.6.0"
     implementation "com.jakewharton.timber:timber:4.7.1"
 }

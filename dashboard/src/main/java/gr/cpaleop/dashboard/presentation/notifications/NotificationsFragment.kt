@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
+import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import gr.cpaleop.teithe_apps.R as appR
 
 class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
@@ -30,37 +34,46 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        binding.notificationsShimmerLayout.startShimmer()
         viewModel.presentNotifications()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupViews() {
         notificationAdapter = NotificationAdapter(::navigateToAnnouncement)
         binding.notificationsRecyclerView.adapter = notificationAdapter
 
         binding.notificationsSwipeRefreshLayout.setOnRefreshListener {
+            binding.notificationsSearchTextView.setText(requireContext().getString(appR.string.empty))
             viewModel.presentNotifications()
         }
+
+        binding.notificationsSearchTextView.setOnTouchListener(
+            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                binding.notificationsSearchTextView.text.clear()
+            }
+        )
 
         binding.notificationsSearchTextView.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchNotifications(text.toString())
 
-                /*if (text.isEmpty()) {
-                    binding.notificationsSearchTextView.setCompoundDrawables(
+                val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
+                val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
+                if (text.isEmpty()) {
+                    binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        getDrawable(requireContext(), R.drawable.ic_search),
+                        searchDrawable,
                         null
                     )
                 } else {
-                    binding.notificationsSearchTextView.setCompoundDrawables(
+                    binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        getDrawable(requireContext(), R.drawable.ic_close),
+                        clearDrawable,
                         null
                     )
-                }*/
+                }
             }
         }
     }
@@ -70,19 +83,31 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
             notifications.observe(viewLifecycleOwner, Observer(::updateNotifications))
             notificationsEmpty.observe(viewLifecycleOwner, Observer(::showNotificationsEmpty))
+            notificationsFilterEmpty.observe(
+                viewLifecycleOwner,
+                Observer(::showNotificationsNotFound)
+            )
         }
     }
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
-        binding.notificationsShimmerLayout.apply {
-            stopShimmer()
-            isVisible = false
+        notificationAdapter?.submitList(notifications) {
+            binding.notificationsRecyclerView.smoothScrollToPosition(0)
         }
-        notificationAdapter?.submitList(notifications)
     }
 
     private fun showNotificationsEmpty(notificationsEmpty: Boolean) {
-        binding.notificationsEmptyTextView.isVisible = notificationsEmpty
+        binding.notificationsEmptyTextView.run {
+            text = requireContext().getString(R.string.notifications_empty)
+            isVisible = notificationsEmpty
+        }
+    }
+
+    private fun showNotificationsNotFound(notificationsNotFound: Boolean) {
+        binding.notificationsEmptyTextView.run {
+            text = requireContext().getString(R.string.notifications_not_found)
+            isVisible = notificationsNotFound
+        }
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
