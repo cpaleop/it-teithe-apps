@@ -59,7 +59,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             }
             setOnTouchListener(
                 OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                    binding.notificationsSearchTextView.text.clear()
+                    text.clear()
+                    clearFocus()
+                    binding.root.hideKeyboard()
+                    return@OnCompoundDrawableClickListener true
                 }
             )
 

@@ -7,7 +7,7 @@ import android.widget.TextView
 
 class OnCompoundDrawableClickListener(
     private val compoundDrawablePosition: Int,
-    private val compoundDrawableCallback: () -> Unit
+    private val compoundDrawableCallback: () -> Boolean
 ) : View.OnTouchListener {
 
     companion object {
@@ -28,7 +28,7 @@ class OnCompoundDrawableClickListener(
             throw IllegalArgumentException("Invalid drawable position. Must be from 0 to 3")
         }
 
-        if (event.action == MotionEvent.ACTION_UP) {
+        if (event.action == MotionEvent.ACTION_DOWN) {
             val compoundDrawable = view.compoundDrawables[compoundDrawablePosition]
 
             val rightCalc = view.right - compoundDrawable.bounds.width() - view.paddingRight
@@ -45,7 +45,7 @@ class OnCompoundDrawableClickListener(
             }
 
             if (compoundDrawable != null && touchedRequestedDrawable) {
-                compoundDrawableCallback()
+                return compoundDrawableCallback()
             }
             return false
         }

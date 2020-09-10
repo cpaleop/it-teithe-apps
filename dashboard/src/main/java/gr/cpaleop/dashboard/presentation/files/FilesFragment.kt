@@ -67,7 +67,10 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
             setOnTouchListener(
                 OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                    binding.documentsSearchTextView.text.clear()
+                    text.clear()
+                    clearFocus()
+                    binding.root.hideKeyboard()
+                    return@OnCompoundDrawableClickListener true
                 }
             )
 

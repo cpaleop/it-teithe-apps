@@ -1,8 +1,10 @@
 package gr.cpaleop.dashboard.presentation.announcements
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
@@ -22,7 +24,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalPagingApi
-class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
+class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View.OnTouchListener {
 
     private val viewModel: AnnouncementsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
@@ -37,11 +39,32 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.setOnTouchListener(this)
         binding.root.hideKeyboard()
         setupPagingAdapter()
         setupViews()
         observeViewModel()
         viewModel.presentAnnouncements()
+    }
+
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        v?.let { view ->
+            event?.let { ev ->
+                if (ev.action == MotionEvent.ACTION_DOWN) {
+                    val dividerRect = Rect()
+                    binding.annnouncementsSearchTextView.getGlobalVisibleRect(dividerRect)
+                    val dividerClicked = dividerRect.contains(ev.x.toInt(), ev.y.toInt())
+                    val editTextsHasFocus = binding.annnouncementsSearchTextView.isFocused
+                    if (!dividerClicked && editTextsHasFocus) {
+                        binding.root.hideKeyboard()
+                        binding.annnouncementsSearchTextView.clearFocus()
+                        return true
+                    }
+                }
+            }
+            return view.performClick()
+        }
+        return false
     }
 
     private fun setupPagingAdapter() {
@@ -63,13 +86,16 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
             announcementAdapter?.refresh()
         }
 
-        binding.annnouncementsSearchTextView.setOnTouchListener(
-            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                binding.annnouncementsSearchTextView.text.clear()
-            }
-        )
-
         binding.annnouncementsSearchTextView.run {
+            setOnTouchListener(
+                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+                    text.clear()
+                    clearFocus()
+                    binding.root.hideKeyboard()
+                    return@OnCompoundDrawableClickListener true
+                }
+            )
+
             setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     this.animate().scaleXBy(0.03f).scaleYBy(0.03f).start()
