@@ -45,4 +45,20 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
+
+    <style name="Theme.Itteitheapps.Chip.Entry" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="enforceMaterialTheme">false</item>
+        <item name="enforceTextAppearance">false</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconTint">@color/colorPrimary</item>
+        <item name="chipIconVisible">false</item>
+        <item name="android:ellipsize">middle</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fontFamily">@font/googlesans_regular</item>
+        <item name="android:textAppearance">@style/Theme.Itteitheapps.Chip.TextAppearance</item>
+    </style>
+
+    <style name="Theme.Itteitheapps.Chip.TextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:fontFamily">@font/googlesans_regular</item>
+    </style>
 </resources>

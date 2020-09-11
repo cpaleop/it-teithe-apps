@@ -10,8 +10,8 @@
         android:id="@+id/optionPill"
         android:layout_width="0dp"
         android:layout_height="5dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/shape_round_on_primary"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_round_on_primary_variant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,7 +26,7 @@
         android:text="@string/categories_filter_dialog_title"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/optionPill" />
 
     <TextView
         android:id="@+id/categoryFilterResetText"
