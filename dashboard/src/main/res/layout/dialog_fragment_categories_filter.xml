@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
+    <View
+        android:id="@+id/optionPill"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_round_on_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.065" />
+
+    <TextView
+        android:id="@+id/categoryFilterTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/googlesans_medium"
+        android:padding="18dp"
+        android:text="@string/categories_filter_dialog_title"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/categoryFilterResetText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:alpha="0"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:enabled="false"
+        android:fontFamily="@font/googlesans_medium"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="@string/categories_filter_reset"
+        android:textColor="@color/deep_sky_blue"
+        app:layout_constraintBottom_toBottomOf="@id/categoryFilterTitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/categoryFilterSubmitTextView"
+        app:layout_constraintTop_toTopOf="@id/categoryFilterTitleTextView" />
+
+    <TextView
+        android:id="@+id/categoryFilterSubmitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:fontFamily="@font/googlesans_medium"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="@string/categories_filter_submit"
+        android:textColor="@color/deep_sky_blue"
+        app:layout_constraintBottom_toBottomOf="@id/categoryFilterTitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/categoryFilterTitleTextView" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorOnPrimaryVariant"
+        app:layout_constraintTop_toBottomOf="@id/categoryFilterTitleTextView" />
+
+    <ProgressBar
+        android:id="@+id/categoryFilterProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="450dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/separator" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryFilterRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/separator"
+        tools:listitem="@layout/item_category_filter" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
 import gr.cpaleop.dashboard.domain.entities.Category
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
 
     private val viewModel: CategoriesFilterViewModel by viewModel()
     private var _binding: DialogFragmentCategoriesFilterBinding? = null
     private val binding: DialogFragmentCategoriesFilterBinding get() = _binding!!
+    private var categoryFilterAdapter: CategoryFilterAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,24 +40,47 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
+        categoryFilterAdapter = CategoryFilterAdapter(viewModel::updateCategories)
+        binding.categoryFilterRecyclerView.run {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = categoryFilterAdapter
+        }
 
+        binding.categoryFilterResetText.setOnClickListener {
+            viewModel.clearSelections()
+        }
+
+        binding.categoryFilterSubmitTextView.setOnClickListener {
+            viewModel.updateRegisteredCategories()
+        }
     }
 
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoad))
             categories.observe(viewLifecycleOwner, Observer(::showCategories))
+            resetButtonControl.observe(viewLifecycleOwner, Observer(::toggleResetButton))
         }
     }
 
     private fun showCategories(categories: List<Category>) {
-        categories.forEach {
-            Timber.e(it.name, it.isRegistered)
-        }
+        categoryFilterAdapter?.submitList(categories)
+    }
+
+    private fun toggleResetButton(shouldShow: Boolean) {
+        if (shouldShow == binding.categoryFilterResetText.isEnabled) return
+
+        val alpha = if (shouldShow) 1f else 0f
+        binding.categoryFilterResetText.animate()
+            .alpha(alpha)
+            .setDuration(300)
+            .setEndListener { binding.categoryFilterResetText.isEnabled = shouldShow }
+            .start()
     }
 
     private fun toggleLoad(shouldLoad: Boolean) {
-
+        binding.categoryFilterProgressBar.visibility =
+            if (shouldLoad) View.VISIBLE else View.INVISIBLE
     }
 
     companion object {

@@ -7,7 +7,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="colorOnPrimary">#E8EAED</color>
-    <color name="colorOnPrimaryOpaque">#9AA0A6</color>
+    <color name="colorOnPrimaryVariant">#9AA0A6</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="deep_sky_blue">#1a73e8</color> <!-- colorPrimary in Light mode-->
 </resources>

@@ -31,4 +31,22 @@
     <string name="profile_socials_github_title" translatable="false">Github</string>
     <string name="profile_socials_twitter_title" translatable="false">Twitter</string>
     <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
+
+    <!-- Files -->
+    <string name="files_search">Search documents</string>
+    <string name="files_modified">Last Modified: %1$s</string>
+    <string name="files_empty">No downloaded documents</string>
+    <string name="files_not_found">No documents found</string>
+    <string name="files_choose_file">Open file with</string>
+
+    <!-- Options -->
+    <string name="option_sort_title">Sort by</string>
+    <string name="option_sort_by_date_published">Date published</string>
+    <string name="option_sort_by_category">Semester</string>
+    <string name="option_sort_by_publisher">Publisher</string>
+
+    <!-- Categories filter -->
+    <string name="categories_filter_dialog_title">Update your filters</string>
+    <string name="categories_filter_reset">Reset</string>
+    <string name="categories_filter_submit">Submit</string>
 </resources>
