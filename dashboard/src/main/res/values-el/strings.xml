@@ -47,6 +47,6 @@
 
     <!-- Categories filter -->
     <string name="categories_filter_dialog_title">Update your filters</string>
-    <string name="categories_filter_reset">Reset</string>
+    <string name="categories_filter_clear">Clear</string>
     <string name="categories_filter_submit">Submit</string>
 </resources>
