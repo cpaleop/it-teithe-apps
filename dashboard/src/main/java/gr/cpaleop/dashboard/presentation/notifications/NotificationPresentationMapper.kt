@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
+import androidx.annotation.DrawableRes
 import gr.cpaleop.core.presentation.DateFormatter
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.teithe_apps.R
@@ -10,6 +11,7 @@ class NotificationPresentationMapper(private val dateFormatter: DateFormatter) {
 
     suspend operator fun invoke(notification: Notification): NotificationPresentation =
         withContext(Dispatchers.Default) {
+            @DrawableRes
             val backgroundDrawable =
                 if (notification.seen) R.drawable.shape_round_outline_ripple
                 else R.drawable.shape_round_outline_ripple_on_variant
