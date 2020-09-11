@@ -190,7 +190,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View
 
     private fun openOptionsDialog() {
         val optionsDialogFragment = OptionsDialogFragment()
-        optionsDialogFragment.show(childFragmentManager, "BOTTOM_DIALOG")
+        optionsDialogFragment.show(childFragmentManager, OptionsDialogFragment.OPTIONS_DIALOG_NAME)
     }
 
     private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {

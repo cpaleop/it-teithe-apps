@@ -63,7 +63,7 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="Date published"
+            android:text="@string/option_sort_by_date_published"
             android:textColor="@color/colorOnPrimaryOpaque"
             app:layout_constraintBottom_toTopOf="@id/announcementsSwipeRefreshLayout"
             app:layout_constraintStart_toStartOf="parent"

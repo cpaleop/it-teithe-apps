@@ -16,6 +16,7 @@ import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
 import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
+import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -49,6 +50,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         binding.notificationsSwipeRefreshLayout.setOnRefreshListener {
             binding.notificationsSearchTextView.setText(requireContext().getString(appR.string.empty))
             viewModel.presentNotifications()
+        }
+
+        binding.notificationsAddFilterFab.setOnClickListener {
+            openCategoriesFilterDialog()
         }
 
         binding.notificationsSearchTextView.run {
@@ -169,6 +174,14 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             text = requireContext().getString(R.string.notifications_not_found)
             isVisible = notificationsNotFound
         }
+    }
+
+    private fun openCategoriesFilterDialog() {
+        val categoriesFilterDialogFragment = CategoriesFilterDialogFragment()
+        categoriesFilterDialogFragment.show(
+            childFragmentManager,
+            CategoriesFilterDialogFragment.CATEGORIES_FILTER_DIALOG_NAME
+        )
     }
 
     private fun navigateToAnnouncement(announcementId: String) {

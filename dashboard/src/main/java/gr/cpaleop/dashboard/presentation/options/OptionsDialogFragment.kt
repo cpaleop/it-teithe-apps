@@ -49,4 +49,9 @@ class OptionsDialogFragment : BottomSheetDialogFragment() {
     private fun showSortOptions(optionList: List<SortOption>) {
         optionsAdapter?.submitList(optionList)
     }
+
+    companion object {
+
+        const val OPTIONS_DIALOG_NAME = "OPTIONS_DIALOG_NAME"
+    }
 }

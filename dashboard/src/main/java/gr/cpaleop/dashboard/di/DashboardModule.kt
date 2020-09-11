@@ -5,6 +5,7 @@ import gr.cpaleop.core.presentation.DateFormatter
 import gr.cpaleop.core.presentation.DateFormatterImpl
 import gr.cpaleop.dashboard.data.*
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
+import gr.cpaleop.dashboard.data.mappers.CategoryMapper
 import gr.cpaleop.dashboard.data.mappers.NotificationMapper
 import gr.cpaleop.dashboard.data.mappers.ProfileMapper
 import gr.cpaleop.dashboard.data.remote.NotificationsApi
@@ -17,6 +18,7 @@ import gr.cpaleop.dashboard.presentation.files.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.files.FilesViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
 import gr.cpaleop.dashboard.presentation.options.OptionsViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
@@ -25,6 +27,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val dashboardModule = module {
+    viewModel { CategoriesFilterViewModel(get()) }
     viewModel { OptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
@@ -39,11 +42,14 @@ val dashboardModule = module {
     single { NotificationMapper() }
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
+    single { CategoryMapper() }
+    single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
     single<SearchAnnouncementUseCase> { SearchAnnouncementUseCaseImpl(get()) }
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
+    single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get()) }
     single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }
     single<NotificationsRepository> { NotificationsRepositoryImpl(get(), get()) }
     single<AnnouncementsRepository> { AnnouncementsRepositoryImpl(get(), get(), get(), get()) }

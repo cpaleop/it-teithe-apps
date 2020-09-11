@@ -24,7 +24,7 @@ class AnnouncementsPagingSource(
         return try {
             val remoteAnnouncementList = announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
             if (categoryList.isEmpty()) {
-                categoryList = categoriesApi.getCategories()
+                categoryList = categoriesApi.fetchCategories()
                 appDatabase.remoteCategoryDao().insert(categoryList)
             }
 

@@ -33,7 +33,7 @@ class AnnouncementsRepositoryImpl(
             )
 
             val remoteCategory = if (localRemoteCategories.isNullOrEmpty()) {
-                categoriesApi.getCategories().firstOrNull { it.id == categoryId }
+                categoriesApi.fetchCategories().firstOrNull { it.id == categoryId }
                     ?: throw IllegalArgumentException("No category found with id $categoryId")
             } else {
                 localRemoteCategories.firstOrNull()
