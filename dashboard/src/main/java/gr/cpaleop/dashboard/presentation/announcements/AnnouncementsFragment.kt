@@ -118,6 +118,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
                     viewModel.searchAnnouncements(text.toString())
+                    announcementAdapter?.refresh()
 
                     var animDrawable: AnimatedVectorDrawableCompat? = null
                     if (text.isEmpty()) {

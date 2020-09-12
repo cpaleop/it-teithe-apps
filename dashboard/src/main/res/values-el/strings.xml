@@ -7,6 +7,14 @@
     <string name="saved_files_bottom_navigation_menu_title">Saved Files</string>
     <string name="announcements_error_message">Κάτι πήγε στραβά</string>
 
+    <!-- Announcements -->
+    <string name="announcements_search">Search announcements</string>
+
+    <!-- Notifications -->
+    <string name="notifications_empty">No available notifications</string>
+    <string name="notifications_not_found">No notifications found</string>
+    <string name="notifications_search">Search notifications</string>
+
     <!-- Profile -->
     <!-- Personal details -->
     <string name="profile_personal_details_title">Προσωπικά στοιχεία</string>
