@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
