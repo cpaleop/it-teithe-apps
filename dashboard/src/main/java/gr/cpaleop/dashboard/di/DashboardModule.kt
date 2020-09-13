@@ -14,6 +14,7 @@ import gr.cpaleop.dashboard.domain.repositories.*
 import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationMapper
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
+import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
 import gr.cpaleop.dashboard.presentation.files.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.files.FilesViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
@@ -27,6 +28,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val dashboardModule = module {
+    viewModel { CategoryFilterViewModel(get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
     viewModel { OptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get(), get()) }
@@ -43,6 +45,7 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
     single<SearchAnnouncementUseCase> { SearchAnnouncementUseCaseImpl(get()) }

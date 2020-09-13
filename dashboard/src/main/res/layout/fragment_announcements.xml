@@ -98,4 +98,17 @@
                 tools:listitem="@layout/item_announcement" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/categoryFilterFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/ic_filter"
+        app:backgroundTint="@color/colorOnPrimary"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|right|end"
+        app:tint="@color/colorAccent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
