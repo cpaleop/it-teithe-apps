@@ -1,8 +1,8 @@
 package gr.cpaleop.dashboard.presentation.files
 
 import android.content.Context
+import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Document
-import gr.cpaleop.core.presentation.DateFormatter
 import gr.cpaleop.dashboard.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

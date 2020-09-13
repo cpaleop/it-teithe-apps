@@ -1,4 +1,4 @@
-package gr.cpaleop.core.presentation
+package gr.cpaleop.core.domain
 
 interface DateFormatter {
 
@@ -6,7 +6,9 @@ interface DateFormatter {
 
     operator fun invoke(time: Long, format: String): String
 
-    fun fileFormat(time: Long, format: String): String
+    operator fun invoke(isoFormattedTimeStamp: String): Long
 
     operator fun invoke(isoFormattedTimeStamp: String, targetFormat: String): String
+
+    fun fileFormat(time: Long, format: String): String
 }

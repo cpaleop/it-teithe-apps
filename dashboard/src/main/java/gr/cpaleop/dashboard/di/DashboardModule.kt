@@ -1,8 +1,8 @@
 package gr.cpaleop.dashboard.di
 
 import gr.cpaleop.core.data.mappers.DocumentMapper
-import gr.cpaleop.core.presentation.DateFormatter
-import gr.cpaleop.core.presentation.DateFormatterImpl
+import gr.cpaleop.core.domain.DateFormatter
+import gr.cpaleop.core.domain.DateFormatterImpl
 import gr.cpaleop.dashboard.data.*
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.data.mappers.CategoryMapper
@@ -48,7 +48,7 @@ val dashboardModule = module {
     single<SearchAnnouncementUseCase> { SearchAnnouncementUseCaseImpl(get()) }
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
-    single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
+    single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get(), get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
     single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }

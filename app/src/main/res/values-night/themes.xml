@@ -59,6 +59,7 @@
     </style>
 
     <style name="Theme.Itteitheapps.Chip.TextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
     </style>
 </resources>

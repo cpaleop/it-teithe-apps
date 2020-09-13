@@ -1,4 +1,4 @@
-package gr.cpaleop.core.presentation
+package gr.cpaleop.core.domain
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,6 +57,15 @@ class DateFormatterImpl : DateFormatter {
             targetFormat,
             Locale.getDefault()
         ).format(calendar.timeInMillis)
+    }
+
+    override fun invoke(isoFormattedTimeStamp: String): Long {
+        val formatter = SimpleDateFormat(
+            FORMAT_ISO_8601,
+            Locale.getDefault()
+        )
+        val date = formatter.parse(isoFormattedTimeStamp)
+        return date?.time ?: 0L
     }
 
     override fun fileFormat(time: Long, format: String): String {

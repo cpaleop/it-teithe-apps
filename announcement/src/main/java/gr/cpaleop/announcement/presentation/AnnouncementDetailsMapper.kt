@@ -1,7 +1,7 @@
 package gr.cpaleop.announcement.presentation
 
+import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Announcement
-import gr.cpaleop.core.presentation.DateFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

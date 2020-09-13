@@ -1,7 +1,7 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
 import androidx.annotation.DrawableRes
-import gr.cpaleop.core.presentation.DateFormatter
+import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.teithe_apps.R
 import kotlinx.coroutines.Dispatchers
