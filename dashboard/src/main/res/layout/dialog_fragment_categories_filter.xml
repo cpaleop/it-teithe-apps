@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/optionPill" />
 
     <TextView
-        android:id="@+id/categoryFilterResetText"
+        android:id="@+id/categoryFilterSubmitButton"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:alpha="0"
@@ -69,7 +69,7 @@
     <ProgressBar
         android:id="@+id/categoryFilterProgressBar"
         android:layout_width="wrap_content"
-        android:layout_height="450dp"
+        android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/separator" />
@@ -77,9 +77,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryFilterRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="8dp"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator"
         tools:listitem="@layout/item_category_filter" />
 </androidx.constraintlayout.widget.ConstraintLayout>

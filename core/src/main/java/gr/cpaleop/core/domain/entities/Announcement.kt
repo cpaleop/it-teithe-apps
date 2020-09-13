@@ -9,8 +9,3 @@ data class Announcement(
     val date: String,
     val attachments: List<String>
 )
-
-data class Category(
-    val id: String,
-    val name: String
-)

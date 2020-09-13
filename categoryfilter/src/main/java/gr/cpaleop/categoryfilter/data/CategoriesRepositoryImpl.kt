@@ -6,7 +6,6 @@ import gr.cpaleop.categoryfilter.domain.repositories.CategoriesRepository
 import gr.cpaleop.core.data.remote.CategoriesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class CategoriesRepositoryImpl(private val categoriesApi: CategoriesApi, private val gson: Gson) :
     CategoriesRepository {
@@ -14,10 +13,6 @@ class CategoriesRepositoryImpl(private val categoriesApi: CategoriesApi, private
     override suspend fun getCategoryNameById(categoryId: String): String =
         withContext(Dispatchers.IO) {
             val categoryQuery = gson.toJson(RemoteCategoryFilter(categoryId))
-            val lol = categoriesApi.fetchCategoryById(categoryQuery)
-            lol.forEach {
-                Timber.v(it.id)
-            }
-            lol.firstOrNull()?.name ?: ""
+            categoriesApi.fetchCategoryById(categoryQuery).firstOrNull()?.name ?: ""
         }
 }

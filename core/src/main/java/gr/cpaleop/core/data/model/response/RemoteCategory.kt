@@ -9,6 +9,6 @@ data class RemoteCategory(
     @PrimaryKey
     @SerializedName("_id")
     val id: String,
-    val name: String?,
-    val nameEn: String?
+    val name: String? = null,
+    val nameEn: String? = null
 )

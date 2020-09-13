@@ -1,13 +1,17 @@
 package gr.cpaleop.dashboard.presentation.notifications.categories
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
@@ -37,6 +41,33 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
         setupViews()
         observeViewModel()
         viewModel.presentCategories()
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            setupRatio(it as BottomSheetDialog)
+        }
+        return dialog
+    }
+
+    private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
+        //id = com.google.android.material.R.id.design_bottom_sheet for Material Components
+        //id = android.support.design.R.id.design_bottom_sheet for support librares
+        val bottomSheet =
+            bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        val behavior = BottomSheetBehavior.from(bottomSheet ?: return)
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = getWindowHeight() * 90 / 100
+        bottomSheet.layoutParams = layoutParams
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    private fun getWindowHeight(): Int {
+        // Calculate window height for fullscreen use
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        return displayMetrics.heightPixels
     }
 
     private fun setupViews() {

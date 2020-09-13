@@ -3,12 +3,12 @@ package gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import gr.cpaleop.core.domain.entities.Category
 
-class CategoryFilterAdapter : ListAdapter<Category, CategoryFilterHolder>(CATEGORY_DIFF_UTIL) {
+class CategoryFilterAdapter(private val onClickListener: (String) -> Unit) :
+    ListAdapter<CategoryFilter, CategoryFilterHolder>(CATEGORY_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryFilterHolder {
-        return CategoryFilterHolder.create(parent)
+        return CategoryFilterHolder.create(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: CategoryFilterHolder, position: Int) {
@@ -17,13 +17,19 @@ class CategoryFilterAdapter : ListAdapter<Category, CategoryFilterHolder>(CATEGO
 
     companion object {
 
-        private val CATEGORY_DIFF_UTIL = object : DiffUtil.ItemCallback<Category>() {
+        private val CATEGORY_DIFF_UTIL = object : DiffUtil.ItemCallback<CategoryFilter>() {
 
-            override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+            override fun areItemsTheSame(
+                oldItem: CategoryFilter,
+                newItem: CategoryFilter
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+            override fun areContentsTheSame(
+                oldItem: CategoryFilter,
+                newItem: CategoryFilter
+            ): Boolean {
                 return oldItem == newItem
             }
         }
