@@ -1,9 +1,7 @@
 package gr.cpaleop.dashboard.presentation.announcements
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
@@ -25,9 +23,8 @@ import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 @ExperimentalPagingApi
-class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View.OnTouchListener {
+class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
 
     private val viewModel: AnnouncementsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
@@ -44,32 +41,11 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>(), View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.setOnTouchListener(this)
         binding.root.hideKeyboard()
         setupPagingAdapter()
         setupViews()
         observeViewModel()
         viewModel.presentAnnouncements()
-    }
-
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        v?.let { view ->
-            event?.let { ev ->
-                if (ev.action == MotionEvent.ACTION_DOWN) {
-                    val dividerRect = Rect()
-                    binding.annnouncementsSearchTextView.getGlobalVisibleRect(dividerRect)
-                    val dividerClicked = dividerRect.contains(ev.x.toInt(), ev.y.toInt())
-                    val editTextsHasFocus = binding.annnouncementsSearchTextView.isFocused
-                    if (!dividerClicked && editTextsHasFocus) {
-                        binding.root.hideKeyboard()
-                        binding.annnouncementsSearchTextView.clearFocus()
-                        return true
-                    }
-                }
-            }
-            return view.performClick()
-        }
-        return false
     }
 
     private fun setupPagingAdapter() {
