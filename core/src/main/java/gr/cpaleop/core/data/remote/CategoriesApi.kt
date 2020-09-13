@@ -2,10 +2,7 @@ package gr.cpaleop.core.data.remote
 
 import gr.cpaleop.core.data.model.response.RemoteCategory
 import gr.cpaleop.core.data.model.response.RemoteRegisteredCategory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface CategoriesApi {
 
@@ -21,4 +18,7 @@ interface CategoriesApi {
         @Field("addCat") registeredCategories: String,
         @Field("removeCat") nonRegisteredCategories: String
     )
+
+    @GET("categories")
+    suspend fun fetchCategoryById(@Query("q") categoryQuery: String): List<RemoteCategory>
 }

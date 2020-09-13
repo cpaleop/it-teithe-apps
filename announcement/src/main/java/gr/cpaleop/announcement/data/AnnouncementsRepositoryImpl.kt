@@ -17,26 +17,26 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getAnnouncementById(id: String): Announcement =
         withContext(Dispatchers.IO) {
-            val localRemoteAnnouncements = appDatabase.remoteAnnouncementsDao().getFromId(id)
-            val remoteAnnouncement = if (localRemoteAnnouncements.isNullOrEmpty()) {
+            val cachedRemoteAnnouncements = appDatabase.remoteAnnouncementsDao().getFromId(id)
+            val remoteAnnouncement = if (cachedRemoteAnnouncements.isNullOrEmpty()) {
                 announcementsApi.fetchAnnouncementById(id)
             } else {
-                localRemoteAnnouncements.firstOrNull()
+                cachedRemoteAnnouncements.firstOrNull()
                     ?: throw IllegalArgumentException("No announcement found with id $id")
             }
 
             val categoryId = remoteAnnouncement.about
 
-            val localRemoteCategories = appDatabase.remoteCategoryDao().getFromId(
+            val cachedRemoteCategory = appDatabase.remoteCategoryDao().getFromId(
                 categoryId
                     ?: throw IllegalArgumentException("No announcement found with id $id")
             )
 
-            val remoteCategory = if (localRemoteCategories.isNullOrEmpty()) {
+            val remoteCategory = try {
+                appDatabase.remoteCategoryDao().getFromId(categoryId)
+                    ?: throw IllegalArgumentException("No announcement found with id $id")
+            } catch (t: Throwable) {
                 categoriesApi.fetchCategories().firstOrNull { it.id == categoryId }
-                    ?: throw IllegalArgumentException("No category found with id $categoryId")
-            } else {
-                localRemoteCategories.firstOrNull()
                     ?: throw IllegalArgumentException("No category found with id $categoryId")
             }
             announcementMapper(remoteAnnouncement, remoteCategory)

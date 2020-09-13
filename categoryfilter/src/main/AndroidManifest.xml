@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="gr.cpaleop.categoryfilter">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_categoryfilter">
+        <dist:delivery>
+            <dist:install-time />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application android:name="gr.cpaleop.teithe_apps.AppsApplication">
+
+        <activity
+            android:name=".presentation.CategoryFilterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Itteitheapps" />
+    </application>
+</manifest>

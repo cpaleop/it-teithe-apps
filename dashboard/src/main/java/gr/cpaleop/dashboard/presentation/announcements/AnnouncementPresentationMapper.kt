@@ -10,7 +10,7 @@ class AnnouncementPresentationMapper(private val dateFormatter: DateFormatter) {
             id = announcement.id,
             title = announcement.title,
             date = dateFormatter(announcement.date, "dd MMMM yyyy HH:mm"),
-            category = announcement.category,
+            category = announcement.category.name,
             publisherName = announcement.publisherName,
             content = announcement.text
         )

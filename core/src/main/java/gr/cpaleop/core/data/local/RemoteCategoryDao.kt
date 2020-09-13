@@ -13,7 +13,7 @@ interface RemoteCategoryDao {
     suspend fun getAll(): List<RemoteCategory>
 
     @Query("SELECT * FROM remotecategory WHERE id= :id")
-    suspend fun getFromId(id: String): List<RemoteCategory>
+    suspend fun getFromId(id: String): RemoteCategory?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(remoteCategorytList: List<RemoteCategory>)

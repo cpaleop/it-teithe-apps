@@ -11,12 +11,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
-import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -8,8 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class RemoteCategory(
     @PrimaryKey
     @SerializedName("_id")
-    var id: String,
-    var name: String?,
-    var nameEn: String?/*,
-    var public: Boolean*/
+    val id: String,
+    val name: String?,
+    val nameEn: String?
 )

@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation
+package gr.cpaleop.common
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent

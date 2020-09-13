@@ -15,4 +15,7 @@ interface AnnouncementsApi {
 
     @GET("announcements/{announcementId}")
     suspend fun fetchAnnouncementById(@Path("announcementId") announcementId: String): RemoteAnnouncement
+
+    @GET("announcements/")
+    suspend fun fetchAnnouncementsByCategory(@Query("q") query: String): List<RemoteAnnouncement>
 }

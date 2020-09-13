@@ -11,11 +11,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
-import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import gr.cpaleop.teithe_apps.R as appR

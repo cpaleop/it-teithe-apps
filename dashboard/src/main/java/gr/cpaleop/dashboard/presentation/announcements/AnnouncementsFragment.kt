@@ -14,11 +14,11 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
-import gr.cpaleop.dashboard.presentation.OnCompoundDrawableClickListener
 import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
