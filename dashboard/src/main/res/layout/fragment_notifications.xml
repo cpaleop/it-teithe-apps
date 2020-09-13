@@ -88,8 +88,8 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorPrimaryVariant"
+        app:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end"
-        app:tint="@color/deep_sky_blue" />
+        app:tint="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
