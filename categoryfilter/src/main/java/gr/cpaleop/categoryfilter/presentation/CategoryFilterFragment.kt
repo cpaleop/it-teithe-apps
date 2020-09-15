@@ -154,7 +154,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
 
     private fun updateCategoryName(categoryName: String) {
         binding.categoryAnnouncementsSearchTextView.hint =
-            getString(R.string.category_filter_search_in_hint, categoryName)
+            getString(R.string.category_filter_search_hint, categoryName)
     }
 
     private fun updateAnnouncements(announcements: List<Announcement>) {
