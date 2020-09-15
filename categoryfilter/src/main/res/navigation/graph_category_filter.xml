@@ -8,5 +8,26 @@
     <fragment
         android:id="@+id/categoryFilterFragment"
         android:name="gr.cpaleop.categoryfilter.presentation.CategoryFilterFragment"
-        tools:layout="@layout/fragment_category_filter" />
+        tools:layout="@layout/fragment_category_filter">
+
+        <action
+            android:id="@+id/categoryFilterToAnnouncement"
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <activity
+        android:id="@+id/announcementActivity"
+        android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
+        android:label="AnnouncementActivity"
+        app:moduleName="announcement">
+
+        <argument
+            android:name="announcementId"
+            app:argType="string"
+            app:nullable="false" />
+    </activity>
 </navigation>

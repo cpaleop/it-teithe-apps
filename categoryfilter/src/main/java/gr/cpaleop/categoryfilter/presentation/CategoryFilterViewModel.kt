@@ -24,10 +24,19 @@ class CategoryFilterViewModel(
     val categoryName: LiveData<String> = _categoryName.toSingleEvent()
 
     private val _announcements = MutableLiveData<List<Announcement>>()
+
     val announcements: MediatorLiveData<List<Announcement>> by lazy {
         MediatorLiveData<List<Announcement>>().apply {
             addSource(_announcements) {
                 this.value = it
+            }
+        }
+    }
+
+    val announcementsEmpty: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(announcements) {
+                this.value = it.isEmpty()
             }
         }
     }

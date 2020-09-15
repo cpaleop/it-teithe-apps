@@ -28,7 +28,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:background="@drawable/shape_round_edges_primary_variant_ripple"
-                    android:drawableStart="@drawable/ic_arrow_back_round"
                     android:fontFamily="@font/googlesans_regular"
                     android:gravity="center"
                     android:imeOptions="actionGo"
@@ -68,5 +67,20 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_announcement_category" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/categoryAnnouncementsEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:text="@string/category_filter_announcements_empty"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

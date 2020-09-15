@@ -5,11 +5,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
 
-class AnnouncementsAdapter :
+class AnnouncementsAdapter(private val onClickListener: (String) -> Unit) :
     ListAdapter<Announcement, AnnouncementHolder>(ANNOUNCEMENTS_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnnouncementHolder {
-        return AnnouncementHolder.create(parent)
+        return AnnouncementHolder.create(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: AnnouncementHolder, position: Int) {

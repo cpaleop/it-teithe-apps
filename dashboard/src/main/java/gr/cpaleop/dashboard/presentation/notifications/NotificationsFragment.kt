@@ -81,7 +81,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                 if (text != null) {
                     viewModel.searchNotifications(text.toString())
 
-                    var animDrawable: AnimatedVectorDrawableCompat? = null
+                    var animDrawable: AnimatedVectorDrawableCompat?
                     if (text.isEmpty()) {
                         (compoundDrawables[2] as Animatable2Compat).apply {
                             if (!hasSearchViewAnimatedToSearch) {

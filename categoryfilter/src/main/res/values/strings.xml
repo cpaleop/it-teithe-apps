@@ -2,4 +2,5 @@
 <resources>
 
     <string name="category_filter_search_in_hint">Search in %1$s</string>
+    <string name="category_filter_announcements_empty">No announcements found</string>
 </resources>
