@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
@@ -43,12 +44,18 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
             viewModel.presentAnnouncementsByCategory()
         }
 
-        binding.categoryAnnouncementsSearchTextView.setOnTouchListener(
-            OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_LEFT) {
-                activity?.onBackPressed()
-                return@OnCompoundDrawableClickListener true
+        binding.categoryAnnouncementsSearchTextView.run {
+            setOnTouchListener(
+                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_LEFT) {
+                    activity?.onBackPressed()
+                    return@OnCompoundDrawableClickListener true
+                }
+            )
+
+            doOnTextChanged { text, _, _, _ ->
+                viewModel.filterAnnouncements(text.toString())
             }
-        )
+        }
     }
 
     private fun observeViewModel() {
@@ -65,7 +72,9 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     }
 
     private fun updateAnnouncements(announcements: List<Announcement>) {
-        announcementsAdapter?.submitList(announcements)
+        announcementsAdapter?.submitList(announcements) {
+            binding.categoryAnnouncementsRecyclerView.scrollToPosition(0)
+        }
     }
 
     private fun updateLoader(shouldLoad: Boolean) {

@@ -31,10 +31,10 @@ class AnnouncementsViewModel(
                 observeAnnouncementsUseCase()
                     .collect {
                         _announcements.value = it.filter { announcement ->
-                            announcement.publisherName.contains(searchQuery, false) ||
-                                    announcement.title.contains(searchQuery, false) ||
-                                    announcement.text.contains(searchQuery, false) ||
-                                    announcement.date.contains(searchQuery, false)
+                            announcement.publisherName.contains(searchQuery, true) ||
+                                    announcement.title.contains(searchQuery, true) ||
+                                    announcement.text.contains(searchQuery, true) ||
+                                    announcement.date.contains(searchQuery, true)
                         }.map { announcement ->
                             announcementPresentationMapper(announcement)
                         }
