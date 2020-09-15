@@ -6,20 +6,26 @@ import gr.cpaleop.categoryfilter.data.model.AnnouncementCategoryFilter
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.common.extensions.mapAsync
+import gr.cpaleop.core.data.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AnnouncementsRepositoryImpl(
     private val announcementsApi: AnnouncementsApi,
     private val announcementMapper: AnnouncementMapper,
+    private val appDatabase: AppDatabase,
     private val gson: Gson
 ) : AnnouncementsRepository {
 
-    override suspend fun getAnnouncementsByCategory(category: String): List<Announcement> =
+    override suspend fun getAnnouncementsByCategory(category: String): Flow<List<Announcement>> =
         withContext(Dispatchers.IO) {
             val filterQuery = gson.toJson(AnnouncementCategoryFilter(about = category))
-            announcementsApi.fetchAnnouncementsByCategory(filterQuery)
-                .mapAsync(announcementMapper::invoke)
+            val remoteAnnouncements = announcementsApi.fetchAnnouncementsByCategory(filterQuery)
+            appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncements)
+            appDatabase.remoteAnnouncementsDao().observeCategory(category)
+                .map { it.mapAsync(announcementMapper::invoke) }
         }
 }
