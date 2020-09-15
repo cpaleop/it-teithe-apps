@@ -17,11 +17,11 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
-import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalPagingApi
 class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
@@ -78,7 +78,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         binding.annnouncementsSearchTextView.run {
             val endDrawable = AnimatedVectorDrawableCompat.create(
                 requireContext(),
-                R.drawable.search_to_cancel
+                appR.drawable.search_to_cancel
             )
             setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -107,7 +107,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
                             if (!hasSearchViewAnimatedToSearch) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.cancel_to_search
+                                    appR.drawable.cancel_to_search
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -126,7 +126,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
                             if (!hasSearchViewAnimatedToCancel) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.search_to_cancel
+                                    appR.drawable.search_to_cancel
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -141,24 +141,6 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
                             }
                         }
                     }
-
-                    /*val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                    if (text.isEmpty()) {
-                        binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            searchDrawable,
-                            null
-                        )
-                    } else {
-                        binding.annnouncementsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            clearDrawable,
-                            null
-                        )
-                    }*/
                 }
             }
         }

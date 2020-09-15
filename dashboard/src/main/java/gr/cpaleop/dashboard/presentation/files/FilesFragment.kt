@@ -61,7 +61,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         binding.documentsSearchTextView.run {
             val endDrawable = AnimatedVectorDrawableCompat.create(
                 requireContext(),
-                R.drawable.search_to_cancel
+                appR.drawable.search_to_cancel
             )
             setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -89,7 +89,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                             if (!hasSearchViewAnimatedToSearch) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.cancel_to_search
+                                    appR.drawable.cancel_to_search
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -108,7 +108,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                             if (!hasSearchViewAnimatedToCancel) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.search_to_cancel
+                                    appR.drawable.search_to_cancel
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -123,24 +123,6 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                             }
                         }
                     }
-
-                    /*val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                    if (text.isEmpty()) {
-                        binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            searchDrawable,
-                            null
-                        )
-                    } else {
-                        binding.documentsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            clearDrawable,
-                            null
-                        )
-                    }*/
                 }
             }
         }

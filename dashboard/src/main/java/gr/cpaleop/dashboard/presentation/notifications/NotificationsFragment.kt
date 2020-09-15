@@ -59,7 +59,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         binding.notificationsSearchTextView.run {
             val endDrawable = AnimatedVectorDrawableCompat.create(
                 requireContext(),
-                R.drawable.search_to_cancel
+                appR.drawable.search_to_cancel
             )
             setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -87,7 +87,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                             if (!hasSearchViewAnimatedToSearch) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.cancel_to_search
+                                    appR.drawable.cancel_to_search
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -106,7 +106,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                             if (!hasSearchViewAnimatedToCancel) {
                                 animDrawable = AnimatedVectorDrawableCompat.create(
                                     requireContext(),
-                                    R.drawable.search_to_cancel
+                                    appR.drawable.search_to_cancel
                                 )
                                 setCompoundDrawablesWithIntrinsicBounds(
                                     null,
@@ -121,24 +121,6 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                             }
                         }
                     }
-
-                    /*val searchDrawable = requireContext().getDrawable(R.drawable.ic_search)
-                    val clearDrawable = requireContext().getDrawable(R.drawable.ic_close)
-                    if (text.isEmpty()) {
-                        binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            searchDrawable,
-                            null
-                        )
-                    } else {
-                        binding.notificationsSearchTextView.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            clearDrawable,
-                            null
-                        )
-                    }*/
                 }
             }
         }
