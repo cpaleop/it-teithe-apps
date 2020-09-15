@@ -66,5 +66,6 @@
 
     <style name="CustomBadge" parent="@style/Widget.MaterialComponents.Badge">
         <item name="backgroundColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/shape_round_primary_variant</item>
     </style>
 </resources>
