@@ -7,6 +7,4 @@ import kotlinx.coroutines.flow.Flow
 interface AnnouncementsRepository {
 
     suspend fun getAnnouncements(): Flow<PagingData<Announcement>>
-
-    suspend fun getAnnouncementsSearchResults(query: String): List<Announcement>
 }

@@ -7,6 +7,7 @@ import gr.cpaleop.core.presentation.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import gr.cpaleop.teithe_apps.R as appR
 
 class CategoryFilterActivity : BaseActivity<ActivityCategoryFilterBinding>() {
 
@@ -25,6 +26,11 @@ class CategoryFilterActivity : BaseActivity<ActivityCategoryFilterBinding>() {
     override fun onDestroy() {
         unloadKoinModules(categoryFilterModule)
         super.onDestroy()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 
     private fun handleIntent() {

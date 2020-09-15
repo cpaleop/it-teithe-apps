@@ -19,7 +19,6 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
-import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterDialog
 import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -68,7 +67,8 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         }
 
         binding.categoryFilterFab.setOnClickListener {
-            openCategoryFilterDialog()
+            /*openCategoryFilterDialog()*/
+            navigateToCategoryFilterDialog()
         }
 
         binding.announcementsSwipeRefreshLayout.setOnRefreshListener {
@@ -101,7 +101,7 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
                     viewModel.searchAnnouncements(text.toString())
                     announcementAdapter?.refresh()
 
-                    var animDrawable: AnimatedVectorDrawableCompat? = null
+                    var animDrawable: AnimatedVectorDrawableCompat?
                     if (text.isEmpty()) {
                         (compoundDrawables[2] as Animatable2Compat).apply {
                             if (!hasSearchViewAnimatedToSearch) {
@@ -175,12 +175,9 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         optionsDialogFragment.show(childFragmentManager, OptionsDialogFragment.OPTIONS_DIALOG_NAME)
     }
 
-    private fun openCategoryFilterDialog() {
-        val categoriesFilterDialogFragment = CategoryFilterDialog()
-        categoriesFilterDialogFragment.show(
-            childFragmentManager,
-            CategoryFilterDialog.CATEGORY_FILTER_DIALOG_NAME
-        )
+    private fun navigateToCategoryFilterDialog() {
+        val directions = AnnouncementsFragmentDirections.announcementsToCategoryFilterDialog()
+        navController.navigate(directions)
     }
 
     private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {

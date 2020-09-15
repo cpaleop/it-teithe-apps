@@ -32,7 +32,7 @@ val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
     viewModel { OptionsViewModel() }
-    viewModel { AnnouncementsViewModel(get(), get(), get()) }
+    viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel { FilesViewModel(get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
@@ -50,7 +50,6 @@ val dashboardModule = module {
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<SearchAnnouncementUseCase> { SearchAnnouncementUseCaseImpl(get()) }
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get(), get()) }

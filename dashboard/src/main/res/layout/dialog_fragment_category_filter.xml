@@ -29,22 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/optionPill" />
 
-    <TextView
-        android:id="@+id/categoryFilterSubmitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:alpha="0"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:enabled="false"
-        android:fontFamily="@font/googlesans_medium"
-        android:gravity="center"
-        android:padding="14dp"
-        android:text="@string/categories_filter_submit"
-        android:textColor="@color/deep_sky_blue"
-        app:layout_constraintBottom_toBottomOf="@id/categoryFilterTitleTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/categoryFilterTitleTextView" />
-
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"

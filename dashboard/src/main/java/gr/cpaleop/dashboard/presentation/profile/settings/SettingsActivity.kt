@@ -22,8 +22,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
         setupViews()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun finish() {
+        super.finish()
         overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 

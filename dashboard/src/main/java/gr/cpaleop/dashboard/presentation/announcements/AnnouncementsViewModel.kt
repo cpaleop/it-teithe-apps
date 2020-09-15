@@ -7,14 +7,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.ObserveAnnouncementsUseCase
-import gr.cpaleop.dashboard.domain.usecases.SearchAnnouncementUseCase
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AnnouncementsViewModel(
     private val observeAnnouncementsUseCase: ObserveAnnouncementsUseCase,
-    private val searchAnnouncementUseCase: SearchAnnouncementUseCase,
     private val announcementPresentationMapper: AnnouncementPresentationMapper
 ) : ViewModel() {
 

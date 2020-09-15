@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -17,9 +19,10 @@ import gr.cpaleop.dashboard.databinding.DialogFragmentCategoryFilterBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.widget.FrameLayout as FrameLayout1
 
-class CategoryFilterDialog : BottomSheetDialogFragment() {
+class CategoryFilterDialogFragment : BottomSheetDialogFragment() {
 
     private val viewModel: CategoryFilterViewModel by viewModel()
+    private val navController: NavController by lazy { findNavController() }
     private var _binding: DialogFragmentCategoryFilterBinding? = null
     private val binding: DialogFragmentCategoryFilterBinding get() = _binding!!
     private var categoryFilterAdapter: CategoryFilterAdapter? = null
@@ -70,20 +73,14 @@ class CategoryFilterDialog : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        categoryFilterAdapter = CategoryFilterAdapter(viewModel::selectCategory)
+        categoryFilterAdapter = CategoryFilterAdapter(::navigateToCategoryFilter)
         binding.categoryFilterRecyclerView.adapter = categoryFilterAdapter
-
-        binding.categoryFilterSubmitButton.setOnClickListener {
-            viewModel.computeSelectedCategories()
-        }
     }
 
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoading))
             categories.observe(viewLifecycleOwner, Observer(::updateCategories))
-            submitButtonControl.observe(viewLifecycleOwner, Observer(::updateSubmitButton))
-            selectedCategories.observe(viewLifecycleOwner, Observer(::navigateToCategoryFilter))
         }
     }
 
@@ -95,16 +92,11 @@ class CategoryFilterDialog : BottomSheetDialogFragment() {
         binding.categoryFilterProgressBar.isVisible = shouldLoad
     }
 
-    private fun updateSubmitButton(shouldShow: Boolean) {
-        binding.categoryFilterSubmitButton.isVisible = shouldShow
-    }
-
-    private fun navigateToCategoryFilter(categoryIdList: List<String>) {
-        TODO("Navigate to CategoryFilterActivity")
-    }
-
-    companion object {
-
-        const val CATEGORY_FILTER_DIALOG_NAME = "CATEGORY_FILTER_DIALOG_NAME"
+    private fun navigateToCategoryFilter(categoryId: String) {
+        val directions =
+            CategoryFilterDialogFragmentDirections.categoryFilterDialogToCategoryFilterActivity(
+                categoryId
+            )
+        navController.navigate(directions)
     }
 }

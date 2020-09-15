@@ -49,8 +49,8 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun finish() {
+        super.finish()
         overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 
