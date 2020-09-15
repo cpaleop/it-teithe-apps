@@ -1,6 +1,7 @@
 package gr.cpaleop.dashboard.presentation
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -8,11 +9,14 @@ import gr.cpaleop.core.presentation.BaseActivity
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.ActivityDashboardBinding
 import gr.cpaleop.dashboard.di.dashboardModule
+import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
+    private val notificationsViewModel: NotificationsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController(R.id.dashboardFragmentHost) }
 
     override fun inflateViewBinding(): ActivityDashboardBinding {
@@ -23,6 +27,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
         loadKoinModules(dashboardModule)
         super.onCreate(savedInstanceState)
         setupViews()
+        observeViewModel()
+        notificationsViewModel.presentNotifications()
     }
 
     override fun onDestroy() {
@@ -32,5 +38,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
     private fun setupViews() {
         binding.dashboardBottomNavigationView.setupWithNavController(navController)
+    }
+
+    private fun observeViewModel() {
+        notificationsViewModel.notificationsCounter.observe(
+            this@DashboardActivity,
+            Observer(::updateNotificationsCounterBadge)
+        )
+    }
+
+    private fun updateNotificationsCounterBadge(notificationsCounter: Int) {
+        binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).number =
+            notificationsCounter
     }
 }

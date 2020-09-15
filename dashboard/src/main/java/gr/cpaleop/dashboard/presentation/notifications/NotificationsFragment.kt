@@ -17,12 +17,12 @@ import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import gr.cpaleop.teithe_apps.R as appR
 
 class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
-    private val viewModel: NotificationsViewModel by viewModel()
+    private val viewModel: NotificationsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var notificationAdapter: NotificationAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
@@ -42,10 +42,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         observeViewModel()
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         viewModel.presentNotifications()
-    }
+    }*/
 
     private fun setupViews() {
         notificationAdapter = NotificationAdapter(::navigateToAnnouncement)
