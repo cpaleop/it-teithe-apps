@@ -9,7 +9,7 @@ class RemoteAnnouncementMapper {
         return RemoteAnnouncement(
             id = remoteBuggyAnnouncement.id,
             date = remoteBuggyAnnouncement.date,
-            title = remoteBuggyAnnouncement.date,
+            title = remoteBuggyAnnouncement.title,
             about = remoteBuggyAnnouncement.about.id,
             attachments = remoteBuggyAnnouncement.attachments,
             publisher = remoteBuggyAnnouncement.publisher,
