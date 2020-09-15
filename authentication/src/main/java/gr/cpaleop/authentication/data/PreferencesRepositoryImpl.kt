@@ -11,7 +11,7 @@ class PreferencesRepositoryImpl(private val preferencesRepository: gr.cpaleop.co
     PreferencesRepository {
 
     override suspend fun saveToken(token: Token) = withContext(Dispatchers.IO) {
-        preferencesRepository.putString(ACCESS_TOKEN, token.accessToken)
-        preferencesRepository.putString(REFRESH_TOKEN, token.refreshToken)
+        preferencesRepository.putStringAsync(ACCESS_TOKEN, token.accessToken)
+        preferencesRepository.putStringAsync(REFRESH_TOKEN, token.refreshToken)
     }
 }

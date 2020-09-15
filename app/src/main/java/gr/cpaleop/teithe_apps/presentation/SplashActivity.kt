@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         var language = preferencesRepository.getString(PreferencesRepository.LANGUAGE) ?: return
         if (language == "") {
             language = Locale.getDefault().language
-            preferencesRepository.putString(PreferencesRepository.LANGUAGE, language)
+            preferencesRepository.putStringAsync(PreferencesRepository.LANGUAGE, language)
         }
         val context = setLocale(newBase, language)
         super.attachBaseContext(context)

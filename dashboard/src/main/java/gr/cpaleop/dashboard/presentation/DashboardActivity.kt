@@ -29,12 +29,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
         super.onCreate(savedInstanceState)
         setupViews()
         observeViewModel()
-        notificationsViewModel.presentNotifications()
     }
 
     override fun onDestroy() {
         unloadKoinModules(dashboardModule)
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notificationsViewModel.presentNotifications()
     }
 
     private fun setupViews() {
@@ -50,7 +54,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
     private fun updateNotificationsCounterBadge(notificationsCounter: Int) {
         binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).run {
-            /*backgroundColor = ContextCompat.getColor(this@DashboardActivity, appR.color.colorAccent)*/
             badgeTextColor = Color.WHITE
             number = notificationsCounter
         }

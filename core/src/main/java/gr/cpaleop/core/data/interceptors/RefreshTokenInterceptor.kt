@@ -5,25 +5,23 @@ import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.ACCESS_TOKEN
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.REFRESH_TOKEN
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
-import timber.log.Timber
 
 class RefreshTokenInterceptor(
     private val preferencesRepository: PreferencesRepository,
     private val authenticationRepository: AuthenticationRepository
 ) : Interceptor {
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
         val originalResponse = chain.proceed(originalRequest)
 
         if (isTokenExpired(originalResponse)) {
-            Timber.e("SKATA TOKEN EXPIRED")
-            return runBlocking {
+            return runBlocking(Dispatchers.IO) {
                 val newToken =
                     authenticationRepository.refreshToken(
                         preferencesRepository.getString(
@@ -42,10 +40,8 @@ class RefreshTokenInterceptor(
         return response.code == 401 || response.code == 4001
     }
 
-    private fun saveToken(newToken: Token) {
-        Timber.e("SKATA NEW ACCESS TOKEN ${newToken.accessToken}")
-        Timber.e("SKATA NEW ACCESS TOKEN ${newToken.refreshToken}")
-
+    @Synchronized
+    private suspend fun saveToken(newToken: Token) {
         preferencesRepository.putString(ACCESS_TOKEN, newToken.accessToken)
         preferencesRepository.putString(REFRESH_TOKEN, newToken.refreshToken)
     }

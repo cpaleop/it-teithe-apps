@@ -33,21 +33,21 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
                 resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             when (currentNightMode) {
                 Configuration.UI_MODE_NIGHT_NO -> {
-                    preferencesRepository.putInt(
+                    preferencesRepository.putIntAsync(
                         PreferencesRepository.NIGHT_MODE,
                         AppCompatDelegate.MODE_NIGHT_YES
                     )
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }
                 Configuration.UI_MODE_NIGHT_YES -> {
-                    preferencesRepository.putInt(
+                    preferencesRepository.putIntAsync(
                         PreferencesRepository.NIGHT_MODE,
                         AppCompatDelegate.MODE_NIGHT_NO
                     )
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
                 Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                    preferencesRepository.putInt(
+                    preferencesRepository.putIntAsync(
                         PreferencesRepository.NIGHT_MODE,
                         AppCompatDelegate.MODE_NIGHT_YES
                     )

@@ -10,7 +10,7 @@ class PreferencesRepositoryImpl(private val preferencesRepository: gr.cpaleop.co
     PreferencesRepository {
 
     override suspend fun putString(key: String, value: String) {
-        preferencesRepository.putString(key, value)
+        preferencesRepository.putStringAsync(key, value)
     }
 
     override suspend fun getAccessToken(): String? = withContext(Dispatchers.IO) {

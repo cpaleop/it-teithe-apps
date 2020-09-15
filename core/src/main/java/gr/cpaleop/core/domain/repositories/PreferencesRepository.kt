@@ -2,15 +2,21 @@ package gr.cpaleop.core.domain.repositories
 
 interface PreferencesRepository {
 
-    fun putString(key: String?, value: String?)
+    fun putStringAsync(key: String?, value: String?)
+
+    suspend fun putString(key: String?, value: String?)
 
     fun getString(key: String?): String?
 
-    fun putBoolean(key: String?, value: Boolean)
+    fun putBooleanAsync(key: String?, value: Boolean)
+
+    suspend fun putBoolean(key: String?, value: Boolean)
 
     fun getBoolean(key: String?): Boolean
 
-    fun putInt(key: String?, value: Int)
+    fun putIntAsync(key: String?, value: Int)
+
+    suspend fun putInt(key: String?, value: Int)
 
     fun getInt(key: String?): Int
 

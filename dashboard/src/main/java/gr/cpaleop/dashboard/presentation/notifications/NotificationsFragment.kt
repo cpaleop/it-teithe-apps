@@ -42,11 +42,6 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         observeViewModel()
     }
 
-    /*override fun onResume() {
-        super.onResume()
-        viewModel.presentNotifications()
-    }*/
-
     private fun setupViews() {
         notificationAdapter = NotificationAdapter(::navigateToAnnouncement)
         binding.notificationsRecyclerView.adapter = notificationAdapter
