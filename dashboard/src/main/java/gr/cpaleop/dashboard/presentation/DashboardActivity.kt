@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -48,7 +49,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun updateNotificationsCounterBadge(notificationsCounter: Int) {
-        binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).number =
-            notificationsCounter
+        binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).run {
+            /*backgroundColor = ContextCompat.getColor(this@DashboardActivity, appR.color.colorAccent)*/
+            badgeTextColor = Color.WHITE
+            number = notificationsCounter
+        }
     }
 }

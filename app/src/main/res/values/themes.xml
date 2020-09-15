@@ -15,6 +15,7 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
+        <item name="badgeStyle">@style/CustomBadge</item>
     </style>
 
     <style name="Theme.FilterStyle" parent="Theme.Itteitheapps">
@@ -61,5 +62,9 @@
     <style name="Theme.Itteitheapps.Chip.TextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
+    </style>
+
+    <style name="CustomBadge" parent="@style/Widget.MaterialComponents.Badge">
+        <item name="backgroundColor">@color/colorAccent</item>
     </style>
 </resources>

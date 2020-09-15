@@ -78,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,8 +89,8 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorOnPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end"
-        app:tint="@color/colorAccent" />
+        app:tint="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

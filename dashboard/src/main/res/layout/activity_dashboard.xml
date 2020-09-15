@@ -16,10 +16,13 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dashboardBottomNavigationView"
+        style="@style/CustomBadge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryVariant"
-        app:itemIconTint="@color/colorOnPrimary"
+        app:itemIconTint="@color/selector_bottom_nav_icon"
+        app:itemTextAppearanceActive="@font/googlesans_regular"
+        app:itemTextAppearanceInactive="@font/googlesans_regular"
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
