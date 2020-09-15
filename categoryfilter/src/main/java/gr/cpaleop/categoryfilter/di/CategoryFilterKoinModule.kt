@@ -21,5 +21,5 @@ val categoryFilterModule = module {
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl() }
     single { AnnouncementMapper() }
     single<AnnouncementsRepository> { AnnouncementsRepositoryImpl(get(), get(), get(), get()) }
-    single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get()) }
+    single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get()) }
 }
