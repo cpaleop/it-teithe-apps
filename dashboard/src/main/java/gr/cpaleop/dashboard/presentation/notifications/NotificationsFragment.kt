@@ -40,6 +40,10 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentNotifications()
     }
 

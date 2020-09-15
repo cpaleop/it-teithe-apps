@@ -19,9 +19,13 @@ import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.common.CompoundDrawableTouchListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import gr.cpaleop.teithe_apps.R as appR
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
 
     private val viewModel: CategoryFilterViewModel by sharedViewModel()
@@ -42,6 +46,10 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentCategoryName()
         viewModel.presentAnnouncementsByCategory()
     }

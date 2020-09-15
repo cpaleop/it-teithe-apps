@@ -26,11 +26,7 @@ class AnnouncementsRepositoryImpl(
             }
 
             val categoryId = remoteAnnouncement.about
-
-            val cachedRemoteCategory = appDatabase.remoteCategoryDao().getFromId(
-                categoryId
-                    ?: throw IllegalArgumentException("No announcement found with id $id")
-            )
+                ?: throw IllegalArgumentException("Announcement category was null")
 
             val remoteCategory = try {
                 appDatabase.remoteCategoryDao().getFromId(categoryId)

@@ -1,10 +1,6 @@
 package gr.cpaleop.announcement.presentation
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.announcement.databinding.ActivityAnnouncementBinding
@@ -31,6 +27,10 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         handleIntent()
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentAnnouncement(announcementId)
     }
 
@@ -39,23 +39,13 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         super.onDestroy()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            viewModel.downloadAttachments()
-        }
-    }
-
     override fun finish() {
         super.finish()
         overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
     }
 
     private fun handleIntent() {
-        announcementId = intent.getStringExtra(ANNOUNCEMENT_ID) ?: ""
+        announcementId = intent.getStringExtra(ARG_ANNOUNCEMENT_ID) ?: ""
     }
 
     private fun setupViews() {
@@ -64,32 +54,26 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         }
 
         binding.announcementDownloadAttachmentButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                viewModel.downloadAttachments()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE
-                )
-            }
+            viewModel.downloadAttachments()
         }
     }
 
     private fun observeViewModel() {
-        viewModel.announcement.observe(this, Observer(::showAnnouncement))
-        viewModel.attachmentFileId.observe(this, Observer(::initiateDownload))
+        viewModel.run {
+            val lifecycleOwner = this@AnnouncementActivity
+            announcement.observe(lifecycleOwner, Observer(::updateAnnouncement))
+            attachmentFileId.observe(lifecycleOwner, Observer(::initiateDownload))
+        }
     }
 
-    private fun showAnnouncement(announcement: AnnouncementDetails) {
+    private fun updateAnnouncement(announcement: AnnouncementDetails) {
         binding.announcementTitle.text = announcement.title
         binding.announcementDate.text = announcement.date
         binding.announcementPublisher.text = announcement.publisherName
-        binding.announcementCategory.text = announcement.category
+        binding.announcementCategory.run {
+            text = announcement.category
+            isVisible = announcement.category.isNotEmpty()
+        }
         binding.announcementContent.text = announcement.text
         binding.announcementDownloadAttachmentButton.isVisible =
             announcement.attachments.isNotEmpty()
@@ -101,7 +85,6 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     companion object {
 
-        private const val ANNOUNCEMENT_ID = "announcementId"
-        private const val PERMISSION_WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1227
+        private const val ARG_ANNOUNCEMENT_ID = "announcementId"
     }
 }

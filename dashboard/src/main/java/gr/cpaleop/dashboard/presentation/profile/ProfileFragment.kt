@@ -31,6 +31,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentProfile()
     }
 

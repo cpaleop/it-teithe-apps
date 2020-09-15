@@ -46,6 +46,10 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentDocuments()
     }
 
