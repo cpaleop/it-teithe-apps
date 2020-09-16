@@ -20,6 +20,7 @@ class FileDocumentMapper(
             val type = when {
                 document.type.contains("pdf") -> R.drawable.ic_pdf
                 document.type.contains("image") -> R.drawable.ic_image
+                document.type.contains("folder") -> R.drawable.ic_folder
                 else -> R.drawable.ic_document
             }
 
