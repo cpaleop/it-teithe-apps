@@ -1,8 +1,6 @@
 package gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog
 
-import android.app.Dialog
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +8,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoryFilterBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.widget.FrameLayout as FrameLayout1
+
 
 class CategoryFilterDialogFragment : BottomSheetDialogFragment() {
 
@@ -36,33 +32,6 @@ class CategoryFilterDialogFragment : BottomSheetDialogFragment() {
         _binding =
             DialogFragmentCategoryFilterBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
         return binding.root
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setOnShowListener {
-            setupRatio(it as BottomSheetDialog)
-        }
-        return dialog
-    }
-
-    private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
-        //id = com.google.android.material.R.id.design_bottom_sheet for Material Components
-        //id = android.support.design.R.id.design_bottom_sheet for support librares
-        val bottomSheet =
-            bottomSheetDialog.findViewById<FrameLayout1>(com.google.android.material.R.id.design_bottom_sheet)
-        val behavior = BottomSheetBehavior.from(bottomSheet ?: return)
-        val layoutParams = bottomSheet.layoutParams
-        layoutParams.height = getWindowHeight() * 90 / 100
-        bottomSheet.layoutParams = layoutParams
-        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    private fun getWindowHeight(): Int {
-        // Calculate window height for fullscreen use
-        val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        return displayMetrics.heightPixels
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

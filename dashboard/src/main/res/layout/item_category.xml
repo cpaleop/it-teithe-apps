@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,10 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_round_ripple_dialog_item"
-        android:fontFamily="@font/googlesans_regular"
+        android:fontFamily="@font/googlesans_medium"
         android:padding="14dp"
         android:textColor="@color/selector_textcolor_filter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="6o Εξαμηνο" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
