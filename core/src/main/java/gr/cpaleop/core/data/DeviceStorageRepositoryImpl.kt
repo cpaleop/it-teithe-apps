@@ -15,8 +15,7 @@ import java.io.File
 class DeviceStorageRepositoryImpl(
     @DownloadFolder private val folder: File,
     private val documentMapper: DocumentMapper
-) :
-    DeviceStorageRepository {
+) : DeviceStorageRepository {
 
     override suspend fun saveFile(fileName: String, fileData: ByteArray) =
         withContext(Dispatchers.IO) {
