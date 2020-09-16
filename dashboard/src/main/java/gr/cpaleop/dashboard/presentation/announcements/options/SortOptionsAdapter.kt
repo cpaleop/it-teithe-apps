@@ -1,17 +1,17 @@
-package gr.cpaleop.dashboard.presentation.options
+package gr.cpaleop.dashboard.presentation.announcements.options
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import gr.cpaleop.dashboard.presentation.options.sort.SortOption
+import gr.cpaleop.dashboard.presentation.announcements.options.sort.SortOption
 
-class OptionsAdapter : ListAdapter<SortOption, OptionsHolder>(OPTIONS_DIFF_UTIL) {
+class SortOptionsAdapter : ListAdapter<SortOption, SortOptionsHolder>(OPTIONS_DIFF_UTIL) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionsHolder {
-        return OptionsHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SortOptionsHolder {
+        return SortOptionsHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: OptionsHolder, position: Int) {
+    override fun onBindViewHolder(holder: SortOptionsHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

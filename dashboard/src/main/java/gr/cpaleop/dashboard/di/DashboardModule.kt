@@ -16,12 +16,12 @@ import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationM
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
+import gr.cpaleop.dashboard.presentation.announcements.options.SortOptionsViewModel
 import gr.cpaleop.dashboard.presentation.files.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.files.FilesViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
-import gr.cpaleop.dashboard.presentation.options.OptionsViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -31,7 +31,7 @@ import retrofit2.Retrofit
 val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
-    viewModel { OptionsViewModel() }
+    viewModel { SortOptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel { FilesViewModel(get(), get(), get()) }

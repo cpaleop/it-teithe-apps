@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="@font/googlesans_regular"
+        android:fontFamily="@font/googlesans_medium"
         android:maxLines="1"
         android:padding="14dp"
         app:layout_constraintEnd_toEndOf="parent"

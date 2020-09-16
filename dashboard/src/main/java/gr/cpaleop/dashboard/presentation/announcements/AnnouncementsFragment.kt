@@ -18,7 +18,7 @@ import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
-import gr.cpaleop.dashboard.presentation.options.SortOptionsDialogFragment
+import gr.cpaleop.dashboard.presentation.announcements.options.SortOptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import gr.cpaleop.teithe_apps.R as appR

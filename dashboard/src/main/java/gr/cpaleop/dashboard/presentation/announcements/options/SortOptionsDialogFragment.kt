@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.options
+package gr.cpaleop.dashboard.presentation.announcements.options
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,16 +9,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentSortOptionsBinding
-import gr.cpaleop.dashboard.presentation.options.sort.SortOption
+import gr.cpaleop.dashboard.presentation.announcements.options.sort.SortOption
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SortOptionsDialogFragment : BottomSheetDialogFragment() {
 
-    private val viewModel: OptionsViewModel by viewModel()
+    private val viewModel: SortOptionsViewModel by viewModel()
     private var _binding: DialogFragmentSortOptionsBinding? = null
     private val binding: DialogFragmentSortOptionsBinding get() = _binding!!
 
-    private var optionsAdapter: OptionsAdapter? = null
+    private var sortOptionsAdapter: SortOptionsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +38,8 @@ class SortOptionsDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        optionsAdapter = OptionsAdapter()
-        binding.sortOptionsRecyclerView.adapter = optionsAdapter
+        sortOptionsAdapter = SortOptionsAdapter()
+        binding.sortOptionsRecyclerView.adapter = sortOptionsAdapter
     }
 
     private fun observeViewModel() {
@@ -47,7 +47,7 @@ class SortOptionsDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun showSortOptions(optionList: List<SortOption>) {
-        optionsAdapter?.submitList(optionList)
+        sortOptionsAdapter?.submitList(optionList)
     }
 
     companion object {

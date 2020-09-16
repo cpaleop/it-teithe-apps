@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.options.sort
+package gr.cpaleop.dashboard.presentation.announcements.options.sort
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
