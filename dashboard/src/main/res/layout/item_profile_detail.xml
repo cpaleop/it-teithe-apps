@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@drawable/shape_round_outline_ripple"
     android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/profileEditImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/empty"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.1"
+        app:srcCompat="@drawable/ic_more" />
 
     <TextView
         android:id="@+id/profileDetailTitle"
@@ -13,7 +27,7 @@
         android:fontFamily="@font/googlesans_regular"
         android:gravity="start"
         android:padding="8dp"
-        android:textColor="@color/colorOnPrimary"
+        android:textColor="?attr/colorControlNormal"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +38,8 @@
         android:id="@+id/profileDetailContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/googlesans_bold"
+        android:autoLink="web"
+        android:fontFamily="@font/googlesans_medium"
         android:gravity="start"
         android:padding="8dp"
         android:textColor="@color/colorOnPrimary"

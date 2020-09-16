@@ -2,8 +2,12 @@ package gr.cpaleop.dashboard.presentation.profile
 
 data class ProfilePresentation(
     val profilePhotoUrl: String,
-    val personalDetails: List<ProfilePresentationDetails>,
-    val academicDetails: List<ProfilePresentationDetails>,
+    val am: String,
+    val email: String,
+    val username: String,
+    val displayName: String,
+    val semester: String,
+    val registeredYear: String,
     val social: List<ProfilePresentationDetails>
 )
 

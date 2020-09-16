@@ -1,6 +1,7 @@
 package gr.cpaleop.dashboard.domain.entities
 
 data class Profile(
+    val email: String,
     val personalDetails: ProfilePersonalDetails,
     val academicDetails: ProfileAcademicDetails,
     val socialMedia: SocialMedia

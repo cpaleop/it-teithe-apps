@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import gr.cpaleop.core.presentation.BaseFragment
@@ -41,7 +41,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private fun setupViews() {
         profileAdapter = ProfileAdapter()
         binding.profileRecyclerView.run {
-            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = profileAdapter
         }
 
@@ -57,24 +57,32 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun observeViewModel() {
         viewModel.run {
-            loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
-            profilePictureUrl.observe(viewLifecycleOwner, Observer(::updateProfilePicture))
-            profileDetails.observe(viewLifecycleOwner, Observer(::updateProfileDetails))
+            loading.observe(viewLifecycleOwner, Observer(::updateLoader))
+            profile.observe(viewLifecycleOwner, Observer(::updateProfileDetails))
         }
     }
 
-    private fun updateProfilePicture(pictureUrl: String) {
-        binding.profilePictureImageView.load(pictureUrl) {
+    private fun updateProfileDetails(profilePresentation: ProfilePresentation) {
+        binding.profilePictureImageView.load(profilePresentation.profilePhotoUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
+        binding.profileAmTextView.visibility = View.VISIBLE
+        binding.profileEmailTextView.visibility = View.VISIBLE
+        binding.profileUsernameTextView.visibility = View.VISIBLE
+        binding.profileSemesterTextView.visibility = View.VISIBLE
+        binding.profileRegisteredYearTextView.visibility = View.VISIBLE
+
+        binding.profileAmValueTextView.text = profilePresentation.am
+        binding.profileEmailValueTextView.text = profilePresentation.email
+        binding.profileUsernameValueTextView.text = profilePresentation.username
+        binding.profileDisplayNameTextView.text = profilePresentation.displayName
+        binding.profileSemesterValueTextView.text = profilePresentation.semester
+        binding.profileRegisteredYearValueTextView.text = profilePresentation.registeredYear
+        profileAdapter?.submitList(profilePresentation.social)
     }
 
-    private fun updateProfileDetails(profileDetails: MutableList<ProfilePresentationDetails>) {
-        profileAdapter?.submitList(profileDetails)
-    }
-
-    private fun toggleLoading(shouldLoad: Boolean) {
+    private fun updateLoader(shouldLoad: Boolean) {
         binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }

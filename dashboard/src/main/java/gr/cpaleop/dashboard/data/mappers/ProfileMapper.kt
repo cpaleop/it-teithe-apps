@@ -60,6 +60,7 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
         )
 
         return Profile(
+            email = remoteProfile.mail ?: remoteProfile.secondarymail ?: "",
             personalDetails = personalDetails,
             academicDetails = academidDetails,
             socialMedia = SocialMedia(
