@@ -40,7 +40,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="@string/categories_filter_clear"
-        android:textColor="@color/deep_sky_blue"
+        android:textColor="@color/colorAccentContrast"
         app:layout_constraintBottom_toBottomOf="@id/categoryFilterTitleTextView"
         app:layout_constraintEnd_toStartOf="@id/categoryFilterSubmitTextView"
         app:layout_constraintTop_toTopOf="@id/categoryFilterTitleTextView" />
@@ -54,7 +54,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="@string/categories_filter_submit"
-        android:textColor="@color/deep_sky_blue"
+        android:textColor="@color/colorAccentContrast"
         app:layout_constraintBottom_toBottomOf="@id/categoryFilterTitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/categoryFilterTitleTextView" />
