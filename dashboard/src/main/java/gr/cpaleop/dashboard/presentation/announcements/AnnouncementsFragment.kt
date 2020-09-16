@@ -18,7 +18,7 @@ import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
-import gr.cpaleop.dashboard.presentation.options.OptionsDialogFragment
+import gr.cpaleop.dashboard.presentation.options.SortOptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import gr.cpaleop.teithe_apps.R as appR
@@ -153,8 +153,11 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     }
 
     private fun openOptionsDialog() {
-        val optionsDialogFragment = OptionsDialogFragment()
-        optionsDialogFragment.show(childFragmentManager, OptionsDialogFragment.OPTIONS_DIALOG_NAME)
+        val optionsDialogFragment = SortOptionsDialogFragment()
+        optionsDialogFragment.show(
+            childFragmentManager,
+            SortOptionsDialogFragment.OPTIONS_DIALOG_NAME
+        )
     }
 
     private fun navigateToCategoryFilterDialog() {

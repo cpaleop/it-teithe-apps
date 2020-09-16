@@ -8,15 +8,15 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.dashboard.R
-import gr.cpaleop.dashboard.databinding.DialogFragmentOptionsBinding
+import gr.cpaleop.dashboard.databinding.DialogFragmentSortOptionsBinding
 import gr.cpaleop.dashboard.presentation.options.sort.SortOption
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OptionsDialogFragment : BottomSheetDialogFragment() {
+class SortOptionsDialogFragment : BottomSheetDialogFragment() {
 
     private val viewModel: OptionsViewModel by viewModel()
-    private var _binding: DialogFragmentOptionsBinding? = null
-    private val binding: DialogFragmentOptionsBinding get() = _binding!!
+    private var _binding: DialogFragmentSortOptionsBinding? = null
+    private val binding: DialogFragmentSortOptionsBinding get() = _binding!!
 
     private var optionsAdapter: OptionsAdapter? = null
 
@@ -25,8 +25,8 @@ class OptionsDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.dialog_fragment_options, container, false)
-        _binding = DialogFragmentOptionsBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
+        val view = inflater.inflate(R.layout.dialog_fragment_sort_options, container, false)
+        _binding = DialogFragmentSortOptionsBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
         return binding.root
     }
 
@@ -39,7 +39,7 @@ class OptionsDialogFragment : BottomSheetDialogFragment() {
 
     private fun setupViews() {
         optionsAdapter = OptionsAdapter()
-        binding.fileOptionsRecyclerView.adapter = optionsAdapter
+        binding.sortOptionsRecyclerView.adapter = optionsAdapter
     }
 
     private fun observeViewModel() {
