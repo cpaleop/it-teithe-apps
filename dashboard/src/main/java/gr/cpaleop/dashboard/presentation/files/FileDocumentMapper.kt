@@ -21,6 +21,7 @@ class FileDocumentMapper(
                 document.type.contains("pdf") -> R.drawable.ic_pdf
                 document.type.contains("image") -> R.drawable.ic_image
                 document.type.contains("folder") -> R.drawable.ic_folder
+                document.type.contains("docx") -> R.drawable.ic_docx
                 else -> R.drawable.ic_document
             }
 

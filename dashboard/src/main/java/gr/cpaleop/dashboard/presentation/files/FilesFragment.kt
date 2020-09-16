@@ -36,6 +36,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     private var filesAdapter: FilesAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
+    private var submitListCallbackAction: () -> Unit = {}
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -89,6 +90,11 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
                     viewModel.searchDocuments(text.toString())
+                    submitListCallbackAction = if (text.isNotEmpty()) {
+                        { binding.documentsRecyclerView.smoothScrollToPosition(0) }
+                    } else {
+                        {}
+                    }
 
                     var animDrawable: AnimatedVectorDrawableCompat? = null
                     if (text.isEmpty()) {
@@ -130,6 +136,8 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                             }
                         }
                     }
+                } else {
+                    submitListCallbackAction = {}
                 }
             }
         }
@@ -169,7 +177,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private fun updateDocuments(documents: List<FileDocument>) {
         filesAdapter?.submitList(documents) {
-            binding.documentsRecyclerView.scrollToPosition(0)
+            submitListCallbackAction()
         }
     }
 

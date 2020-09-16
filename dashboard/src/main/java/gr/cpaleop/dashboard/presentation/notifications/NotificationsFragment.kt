@@ -27,6 +27,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     private var notificationAdapter: NotificationAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
+    private var submitListCallbackAction: () -> Unit = {}
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -79,6 +80,11 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
                     viewModel.searchNotifications(text.toString())
+                    submitListCallbackAction = if (text.isNotEmpty()) {
+                        { binding.notificationsRecyclerView.smoothScrollToPosition(0) }
+                    } else {
+                        {}
+                    }
 
                     var animDrawable: AnimatedVectorDrawableCompat?
                     if (text.isEmpty()) {
@@ -120,6 +126,8 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
                             }
                         }
                     }
+                } else {
+                    submitListCallbackAction = {}
                 }
             }
         }
@@ -139,7 +147,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
         notificationAdapter?.submitList(notifications) {
-            binding.notificationsRecyclerView.scrollToPosition(0)
+            submitListCallbackAction()
         }
     }
 

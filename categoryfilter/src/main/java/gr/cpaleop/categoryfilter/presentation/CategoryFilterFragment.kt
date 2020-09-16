@@ -34,6 +34,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
     private var startDrawable: Drawable? = null
+    private var submitListCallbackAction: () -> Unit = {}
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -97,6 +98,11 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
                     viewModel.filterAnnouncements(text.toString())
+                    submitListCallbackAction = if (text.isNotEmpty()) {
+                        { binding.categoryAnnouncementsRecyclerView.smoothScrollToPosition(0) }
+                    } else {
+                        {}
+                    }
 
                     var animDrawable: AnimatedVectorDrawableCompat?
                     if (text.isEmpty()) {
@@ -138,6 +144,8 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
                             }
                         }
                     }
+                } else {
+                    submitListCallbackAction = {}
                 }
             }
         }
@@ -159,7 +167,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
 
     private fun updateAnnouncements(announcements: List<Announcement>) {
         announcementsAdapter?.submitList(announcements) {
-            binding.categoryAnnouncementsRecyclerView.scrollToPosition(0)
+            submitListCallbackAction()
         }
     }
 
