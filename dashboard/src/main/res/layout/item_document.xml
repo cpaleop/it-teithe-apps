@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/shape_round_outline_ripple">
+    android:background="@drawable/shape_round_outline_ripple"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/documentPreview"
@@ -18,7 +20,7 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.17"
+        app:layout_constraintWidth_percent="0.15"
         tools:src="@drawable/ic_pdf" />
 
     <TextView
@@ -27,14 +29,13 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_medium"
-        android:maxLines="1"
+        android:maxLines="2"
         android:padding="4dp"
         android:textColor="@color/colorOnPrimary"
-        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/documentLastModifiedTextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/documentMoreImageView"
         app:layout_constraintStart_toEndOf="@id/documentPreview"
-        app:layout_constraintTop_toTopOf="@id/documentPreview"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="ANAKOINWSH LMAOANAKOINWSH LMAOANAKOINWSH LMAOANAKOINWSH LMAO" />
 
     <TextView
@@ -44,9 +45,23 @@
         android:fontFamily="@font/googlesans_regular"
         android:padding="4dp"
         android:textColor="@color/colorOnPrimaryVariant"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/documentPreview"
         app:layout_constraintTop_toBottomOf="@id/documentTitleTextView"
         tools:text="Modified: 20-02-2020" />
+
+    <ImageView
+        android:id="@+id/documentMoreImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/empty"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.1"
+        app:srcCompat="@drawable/ic_more" />
 </androidx.constraintlayout.widget.ConstraintLayout>

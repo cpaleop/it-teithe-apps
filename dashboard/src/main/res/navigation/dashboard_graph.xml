@@ -21,11 +21,7 @@
 
         <action
             android:id="@+id/announcementsToCategoryFilterDialog"
-            app:destination="@id/categoryFilterDialog"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:destination="@id/categoryFilterDialog" />
 
         <action
             android:id="@+id/announcementsToCategoryFilter"
@@ -35,12 +31,6 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
-
-    <fragment
-        android:id="@+id/filesFragment"
-        android:name="gr.cpaleop.dashboard.presentation.files.FilesFragment"
-        android:label="CatalogFragment"
-        tools:layout="@layout/fragment_files" />
 
     <fragment
         android:id="@+id/notificationsFragment"
@@ -55,6 +45,17 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="gr.cpaleop.dashboard.presentation.files.FilesFragment"
+        android:label="CatalogFragment"
+        tools:layout="@layout/fragment_files">
+
+        <action
+            android:id="@+id/filesToFileOptionsDialog"
+            app:destination="@id/fileOptionsDialog" />
     </fragment>
 
     <fragment
@@ -86,6 +87,12 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </dialog>
+
+    <dialog
+        android:id="@+id/fileOptionsDialog"
+        android:name="gr.cpaleop.dashboard.presentation.files.options.FileOptionsDialogFragment"
+        android:label="FileOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_file_options" />
 
     <activity
         android:id="@+id/announcementActivity"

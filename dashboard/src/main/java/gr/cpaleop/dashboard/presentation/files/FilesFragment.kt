@@ -9,6 +9,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.OnCompoundDrawableClickListener
@@ -27,6 +29,7 @@ import gr.cpaleop.teithe_apps.R as appR
 class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private val viewModel: FilesViewModel by viewModel()
+    private val navController: NavController by lazy { findNavController() }
 
     @Authority
     private val authority: String by inject(named<Authority>())
@@ -54,7 +57,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     }
 
     private fun setupViews() {
-        filesAdapter = FilesAdapter(::openFile)
+        filesAdapter = FilesAdapter(::openFile, ::navigateToFileOptionsDialog)
         binding.documentsRecyclerView.adapter = filesAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
@@ -134,10 +137,13 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     private fun observeViewModel() {
         viewModel.run {
-            loading.observe(viewLifecycleOwner, Observer(::toggleLoad))
-            documents.observe(viewLifecycleOwner, Observer(::showDocuments))
-            documentsEmpty.observe(viewLifecycleOwner, Observer(::showEmptyDocuments))
-            documentsFilterEmpty.observe(viewLifecycleOwner, Observer(::showDocumentsNotFound))
+            loading.observe(viewLifecycleOwner, Observer(::updateLoader))
+            documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
+            documentsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyDocumentsView))
+            documentsFilterEmpty.observe(
+                viewLifecycleOwner,
+                Observer(::updateDocumentsNotFoundView)
+            )
         }
     }
 
@@ -156,27 +162,32 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         context?.startActivity(chooserIntent)
     }
 
-    private fun showDocuments(documents: List<FileDocument>) {
+    private fun navigateToFileOptionsDialog(fileName: String) {
+        val directions = FilesFragmentDirections.filesToFileOptionsDialog()
+        navController.navigate(directions)
+    }
+
+    private fun updateDocuments(documents: List<FileDocument>) {
         filesAdapter?.submitList(documents) {
             binding.documentsRecyclerView.scrollToPosition(0)
         }
     }
 
-    private fun showEmptyDocuments(documentsEmpty: Boolean) {
+    private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
         binding.documentsEmptyTextView.run {
             text = requireContext().getString(R.string.files_empty)
             isVisible = documentsEmpty
         }
     }
 
-    private fun showDocumentsNotFound(documentsNotFound: Boolean) {
+    private fun updateDocumentsNotFoundView(documentsNotFound: Boolean) {
         binding.documentsEmptyTextView.run {
             text = requireContext().getString(R.string.files_not_found)
             isVisible = documentsNotFound
         }
     }
 
-    private fun toggleLoad(shouldLoad: Boolean) {
+    private fun updateLoader(shouldLoad: Boolean) {
         binding.documentsSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }

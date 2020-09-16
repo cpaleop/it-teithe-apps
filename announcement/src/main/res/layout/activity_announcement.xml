@@ -60,7 +60,7 @@
         android:id="@+id/announcementScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="16dp"
+        android:padding="24dp"
         app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementCategory">
 

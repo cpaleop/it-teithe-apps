@@ -36,6 +36,7 @@
     </style>
 
     <style name="BottomSheet_Rounded" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">@color/dialoFragmentBackground</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceBottomSheetDialog_Rounded</item>
     </style>
 
