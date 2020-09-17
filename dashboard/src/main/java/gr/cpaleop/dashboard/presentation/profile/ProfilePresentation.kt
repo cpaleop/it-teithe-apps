@@ -1,5 +1,7 @@
 package gr.cpaleop.dashboard.presentation.profile
 
+import androidx.annotation.DrawableRes
+
 data class ProfilePresentation(
     val profilePhotoUrl: String,
     val am: String,
@@ -8,12 +10,14 @@ data class ProfilePresentation(
     val displayName: String,
     val semester: String,
     val registeredYear: String,
-    val social: List<ProfilePresentationDetails>
+    val social: List<ProfileSocialDetails>
 )
 
-data class ProfilePresentationDetails(
+data class ProfileSocialDetails(
     val type: ProfileDetailsType,
-    val title: String,
+    @DrawableRes
+    val socialLogoResource: Int,
+    val label: String,
     val content: String
 )
 

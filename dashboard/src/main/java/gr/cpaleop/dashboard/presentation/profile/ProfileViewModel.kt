@@ -68,9 +68,9 @@ class ProfileViewModel(
     fun handleOptionChoice(choice: String, value: String) {
         viewModelScope.launch {
             val selectedContent =
-                _profile.value?.social?.find { it.title == value }?.content ?: return@launch
+                _profile.value?.social?.find { it.label == value }?.content ?: return@launch
             val selectedContentTitle =
-                _profile.value?.social?.find { it.title == value }?.title ?: return@launch
+                _profile.value?.social?.find { it.label == value }?.label ?: return@launch
             val selectedSocialOption = SelectedSocialOption(selectedContentTitle, selectedContent)
 
             when (choice) {

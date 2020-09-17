@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
-    ListAdapter<ProfilePresentationDetails, RecyclerView.ViewHolder>(PROFILE_DIFF_UTIL) {
+    ListAdapter<ProfileSocialDetails, RecyclerView.ViewHolder>(PROFILE_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_CONTENT -> ProfileHolder.create(parent, moreClickListener)
+            VIEW_TYPE_CONTENT -> ProfileSocialHolder.create(parent, moreClickListener)
             VIEW_TYPE_TITLE -> ProfileTitleHolder.create(parent)
             else -> throw IllegalArgumentException("View type not found")
         }
@@ -33,18 +33,18 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
         private const val VIEW_TYPE_TITLE = 2
 
         private val PROFILE_DIFF_UTIL =
-            object : DiffUtil.ItemCallback<ProfilePresentationDetails>() {
+            object : DiffUtil.ItemCallback<ProfileSocialDetails>() {
 
                 override fun areItemsTheSame(
-                    oldItem: ProfilePresentationDetails,
-                    newItem: ProfilePresentationDetails
+                    oldItem: ProfileSocialDetails,
+                    newItem: ProfileSocialDetails
                 ): Boolean {
                     return oldItem == newItem
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: ProfilePresentationDetails,
-                    newItem: ProfilePresentationDetails
+                    oldItem: ProfileSocialDetails,
+                    newItem: ProfileSocialDetails
                 ): Boolean {
                     return oldItem == newItem
                 }

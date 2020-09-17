@@ -9,8 +9,8 @@ import java.util.*
 class ProfileTitleHolder(private val binding: ItemProfileTitleHolderBinding) :
     RecyclerView.ViewHolder(binding.root), ProfileBindableHolder {
 
-    override fun bind(item: ProfilePresentationDetails) {
-        binding.profileDetailTitle.text = item.title.toUpperCase(Locale.getDefault())
+    override fun bind(item: ProfileSocialDetails) {
+        binding.profileDetailTitle.text = item.label.toUpperCase(Locale.getDefault())
     }
 
     companion object {

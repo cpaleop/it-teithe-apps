@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import gr.cpaleop.core.presentation.BaseFragment
@@ -45,10 +44,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun setupViews() {
         profileAdapter = ProfileAdapter(::navigateToProfileOptionsDialogFragment)
-        binding.profileRecyclerView.run {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = profileAdapter
-        }
+        binding.profileRecyclerView.adapter = profileAdapter
 
         binding.profileSettingsImageView.setOnClickListener {
             val directions = ProfileFragmentDirections.profileToSettings()

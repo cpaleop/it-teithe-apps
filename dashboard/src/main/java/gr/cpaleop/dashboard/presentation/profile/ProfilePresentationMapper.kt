@@ -12,29 +12,34 @@ class ProfilePresentationMapper(private val applicationContext: Context) {
     suspend operator fun invoke(profile: Profile): ProfilePresentation =
         withContext(Dispatchers.Default) {
             val socialsList = listOf(
-                ProfilePresentationDetails(
+                ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
-                    title = applicationContext.getString(R.string.profile_socials_facebook_title),
+                    label = applicationContext.getString(R.string.profile_socials_facebook_title),
+                    socialLogoResource = R.drawable.ic_facebook,
                     content = profile.socialMedia.facebook.safe("-")
                 ),
-                ProfilePresentationDetails(
+                ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
-                    title = applicationContext.getString(R.string.profile_socials_github_title),
+                    label = applicationContext.getString(R.string.profile_socials_github_title),
+                    socialLogoResource = R.drawable.ic_github,
                     content = profile.socialMedia.github.safe("-")
                 ),
-                ProfilePresentationDetails(
+                ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
-                    title = applicationContext.getString(R.string.profile_socials_twitter_title),
+                    label = applicationContext.getString(R.string.profile_socials_twitter_title),
+                    socialLogoResource = R.drawable.ic_twitter,
                     content = profile.socialMedia.twitter.safe("-")
                 ),
-                ProfilePresentationDetails(
+                ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
-                    title = applicationContext.getString(R.string.profile_socials_linkedin_title),
+                    label = applicationContext.getString(R.string.profile_socials_linkedin_title),
+                    socialLogoResource = R.drawable.ic_linkedin,
                     content = profile.socialMedia.linkedIn.safe("-")
                 ),
-                ProfilePresentationDetails(
+                ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
-                    title = applicationContext.getString(R.string.profile_socials_googleplus_title),
+                    socialLogoResource = R.drawable.ic_google_plus,
+                    label = applicationContext.getString(R.string.profile_socials_googleplus_title),
                     content = profile.socialMedia.googlePlus.safe("-")
                 )
             )

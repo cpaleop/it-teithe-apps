@@ -4,49 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/shape_round_outline_ripple"
-    android:padding="8dp">
+    android:padding="14dp">
 
     <ImageView
-        android:id="@+id/profileEditImageView"
+        android:id="@+id/profileSocialMoreImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/empty"
         android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profileSocialContentTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintWidth_percent="0.08"
         app:srcCompat="@drawable/ic_more" />
 
-    <TextView
-        android:id="@+id/profileDetailTitle"
+    <ImageView
+        android:id="@+id/profileSocialLogoImageView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/googlesans_regular"
+        android:layout_height="0dp"
+        android:contentDescription="@string/empty"
         android:gravity="start"
-        android:padding="8dp"
-        android:textColor="?attr/colorControlNormal"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_facebook"
         tools:text="Username" />
 
     <TextView
-        android:id="@+id/profileDetailContent"
+        android:id="@+id/profileSocialContentTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoLink="web"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
         android:fontFamily="@font/googlesans_medium"
         android:gravity="start"
+        android:maxLines="1"
         android:padding="8dp"
         android:textColor="@color/colorOnPrimary"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileDetailTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/profileSocialMoreImageView"
+        app:layout_constraintStart_toEndOf="@id/profileSocialLogoImageView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="cpaleop" />
 </androidx.constraintlayout.widget.ConstraintLayout>
