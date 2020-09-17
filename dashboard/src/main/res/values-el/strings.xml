@@ -23,6 +23,7 @@
     <string name="profile_personal_website_title">Ιστότοπος</string>
     <string name="profile_personal_description_title">Περιγραφή</string>
     <string name="profile_personal_telephoneNumber_title">Προσωπικό τηλέφωνο</string>
+    <string name="profile_toast_clipboard">Copied!</string>
 
     <!-- Academic details -->
     <string name="profile_academic_details_title">Ακαδημαϊκά στοιχεία</string>

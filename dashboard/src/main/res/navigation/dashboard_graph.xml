@@ -65,6 +65,10 @@
         tools:layout="@layout/fragment_profile">
 
         <action
+            android:id="@+id/profileToProfileOptionsDialog"
+            app:destination="@id/profileOptionsDialog" />
+
+        <action
             android:id="@+id/profileToSettings"
             app:destination="@id/settingsActivity"
             app:enterAnim="@anim/fade_in"
@@ -93,6 +97,18 @@
         android:name="gr.cpaleop.dashboard.presentation.files.options.FileOptionsDialogFragment"
         android:label="FileOptionsDialogFragment"
         tools:layout="@layout/dialog_fragment_file_options" />
+
+    <dialog
+        android:id="@+id/profileOptionsDialog"
+        android:name="gr.cpaleop.dashboard.presentation.profile.options.ProfileOptionsDialogFragment"
+        android:label="ProfileOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_profile_options">
+
+        <argument
+            android:name="socialName"
+            app:argType="string"
+            app:nullable="false" />
+    </dialog>
 
     <activity
         android:id="@+id/announcementActivity"

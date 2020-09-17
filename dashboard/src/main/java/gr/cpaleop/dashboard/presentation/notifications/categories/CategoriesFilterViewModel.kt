@@ -53,7 +53,7 @@ class CategoriesFilterViewModel(
         }
     }
 
-    fun updateCategories(categoryId: String, isChecked: Boolean) {
+    fun updateSelectedCategories(categoryId: String, isChecked: Boolean) {
         viewModelScope.launch {
             _categories.value = withContext(Dispatchers.Default) {
                 _categories.value?.map {

@@ -23,6 +23,7 @@
     <string name="profile_personal_website_title">Website</string>
     <string name="profile_personal_description_title">Description</string>
     <string name="profile_personal_telephoneNumber_title">Personal telephone number</string>
+    <string name="profile_toast_clipboard">Copied!</string>
 
     <!-- Academic details -->
     <string name="profile_academic_details_title">Academic details</string>

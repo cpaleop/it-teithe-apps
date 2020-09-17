@@ -1,8 +1,8 @@
-package gr.cpaleop.dashboard.presentation.files.options
+package gr.cpaleop.dashboard.presentation.profile.options
 
 import androidx.annotation.DrawableRes
 
-data class FileOption(
+data class ProfileOption(
     val name: String,
     @DrawableRes
     val iconResource: Int

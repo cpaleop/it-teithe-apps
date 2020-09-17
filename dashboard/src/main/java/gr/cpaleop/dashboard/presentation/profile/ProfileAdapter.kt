@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class ProfileAdapter :
+class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
     ListAdapter<ProfilePresentationDetails, RecyclerView.ViewHolder>(PROFILE_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_CONTENT -> ProfileHolder.create(parent)
+            VIEW_TYPE_CONTENT -> ProfileHolder.create(parent, moreClickListener)
             VIEW_TYPE_TITLE -> ProfileTitleHolder.create(parent)
             else -> throw IllegalArgumentException("View type not found")
         }

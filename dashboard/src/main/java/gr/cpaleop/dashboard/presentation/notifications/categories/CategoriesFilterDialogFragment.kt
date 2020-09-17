@@ -40,7 +40,7 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        categoryFilterAdapter = CategoryFilterAdapter(viewModel::updateCategories)
+        categoryFilterAdapter = CategoryFilterAdapter(viewModel::updateSelectedCategories)
         binding.categoryFilterRecyclerView.run {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = categoryFilterAdapter
@@ -57,17 +57,17 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
 
     private fun observeViewModel() {
         viewModel.run {
-            loading.observe(viewLifecycleOwner, Observer(::toggleLoad))
-            categories.observe(viewLifecycleOwner, Observer(::showCategories))
-            resetButtonControl.observe(viewLifecycleOwner, Observer(::toggleResetButton))
+            loading.observe(viewLifecycleOwner, Observer(::updateLoader))
+            categories.observe(viewLifecycleOwner, Observer(::updateCategories))
+            resetButtonControl.observe(viewLifecycleOwner, Observer(::updateResetButton))
         }
     }
 
-    private fun showCategories(categories: List<Category>) {
+    private fun updateCategories(categories: List<Category>) {
         categoryFilterAdapter?.submitList(categories)
     }
 
-    private fun toggleResetButton(shouldShow: Boolean) {
+    private fun updateResetButton(shouldShow: Boolean) {
         if (shouldShow == binding.categoryFilterResetText.isEnabled) return
 
         val alpha = if (shouldShow) 1f else 0f
@@ -78,7 +78,7 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
             .start()
     }
 
-    private fun toggleLoad(shouldLoad: Boolean) {
+    private fun updateLoader(shouldLoad: Boolean) {
         binding.categoryFilterProgressBar.visibility =
             if (shouldLoad) View.VISIBLE else View.INVISIBLE
     }

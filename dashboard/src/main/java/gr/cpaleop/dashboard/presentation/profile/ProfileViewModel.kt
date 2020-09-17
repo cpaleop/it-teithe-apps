@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.usecases.GetProfileUseCase
+import gr.cpaleop.dashboard.presentation.profile.options.ProfileOption
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ProfileViewModel(
@@ -20,6 +24,16 @@ class ProfileViewModel(
     private val _profile = MutableLiveData<ProfilePresentation>()
     val profile: LiveData<ProfilePresentation> = _profile.toSingleEvent()
 
+    private val _socialOptions = MutableLiveData<List<ProfileOption>>()
+    val socialOptions: LiveData<List<ProfileOption>> = _socialOptions.toSingleEvent()
+
+    private val _choiceCopyToClipboard = MutableLiveData<SelectedSocialOption>()
+    val choiceCopyToClipboard: LiveData<SelectedSocialOption> =
+        _choiceCopyToClipboard.toSingleEvent()
+
+    private val _choiceEdit = MutableLiveData<SelectedSocialOption>()
+    val choiceEdit: LiveData<SelectedSocialOption> = _choiceEdit.toSingleEvent()
+
     fun presentProfile() {
         viewModelScope.launch {
             try {
@@ -29,6 +43,39 @@ class ProfileViewModel(
                 Timber.e(t)
             } finally {
                 _loading.value = false
+            }
+        }
+    }
+
+    fun presentSocialOptions() {
+        viewModelScope.launch {
+            _socialOptions.value = withContext(Dispatchers.Default) {
+                listOf(
+                    ProfileOption(
+                        "Copy",
+                        R.drawable.ic_copy
+                    ),
+
+                    ProfileOption(
+                        "Edit",
+                        R.drawable.ic_edit
+                    )
+                )
+            }
+        }
+    }
+
+    fun handleOptionChoice(choice: String, value: String) {
+        viewModelScope.launch {
+            val selectedContent =
+                _profile.value?.social?.find { it.title == value }?.content ?: return@launch
+            val selectedContentTitle =
+                _profile.value?.social?.find { it.title == value }?.title ?: return@launch
+            val selectedSocialOption = SelectedSocialOption(selectedContentTitle, selectedContent)
+
+            when (choice) {
+                "Copy" -> _choiceCopyToClipboard.value = selectedSocialOption
+                "Edit" -> _choiceEdit.value = selectedSocialOption
             }
         }
     }
