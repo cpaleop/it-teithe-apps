@@ -42,7 +42,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun setupViews() {
-        binding.dashboardBottomNavigationView.setupWithNavController(navController)
+        binding.dashboardBottomNavigationView.run {
+            setupWithNavController(navController)
+            setOnNavigationItemReselectedListener { }
+        }
     }
 
     private fun observeViewModel() {

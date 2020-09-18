@@ -40,8 +40,9 @@ class DeviceStorageRepositoryImpl(
     override suspend fun getLocalDocuments(): List<Document> = withContext(Dispatchers.IO) {
         val documentList = appDatabase.documentDao().fetchAll()
         val validatedDocuments = validateDocumentFiles(documentList)
-        val unvalidatedList = documentList.diff(validatedDocuments)
-        appDatabase.documentDao().deleteAll(unvalidatedList)
+        val obsoleteDocumentList = documentList.diff(validatedDocuments)
+        /*deleteObsoleteFiles(obsoleteDocumentList)*/
+        appDatabase.documentDao().deleteAll(obsoleteDocumentList)
         return@withContext validatedDocuments
     }
 
@@ -51,5 +52,11 @@ class DeviceStorageRepositoryImpl(
             if (File(document.absolutePath).exists()) validatedDocuments.add(document)
         }
         return validatedDocuments.toList()
+    }
+
+    private fun deleteObsoleteFiles(obsoleteDocumentList: List<Document>) {
+        obsoleteDocumentList.forEach { document ->
+            File(document.absolutePath).deleteRecursively()
+        }
     }
 }
