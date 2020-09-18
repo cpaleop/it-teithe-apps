@@ -19,13 +19,13 @@ class AnnouncementMapper {
             name = remoteCategory?.name ?: ""
         )
         Announcement(
-            id = remoteAnnouncement.id ?: "",
+            id = remoteAnnouncement.id,
             title = remoteAnnouncement.title ?: remoteAnnouncement.titleEn ?: "",
             date = remoteAnnouncement.date ?: "",
             text = remoteAnnouncement.textEn ?: "",
             category = category,
             publisherName = remoteAnnouncement.publisher?.name ?: "",
-            attachments = remoteAnnouncement.attachments?.filterNotNull() ?: emptyList()
+            attachments = remoteAnnouncement.attachments ?: emptyList()
         )
     }
 }

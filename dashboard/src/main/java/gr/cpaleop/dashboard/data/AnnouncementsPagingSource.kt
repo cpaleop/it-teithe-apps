@@ -45,6 +45,6 @@ class AnnouncementsPagingSource(
     companion object {
 
         const val PAGE_SIZE = 35
-        private const val STARTING_PAGE = 1
+        private const val STARTING_PAGE = 0
     }
 }
