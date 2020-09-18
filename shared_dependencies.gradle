@@ -18,6 +18,9 @@ dependencies {
     //SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+    //RecyclerView
+    implementation "androidx.recyclerview:recyclerview:1.2.0-alpha02"
+
     //Navigation Controller
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.MergeAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.DialogFragmentFileOptionsBinding
@@ -18,6 +19,8 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
     private var _binding: DialogFragmentFileOptionsBinding? = null
     private val binding: DialogFragmentFileOptionsBinding get() = _binding!!
     private var fileOptionAdapter: FileOptionAdapter? = null
+    private var fileOptionAnnouncementAdapter: FileOptionAnnouncementAdapter? = null
+    private var fileOptionConcatAdapter: MergeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,14 +43,30 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
         fileOptionAdapter = FileOptionAdapter {
 
         }
-        binding.fileOptionsRecyclerView.adapter = fileOptionAdapter
+
+        fileOptionAnnouncementAdapter = FileOptionAnnouncementAdapter {
+
+        }
+
+        fileOptionConcatAdapter = MergeAdapter(fileOptionAnnouncementAdapter, fileOptionAdapter)
+        binding.fileOptionsRecyclerView.adapter = fileOptionConcatAdapter
     }
 
     private fun observeViewModel() {
-        viewModel.fileOptions.observe(viewLifecycleOwner, Observer(::updateFileOptions))
+        viewModel.run {
+            fileOptions.observe(viewLifecycleOwner, Observer(::updateFileOptions))
+            fileOptionsAnnouncement.observe(
+                viewLifecycleOwner,
+                Observer(::updateFileOptionsAnnouncement)
+            )
+        }
     }
 
     private fun updateFileOptions(fileOptions: List<FileOption>) {
         fileOptionAdapter?.submitList(fileOptions)
+    }
+
+    private fun updateFileOptionsAnnouncement(fileOptions: List<FileOption>) {
+        fileOptionAnnouncementAdapter?.submitList(fileOptions)
     }
 }

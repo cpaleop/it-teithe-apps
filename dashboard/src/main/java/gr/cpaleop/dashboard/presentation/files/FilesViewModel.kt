@@ -8,6 +8,7 @@ import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.usecases.GetFileOptionsUseCase
 import gr.cpaleop.dashboard.domain.usecases.GetSavedDocumentsUseCase
 import gr.cpaleop.dashboard.presentation.files.options.FileOption
+import gr.cpaleop.dashboard.presentation.files.options.FileOptionType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,6 +51,10 @@ class FilesViewModel(
     private val _fileOptions = MutableLiveData<List<FileOption>>()
     val fileOptions: LiveData<List<FileOption>> = _fileOptions.toSingleEvent()
 
+    private val _fileOptionsAnnouncement = MutableLiveData<List<FileOption>>()
+    val fileOptionsAnnouncement: LiveData<List<FileOption>> =
+        _fileOptionsAnnouncement.toSingleEvent()
+
     fun presentDocuments() {
         viewModelScope.launch {
             try {
@@ -77,15 +82,24 @@ class FilesViewModel(
     fun presentFileOptions() {
         viewModelScope.launch {
             try {
-                _fileOptions.value = getFileOptionsUseCase().mapAsync {
+                val options = getFileOptionsUseCase().mapAsync {
                     when (it) {
-                        "Rename" -> FileOption(it, R.drawable.ic_edit)
-                        "Delete" -> FileOption(it, R.drawable.ic_delete)
-                        "Share" -> FileOption(it, R.drawable.ic_share)
-                        "Info" -> FileOption(it, R.drawable.ic_info)
+                        "Rename" -> FileOption(FileOptionType.FILE, it, R.drawable.ic_edit)
+                        "Delete" -> FileOption(FileOptionType.FILE, it, R.drawable.ic_delete)
+                        "Share" -> FileOption(FileOptionType.FILE, it, R.drawable.ic_share)
+                        "Info" -> FileOption(FileOptionType.FILE, it, R.drawable.ic_info)
+                        "Go to announcement" -> FileOption(
+                            FileOptionType.ANNOUNCEMENT,
+                            it,
+                            R.drawable.ic_link
+                        )
                         else -> throw IllegalArgumentException("File option $it is unknown")
                     }
                 }
+
+                _fileOptions.value = options.filter { it.type == FileOptionType.FILE }
+                _fileOptionsAnnouncement.value =
+                    options.filter { it.type == FileOptionType.ANNOUNCEMENT }
             } catch (t: Throwable) {
                 Timber.e(t)
             }
