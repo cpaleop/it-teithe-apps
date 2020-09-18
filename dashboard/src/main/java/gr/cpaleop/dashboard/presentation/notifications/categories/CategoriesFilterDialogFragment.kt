@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.common.extensions.setLifecycleOwner
@@ -42,7 +44,11 @@ class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
     private fun setupViews() {
         categoryFilterAdapter = CategoryFilterAdapter(viewModel::updateSelectedCategories)
         binding.categoryFilterRecyclerView.run {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            /*layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)*/
+            layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
             adapter = categoryFilterAdapter
         }
 
