@@ -49,8 +49,11 @@
         style="@style/Theme.FilterStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
         android:ellipsize="end"
+        android:maxLines="1"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/announcementScrollView"
         app:layout_constraintEnd_toEndOf="@id/announcementTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/announcementTitle"
@@ -60,7 +63,6 @@
         android:id="@+id/announcementScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="24dp"
         app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementCategory">
 
@@ -69,8 +71,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="all"
-            android:ellipsize="end"
             android:fontFamily="@font/googlesans_regular"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:textColor="@color/colorOnPrimary"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
     </ScrollView>
@@ -82,7 +85,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="14dp"
         android:textColor="@color/colorOnPrimaryVariant"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +102,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="14dp"
         android:textColor="@color/colorOnPrimaryVariant"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
