@@ -1,243 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileCardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:background="@drawable/shape_round_outline_ripple"
-                app:layout_collapseMode="pin">
-
-                <ImageView
-                    android:id="@+id/profilePictureImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_margin="14dp"
-                    android:contentDescription="@string/empty"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/profileDisplayNameTextView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25" />
-
-                <TextView
-                    android:id="@+id/profileDisplayNameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:padding="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="Chris Paleopanos" />
-
-                <TextView
-                    android:id="@+id/profileAmTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="8dp"
-                    android:text="am:"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toBottomOf="@id/profileDisplayNameTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileAmValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileAmTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileAmTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileAmTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="144169" />
-
-                <TextView
-                    android:id="@+id/profileEmailTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="8dp"
-                    android:text="email:"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileEmailValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="email"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileEmailTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileEmailTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileEmailTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="paleboom96@gmail.com" />
-
-                <TextView
-                    android:id="@+id/profileUsernameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="8dp"
-                    android:text="username:"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toBottomOf="@id/profileEmailTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileUsernameValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileUsernameTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileUsernameTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileUsernameTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="it144169" />
-
-                <TextView
-                    android:id="@+id/profileSemesterTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="8dp"
-                    android:text="semester:"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toBottomOf="@id/profileUsernameTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileSemesterValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileSemesterTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileSemesterTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileSemesterTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="12" />
-
-                <TextView
-                    android:id="@+id/profileRegisteredYearTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="8dp"
-                    android:text="registered year:"
-                    android:textColor="?attr/colorControlNormal"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-                    app:layout_constraintTop_toBottomOf="@id/profileSemesterTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileRegisteredYearValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="2014" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:layout_margin="14dp"
+        android:background="@drawable/shape_round_outline_ripple"
+        app:layout_collapseMode="pin"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/profileSettingsImageView"
+            android:id="@+id/profilePictureImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="14dp"
             android:contentDescription="@string/empty"
-            android:padding="8dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.09"
-            app:srcCompat="@drawable/ic_outline_settings" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/profileSwipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profileSettingsImageView">
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/profileDisplayNameTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/profileRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_profile_social" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <TextView
+            android:id="@+id/profileDisplayNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Chris Paleopanos" />
+
+        <TextView
+            android:id="@+id/profileAmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="8dp"
+            android:text="am:"
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toBottomOf="@id/profileDisplayNameTextView"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/profileAmValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileAmTextView"
+            app:layout_constraintStart_toEndOf="@id/profileAmTextView"
+            app:layout_constraintTop_toTopOf="@id/profileAmTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="144169" />
+
+        <TextView
+            android:id="@+id/profileEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="8dp"
+            android:text="email:"
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/profileEmailValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:fontFamily="@font/googlesans_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileEmailTextView"
+            app:layout_constraintStart_toEndOf="@id/profileEmailTextView"
+            app:layout_constraintTop_toTopOf="@id/profileEmailTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="paleboom96@gmail.com" />
+
+        <TextView
+            android:id="@+id/profileUsernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="8dp"
+            android:text="username:"
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toBottomOf="@id/profileEmailTextView"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/profileUsernameValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileUsernameTextView"
+            app:layout_constraintStart_toEndOf="@id/profileUsernameTextView"
+            app:layout_constraintTop_toTopOf="@id/profileUsernameTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="it144169" />
+
+        <TextView
+            android:id="@+id/profileSemesterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="8dp"
+            android:text="semester:"
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toBottomOf="@id/profileUsernameTextView"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/profileSemesterValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileSemesterTextView"
+            app:layout_constraintStart_toEndOf="@id/profileSemesterTextView"
+            app:layout_constraintTop_toTopOf="@id/profileSemesterTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="12" />
+
+        <TextView
+            android:id="@+id/profileRegisteredYearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:padding="8dp"
+            android:text="registered year:"
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+            app:layout_constraintTop_toBottomOf="@id/profileSemesterTextView"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/profileRegisteredYearValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintStart_toEndOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintTop_toTopOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="2014" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ImageView
+        android:id="@+id/profileSettingsImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/empty"
+        android:padding="8dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileCardLayout"
+        app:layout_constraintWidth_percent="0.09"
+        app:srcCompat="@drawable/ic_outline_settings" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/profileSwipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileSettingsImageView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profileRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_profile_social" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
