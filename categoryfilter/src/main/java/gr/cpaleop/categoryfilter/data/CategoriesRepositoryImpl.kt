@@ -3,7 +3,7 @@ package gr.cpaleop.categoryfilter.data
 import com.google.gson.Gson
 import gr.cpaleop.categoryfilter.data.model.RemoteCategoryFilter
 import gr.cpaleop.categoryfilter.domain.repositories.CategoriesRepository
-import gr.cpaleop.core.data.local.AppDatabase
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.CategoriesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

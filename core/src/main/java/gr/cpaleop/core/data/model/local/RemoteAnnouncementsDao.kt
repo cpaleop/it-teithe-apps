@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.local
+package gr.cpaleop.core.data.model.local
 
 import androidx.room.Dao
 import androidx.room.Insert

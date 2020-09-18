@@ -79,8 +79,12 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
             announcement.attachments.isNotEmpty()
     }
 
-    private fun initiateDownload(files: Array<String>) {
-        DownloadFileWorker.enqueue(applicationContext, files)
+    private fun initiateDownload(announcementDocument: AnnouncementDocument) {
+        DownloadFileWorker.enqueue(
+            applicationContext,
+            announcementDocument.announcementId,
+            announcementDocument.fileIdList.toTypedArray()
+        )
     }
 
     companion object {

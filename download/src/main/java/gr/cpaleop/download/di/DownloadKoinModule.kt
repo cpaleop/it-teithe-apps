@@ -22,6 +22,7 @@ val downloadModule = module {
     single<DeviceStorageRepository> {
         DeviceStorageRepositoryImpl(
             get(named<DownloadFolder>()),
+            get(),
             get()
         )
     }

@@ -22,11 +22,14 @@ class DownloadFileWorker(
         val files = workerParameters.inputData.getStringArray(DATA_FILE_LIST)
             ?: return@coroutineScope Result.failure()
 
+        val announcementId = workerParameters.inputData.getString(DATA_ANNOUNCEMENT_ID)
+            ?: return@coroutineScope Result.failure()
+
         setupNotification(files.size)
         try {
             files.forEachIndexed { index, fileId ->
                 delay(1000)
-                downloadFilesUseCase(fileId)
+                downloadFilesUseCase(fileId, announcementId)
                 downloadNotificationManager.showProgress(index + 1, files.size)
             }
             downloadNotificationManager.cancelProgress()
@@ -39,6 +42,8 @@ class DownloadFileWorker(
     }
 
     private suspend fun setupNotification(fileSize: Int) = coroutineScope {
+        //Dismiss existing success notification
+        downloadNotificationManager.dismissSuccessNotification()
         val notificationId = downloadNotificationManager.notificationId
         val notification = downloadNotificationManager.getNotification(fileSize)
         // Make service foreground to avoid process restarts during download
@@ -49,9 +54,11 @@ class DownloadFileWorker(
     companion object {
 
         const val DATA_FILE_LIST = "DATA_FILE_LIST"
+        const val DATA_ANNOUNCEMENT_ID = "DATA_ANNOUNCEMENT_ID"
 
-        fun enqueue(context: Context, files: Array<String>) {
+        fun enqueue(context: Context, announcementId: String, files: Array<String>) {
             val inputData = Data.Builder().apply {
+                putString(DATA_ANNOUNCEMENT_ID, announcementId)
                 putStringArray(DATA_FILE_LIST, files)
             }.build()
 

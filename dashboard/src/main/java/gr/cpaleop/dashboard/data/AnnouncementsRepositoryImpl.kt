@@ -3,7 +3,7 @@ package gr.cpaleop.dashboard.data
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import gr.cpaleop.core.data.local.AppDatabase
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement

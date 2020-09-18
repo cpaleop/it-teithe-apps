@@ -56,3 +56,13 @@ fun <T> List<T>.takeOrNulls(n: Int): List<T?> {
     }
     return list
 }
+
+/**
+ * Returns a list containing all the elements that exist in the subject list but not in the [another] list
+ *
+ * @param another list to search if elements from the list exist
+ * @return a list of elements that do not exist in subject list
+ */
+fun <T> List<T>.diff(another: List<T>): List<T> {
+    return this.filter { !another.contains(it) }
+}

@@ -2,7 +2,7 @@ package gr.cpaleop.dashboard.data
 
 import androidx.paging.PagingSource
 import gr.cpaleop.common.extensions.mapAsyncSuspended
-import gr.cpaleop.core.data.local.AppDatabase
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.model.response.RemoteCategory
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi

@@ -1,7 +1,8 @@
 package gr.cpaleop.core.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.common.extensions.diff
 import gr.cpaleop.core.data.mappers.DocumentMapper
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.repositories.DeviceStorageRepository
@@ -10,26 +11,45 @@ import kotlinx.coroutines.withContext
 import okio.BufferedSink
 import okio.appendingSink
 import okio.buffer
+import timber.log.Timber
 import java.io.File
 
 class DeviceStorageRepositoryImpl(
     @DownloadFolder private val folder: File,
+    private val appDatabase: AppDatabase,
     private val documentMapper: DocumentMapper
 ) : DeviceStorageRepository {
 
-    override suspend fun saveFile(fileName: String, fileData: ByteArray) =
+    override suspend fun saveFile(announcementId: String, fileName: String, fileData: ByteArray) =
         withContext(Dispatchers.IO) {
             val destinationFile = File(folder.absolutePath + "/" + fileName)
             val bufferedSink: BufferedSink = destinationFile.appendingSink().buffer()
             bufferedSink.write(fileData)
-            bufferedSink.use {
-                it.write(fileData)
+            try {
+                bufferedSink.use {
+                    it.write(fileData)
+                }
+                val insertedDocument = documentMapper(destinationFile)
+                appDatabase.documentDao().insert(insertedDocument)
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
             return@withContext
         }
 
     override suspend fun getLocalDocuments(): List<Document> = withContext(Dispatchers.IO) {
-        val files = folder.listFiles()?.toList() ?: emptyList()
-        return@withContext files.mapAsyncSuspended(documentMapper::invoke)
+        val documentList = appDatabase.documentDao().fetchAll()
+        val validatedDocuments = validateDocumentFiles(documentList)
+        val unvalidatedList = documentList.diff(validatedDocuments)
+        appDatabase.documentDao().deleteAll(unvalidatedList)
+        return@withContext validatedDocuments
+    }
+
+    private fun validateDocumentFiles(documentList: List<Document>): List<Document> {
+        val validatedDocuments = mutableListOf<Document>()
+        documentList.forEach { document ->
+            if (File(document.absolutePath).exists()) validatedDocuments.add(document)
+        }
+        return validatedDocuments.toList()
     }
 }

@@ -1,16 +1,17 @@
-package gr.cpaleop.core.data.local
+package gr.cpaleop.core.data.model.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import gr.cpaleop.core.data.local.converters.RemoteAttachmentsConverter
-import gr.cpaleop.core.data.local.converters.RemotePublisherConverter
+import gr.cpaleop.core.data.model.local.converters.RemoteAttachmentsConverter
+import gr.cpaleop.core.data.model.local.converters.RemotePublisherConverter
 import gr.cpaleop.core.data.model.response.RemoteAnnouncement
 import gr.cpaleop.core.data.model.response.RemoteCategory
+import gr.cpaleop.core.domain.entities.Document
 
 @Database(
-    entities = [RemoteAnnouncement::class, RemoteCategory::class],
-    version = 2,
+    entities = [RemoteAnnouncement::class, RemoteCategory::class, Document::class],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(
@@ -22,4 +23,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun remoteAnnouncementsDao(): RemoteAnnouncementsDao
 
     abstract fun remoteCategoryDao(): RemoteCategoryDao
+
+    abstract fun documentDao(): DocumentDao
 }

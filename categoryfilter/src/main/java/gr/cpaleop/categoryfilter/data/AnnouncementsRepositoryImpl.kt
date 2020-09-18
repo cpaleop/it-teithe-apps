@@ -6,7 +6,7 @@ import gr.cpaleop.categoryfilter.data.model.AnnouncementCategoryFilter
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.common.extensions.mapAsync
-import gr.cpaleop.core.data.local.AppDatabase
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

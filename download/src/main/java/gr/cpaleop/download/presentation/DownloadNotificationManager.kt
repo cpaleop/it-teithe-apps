@@ -14,6 +14,8 @@ interface DownloadNotificationManager {
 
     fun cancelProgress()
 
+    fun dismissSuccessNotification()
+
     fun showSuccess(filesSize: Int)
 
     fun showNoSpace(filename: String)

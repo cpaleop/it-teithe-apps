@@ -84,6 +84,10 @@ class DownloadNotificationManagerImpl(
         notificationManager.cancel(DOWNLOAD_ID)
     }
 
+    override fun dismissSuccessNotification() {
+        notificationManager.cancel(MESSAGE_ID)
+    }
+
     // TODO: Show documents fragment on click
     override fun showSuccess(filesSize: Int) {
         val title = context.getString(R.string.download_notification_success_title, filesSize)

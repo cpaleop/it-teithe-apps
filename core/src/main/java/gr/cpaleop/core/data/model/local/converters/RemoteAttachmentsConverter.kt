@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.local.converters
+package gr.cpaleop.core.data.model.local.converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

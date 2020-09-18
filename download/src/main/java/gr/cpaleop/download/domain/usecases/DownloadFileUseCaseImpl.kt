@@ -8,8 +8,12 @@ class DownloadFileUseCaseImpl(
     private val deviceStorageRepository: DeviceStorageRepository
 ) : DownloadFileUseCase {
 
-    override suspend fun invoke(fileId: String) {
+    override suspend fun invoke(announcementId: String, fileId: String) {
         val downloadedFile = fileRepository.getFile(fileId)
-        deviceStorageRepository.saveFile(downloadedFile.name, downloadedFile.data.toByteArray())
+        deviceStorageRepository.saveFile(
+            announcementId,
+            downloadedFile.name,
+            downloadedFile.data.toByteArray()
+        )
     }
 }

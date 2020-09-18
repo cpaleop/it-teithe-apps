@@ -3,7 +3,7 @@ package gr.cpaleop.dashboard.data
 import com.google.gson.Gson
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.mapAsyncSuspended
-import gr.cpaleop.core.data.local.AppDatabase
+import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.dashboard.data.mappers.CategoryMapper
 import gr.cpaleop.dashboard.domain.entities.Category
