@@ -1,7 +1,6 @@
 package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
-import android.os.Environment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
@@ -59,8 +58,7 @@ private fun provideAuthority(applicationContext: Context): String {
 
 @DownloadFolder
 private fun provideDownloadFolder(applicationContext: Context): File {
-    return applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-        ?: applicationContext.cacheDir
+    return applicationContext.externalCacheDir ?: applicationContext.cacheDir
 }
 
 private fun provideAuthenticationApi(retrofit: Retrofit): AuthenticationApi {

@@ -1,6 +1,8 @@
 package gr.cpaleop.dashboard.presentation.files
 
+import android.webkit.MimeTypeMap
 import androidx.lifecycle.*
+import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
@@ -10,10 +12,14 @@ import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.files.options.FileDetails
 import gr.cpaleop.dashboard.presentation.files.options.FileOption
 import gr.cpaleop.dashboard.presentation.files.options.FileOptionMapper
+import gr.cpaleop.dashboard.presentation.files.options.FileShareOptionData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.net.URI
+
 
 class FilesViewModel(
     private val getSavedDocumentsUseCase: GetSavedDocumentsUseCase,
@@ -77,6 +83,9 @@ class FilesViewModel(
 
     private val _optionInfo = MutableLiveData<String>()
     val optionInfo: LiveData<String> = _optionInfo.toSingleEvent()
+
+    private val _optionShare = MutableLiveData<FileShareOptionData>()
+    val optionShare: LiveData<FileShareOptionData> = _optionShare.toSingleEvent()
 
     fun presentDocuments() {
         viewModelScope.launch {
@@ -142,13 +151,28 @@ class FilesViewModel(
                     )
                 }
                 FileOptionType.SHARE -> {
-                    TODO()
+                    val uri = _document.value?.uri ?: return@launch
+                    val fileMimeType = File(URI(uri)).getMimeType()
+                    _optionShare.value = FileShareOptionData(
+                        uri = _document.value?.uri ?: return@launch,
+                        mimeType = fileMimeType
+
+                    )
                 }
                 FileOptionType.INFO -> {
                     _optionInfo.value = _document.value?.uri ?: return@launch
                 }
             }
         }
+    }
+
+    fun getMimeType(url: String?): String? {
+        var type: String? = null
+        val extension = MimeTypeMap.getFileExtensionFromUrl(url)
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        }
+        return type
     }
 
     fun deleteFile(fileUri: String) {

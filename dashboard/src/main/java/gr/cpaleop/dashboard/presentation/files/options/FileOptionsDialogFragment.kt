@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation.files.options
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,10 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
                 viewLifecycleOwner,
                 Observer(::showRenameDialog)
             )
+            optionShare.observe(
+                viewLifecycleOwner,
+                Observer(::shareFile)
+            )
             optionInfo.observe(
                 viewLifecycleOwner,
                 Observer(::showInfoDialog)
@@ -122,6 +127,21 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
                 it.cancel()
             }
             .show()
+    }
+
+    private fun shareFile(fileShareOptionData: FileShareOptionData) {
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, fileShareOptionData.uri)
+            type = fileShareOptionData.mimeType
+        }
+        startActivity(
+            Intent.createChooser(
+                shareIntent,
+                resources.getText(R.string.files_share_file_send_to)
+            )
+        )
+        dismiss()
     }
 
     private fun showInfoDialog(fileUri: String) {
