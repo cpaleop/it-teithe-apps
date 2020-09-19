@@ -29,7 +29,7 @@ class DownloadFileWorker(
         try {
             files.forEachIndexed { index, fileId ->
                 delay(1000)
-                downloadFilesUseCase(fileId, announcementId)
+                downloadFilesUseCase(announcementId, fileId)
                 downloadNotificationManager.showProgress(index + 1, files.size)
             }
             downloadNotificationManager.cancelProgress()
