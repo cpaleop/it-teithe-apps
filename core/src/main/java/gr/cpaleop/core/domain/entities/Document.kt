@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Document(
     @PrimaryKey
     val uri: String,
+    val announcementId: String,
     val absolutePath: String,
     val name: String,
     val type: String,

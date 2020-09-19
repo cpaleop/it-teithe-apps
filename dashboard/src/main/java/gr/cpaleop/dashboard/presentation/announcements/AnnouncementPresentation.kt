@@ -6,5 +6,6 @@ data class AnnouncementPresentation(
     val title: String,
     val content: String,
     val publisherName: String,
-    val category: String
+    val category: String,
+    val hasAttachments: Boolean
 )

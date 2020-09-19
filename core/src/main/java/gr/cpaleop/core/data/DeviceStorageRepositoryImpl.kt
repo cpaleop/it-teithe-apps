@@ -29,7 +29,7 @@ class DeviceStorageRepositoryImpl(
                 bufferedSink.use {
                     it.write(fileData)
                 }
-                val insertedDocument = documentMapper(destinationFile)
+                val insertedDocument = documentMapper(destinationFile, announcementId)
                 appDatabase.documentDao().insert(insertedDocument)
             } catch (t: Throwable) {
                 Timber.e(t)
@@ -44,6 +44,10 @@ class DeviceStorageRepositoryImpl(
         /*deleteObsoleteFiles(obsoleteDocumentList)*/
         appDatabase.documentDao().deleteAll(obsoleteDocumentList)
         return@withContext validatedDocuments
+    }
+
+    override suspend fun getLocalDocumentByUri(uri: String): Document {
+        return appDatabase.documentDao().fetchByUri(uri)
     }
 
     private fun validateDocumentFiles(documentList: List<Document>): List<Document> {

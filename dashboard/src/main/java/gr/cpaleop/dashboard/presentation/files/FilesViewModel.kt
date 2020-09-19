@@ -4,7 +4,9 @@ import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
+import gr.cpaleop.dashboard.domain.usecases.GetDocumentUseCase
 import gr.cpaleop.dashboard.domain.usecases.GetFileOptionsUseCase
 import gr.cpaleop.dashboard.domain.usecases.GetSavedDocumentsUseCase
 import gr.cpaleop.dashboard.presentation.files.options.FileOption
@@ -17,11 +19,18 @@ import timber.log.Timber
 class FilesViewModel(
     private val getSavedDocumentsUseCase: GetSavedDocumentsUseCase,
     private val fileDocumentMapper: FileDocumentMapper,
-    private val getFileOptionsUseCase: GetFileOptionsUseCase
+    private val getFileOptionsUseCase: GetFileOptionsUseCase,
+    private val getDocumentUseCase: GetDocumentUseCase
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
+
+    private val _document = MutableLiveData<Document>()
+    val document: LiveData<Document> = _document.toSingleEvent()
+
+    private val _navigateAnnouncement = MutableLiveData<String>()
+    val navigateAnnouncement: LiveData<String> = _navigateAnnouncement.toSingleEvent()
 
     private val _documents = MutableLiveData<List<FileDocument>>()
     val documents: MediatorLiveData<List<FileDocument>> by lazy {
@@ -73,8 +82,18 @@ class FilesViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 documents.postValue(_documents.value?.filter {
-                    it.name.contains(query, true) || it.absolutePath.contains(query, true)
+                    it.name.contains(query, true) || it.uri.contains(query, true)
                 })
+            }
+        }
+    }
+
+    fun presentDocumentDetails(uri: String) {
+        viewModelScope.launch {
+            try {
+                _document.value = getDocumentUseCase(uri)
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }
@@ -104,5 +123,9 @@ class FilesViewModel(
                 Timber.e(t)
             }
         }
+    }
+
+    fun getAnnouncementId() {
+        _navigateAnnouncement.value = _document.value?.announcementId ?: return
     }
 }

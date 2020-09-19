@@ -21,14 +21,14 @@ import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.qualifier.named
 import java.io.File
 import gr.cpaleop.teithe_apps.R as appR
 
 class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
-    private val viewModel: FilesViewModel by viewModel()
+    private val viewModel: FilesViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
 
     @Authority
@@ -170,8 +170,8 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         context?.startActivity(chooserIntent)
     }
 
-    private fun navigateToFileOptionsDialog(fileName: String) {
-        val directions = FilesFragmentDirections.filesToFileOptionsDialog()
+    private fun navigateToFileOptionsDialog(fileUri: String) {
+        val directions = FilesFragmentDirections.filesToFileOptionsDialog(fileUri)
         navController.navigate(directions)
     }
 

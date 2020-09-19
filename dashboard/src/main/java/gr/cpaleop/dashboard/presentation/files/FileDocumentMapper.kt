@@ -32,6 +32,7 @@ class FileDocumentMapper(
             }
 
             FileDocument(
+                uri = document.uri,
                 absolutePath = document.absolutePath,
                 name = document.name,
                 size = document.size,

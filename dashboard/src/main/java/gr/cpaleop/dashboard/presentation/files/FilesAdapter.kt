@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 class FilesAdapter(
     private val onClickListener: (String) -> Unit,
     private val moreClickListener: (String) -> Unit
-) :
-    ListAdapter<FileDocument, FilesHolder>(FILES_DIFF_UTIL) {
+) : ListAdapter<FileDocument, FilesHolder>(FILES_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilesHolder {
         return FilesHolder.create(parent, onClickListener, moreClickListener)

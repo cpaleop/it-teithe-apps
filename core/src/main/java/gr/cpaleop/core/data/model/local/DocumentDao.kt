@@ -9,6 +9,9 @@ interface DocumentDao {
     @Query("SELECT * FROM document")
     suspend fun fetchAll(): List<Document>
 
+    @Query("SELECT * FROM document WHERE uri = :uri")
+    suspend fun fetchByUri(uri: String): Document
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(document: Document)
 

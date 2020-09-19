@@ -34,7 +34,7 @@ val dashboardModule = module {
     viewModel { SortOptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
-    viewModel { FilesViewModel(get(), get(), get()) }
+    viewModel { FilesViewModel(get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
     single { ProfilePresentationMapper(get()) }
     single { NotificationPresentationMapper(get()) }
@@ -47,6 +47,7 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<GetDocumentUseCase> { GetDocumentUseCaseImpl(get()) }
     single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
     single<GetFileOptionsUseCase> { GetFileOptionsUseCaseImpl() }
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }

@@ -9,6 +9,7 @@
 
     <!-- Announcements -->
     <string name="announcements_search">Search announcements</string>
+    <string name="announcements_has_attachments">Attachments</string>
 
     <!-- Notifications -->
     <string name="notifications_empty">No available notifications</string>

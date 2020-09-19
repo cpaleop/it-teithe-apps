@@ -2,6 +2,7 @@ package gr.cpaleop.categoryfilter.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.categoryfilter.databinding.ItemAnnouncementCategoryBinding
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
@@ -9,8 +10,7 @@ import gr.cpaleop.categoryfilter.domain.entities.Announcement
 class AnnouncementHolder(
     private val binding: ItemAnnouncementCategoryBinding,
     private val onClickListener: (String) -> Unit
-) :
-    RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Announcement) {
         binding.root.setOnClickListener { onClickListener(item.id) }
@@ -18,6 +18,7 @@ class AnnouncementHolder(
         binding.announcementContent.text = item.text
         binding.announcementDate.text = item.date
         binding.announcementPublisher.text = item.publisherName
+        binding.announcementContent.isVisible = item.attachments.isNotEmpty()
     }
 
     companion object {

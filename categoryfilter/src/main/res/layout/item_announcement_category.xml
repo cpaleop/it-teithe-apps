@@ -30,6 +30,18 @@
             tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
         <TextView
+            android:id="@+id/announcementCategory"
+            style="@style/Theme.FilterStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/category_filter_has_attachments"
+            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintStart_toStartOf="@id/announcementContent"
+            app:layout_constraintTop_toBottomOf="@id/announcementTitle" />
+
+        <TextView
             android:id="@+id/announcementContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -40,7 +52,7 @@
             android:fontFamily="@font/googlesans_regular"
             android:textColor="@color/colorOnPrimary"
             app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
-            app:layout_constraintTop_toBottomOf="@id/announcementTitle"
+            app:layout_constraintTop_toBottomOf="@id/announcementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
         <TextView
@@ -73,7 +85,7 @@
             android:textColor="@color/colorOnPrimaryVariant"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/announcementPublisher"
             tools:text="1/1/2020" />
 

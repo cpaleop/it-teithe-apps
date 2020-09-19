@@ -96,7 +96,21 @@
         android:id="@+id/fileOptionsDialog"
         android:name="gr.cpaleop.dashboard.presentation.files.options.FileOptionsDialogFragment"
         android:label="FileOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_file_options" />
+        tools:layout="@layout/dialog_fragment_file_options">
+
+        <argument
+            android:name="uri"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/fileOptionsDialogToAnnouncementActivity"
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </dialog>
 
     <dialog
         android:id="@+id/profileOptionsDialog"

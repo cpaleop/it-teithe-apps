@@ -35,10 +35,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/announcementHasAttachments"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="@id/announcementContent"
             app:layout_constraintTop_toBottomOf="@id/announcementTitle"
             tools:text="6ο ΕΞΑΜΗΝΟ" />
+
+        <TextView
+            android:id="@+id/announcementHasAttachments"
+            style="@style/Theme.FilterStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/announcements_has_attachments"
+            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintStart_toEndOf="@id/announcementCategory"
+            app:layout_constraintTop_toBottomOf="@id/announcementTitle" />
 
         <TextView
             android:id="@+id/announcementContent"
@@ -84,7 +98,7 @@
             android:textColor="@color/colorOnPrimaryVariant"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/announcementContent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/announcementPublisher"
             tools:text="1/1/2020" />
 

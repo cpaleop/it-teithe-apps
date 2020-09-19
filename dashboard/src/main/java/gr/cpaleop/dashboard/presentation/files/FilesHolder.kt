@@ -13,7 +13,7 @@ class FilesHolder(
 
     fun bind(item: FileDocument) {
         binding.root.setOnClickListener { onClickListener(item.absolutePath) }
-        binding.documentMoreImageView.setOnClickListener { moreClickListener(item.name) }
+        binding.documentMoreImageView.setOnClickListener { moreClickListener(item.uri) }
         binding.documentTitleTextView.text = item.name
         binding.documentLastModifiedTextView.text = item.lastModifiedDate
         binding.documentPreview.setImageResource(item.previewDrawable)
