@@ -9,13 +9,23 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
         <item name="badgeStyle">@style/CustomBadge</item>
+
+        <!-- Material Dialogs -->
+        <item name="md_corner_radius">14dp</item>
+        <item name="md_font_title">@font/googlesans_medium</item>
+        <item name="md_font_body">@font/googlesans_regular</item>
+        <item name="md_font_button">@font/googlesans_medium</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
+        <item name="md_ripple_color">@color/colorAccentContrast</item>
+        <item name="md_divider_color">@color/colorAccent</item>
+        <item name="md_line_spacing_body">0</item>
+
+        <!-- Bottom sheet dialog -->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
     </style>
 
     <style name="Theme.FilterStyle" parent="Theme.Itteitheapps">
@@ -32,6 +42,7 @@
 
     <!-- BottomSheet Dialog-->
     <style name="BottomSheetDialog_Rounded" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowLightStatusBar">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet_Rounded</item>
     </style>
 

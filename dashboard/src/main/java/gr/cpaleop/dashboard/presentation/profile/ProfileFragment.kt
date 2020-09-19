@@ -1,5 +1,7 @@
 package gr.cpaleop.dashboard.presentation.profile
 
+/*import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input*/
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
@@ -13,6 +15,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.api.load
 import coil.transform.CircleCropTransformation
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
@@ -109,6 +114,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun editSocial(selectedSocialOption: SelectedSocialOption) {
-        TODO("Show dialog to rename")
+        MaterialDialog(requireContext())
+            .lifecycleOwner(viewLifecycleOwner)
+            .title(R.string.profile_social_edit, selectedSocialOption.title)
+            .cancelOnTouchOutside(true)
+            .positiveButton(R.string.profile_social_edit_submit)
+            .input(prefill = selectedSocialOption.value) { materialDialog, input ->
+                viewModel.updateSocial(selectedSocialOption.social, input.toString())
+                materialDialog.dismiss()
+            }
+            .negativeButton(R.string.profile_social_edit_cancel) {
+                it.cancel()
+            }
+            .show()
     }
 }

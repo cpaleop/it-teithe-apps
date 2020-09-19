@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.R
+import gr.cpaleop.dashboard.domain.entities.Social
 import gr.cpaleop.dashboard.domain.usecases.GetProfileUseCase
+import gr.cpaleop.dashboard.domain.usecases.UpdateSocialUseCase
 import gr.cpaleop.dashboard.presentation.profile.options.ProfileOption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +17,8 @@ import timber.log.Timber
 
 class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
-    private val profilePresentationMapper: ProfilePresentationMapper
+    private val profilePresentationMapper: ProfilePresentationMapper,
+    private val updateSocialUseCase: UpdateSocialUseCase
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -71,11 +74,27 @@ class ProfileViewModel(
                 _profile.value?.social?.find { it.label == value }?.content ?: return@launch
             val selectedContentTitle =
                 _profile.value?.social?.find { it.label == value }?.label ?: return@launch
-            val selectedSocialOption = SelectedSocialOption(selectedContentTitle, selectedContent)
+            val social =
+                _profile.value?.social?.find { it.label == value }?.socialType ?: return@launch
+            val selectedSocialOption =
+                SelectedSocialOption(social, selectedContentTitle, selectedContent)
 
             when (choice) {
                 "Copy" -> _choiceCopyToClipboard.value = selectedSocialOption
                 "Edit" -> _choiceEdit.value = selectedSocialOption
+            }
+        }
+    }
+
+    fun updateSocial(social: Social, value: String) {
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                _profile.value = profilePresentationMapper(updateSocialUseCase(social, value))
+            } catch (t: Throwable) {
+                Timber.e(t)
+            } finally {
+                _loading.value = false
             }
         }
     }

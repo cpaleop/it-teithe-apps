@@ -51,7 +51,11 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     //Material Dialogs
-    implementation "com.afollestad.material-dialogs:core:2.0.0"
+    def material_dialogs = "3.3.0"
+    def material_dialogs_lifecycle = "3.2.1"
+    implementation "com.afollestad.material-dialogs:core:$material_dialogs"
+    implementation "com.afollestad.material-dialogs:input:$material_dialogs"
+    implementation "com.afollestad.material-dialogs:lifecycle:$material_dialogs_lifecycle"
 
     //Timber
     implementation "com.jakewharton.timber:timber:4.7.1"

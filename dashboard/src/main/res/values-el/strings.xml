@@ -23,6 +23,9 @@
     <string name="profile_personal_website_title">Ιστότοπος</string>
     <string name="profile_personal_description_title">Περιγραφή</string>
     <string name="profile_personal_telephoneNumber_title">Προσωπικό τηλέφωνο</string>
+    <string name="profile_social_edit">Edit %1$s</string>
+    <string name="profile_social_edit_submit">OK</string>
+    <string name="profile_social_edit_cancel">Cancel</string>
     <string name="profile_toast_clipboard">Copied!</string>
 
     <!-- Academic details -->

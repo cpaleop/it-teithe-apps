@@ -1,6 +1,7 @@
 package gr.cpaleop.dashboard.presentation.profile
 
 import androidx.annotation.DrawableRes
+import gr.cpaleop.dashboard.domain.entities.Social
 
 data class ProfilePresentation(
     val profilePhotoUrl: String,
@@ -14,6 +15,7 @@ data class ProfilePresentation(
 )
 
 data class ProfileSocialDetails(
+    val socialType: Social,
     val type: ProfileDetailsType,
     @DrawableRes
     val socialLogoResource: Int,

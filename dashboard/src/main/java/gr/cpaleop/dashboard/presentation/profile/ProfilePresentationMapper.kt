@@ -4,6 +4,7 @@ import android.content.Context
 import gr.cpaleop.common.extensions.safe
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.Profile
+import gr.cpaleop.dashboard.domain.entities.Social
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,30 +15,35 @@ class ProfilePresentationMapper(private val applicationContext: Context) {
             val socialsList = listOf(
                 ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
+                    socialType = Social.FACEBOOK,
                     label = applicationContext.getString(R.string.profile_socials_facebook_title),
                     socialLogoResource = R.drawable.ic_facebook,
                     content = profile.socialMedia.facebook.safe("-")
                 ),
                 ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
+                    socialType = Social.GITHUB,
                     label = applicationContext.getString(R.string.profile_socials_github_title),
                     socialLogoResource = R.drawable.ic_github,
                     content = profile.socialMedia.github.safe("-")
                 ),
                 ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
+                    socialType = Social.TWITTER,
                     label = applicationContext.getString(R.string.profile_socials_twitter_title),
                     socialLogoResource = R.drawable.ic_twitter,
                     content = profile.socialMedia.twitter.safe("-")
                 ),
                 ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
+                    socialType = Social.LINKEDIN,
                     label = applicationContext.getString(R.string.profile_socials_linkedin_title),
                     socialLogoResource = R.drawable.ic_linkedin,
                     content = profile.socialMedia.linkedIn.safe("-")
                 ),
                 ProfileSocialDetails(
                     type = ProfileDetailsType.CONTENT,
+                    socialType = Social.GOOGLEPLUS,
                     socialLogoResource = R.drawable.ic_google_plus,
                     label = applicationContext.getString(R.string.profile_socials_googleplus_title),
                     content = profile.socialMedia.googlePlus.safe("-")
