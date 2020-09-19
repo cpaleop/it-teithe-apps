@@ -7,6 +7,6 @@ class GetDocumentUseCaseImpl(private val deviceStorageRepository: DeviceStorageR
     GetDocumentUseCase {
 
     override suspend fun invoke(uri: String): Document {
-        return deviceStorageRepository.getLocalDocumentByUri(uri)
+        return deviceStorageRepository.getDocumentByUri(uri)
     }
 }

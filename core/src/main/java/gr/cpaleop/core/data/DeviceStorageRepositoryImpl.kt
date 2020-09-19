@@ -1,5 +1,6 @@
 package gr.cpaleop.core.data
 
+import androidx.core.net.toUri
 import gr.cpaleop.common.extensions.diff
 import gr.cpaleop.core.data.mappers.DocumentMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
@@ -13,6 +14,7 @@ import okio.appendingSink
 import okio.buffer
 import timber.log.Timber
 import java.io.File
+import java.net.URI
 
 class DeviceStorageRepositoryImpl(
     @DownloadFolder private val folder: File,
@@ -37,7 +39,7 @@ class DeviceStorageRepositoryImpl(
             return@withContext
         }
 
-    override suspend fun getLocalDocuments(): List<Document> = withContext(Dispatchers.IO) {
+    override suspend fun getDocuments(): List<Document> = withContext(Dispatchers.IO) {
         val documentList = appDatabase.documentDao().fetchAll()
         val validatedDocuments = validateDocumentFiles(documentList)
         val obsoleteDocumentList = documentList.diff(validatedDocuments)
@@ -46,8 +48,35 @@ class DeviceStorageRepositoryImpl(
         return@withContext validatedDocuments
     }
 
-    override suspend fun getLocalDocumentByUri(uri: String): Document {
+    override suspend fun getDocumentByUri(uri: String): Document {
         return appDatabase.documentDao().fetchByUri(uri)
+    }
+
+    override suspend fun deleteDocument(uri: String) {
+        val deleted = File(URI(uri)).deleteRecursively()
+        if (deleted) {
+            val document = appDatabase.documentDao().fetchByUri(uri)
+            appDatabase.documentDao().delete(document)
+        }
+    }
+
+    override suspend fun renameDocument(uri: String, newName: String) {
+        val originalFile = File(URI(uri))
+        val originalFileAbsoluteDirectoryPath =
+            originalFile.absolutePath.removeSuffix("/${originalFile.name}")
+        val destinationFile = File("$originalFileAbsoluteDirectoryPath/$newName")
+
+        val renamed = File(URI(uri)).renameTo(destinationFile)
+        if (renamed) {
+            val document = appDatabase.documentDao().fetchByUri(uri)
+            appDatabase.documentDao().delete(document)
+            val newDocument = document.copy(
+                absolutePath = destinationFile.absolutePath,
+                name = newName,
+                uri = destinationFile.toUri().toString()
+            )
+            appDatabase.documentDao().insert(newDocument)
+        }
     }
 
     private fun validateDocumentFiles(documentList: List<Document>): List<Document> {

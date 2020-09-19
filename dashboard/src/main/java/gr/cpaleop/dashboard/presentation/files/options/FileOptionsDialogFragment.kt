@@ -8,7 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.MergeAdapter
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
@@ -23,8 +25,6 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
     private var _binding: DialogFragmentFileOptionsBinding? = null
     private val binding: DialogFragmentFileOptionsBinding get() = _binding!!
     private var fileOptionAdapter: FileOptionAdapter? = null
-    private var fileOptionAnnouncementAdapter: FileOptionAnnouncementAdapter? = null
-    private var fileOptionConcatAdapter: MergeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,30 +45,31 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        fileOptionAdapter = FileOptionAdapter {
-
-        }
-
-        fileOptionAnnouncementAdapter = FileOptionAnnouncementAdapter(::handleAnnouncementChoice)
-
-        fileOptionConcatAdapter = MergeAdapter(fileOptionAnnouncementAdapter, fileOptionAdapter)
-        binding.fileOptionsRecyclerView.adapter = fileOptionConcatAdapter
+        fileOptionAdapter = FileOptionAdapter(viewModel::handleFileOptionChoice)
+        binding.fileOptionsRecyclerView.adapter = fileOptionAdapter
     }
 
     private fun observeViewModel() {
         viewModel.run {
             document.observe(viewLifecycleOwner, Observer(::updateTitle))
             fileOptions.observe(viewLifecycleOwner, Observer(::updateFileOptions))
-            fileOptionsAnnouncement.observe(
+            optionNavigateAnnouncement.observe(
                 viewLifecycleOwner,
-                Observer(::updateFileOptionsAnnouncement)
+                Observer(::navigateToAnnouncement)
             )
-            navigateAnnouncement.observe(viewLifecycleOwner, Observer(::navigateToAnnouncement))
+            optionDelete.observe(
+                viewLifecycleOwner,
+                Observer(::showDeleteConfirmationDialog)
+            )
+            optionRename.observe(
+                viewLifecycleOwner,
+                Observer(::showRenameDialog)
+            )
+            optionInfo.observe(
+                viewLifecycleOwner,
+                Observer(::showInfoDialog)
+            )
         }
-    }
-
-    private fun handleAnnouncementChoice(choice: String) {
-        viewModel.getAnnouncementId()
     }
 
     private fun updateTitle(document: Document) {
@@ -79,10 +80,6 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
         fileOptionAdapter?.submitList(fileOptions)
     }
 
-    private fun updateFileOptionsAnnouncement(fileOptions: List<FileOption>) {
-        fileOptionAnnouncementAdapter?.submitList(fileOptions)
-    }
-
     private fun navigateToAnnouncement(announcementId: String) {
         dismiss()
         val directions =
@@ -90,5 +87,44 @@ class FileOptionsDialogFragment : BottomSheetDialogFragment() {
                 announcementId
             )
         navController.navigate(directions)
+    }
+
+    private fun showDeleteConfirmationDialog(fileDeleteDetails: FileDetails) {
+        MaterialDialog(requireContext())
+            .lifecycleOwner(viewLifecycleOwner)
+            .cancelOnTouchOutside(true)
+            .title(R.string.files_delete_dialog_title, fileDeleteDetails.name)
+            .positiveButton(R.string.profile_social_edit_submit)
+            .message(R.string.files_delete_dialog_body)
+            .positiveButton(R.string.files_delete_dialog_confirm) { materialDialog ->
+                viewModel.deleteFile(fileDeleteDetails.uri)
+                this@FileOptionsDialogFragment.dismiss()
+                materialDialog.dismiss()
+            }
+            .negativeButton(R.string.files_delete_dialog_cancel) {
+                it.cancel()
+            }
+            .show()
+    }
+
+    private fun showRenameDialog(fileRenameDetails: FileDetails) {
+        MaterialDialog(requireContext())
+            .lifecycleOwner(viewLifecycleOwner)
+            .cancelOnTouchOutside(true)
+            .title(R.string.files_rename_dialog_title)
+            .positiveButton(R.string.profile_social_edit_submit)
+            .input(prefill = fileRenameDetails.name) { materialDialog, input ->
+                viewModel.renameFile(fileRenameDetails.uri, input.toString())
+                this@FileOptionsDialogFragment.dismiss()
+                materialDialog.dismiss()
+            }
+            .negativeButton(R.string.profile_social_edit_cancel) {
+                it.cancel()
+            }
+            .show()
+    }
+
+    private fun showInfoDialog(fileUri: String) {
+        TODO("Show file info dialog")
     }
 }

@@ -146,6 +146,9 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoader))
+            refresh.observe(viewLifecycleOwner, Observer {
+                presentDocuments()
+            })
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
             documentsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyDocumentsView))
             documentsFilterEmpty.observe(

@@ -6,7 +6,11 @@ interface DeviceStorageRepository {
 
     suspend fun saveFile(announcementId: String, fileName: String, fileData: ByteArray)
 
-    suspend fun getLocalDocuments(): List<Document>
+    suspend fun getDocuments(): List<Document>
 
-    suspend fun getLocalDocumentByUri(uri: String): Document
+    suspend fun getDocumentByUri(uri: String): Document
+
+    suspend fun deleteDocument(uri: String)
+
+    suspend fun renameDocument(uri: String, newName: String)
 }

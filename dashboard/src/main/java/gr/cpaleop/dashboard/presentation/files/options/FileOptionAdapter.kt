@@ -3,8 +3,9 @@ package gr.cpaleop.dashboard.presentation.files.options
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import gr.cpaleop.dashboard.domain.entities.FileOptionType
 
-class FileOptionAdapter(private val onClickListener: (String) -> Unit) :
+class FileOptionAdapter(private val onClickListener: (FileOptionType) -> Unit) :
     ListAdapter<FileOption, FileOptionHolder>(FILE_OPTION_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileOptionHolder {

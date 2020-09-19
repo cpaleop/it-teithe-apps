@@ -8,12 +8,21 @@ import kotlinx.coroutines.withContext
 class DeviceStorageRepositoryImpl(private val deviceStorageRepository: gr.cpaleop.core.domain.repositories.DeviceStorageRepository) :
     DeviceStorageRepository {
 
-    override suspend fun getLocalDocuments(): List<Document> {
-        return deviceStorageRepository.getLocalDocuments()
+    override suspend fun getDocuments(): List<Document> {
+        return deviceStorageRepository.getDocuments()
     }
 
-    override suspend fun getLocalDocumentByUri(uri: String): Document =
+    override suspend fun getDocumentByUri(uri: String): Document =
         withContext(Dispatchers.IO) {
-            deviceStorageRepository.getLocalDocumentByUri(uri)
+            deviceStorageRepository.getDocumentByUri(uri)
+        }
+
+    override suspend fun deleteDocument(uri: String) = withContext(Dispatchers.IO) {
+        deviceStorageRepository.deleteDocument(uri)
+    }
+
+    override suspend fun renameDocument(uri: String, newName: String) =
+        withContext(Dispatchers.IO) {
+            deviceStorageRepository.renameDocument(uri, newName)
         }
 }

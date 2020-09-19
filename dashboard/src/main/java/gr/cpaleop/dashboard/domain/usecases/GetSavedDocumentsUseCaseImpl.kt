@@ -7,6 +7,6 @@ class GetSavedDocumentsUseCaseImpl(private val deviceStorageRepository: DeviceSt
     GetSavedDocumentsUseCase {
 
     override suspend fun invoke(): List<Document> {
-        return deviceStorageRepository.getLocalDocuments()
+        return deviceStorageRepository.getDocuments()
     }
 }

@@ -19,6 +19,7 @@ import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.Cate
 import gr.cpaleop.dashboard.presentation.announcements.options.SortOptionsViewModel
 import gr.cpaleop.dashboard.presentation.files.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.files.FilesViewModel
+import gr.cpaleop.dashboard.presentation.files.options.FileOptionMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
@@ -34,8 +35,9 @@ val dashboardModule = module {
     viewModel { SortOptionsViewModel() }
     viewModel { AnnouncementsViewModel(get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
-    viewModel { FilesViewModel(get(), get(), get(), get()) }
+    viewModel { FilesViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
+    single { FileOptionMapper() }
     single { ProfilePresentationMapper(get()) }
     single { NotificationPresentationMapper(get()) }
     single { AnnouncementPresentationMapper(get()) }
@@ -47,6 +49,8 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<RenameFileUseCase> { RenameFileUseCaseImpl(get()) }
+    single<DeleteFileUseCase> { DeleteFileUseCaseImpl(get()) }
     single<GetDocumentUseCase> { GetDocumentUseCaseImpl(get()) }
     single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
     single<GetFileOptionsUseCase> { GetFileOptionsUseCaseImpl() }

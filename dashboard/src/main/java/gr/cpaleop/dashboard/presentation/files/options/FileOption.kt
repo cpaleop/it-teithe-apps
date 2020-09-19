@@ -1,14 +1,13 @@
 package gr.cpaleop.dashboard.presentation.files.options
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import gr.cpaleop.dashboard.domain.entities.FileOptionType
 
 data class FileOption(
     val type: FileOptionType,
-    val name: String,
+    @StringRes
+    val name: Int,
     @DrawableRes
     val iconResource: Int
 )
-
-enum class FileOptionType {
-    FILE, ANNOUNCEMENT
-}
