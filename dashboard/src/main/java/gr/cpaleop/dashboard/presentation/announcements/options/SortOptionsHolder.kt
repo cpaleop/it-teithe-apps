@@ -11,7 +11,7 @@ class SortOptionsHolder(private val binding: ItemOptionSortBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: SortOption) {
-        binding.optionName.setText(item.nameResource)
+        binding.optionLabel.setText(item.nameResource)
         binding.optionImageView.visibility = if (item.selected) View.VISIBLE else View.INVISIBLE
         binding.optionImageView.setImageResource(item.type.imageRes)
     }

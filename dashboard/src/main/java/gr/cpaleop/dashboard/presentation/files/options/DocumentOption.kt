@@ -2,10 +2,10 @@ package gr.cpaleop.dashboard.presentation.files.options
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import gr.cpaleop.dashboard.domain.entities.FileOptionType
+import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 
-data class FileOption(
-    val type: FileOptionType,
+data class DocumentOption(
+    val type: DocumentOptionType,
     @StringRes
     val name: Int,
     @DrawableRes

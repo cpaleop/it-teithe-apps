@@ -63,6 +63,10 @@
     <string name="files_option_share">Share</string>
     <string name="files_option_info">Info</string>
     <string name="files_share_file_send_to">Send to</string>
+    <string name="files_sort_title">Sort files by</string>
+    <string name="files_sort_date">Date</string>
+    <string name="files_sort_alphabetical">Alphabetical</string>
+    <string name="files_group_by_annou">Group</string>
 
     <!-- Options -->
     <string name="option_sort_title">Sort by</string>

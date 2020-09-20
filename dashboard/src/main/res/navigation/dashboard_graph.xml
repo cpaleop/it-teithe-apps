@@ -56,6 +56,10 @@
         <action
             android:id="@+id/filesToFileOptionsDialog"
             app:destination="@id/fileOptionsDialog" />
+
+        <action
+            android:id="@+id/filesToFileSortOptionsDialog"
+            app:destination="@id/fileSortOptionsDialog" />
     </fragment>
 
     <fragment
@@ -111,6 +115,12 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </dialog>
+
+    <dialog
+        android:id="@+id/fileSortOptionsDialog"
+        android:name="gr.cpaleop.dashboard.presentation.files.sort.FileSortDialogFragment"
+        android:label="FileSortDialogFragment"
+        tools:layout="@layout/dialog_fragment_sort_files" />
 
     <dialog
         android:id="@+id/profileOptionsDialog"

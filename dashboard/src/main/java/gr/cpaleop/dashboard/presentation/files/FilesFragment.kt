@@ -1,10 +1,12 @@
 package gr.cpaleop.dashboard.presentation.files
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -19,6 +21,7 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
+import gr.cpaleop.dashboard.presentation.files.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -28,7 +31,7 @@ import gr.cpaleop.teithe_apps.R as appR
 
 class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
-    private val viewModel: FilesViewModel by sharedViewModel()
+    private val viewModel: DocumentsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
 
     @Authority
@@ -37,6 +40,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
     private var submitListCallbackAction: () -> Unit = {}
+    private var drawableMap: MutableMap<Boolean, Drawable?>? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -54,16 +58,25 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.presentDocuments()
+        refreshViewState()
     }
 
     private fun setupViews() {
+        drawableMap = mutableMapOf(
+            Pair(true, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down)),
+            Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
+        )
+
         filesAdapter = FilesAdapter(::openFile, ::navigateToFileOptionsDialog)
         binding.documentsRecyclerView.adapter = filesAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
             binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
-            viewModel.presentDocuments()
+            refreshViewState()
+        }
+
+        binding.filesSortingTextView.setOnClickListener {
+            navigateToFileSortOptionsDialog()
         }
 
         binding.documentsSearchTextView.run {
@@ -147,7 +160,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoader))
             refresh.observe(viewLifecycleOwner, Observer {
-                presentDocuments()
+                refreshViewState()
             })
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
             documentsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyDocumentsView))
@@ -155,7 +168,13 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
                 viewLifecycleOwner,
                 Observer(::updateDocumentsNotFoundView)
             )
+            documentSortOptionSelected.observe(viewLifecycleOwner, Observer(::updateSortView))
         }
+    }
+
+    private fun refreshViewState() {
+        viewModel.presentDocuments()
+        viewModel.presentDocumentSortSelected()
     }
 
     private fun openFile(fileAbsolutePath: String) {
@@ -178,6 +197,11 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         navController.navigate(directions)
     }
 
+    private fun navigateToFileSortOptionsDialog() {
+        val directions = FilesFragmentDirections.filesToFileSortOptionsDialog()
+        navController.navigate(directions)
+    }
+
     private fun updateDocuments(documents: List<FileDocument>) {
         filesAdapter?.submitList(documents) {
             submitListCallbackAction()
@@ -195,6 +219,19 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         binding.documentsEmptyTextView.run {
             text = requireContext().getString(R.string.files_not_found)
             isVisible = documentsNotFound
+        }
+    }
+
+    private fun updateSortView(documentSortOption: DocumentSortOption) {
+        binding.filesSortingTextView.run {
+            setText(documentSortOption.label)
+            val drawable = drawableMap?.get(documentSortOption.descending)
+            setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                drawable,
+                null
+            )
         }
     }
 

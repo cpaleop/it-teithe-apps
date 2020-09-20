@@ -3,10 +3,10 @@ package gr.cpaleop.dashboard.presentation.files.options
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import gr.cpaleop.dashboard.domain.entities.FileOptionType
+import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 
-class FileOptionAdapter(private val onClickListener: (FileOptionType) -> Unit) :
-    ListAdapter<FileOption, FileOptionHolder>(FILE_OPTION_DIFF_UTIL) {
+class FileOptionAdapter(private val onClickListener: (DocumentOptionType) -> Unit) :
+    ListAdapter<DocumentOption, FileOptionHolder>(FILE_OPTION_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileOptionHolder {
         return FileOptionHolder.create(parent, onClickListener)
@@ -18,13 +18,19 @@ class FileOptionAdapter(private val onClickListener: (FileOptionType) -> Unit) :
 
     companion object {
 
-        private val FILE_OPTION_DIFF_UTIL = object : DiffUtil.ItemCallback<FileOption>() {
+        private val FILE_OPTION_DIFF_UTIL = object : DiffUtil.ItemCallback<DocumentOption>() {
 
-            override fun areItemsTheSame(oldItem: FileOption, newItem: FileOption): Boolean {
+            override fun areItemsTheSame(
+                oldItem: DocumentOption,
+                newItem: DocumentOption
+            ): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: FileOption, newItem: FileOption): Boolean {
+            override fun areContentsTheSame(
+                oldItem: DocumentOption,
+                newItem: DocumentOption
+            ): Boolean {
                 return oldItem == newItem
             }
         }

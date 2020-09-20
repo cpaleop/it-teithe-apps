@@ -20,7 +20,7 @@
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_info" />
+        tools:srcCompat="@drawable/ic_edit" />
 
     <TextView
         android:id="@+id/fileOptionLabel"
