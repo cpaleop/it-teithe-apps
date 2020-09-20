@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files
+package gr.cpaleop.dashboard.presentation.documents
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -20,8 +20,8 @@ import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
-import gr.cpaleop.dashboard.databinding.FragmentFilesBinding
-import gr.cpaleop.dashboard.presentation.files.sort.DocumentSortOption
+import gr.cpaleop.dashboard.databinding.FragmentDocumentsBinding
+import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -29,14 +29,14 @@ import org.koin.core.qualifier.named
 import java.io.File
 import gr.cpaleop.teithe_apps.R as appR
 
-class FilesFragment : BaseFragment<FragmentFilesBinding>() {
+class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private val viewModel: DocumentsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
 
     @Authority
     private val authority: String by inject(named<Authority>())
-    private var filesAdapter: FilesAdapter? = null
+    private var documentsAdapter: DocumentsAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
     private var submitListCallbackAction: () -> Unit = {}
@@ -45,8 +45,8 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     override fun inflateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentFilesBinding {
-        return FragmentFilesBinding.inflate(inflater, container, false)
+    ): FragmentDocumentsBinding {
+        return FragmentDocumentsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,8 +67,8 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
             Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
         )
 
-        filesAdapter = FilesAdapter(::openFile, ::navigateToFileOptionsDialog)
-        binding.documentsRecyclerView.adapter = filesAdapter
+        documentsAdapter = DocumentsAdapter(::openFile, ::navigateToFileOptionsDialog)
+        binding.documentsRecyclerView.adapter = documentsAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
             refreshViewState()
@@ -187,37 +187,37 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         }
 
         val chooserIntent =
-            Intent.createChooser(intent, context?.getString(R.string.files_choose_file))
+            Intent.createChooser(intent, context?.getString(R.string.documents_choose_file))
         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(chooserIntent)
     }
 
     private fun navigateToFileOptionsDialog(fileUri: String) {
-        val directions = FilesFragmentDirections.filesToFileOptionsDialog(fileUri)
+        val directions = DocumentsFragmentDirections.documentsToDocumentOptionsDialog(fileUri)
         navController.navigate(directions)
     }
 
     private fun navigateToFileSortOptionsDialog() {
-        val directions = FilesFragmentDirections.filesToFileSortOptionsDialog()
+        val directions = DocumentsFragmentDirections.documentsToDocumentSortOptionsDialog()
         navController.navigate(directions)
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
-        filesAdapter?.submitList(documents) {
+        documentsAdapter?.submitList(documents) {
             submitListCallbackAction()
         }
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
         binding.documentsEmptyTextView.run {
-            text = requireContext().getString(R.string.files_empty)
+            text = requireContext().getString(R.string.documents_empty)
             isVisible = documentsEmpty
         }
     }
 
     private fun updateDocumentsNotFoundView(documentsNotFound: Boolean) {
         binding.documentsEmptyTextView.run {
-            text = requireContext().getString(R.string.files_not_found)
+            text = requireContext().getString(R.string.documents_not_found)
             isVisible = documentsNotFound
         }
     }

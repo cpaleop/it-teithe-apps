@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files.sort
+package gr.cpaleop.dashboard.presentation.documents.sort
 
 import androidx.annotation.StringRes
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType

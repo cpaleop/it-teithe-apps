@@ -1,11 +1,11 @@
-package gr.cpaleop.dashboard.presentation.files
+package gr.cpaleop.dashboard.presentation.documents
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.dashboard.databinding.ItemDocumentBinding
 
-class FilesHolder(
+class DocumentsHolder(
     private val binding: ItemDocumentBinding,
     private val onClickListener: (String) -> Unit,
     private val moreClickListener: (String) -> Unit
@@ -25,10 +25,10 @@ class FilesHolder(
             parent: ViewGroup,
             onClickListener: (String) -> Unit,
             moreClickListener: (String) -> Unit
-        ): FilesHolder {
+        ): DocumentsHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemDocumentBinding.inflate(layoutInflater, parent, false)
-            return FilesHolder(binding, onClickListener, moreClickListener)
+            return DocumentsHolder(binding, onClickListener, moreClickListener)
         }
     }
 }

@@ -8,30 +8,23 @@ import androidx.lifecycle.Observer
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gr.cpaleop.common.extensions.setEndListener
-import gr.cpaleop.common.extensions.setLifecycleOwner
-import gr.cpaleop.dashboard.R
+import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
 import gr.cpaleop.dashboard.domain.entities.Category
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CategoriesFilterDialogFragment : BottomSheetDialogFragment() {
+class CategoriesFilterDialogFragment :
+    BaseBottomSheetDialog<DialogFragmentCategoriesFilterBinding>() {
 
     private val viewModel: CategoriesFilterViewModel by viewModel()
-    private var _binding: DialogFragmentCategoriesFilterBinding? = null
-    private val binding: DialogFragmentCategoriesFilterBinding get() = _binding!!
     private var categoryFilterAdapter: CategoryFilterAdapter? = null
 
-    override fun onCreateView(
+    override fun inflateViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.dialog_fragment_categories_filter, container, false)
-        _binding =
-            DialogFragmentCategoriesFilterBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
-        return binding.root
+        container: ViewGroup?
+    ): DialogFragmentCategoriesFilterBinding {
+        return DialogFragmentCategoriesFilterBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

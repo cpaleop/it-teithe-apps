@@ -1,19 +1,19 @@
-package gr.cpaleop.dashboard.presentation.files
+package gr.cpaleop.dashboard.presentation.documents
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
-class FilesAdapter(
+class DocumentsAdapter(
     private val onClickListener: (String) -> Unit,
     private val moreClickListener: (String) -> Unit
-) : ListAdapter<FileDocument, FilesHolder>(FILES_DIFF_UTIL) {
+) : ListAdapter<FileDocument, DocumentsHolder>(FILES_DIFF_UTIL) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilesHolder {
-        return FilesHolder.create(parent, onClickListener, moreClickListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsHolder {
+        return DocumentsHolder.create(parent, onClickListener, moreClickListener)
     }
 
-    override fun onBindViewHolder(holder: FilesHolder, position: Int) {
+    override fun onBindViewHolder(holder: DocumentsHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

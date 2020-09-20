@@ -8,30 +8,21 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import gr.cpaleop.common.extensions.setLifecycleOwner
-import gr.cpaleop.dashboard.R
+import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoryFilterBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class CategoryFilterDialogFragment : BottomSheetDialogFragment() {
+class CategoryFilterDialogFragment : BaseBottomSheetDialog<DialogFragmentCategoryFilterBinding>() {
 
     private val viewModel: CategoryFilterViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
-    private var _binding: DialogFragmentCategoryFilterBinding? = null
-    private val binding: DialogFragmentCategoryFilterBinding get() = _binding!!
     private var categoryFilterAdapter: CategoryFilterAdapter? = null
 
-    override fun onCreateView(
+    override fun inflateViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.dialog_fragment_category_filter, container, false)
-        _binding =
-            DialogFragmentCategoryFilterBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
-        return binding.root
+        container: ViewGroup?
+    ): DialogFragmentCategoryFilterBinding {
+        return DialogFragmentCategoryFilterBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

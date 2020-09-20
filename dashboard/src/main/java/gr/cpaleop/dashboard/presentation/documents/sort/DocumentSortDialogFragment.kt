@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files.sort
+package gr.cpaleop.dashboard.presentation.documents.sort
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import gr.cpaleop.core.presentation.BaseBottomSheetDialog
-import gr.cpaleop.dashboard.databinding.DialogFragmentSortFilesBinding
-import gr.cpaleop.dashboard.presentation.files.DocumentsViewModel
+import gr.cpaleop.dashboard.databinding.DialogFragmentSortDocumentsBinding
+import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FileSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortFilesBinding>() {
+class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocumentsBinding>() {
 
     private val viewModel: DocumentsViewModel by sharedViewModel()
     private var fileSortOptionsAdapter: FileSortOptionsAdapter? = null
@@ -18,8 +18,8 @@ class FileSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortFilesBind
     override fun inflateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): DialogFragmentSortFilesBinding {
-        return DialogFragmentSortFilesBinding.inflate(inflater, container, false)
+    ): DialogFragmentSortDocumentsBinding {
+        return DialogFragmentSortDocumentsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

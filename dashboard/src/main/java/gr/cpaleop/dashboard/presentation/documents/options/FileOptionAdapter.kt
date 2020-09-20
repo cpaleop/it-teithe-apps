@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files.options
+package gr.cpaleop.dashboard.presentation.documents.options
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

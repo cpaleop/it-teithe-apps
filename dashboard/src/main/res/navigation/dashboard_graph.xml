@@ -48,18 +48,18 @@
     </fragment>
 
     <fragment
-        android:id="@+id/filesFragment"
-        android:name="gr.cpaleop.dashboard.presentation.files.FilesFragment"
-        android:label="CatalogFragment"
-        tools:layout="@layout/fragment_files">
+        android:id="@+id/documentsFragment"
+        android:name="gr.cpaleop.dashboard.presentation.documents.DocumentsFragment"
+        android:label="DocumentsFragment"
+        tools:layout="@layout/fragment_documents">
 
         <action
-            android:id="@+id/filesToFileOptionsDialog"
-            app:destination="@id/fileOptionsDialog" />
+            android:id="@+id/documentsToDocumentOptionsDialog"
+            app:destination="@id/documentOptionsDialog" />
 
         <action
-            android:id="@+id/filesToFileSortOptionsDialog"
-            app:destination="@id/fileSortOptionsDialog" />
+            android:id="@+id/documentsToDocumentSortOptionsDialog"
+            app:destination="@id/documentSortOptionsDialog" />
     </fragment>
 
     <fragment
@@ -97,10 +97,10 @@
     </dialog>
 
     <dialog
-        android:id="@+id/fileOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.files.options.FileOptionsDialogFragment"
-        android:label="FileOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_file_options">
+        android:id="@+id/documentOptionsDialog"
+        android:name="gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionsDialogFragment"
+        android:label="DocumentOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_document_options">
 
         <argument
             android:name="uri"
@@ -108,7 +108,7 @@
             app:nullable="false" />
 
         <action
-            android:id="@+id/fileOptionsDialogToAnnouncementActivity"
+            android:id="@+id/documentOptionsDialogToAnnouncementActivity"
             app:destination="@id/announcementActivity"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
@@ -117,10 +117,10 @@
     </dialog>
 
     <dialog
-        android:id="@+id/fileSortOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.files.sort.FileSortDialogFragment"
+        android:id="@+id/documentSortOptionsDialog"
+        android:name="gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortDialogFragment"
         android:label="FileSortDialogFragment"
-        tools:layout="@layout/dialog_fragment_sort_files" />
+        tools:layout="@layout/dialog_fragment_sort_documents" />
 
     <dialog
         android:id="@+id/profileOptionsDialog"

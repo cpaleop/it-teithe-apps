@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files.sort
+package gr.cpaleop.dashboard.presentation.documents.sort
 
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
@@ -10,13 +10,13 @@ class DocumentSortOptionMapper {
         return when (documentSort.type) {
             DocumentSortType.TYPE_DATE -> DocumentSortOption(
                 type = documentSort.type,
-                label = R.string.files_sort_date,
+                label = R.string.documents_sort_date,
                 selected = documentSort.selected,
                 descending = documentSort.descending
             )
             DocumentSortType.TYPE_ALPHABETICAL -> DocumentSortOption(
                 type = documentSort.type,
-                label = R.string.files_sort_alphabetical,
+                label = R.string.documents_sort_alphabetical,
                 selected = documentSort.selected,
                 descending = documentSort.descending
             )

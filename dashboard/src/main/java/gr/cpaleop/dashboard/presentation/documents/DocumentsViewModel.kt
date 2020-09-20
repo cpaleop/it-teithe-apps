@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files
+package gr.cpaleop.dashboard.presentation.documents
 
 import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.getMimeType
@@ -10,12 +10,12 @@ import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.usecases.*
-import gr.cpaleop.dashboard.presentation.files.options.DocumentDetails
-import gr.cpaleop.dashboard.presentation.files.options.DocumentOption
-import gr.cpaleop.dashboard.presentation.files.options.DocumentOptionMapper
-import gr.cpaleop.dashboard.presentation.files.options.FileShareOptionData
-import gr.cpaleop.dashboard.presentation.files.sort.DocumentSortOption
-import gr.cpaleop.dashboard.presentation.files.sort.DocumentSortOptionMapper
+import gr.cpaleop.dashboard.presentation.documents.options.DocumentDetails
+import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
+import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
+import gr.cpaleop.dashboard.presentation.documents.options.FileShareOptionData
+import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
+import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

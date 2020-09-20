@@ -30,5 +30,5 @@
         android:layout_below="@id/separator"
         android:layout_marginTop="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_file_option" />
+        tools:listitem="@layout/item_document_option" />
 </RelativeLayout>

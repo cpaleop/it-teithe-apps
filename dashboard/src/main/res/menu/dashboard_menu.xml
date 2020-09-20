@@ -15,7 +15,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/filesFragment"
+        android:id="@+id/documentsFragment"
         android:icon="@drawable/selector_storage"
         android:title="@string/saved_files_bottom_navigation_menu_title"
         app:showAsAction="ifRoom" />

@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files
+package gr.cpaleop.dashboard.presentation.documents
 
 import android.content.Context
 import gr.cpaleop.core.domain.DateFormatter
@@ -38,7 +38,7 @@ class FileDocumentMapper(
                 size = document.size,
                 previewDrawable = type,
                 lastModifiedDate = applicationContext.getString(
-                    R.string.files_modified,
+                    R.string.documents_modified,
                     lastModifiedHumanReadableFormat
                 )
             )

@@ -5,29 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import gr.cpaleop.common.extensions.setLifecycleOwner
-import gr.cpaleop.dashboard.R
+import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentSortOptionsBinding
 import gr.cpaleop.dashboard.presentation.announcements.options.sort.SortOption
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SortOptionsDialogFragment : BottomSheetDialogFragment() {
+class SortOptionsDialogFragment : BaseBottomSheetDialog<DialogFragmentSortOptionsBinding>() {
 
     private val viewModel: SortOptionsViewModel by viewModel()
-    private var _binding: DialogFragmentSortOptionsBinding? = null
-    private val binding: DialogFragmentSortOptionsBinding get() = _binding!!
-
     private var sortOptionsAdapter: SortOptionsAdapter? = null
 
-    override fun onCreateView(
+    override fun inflateViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.dialog_fragment_sort_options, container, false)
-        _binding = DialogFragmentSortOptionsBinding.bind(view).setLifecycleOwner(viewLifecycleOwner)
-        return binding.root
+        container: ViewGroup?
+    ): DialogFragmentSortOptionsBinding {
+        return DialogFragmentSortOptionsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

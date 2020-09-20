@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.files.sort
+package gr.cpaleop.dashboard.presentation.documents.sort
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
