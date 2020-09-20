@@ -121,10 +121,12 @@ class DocumentsViewModel(
 
     fun searchDocuments(query: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.Default) {
-                documents.postValue(_documents.value?.filter {
-                    it.name.contains(query, true) || it.uri.contains(query, true)
-                })
+            documents.value = withContext(Dispatchers.Default) {
+                _documents.value?.filter {
+                    it.name.contains(query, true) ||
+                            it.uri.contains(query, true) ||
+                            it.lastModifiedDate.contains(query, true)
+                }
             }
         }
     }

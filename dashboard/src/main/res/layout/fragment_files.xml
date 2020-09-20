@@ -68,21 +68,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:drawableEndCompat="@drawable/ic_arrow_down" />
 
-        <ImageView
-            android:id="@+id/filesGroupTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/empty"
-            android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@id/documentsSwipeRefreshLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_group"
-            app:tint="@color/colorAccent"
-            tools:drawableEndCompat="@drawable/ic_arrow_down" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/documentsSwipeRefreshLayout"
             android:layout_width="match_parent"

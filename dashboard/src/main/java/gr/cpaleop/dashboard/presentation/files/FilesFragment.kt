@@ -71,7 +71,6 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
         binding.documentsRecyclerView.adapter = filesAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
-            binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
             refreshViewState()
         }
 
@@ -173,6 +172,7 @@ class FilesFragment : BaseFragment<FragmentFilesBinding>() {
     }
 
     private fun refreshViewState() {
+        binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
         viewModel.presentDocuments()
         viewModel.presentDocumentSortSelected()
     }
