@@ -127,7 +127,7 @@ class DocumentsViewModel(
                             it.uri.contains(query, true) ||
                             it.lastModifiedDate.contains(query, true)
                 }
-            }
+            } ?: return@launch
         }
     }
 
