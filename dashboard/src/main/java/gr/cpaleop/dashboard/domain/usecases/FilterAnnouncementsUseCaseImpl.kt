@@ -6,6 +6,6 @@ class FilterAnnouncementsUseCaseImpl(private val announcementsRepository: Announ
     FilterAnnouncementsUseCase {
 
     override suspend fun invoke(filter: String) {
-        announcementsRepository.filterAnnouncements(filter)
+        announcementsRepository.filter(filter)
     }
 }

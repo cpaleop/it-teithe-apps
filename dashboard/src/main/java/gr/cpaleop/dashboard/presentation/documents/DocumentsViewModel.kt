@@ -13,7 +13,7 @@ import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentDetails
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
-import gr.cpaleop.dashboard.presentation.documents.options.FileShareOptionData
+import gr.cpaleop.dashboard.presentation.documents.options.DocumentShareOptionData
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
 import kotlinx.coroutines.Dispatchers
@@ -86,8 +86,8 @@ class DocumentsViewModel(
     private val _optionDelete = MutableLiveData<DocumentDetails>()
     val optionDelete: LiveData<DocumentDetails> = _optionDelete.toSingleEvent()
 
-    private val _optionShare = MutableLiveData<FileShareOptionData>()
-    val optionShare: LiveData<FileShareOptionData> = _optionShare.toSingleEvent()
+    private val _optionShare = MutableLiveData<DocumentShareOptionData>()
+    val optionShare: LiveData<DocumentShareOptionData> = _optionShare.toSingleEvent()
 
     /*
     Document Sort options
@@ -174,7 +174,7 @@ class DocumentsViewModel(
                 DocumentOptionType.SHARE -> {
                     val uri = _document.value?.uri ?: return@launch
                     val fileMimeType = File(URI(uri)).getMimeType()
-                    _optionShare.value = FileShareOptionData(
+                    _optionShare.value = DocumentShareOptionData(
                         uri = _document.value?.uri ?: return@launch,
                         mimeType = fileMimeType
 

@@ -28,6 +28,8 @@ interface PreferencesRepository {
         const val REFRESH_TOKEN = "REFRESH_TOKEN"
         const val NIGHT_MODE = "NIGHT_MODE"
         const val LANGUAGE = "LANGUAGE_CODE"
+        const val ANNOUNCEMENT_SORT_TYPE = "ANNOUNCEMENT_SORT_TYPE"
+        const val ANNOUNCEMENT_SORT_DESCENDING = "ANNOUNCEMENT_SORT_DESCENDING"
         const val FILE_SORT_TYPE = "FILE_SORT_TYPE"
         const val FILE_SORT_DESCENDING = "FILE_SORT_DESCENDING"
     }

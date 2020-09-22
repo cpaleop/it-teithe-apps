@@ -16,7 +16,7 @@ import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationM
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
-import gr.cpaleop.dashboard.presentation.announcements.options.SortOptionsViewModel
+import gr.cpaleop.dashboard.presentation.announcements.options.AnnouncementSortOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import gr.cpaleop.dashboard.presentation.documents.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
@@ -33,8 +33,7 @@ import retrofit2.Retrofit
 val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
-    viewModel { SortOptionsViewModel() }
-    viewModel { AnnouncementsViewModel(get(), get(), get()) }
+    viewModel { AnnouncementsViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel {
         DocumentsViewModel(
@@ -52,6 +51,7 @@ val dashboardModule = module {
         )
     }
     viewModel { ProfileViewModel(get(), get(), get()) }
+    single { AnnouncementSortOptionMapper() }
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
     single { ProfilePresentationMapper(get()) }
@@ -65,6 +65,9 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<GetAnnouncementSortOptionUseCase> { GetAnnouncementSortOptionUseCaseImpl(get()) }
+    single<GetAnnouncementsSortOptionsUseCase> { GetAnnouncementsSortOptionsUseCaseImpl(get()) }
+    single<UpdateAnnouncementsSortUseCase> { UpdateAnnouncementsSortUseCaseImpl(get(), get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<GetDocumentSortUseCase> { GetDocumentSortUseCaseImpl(get()) }
     single<UpdateDocumentSortUseCase> { UpdateDocumentSortUseCaseImpl(get()) }

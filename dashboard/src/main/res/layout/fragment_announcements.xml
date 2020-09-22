@@ -63,23 +63,12 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/option_sort_by_date_published"
             android:textColor="@color/colorOnPrimaryVariant"
             app:layout_constraintBottom_toTopOf="@id/announcementsSwipeRefreshLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/announcementsSortingImageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@string/empty"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_down"
-            app:layout_constraintBottom_toBottomOf="@id/announcementsSortingTextView"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/announcementsSortingTextView"
-            app:layout_constraintTop_toTopOf="@id/announcementsSortingTextView" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:drawableEnd="@drawable/ic_arrow_down"
+            tools:text="@string/option_sort_by_date_published" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/announcementsSwipeRefreshLayout"

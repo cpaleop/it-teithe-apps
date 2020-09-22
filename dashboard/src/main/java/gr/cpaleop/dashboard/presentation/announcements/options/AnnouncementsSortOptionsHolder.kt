@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.documents.sort
+package gr.cpaleop.dashboard.presentation.announcements.options
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.dashboard.databinding.ItemOptionSortBinding
 
-class FileSortOptionsHolder(
+class AnnouncementsSortOptionsHolder(
     private val binding: ItemOptionSortBinding,
     private val onClickListener: (Int, Boolean, Boolean) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: DocumentSortOption) {
+    fun bind(item: AnnouncementSortOption) {
         binding.root.run {
             setOnClickListener { onClickListener(item.type, item.descending, item.selected) }
             isSelected = item.selected
         }
-        binding.optionLabel.setText(item.label)
+        binding.optionLabel.setText(item.labelResource)
         binding.optionImageView.run {
             visibility = if (item.selected) View.VISIBLE else View.INVISIBLE
             rotationX = if (!item.descending) 180f else 0f
@@ -28,10 +28,10 @@ class FileSortOptionsHolder(
         fun create(
             parent: ViewGroup,
             onClickListener: (Int, Boolean, Boolean) -> Unit
-        ): FileSortOptionsHolder {
+        ): AnnouncementsSortOptionsHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemOptionSortBinding.inflate(layoutInflater, parent, false)
-            return FileSortOptionsHolder(binding, onClickListener)
+            return AnnouncementsSortOptionsHolder(binding, onClickListener)
         }
     }
 }

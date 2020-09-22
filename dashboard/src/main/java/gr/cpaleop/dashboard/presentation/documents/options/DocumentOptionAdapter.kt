@@ -5,14 +5,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 
-class FileOptionAdapter(private val onClickListener: (DocumentOptionType) -> Unit) :
-    ListAdapter<DocumentOption, FileOptionHolder>(FILE_OPTION_DIFF_UTIL) {
+class DocumentOptionAdapter(private val onClickListener: (DocumentOptionType) -> Unit) :
+    ListAdapter<DocumentOption, DocumentOptionHolder>(FILE_OPTION_DIFF_UTIL) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileOptionHolder {
-        return FileOptionHolder.create(parent, onClickListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentOptionHolder {
+        return DocumentOptionHolder.create(parent, onClickListener)
     }
 
-    override fun onBindViewHolder(holder: FileOptionHolder, position: Int) {
+    override fun onBindViewHolder(holder: DocumentOptionHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

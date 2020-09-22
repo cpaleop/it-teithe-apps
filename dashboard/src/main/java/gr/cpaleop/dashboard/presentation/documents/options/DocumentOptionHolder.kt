@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.dashboard.databinding.ItemDocumentOptionBinding
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 
-class FileOptionHolder(
+class DocumentOptionHolder(
     private val binding: ItemDocumentOptionBinding,
     private val onClickListener: (DocumentOptionType) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
@@ -22,10 +22,10 @@ class FileOptionHolder(
         fun create(
             parent: ViewGroup,
             onClickListener: (DocumentOptionType) -> Unit
-        ): FileOptionHolder {
+        ): DocumentOptionHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemDocumentOptionBinding.inflate(layoutInflater, parent, false)
-            return FileOptionHolder(binding, onClickListener)
+            return DocumentOptionHolder(binding, onClickListener)
         }
     }
 }

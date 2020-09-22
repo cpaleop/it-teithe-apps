@@ -40,6 +40,7 @@
 
     <!-- Social -->
     <string name="profile_socials_title">Μέσα κοινωνικής δικτύωσης</string>
+    <string name="profile_socials_googleplus_title" translatable="false">Google+</string>
     <string name="profile_socials_facebook_title" translatable="false">Facebook</string>
     <string name="profile_socials_github_title" translatable="false">Github</string>
     <string name="profile_socials_twitter_title" translatable="false">Twitter</string>
@@ -69,8 +70,7 @@
     <!-- Options -->
     <string name="option_sort_title">Sort by</string>
     <string name="option_sort_by_date_published">Date published</string>
-    <string name="option_sort_by_category">Semester</string>
-    <string name="option_sort_by_publisher">Publisher</string>
+    <string name="option_sort_by_title">Title</string>
 
     <!-- Categories filter -->
     <string name="categories_filter_dialog_title">Follow boards</string>

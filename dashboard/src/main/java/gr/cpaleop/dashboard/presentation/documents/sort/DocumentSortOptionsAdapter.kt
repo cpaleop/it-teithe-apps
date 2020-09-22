@@ -4,14 +4,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
-class FileSortOptionsAdapter(private val onClickListener: (Int, Boolean, Boolean) -> Unit) :
-    ListAdapter<DocumentSortOption, FileSortOptionsHolder>(DIFF_UTIL_FILE_SORT_OPTION) {
+class DocumentSortOptionsAdapter(private val onClickListener: (Int, Boolean, Boolean) -> Unit) :
+    ListAdapter<DocumentSortOption, DocumentSortOptionsHolder>(DIFF_UTIL_FILE_SORT_OPTION) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileSortOptionsHolder {
-        return FileSortOptionsHolder.create(parent, onClickListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentSortOptionsHolder {
+        return DocumentSortOptionsHolder.create(parent, onClickListener)
     }
 
-    override fun onBindViewHolder(holder: FileSortOptionsHolder, position: Int) {
+    override fun onBindViewHolder(holder: DocumentSortOptionsHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

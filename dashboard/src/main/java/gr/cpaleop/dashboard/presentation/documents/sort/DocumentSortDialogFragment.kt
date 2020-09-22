@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocumentsBinding>() {
 
     private val viewModel: DocumentsViewModel by sharedViewModel()
-    private var fileSortOptionsAdapter: FileSortOptionsAdapter? = null
+    private var documentSortOptionsAdapter: DocumentSortOptionsAdapter? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -30,8 +30,8 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
     }
 
     private fun setupViews() {
-        fileSortOptionsAdapter = FileSortOptionsAdapter(viewModel::updateSort)
-        binding.filesSortOptionsRecyclerView.adapter = fileSortOptionsAdapter
+        documentSortOptionsAdapter = DocumentSortOptionsAdapter(viewModel::updateSort)
+        binding.filesSortOptionsRecyclerView.adapter = documentSortOptionsAdapter
     }
 
     private fun observeViewModel() {
@@ -42,6 +42,6 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
     }
 
     private fun updateFileSortOptions(documentSortOptions: List<DocumentSortOption>) {
-        fileSortOptionsAdapter?.submitList(documentSortOptions)
+        documentSortOptionsAdapter?.submitList(documentSortOptions)
     }
 }

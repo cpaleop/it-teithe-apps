@@ -24,7 +24,7 @@ class DocumentOptionsDialogFragment :
 
     private val viewModel: DocumentsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
-    private var fileOptionAdapter: FileOptionAdapter? = null
+    private var documentOptionAdapter: DocumentOptionAdapter? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class DocumentOptionsDialogFragment :
     }
 
     private fun setupViews() {
-        fileOptionAdapter = FileOptionAdapter(viewModel::handleDocumentOptionChoice)
-        binding.fileOptionsRecyclerView.adapter = fileOptionAdapter
+        documentOptionAdapter = DocumentOptionAdapter(viewModel::handleDocumentOptionChoice)
+        binding.fileOptionsRecyclerView.adapter = documentOptionAdapter
     }
 
     private fun observeViewModel() {
@@ -74,7 +74,7 @@ class DocumentOptionsDialogFragment :
     }
 
     private fun updateFileOptions(documentOptions: List<DocumentOption>) {
-        fileOptionAdapter?.submitList(documentOptions)
+        documentOptionAdapter?.submitList(documentOptions)
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
@@ -121,11 +121,11 @@ class DocumentOptionsDialogFragment :
             .show()
     }
 
-    private fun shareFile(fileShareOptionData: FileShareOptionData) {
+    private fun shareFile(documentShareOptionData: DocumentShareOptionData) {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, fileShareOptionData.uri)
-            type = fileShareOptionData.mimeType
+            putExtra(Intent.EXTRA_STREAM, documentShareOptionData.uri)
+            type = documentShareOptionData.mimeType
         }
         startActivity(
             Intent.createChooser(

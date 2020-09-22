@@ -10,16 +10,12 @@ import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
+import gr.cpaleop.dashboard.domain.entities.AnnouncementSort
+import gr.cpaleop.dashboard.domain.entities.AnnouncementSortType
 import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -31,18 +27,44 @@ class AnnouncementsRepositoryImpl(
     private val gson: Gson
 ) : AnnouncementsRepository {
 
-    private var _dataPagingSource: PagingSource<Int, Announcement>? = null
+    private var dataPagingSource: PagingSource<Int, Announcement>? = null
     private val filterChannel = ConflatedBroadcastChannel("")
+    private val sortChannel = ConflatedBroadcastChannel(
+        AnnouncementSort(
+            AnnouncementSortType.DATE,
+            selected = true,
+            descending = true
+        )
+    )
 
-    init {
+    /*init {
         filterChannel
             .asFlow()
             .debounce(300)
-            .onEach { _dataPagingSource?.invalidate() }
+            .onEach { dataPagingSource?.invalidate() }
+
+        sortChannel
+            .asFlow()
+            .onEach { dataPagingSource?.invalidate() }
+    }*/
+
+    override fun invalidateDataSource() {
+        dataPagingSource?.invalidate()
     }
 
-    override suspend fun getAnnouncements(): Flow<PagingData<Announcement>> =
+    override suspend fun getAnnouncements(coroutineScope: CoroutineScope): Flow<PagingData<Announcement>> =
         withContext(Dispatchers.IO) {
+            filterChannel
+                .asFlow()
+                .debounce(300)
+                .onEach { dataPagingSource?.invalidate() }
+                .launchIn(coroutineScope)
+
+            sortChannel
+                .asFlow()
+                .onEach { dataPagingSource?.invalidate() }
+                .launchIn(coroutineScope)
+
             Pager(
                 config = PagingConfig(pageSize = AnnouncementsPagingSource.PAGE_SIZE),
                 pagingSourceFactory = {
@@ -52,15 +74,20 @@ class AnnouncementsRepositoryImpl(
                         appDatabase,
                         announcementMapper,
                         filterChannel.value,
+                        sortChannel.value,
                         gson
                     ).also {
-                        _dataPagingSource = it
+                        dataPagingSource = it
                     }
                 }
             ).flow
         }
 
-    override suspend fun filterAnnouncements(filterQuery: String) {
+    override suspend fun filter(filterQuery: String) {
         filterChannel.send(filterQuery)
+    }
+
+    override suspend fun sort(announcementSort: AnnouncementSort) {
+        sortChannel.send(announcementSort)
     }
 }

@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.domain.usecases
 
+import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.repositories.PreferencesRepository
@@ -9,23 +10,22 @@ class GetDocumentSortOptionsUseCaseImpl(private val preferencesRepository: Prefe
 
     override suspend fun invoke(): List<DocumentSort> {
         val currentDocumentSort = preferencesRepository.getDocumentSort()
-        val notSelectedOption = when (currentDocumentSort.type) {
-            DocumentSortType.TYPE_ALPHABETICAL -> DocumentSort(
+
+        val documentSortOptions = listOf(
+            DocumentSort(
                 type = DocumentSortType.TYPE_DATE,
                 selected = false,
                 descending = false
-            )
-            DocumentSortType.TYPE_DATE -> DocumentSort(
+            ),
+            DocumentSort(
                 type = DocumentSortType.TYPE_ALPHABETICAL,
                 selected = false,
                 descending = false
             )
-            else -> throw IllegalArgumentException("No sorting type found with value ${currentDocumentSort.type}")
-        }
+        )
 
-        return listOf(
-            currentDocumentSort,
-            notSelectedOption
-        ).sortedByDescending { it.type }
+        return documentSortOptions
+            .mapAsync { if (it.type == currentDocumentSort.type) currentDocumentSort else it }
+            .sortedByDescending { it.type }
     }
 }

@@ -10,14 +10,16 @@ interface AnnouncementsApi {
     @GET("announcements")
     suspend fun fetchAnnouncements(
         @Query("pageSize") pageSize: Int,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("sort") sort: String
     ): List<RemoteAnnouncement>
 
     @GET("announcements")
     suspend fun fetchAnnouncementsFiltered(
         @Query("q") filter: String,
         @Query("pageSize") pageSize: Int,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("sort") sort: String
     ): List<RemoteAnnouncement>
 
     @GET("announcements/{announcementId}")
