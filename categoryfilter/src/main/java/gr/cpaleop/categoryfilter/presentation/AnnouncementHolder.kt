@@ -18,7 +18,7 @@ class AnnouncementHolder(
         binding.announcementContent.text = item.text
         binding.announcementDate.text = item.date
         binding.announcementPublisher.text = item.publisherName
-        binding.announcementContent.isVisible = item.attachments.isNotEmpty()
+        binding.announcementCategory.isVisible = item.attachments.isNotEmpty()
     }
 
     companion object {

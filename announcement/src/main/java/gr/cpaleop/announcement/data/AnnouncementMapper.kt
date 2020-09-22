@@ -14,18 +14,18 @@ class AnnouncementMapper {
         remoteCategory: RemoteCategory
     ): Announcement = withContext(Dispatchers.Default) {
         val category = Category(
-            id = remoteCategory.id ?: "",
+            id = remoteCategory.id,
             name = remoteCategory.name ?: ""
         )
 
         Announcement(
-            id = remoteAnnouncement.id ?: "",
+            id = remoteAnnouncement.id,
             title = remoteAnnouncement.title ?: remoteAnnouncement.titleEn ?: "",
             date = remoteAnnouncement.date ?: "",
-            text = remoteAnnouncement.textEn ?: "",
+            text = remoteAnnouncement.textEn ?: remoteAnnouncement.text ?: "",
             category = category,
             publisherName = remoteAnnouncement.publisher?.name ?: "",
-            attachments = remoteAnnouncement.attachments?.filterNotNull() ?: emptyList()
+            attachments = remoteAnnouncement.attachments ?: emptyList()
         )
     }
 }

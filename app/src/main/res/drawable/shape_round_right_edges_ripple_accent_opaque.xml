@@ -2,19 +2,6 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?attr/colorControlHighlight">
 
-    <item android:id="@android:id/mask">
-        <shape android:shape="rectangle">
-            <corners
-                android:bottomLeftRadius="0dp"
-                android:bottomRightRadius="24dp"
-                android:radius="24dp"
-                android:topLeftRadius="0dp"
-                android:topRightRadius="24dp" />
-            <!-- This color is needed to be set - doesn't affect anything -->
-            <solid android:color="@android:color/white" />
-        </shape>
-    </item>
-
     <item>
         <shape android:shape="rectangle">
 

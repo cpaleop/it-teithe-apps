@@ -10,7 +10,7 @@ class AnnouncementMapper {
             id = remoteAnnouncement.id,
             attachments = remoteAnnouncement.attachments ?: emptyList(),
             publisherName = remoteAnnouncement.publisher?.name ?: "",
-            text = remoteAnnouncement.textEn ?: "",
+            text = remoteAnnouncement.textEn ?: remoteAnnouncement.text ?: "",
             date = remoteAnnouncement.date ?: "",
             title = remoteAnnouncement.title ?: ""
         )

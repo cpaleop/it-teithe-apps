@@ -14,6 +14,7 @@ data class RemoteAnnouncement(
     val titleEn: String? = null,
     val title: String? = null,
     val textEn: String? = null,
+    val text: String? = null,
     val publisher: RemotePublisher? = null,
     val date: String? = null,
     val attachments: List<String>? = emptyList()

@@ -11,7 +11,7 @@ import gr.cpaleop.core.domain.entities.Document
 
 @Database(
     entities = [RemoteAnnouncement::class, RemoteCategory::class, Document::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(
