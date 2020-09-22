@@ -1,36 +1,53 @@
 package gr.cpaleop.dashboard.data
 
 import androidx.paging.PagingSource
+import com.google.gson.Gson
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.model.local.AppDatabase
-import gr.cpaleop.core.data.model.response.RemoteCategory
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
+import gr.cpaleop.dashboard.data.model.remote.RemoteAnnouncementTextFilter
+import gr.cpaleop.dashboard.data.model.remote.RemoteAnnouncementTitleFilter
 import timber.log.Timber
 
 class AnnouncementsPagingSource(
     private val announcementsApi: AnnouncementsApi,
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
-    private val announcementMapper: AnnouncementMapper
+    private val announcementMapper: AnnouncementMapper,
+    private val filterQuery: String,
+    private val gson: Gson
 ) : PagingSource<Int, Announcement>() {
-
-    private var categoryList = listOf<RemoteCategory>()
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Announcement> {
         val page = params.key ?: STARTING_PAGE
         return try {
-            val remoteAnnouncementList = announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
-            if (categoryList.isEmpty()) {
-                categoryList = categoriesApi.fetchCategories()
-                appDatabase.remoteCategoryDao().insert(categoryList)
+            val remoteAnnouncementList = if (filterQuery.isNotEmpty() || !filterQuery.isBlank()) {
+                val textFilter = parseTextFilter(filterQuery)
+                val titleFilter = parseTitleFilter(filterQuery)
+
+                val announcementTextFiltered =
+                    announcementsApi.fetchAnnouncementsFiltered(textFilter, PAGE_SIZE, page)
+                val announcementTitleFiltered =
+                    announcementsApi.fetchAnnouncementsFiltered(titleFilter, PAGE_SIZE, page)
+
+                listOf(announcementTextFiltered, announcementTitleFiltered).flatten()
+            } else {
+                announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
             }
 
             appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
+
+            var localCategories = appDatabase.remoteCategoryDao().getAll()
+            if (localCategories.isEmpty()) {
+                localCategories = categoriesApi.fetchCategories()
+                appDatabase.remoteCategoryDao().insert(localCategories)
+            }
+
             val announcements =
-                remoteAnnouncementList.mapAsyncSuspended { announcementMapper(it, categoryList) }
+                remoteAnnouncementList.mapAsyncSuspended { announcementMapper(it, localCategories) }
             LoadResult.Page(
                 data = announcements,
                 prevKey = if (page == STARTING_PAGE) null else page - 1,
@@ -40,6 +57,16 @@ class AnnouncementsPagingSource(
             Timber.e(t)
             LoadResult.Error(t)
         }
+    }
+
+    private fun parseTextFilter(filterQuery: String): String {
+        val remoteAnnouncementTextFilter = RemoteAnnouncementTextFilter(filterQuery)
+        return gson.toJson(remoteAnnouncementTextFilter)
+    }
+
+    private fun parseTitleFilter(filterQuery: String): String {
+        val remoteAnnouncementTitleFilter = RemoteAnnouncementTitleFilter(filterQuery)
+        return gson.toJson(remoteAnnouncementTitleFilter)
     }
 
     companion object {

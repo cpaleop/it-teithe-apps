@@ -34,7 +34,7 @@ val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
     viewModel { SortOptionsViewModel() }
-    viewModel { AnnouncementsViewModel(get(), get()) }
+    viewModel { AnnouncementsViewModel(get(), get(), get()) }
     viewModel { NotificationsViewModel(get(), get()) }
     viewModel {
         DocumentsViewModel(
@@ -65,6 +65,7 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<GetDocumentSortUseCase> { GetDocumentSortUseCaseImpl(get()) }
     single<UpdateDocumentSortUseCase> { UpdateDocumentSortUseCaseImpl(get()) }
     single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
@@ -83,7 +84,15 @@ val dashboardModule = module {
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
     single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }
     single<NotificationsRepository> { NotificationsRepositoryImpl(get(), get()) }
-    single<AnnouncementsRepository> { AnnouncementsRepositoryImpl(get(), get(), get(), get()) }
+    single<AnnouncementsRepository> {
+        AnnouncementsRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
     single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
     single { provideNotificationsApi(get()) }
