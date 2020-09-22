@@ -16,6 +16,7 @@ import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -37,17 +38,6 @@ class AnnouncementsRepositoryImpl(
         )
     )
 
-    /*init {
-        filterChannel
-            .asFlow()
-            .debounce(300)
-            .onEach { dataPagingSource?.invalidate() }
-
-        sortChannel
-            .asFlow()
-            .onEach { dataPagingSource?.invalidate() }
-    }*/
-
     override fun invalidateDataSource() {
         dataPagingSource?.invalidate()
     }
@@ -57,12 +47,18 @@ class AnnouncementsRepositoryImpl(
             filterChannel
                 .asFlow()
                 .debounce(300)
-                .onEach { dataPagingSource?.invalidate() }
+                .onEach {
+                    Timber.e("SKATOULES$it")
+                    dataPagingSource?.invalidate()
+                }
                 .launchIn(coroutineScope)
 
             sortChannel
                 .asFlow()
-                .onEach { dataPagingSource?.invalidate() }
+                .onEach {
+                    Timber.e("SKATOULESSORT$it")
+                    dataPagingSource?.invalidate()
+                }
                 .launchIn(coroutineScope)
 
             Pager(
