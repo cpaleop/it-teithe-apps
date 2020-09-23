@@ -14,7 +14,7 @@ class NotificationPresentationMapper(private val dateFormatter: DateFormatter) {
             @DrawableRes
             val backgroundDrawable =
                 if (notification.seen) R.drawable.shape_round_outline_ripple
-                else R.drawable.shape_round_outline_ripple_on_variant
+                else R.drawable.shape_round_ripple_accent_opaque
             NotificationPresentation(
                 id = notification.id,
                 announcement = notification.announcement.copy(
