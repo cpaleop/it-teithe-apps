@@ -6,19 +6,20 @@ import gr.cpaleop.categoryfilter.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class CategoryFilterViewModel(
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getCategoryNameUseCase: GetCategoryNameUseCase,
     private val observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase,
     private val filterAnnouncementsUseCase: FilterAnnouncementsUseCase
@@ -32,17 +33,10 @@ class CategoryFilterViewModel(
     private val _categoryName = MutableLiveData<String>()
     val categoryName: LiveData<String> = _categoryName.toSingleEvent()
 
-    private val announcementsFilterChannel = ConflatedBroadcastChannel<String>("")
+    private val announcementsFilterChannel = ConflatedBroadcastChannel("")
 
     private val _announcements = MutableLiveData<List<Announcement>>()
-
-    val announcements: MediatorLiveData<List<Announcement>> by lazy {
-        MediatorLiveData<List<Announcement>>().apply {
-            addSource(_announcements) {
-                this.value = it
-            }
-        }
-    }
+    val announcements: LiveData<List<Announcement>> = _announcements.toSingleEvent()
 
     val announcementsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
@@ -53,7 +47,7 @@ class CategoryFilterViewModel(
     }
 
     fun presentCategoryName() {
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             try {
                 _categoryName.value = getCategoryNameUseCase(categoryId)
             } catch (t: Throwable) {
@@ -63,31 +57,32 @@ class CategoryFilterViewModel(
     }
 
     fun presentAnnouncementsByCategory() {
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             try {
-                _loading.value = true
+                val filterFlow = announcementsFilterChannel
+                    .asFlow()
+                    .flowOn(defaultDispatcher)
+                    .debounce(200)
+                    .onEach { _loading.value = true }
+
                 observeAnnouncementsByCategoryUseCase(categoryId)
-                    .combine(
-                        announcementsFilterChannel
-                            .asFlow()
-                            .debounce(200)
-                    ) { announcements, query ->
+                    .combine(filterFlow) { announcements, query ->
                         filterAnnouncementsUseCase(announcements, query)
                     }
+                    .flowOn(defaultDispatcher)
                     .collect {
                         _loading.value = false
                         _announcements.value = it
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
-            } finally {
-                _loading.value = false
             }
         }
     }
 
     fun filterAnnouncements(query: String) {
-        _loading.value = true
-        announcementsFilterChannel.offer(query)
+        viewModelScope.launch(defaultDispatcher) {
+            announcementsFilterChannel.send(query)
+        }
     }
 }
