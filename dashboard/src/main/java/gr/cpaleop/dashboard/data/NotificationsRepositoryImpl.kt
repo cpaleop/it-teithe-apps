@@ -15,7 +15,10 @@ class NotificationsRepositoryImpl(
 
     override suspend fun getNotifications(): List<Notification> = withContext(Dispatchers.IO) {
         val remoteNotifications = notificationsApi.fetchNotifications()
-
         remoteNotifications.notifications.mapAsyncSuspended(notificationMapper::invoke)
+    }
+
+    override suspend fun readAllNotifications() = withContext(Dispatchers.IO) {
+        notificationsApi.readAllNotifications()
     }
 }

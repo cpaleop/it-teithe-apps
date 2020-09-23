@@ -3,9 +3,10 @@ package gr.cpaleop.dashboard.presentation.notifications
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import gr.cpaleop.dashboard.domain.entities.Notification
 
 class NotificationAdapter(private val onClickListener: (String) -> Unit) :
-    ListAdapter<NotificationPresentation, NotificationHolder>(NOTIFICATION_DIFF_UTIL) {
+    ListAdapter<Notification, NotificationHolder>(NOTIFICATION_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHolder {
         return NotificationHolder.create(parent, onClickListener)
@@ -18,18 +19,18 @@ class NotificationAdapter(private val onClickListener: (String) -> Unit) :
     companion object {
 
         private val NOTIFICATION_DIFF_UTIL =
-            object : DiffUtil.ItemCallback<NotificationPresentation>() {
+            object : DiffUtil.ItemCallback<Notification>() {
 
                 override fun areItemsTheSame(
-                    oldItem: NotificationPresentation,
-                    newItem: NotificationPresentation
+                    oldItem: Notification,
+                    newItem: Notification
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: NotificationPresentation,
-                    newItem: NotificationPresentation
+                    oldItem: Notification,
+                    newItem: Notification
                 ): Boolean {
                     return oldItem == newItem
                 }

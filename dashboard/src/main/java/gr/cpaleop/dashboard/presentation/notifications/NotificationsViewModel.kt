@@ -1,10 +1,10 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
 import androidx.lifecycle.*
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
+import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class NotificationsViewModel(
     private val getNotificationsUseCase: GetNotificationsUseCase,
-    private val notificationPresentationMapper: NotificationPresentationMapper
+    private val readAllNotificationsUseCase: ReadAllNotificationsUseCase
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -32,13 +32,11 @@ class NotificationsViewModel(
         }
     }
 
-    val notifications: MediatorLiveData<List<NotificationPresentation>> by lazy {
-        MediatorLiveData<List<NotificationPresentation>>().apply {
+    val notifications: MediatorLiveData<List<Notification>> by lazy {
+        MediatorLiveData<List<Notification>>().apply {
             addSource(_notifications) {
                 viewModelScope.launch {
-                    this@apply.value = withContext(Dispatchers.Default) {
-                        it.mapAsyncSuspended(notificationPresentationMapper::invoke)
-                    }
+                    this@apply.value = it
                 }
             }
         }
@@ -65,11 +63,21 @@ class NotificationsViewModel(
             try {
                 _loading.value = true
                 _notifications.value =
-                    getNotificationsUseCase()/*.mapAsyncSuspended(notificationPresentationMapper::invoke)*/
+                    getNotificationsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
             } finally {
                 _loading.value = false
+            }
+        }
+    }
+
+    fun readAllNotifications() {
+        viewModelScope.launch {
+            try {
+                readAllNotificationsUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }
@@ -81,7 +89,7 @@ class NotificationsViewModel(
                     it.announcement.title.contains(query, true) ||
                             it.announcement.category.contains(query, true) ||
                             it.announcement.date.contains(query, true)
-                }?.mapAsyncSuspended { notificationPresentationMapper(it) }
+                } ?: emptyList()
             }
         }
     }

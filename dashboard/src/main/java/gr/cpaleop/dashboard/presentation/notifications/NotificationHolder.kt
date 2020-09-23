@@ -4,16 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.dashboard.databinding.ItemNotificationBinding
+import gr.cpaleop.dashboard.domain.entities.Notification
 
 class NotificationHolder(
     private val binding: ItemNotificationBinding,
     private val onClickListener: (String) -> Unit
-) :
-    RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: NotificationPresentation) {
+    fun bind(item: Notification) {
         binding.root.setOnClickListener { onClickListener(item.announcement.id) }
-        binding.root.setBackgroundResource(item.background)
         binding.notificationTitle.text = item.announcement.title
         binding.notificationDate.text = item.announcement.date
         binding.notificationCategory.text = item.announcement.category

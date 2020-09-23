@@ -20,7 +20,6 @@ import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import gr.cpaleop.dashboard.presentation.documents.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
-import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
@@ -53,7 +52,6 @@ val dashboardModule = module {
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
     single { ProfilePresentationMapper(get()) }
-    single { NotificationPresentationMapper(get()) }
     single { AnnouncementPresentationMapper(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }
@@ -63,6 +61,7 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
+    single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<GetDocumentSortUseCase> { GetDocumentSortUseCaseImpl(get()) }
     single<UpdateDocumentSortUseCase> { UpdateDocumentSortUseCaseImpl(get()) }
