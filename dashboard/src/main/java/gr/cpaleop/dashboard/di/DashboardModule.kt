@@ -83,12 +83,13 @@ val dashboardModule = module {
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get(), get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get(), get()) }
-    single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get(), get()) }
+    single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
     single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }
     single<NotificationsRepository> { NotificationsRepositoryImpl(get(), get()) }
     single<AnnouncementsRepository> {
         AnnouncementsRepositoryImpl(
+            get(),
             get(),
             get(),
             get(),
