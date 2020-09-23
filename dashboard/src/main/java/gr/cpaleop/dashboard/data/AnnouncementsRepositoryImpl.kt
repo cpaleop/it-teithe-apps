@@ -11,12 +11,10 @@ import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.domain.entities.AnnouncementSort
-import gr.cpaleop.dashboard.domain.entities.AnnouncementSortType
 import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.*
-import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -30,13 +28,7 @@ class AnnouncementsRepositoryImpl(
 
     private var dataPagingSource: PagingSource<Int, Announcement>? = null
     private val filterChannel = ConflatedBroadcastChannel("")
-    private val sortChannel = ConflatedBroadcastChannel(
-        AnnouncementSort(
-            AnnouncementSortType.DATE,
-            selected = true,
-            descending = true
-        )
-    )
+    private val sortChannel = ConflatedBroadcastChannel<AnnouncementSort?>()
 
     override fun invalidateDataSource() {
         dataPagingSource?.invalidate()
@@ -48,7 +40,6 @@ class AnnouncementsRepositoryImpl(
                 .asFlow()
                 .debounce(300)
                 .onEach {
-                    Timber.e("SKATOULES$it")
                     dataPagingSource?.invalidate()
                 }
                 .launchIn(coroutineScope)
@@ -56,7 +47,6 @@ class AnnouncementsRepositoryImpl(
             sortChannel
                 .asFlow()
                 .onEach {
-                    Timber.e("SKATOULESSORT$it")
                     dataPagingSource?.invalidate()
                 }
                 .launchIn(coroutineScope)
@@ -69,8 +59,8 @@ class AnnouncementsRepositoryImpl(
                         categoriesApi,
                         appDatabase,
                         announcementMapper,
-                        filterChannel.value,
-                        sortChannel.value,
+                        filterChannel.valueOrNull,
+                        sortChannel.valueOrNull,
                         gson
                     ).also {
                         dataPagingSource = it

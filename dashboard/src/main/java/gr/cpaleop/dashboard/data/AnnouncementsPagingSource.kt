@@ -19,8 +19,8 @@ class AnnouncementsPagingSource(
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
-    private val filterQuery: String,
-    private val announcementsSort: AnnouncementSort,
+    private val filterQuery: String?,
+    private val announcementsSort: AnnouncementSort?,
     private val gson: Gson
 ) : PagingSource<Int, Announcement>() {
 
@@ -28,17 +28,28 @@ class AnnouncementsPagingSource(
         val page = params.key ?: STARTING_PAGE
         return try {
             val sort = getSort(announcementsSort)
-            val remoteAnnouncementList = if (filterQuery.isNotEmpty() || !filterQuery.isBlank()) {
-                val textFilter = parseTextFilter(filterQuery)
-                val titleFilter = parseTitleFilter(filterQuery)
+            val remoteAnnouncementList =
+                if (filterQuery?.isNotEmpty() == true || filterQuery?.isBlank() == false) {
+                    val textFilter = parseTextFilter(filterQuery)
+                    val titleFilter = parseTitleFilter(filterQuery)
 
-                val announcementTextFiltered =
-                    announcementsApi.fetchAnnouncementsFiltered(textFilter, PAGE_SIZE, page, sort)
-                val announcementTitleFiltered =
-                    announcementsApi.fetchAnnouncementsFiltered(titleFilter, PAGE_SIZE, page, sort)
+                    val announcementTextFiltered =
+                        announcementsApi.fetchAnnouncementsFiltered(
+                            textFilter,
+                            PAGE_SIZE,
+                            page,
+                            sort
+                        )
+                    val announcementTitleFiltered =
+                        announcementsApi.fetchAnnouncementsFiltered(
+                            titleFilter,
+                            PAGE_SIZE,
+                            page,
+                            sort
+                        )
 
-                listOf(announcementTextFiltered, announcementTitleFiltered).flatten()
-            } else {
+                    listOf(announcementTextFiltered, announcementTitleFiltered).flatten()
+                } else {
                 announcementsApi.fetchAnnouncements(PAGE_SIZE, page, sort)
             }
 
@@ -63,7 +74,8 @@ class AnnouncementsPagingSource(
         }
     }
 
-    private fun getSort(announcementsSort: AnnouncementSort): String {
+    private fun getSort(announcementsSort: AnnouncementSort?): String {
+        if (announcementsSort == null) return "-date"
         val field = when (announcementsSort.type) {
             AnnouncementSortType.DATE -> "date"
             AnnouncementSortType.TITLE -> "title"
