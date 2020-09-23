@@ -5,15 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ObserveAnnouncementsUseCase
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AnnouncementsViewModel(
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
     private val observeAnnouncementsUseCase: ObserveAnnouncementsUseCase,
     private val announcementPresentationMapper: AnnouncementPresentationMapper,
     private val filterAnnouncementsUseCase: FilterAnnouncementsUseCase
@@ -27,12 +31,12 @@ class AnnouncementsViewModel(
         _announcements.toSingleEvent()
 
     fun presentAnnouncements() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
-                observeAnnouncementsUseCase(viewModelScope)
-                    .cachedIn(viewModelScope)
+                observeAnnouncementsUseCase()
+                    .flowOn(mainDispatcher)
                     .collect {
-                        _announcements.value = it.map(announcementPresentationMapper::invoke)
+                        _announcements.value = it.mapSync(announcementPresentationMapper::invoke)
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
@@ -41,7 +45,7 @@ class AnnouncementsViewModel(
     }
 
     fun searchAnnouncements(filterQuery: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
                 filterAnnouncementsUseCase(filterQuery)

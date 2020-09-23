@@ -13,6 +13,7 @@ import gr.cpaleop.dashboard.data.remote.ProfileApi
 import gr.cpaleop.dashboard.domain.repositories.*
 import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationMapper
+import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationMapperImpl
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
@@ -24,15 +25,17 @@ import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
-    viewModel { AnnouncementsViewModel(get(), get(), get()) }
-    viewModel { NotificationsViewModel(get(), get()) }
+    viewModel { AnnouncementsViewModel(get(named<MainDispatcher>()), get(), get(), get()) }
+    viewModel { NotificationsViewModel(get(named<MainDispatcher>()), get(), get()) }
     viewModel {
         DocumentsViewModel(
             get(),
@@ -52,7 +55,7 @@ val dashboardModule = module {
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
     single { ProfilePresentationMapper(get()) }
-    single { AnnouncementPresentationMapper(get()) }
+    single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }
     single { FileDocumentMapper(get(), get()) }

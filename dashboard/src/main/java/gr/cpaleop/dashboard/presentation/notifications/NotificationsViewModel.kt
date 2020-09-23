@@ -5,12 +5,14 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
-import kotlinx.coroutines.Dispatchers
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class NotificationsViewModel(
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val readAllNotificationsUseCase: ReadAllNotificationsUseCase
 ) : ViewModel() {
@@ -22,12 +24,8 @@ class NotificationsViewModel(
 
     val notificationsCounter: MediatorLiveData<Int> by lazy {
         MediatorLiveData<Int>().apply {
-            addSource(_notifications) {
-                viewModelScope.launch {
-                    this@apply.value = withContext(Dispatchers.Default) {
-                        it.count { !it.seen }
-                    }
-                }
+            addSource(_notifications) { notifications ->
+                this.value = notifications.count { !it.seen }
             }
         }
     }
@@ -35,9 +33,7 @@ class NotificationsViewModel(
     val notifications: MediatorLiveData<List<Notification>> by lazy {
         MediatorLiveData<List<Notification>>().apply {
             addSource(_notifications) {
-                viewModelScope.launch {
-                    this@apply.value = it
-                }
+                this@apply.value = it
             }
         }
     }
@@ -59,11 +55,10 @@ class NotificationsViewModel(
     }
 
     fun presentNotifications() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                _notifications.value =
-                    getNotificationsUseCase()
+                _notifications.value = getNotificationsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
             } finally {
@@ -73,7 +68,7 @@ class NotificationsViewModel(
     }
 
     fun readAllNotifications() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 readAllNotificationsUseCase()
             } catch (t: Throwable) {
@@ -83,14 +78,12 @@ class NotificationsViewModel(
     }
 
     fun searchNotifications(query: String) {
-        viewModelScope.launch {
-            notifications.value = withContext(Dispatchers.Default) {
-                _notifications.value?.filter {
-                    it.announcement.title.contains(query, true) ||
-                            it.announcement.category.contains(query, true) ||
-                            it.announcement.date.contains(query, true)
-                } ?: emptyList()
-            }
+        viewModelScope.launch(mainDispatcher) {
+            notifications.value = _notifications.value?.filter {
+                it.announcement.title.contains(query, true) ||
+                        it.announcement.category.contains(query, true) ||
+                        it.announcement.date.contains(query, true)
+            } ?: emptyList()
         }
     }
 }

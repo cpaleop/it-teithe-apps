@@ -1,19 +1,8 @@
 package gr.cpaleop.dashboard.presentation.announcements
 
-import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Announcement
 
-class AnnouncementPresentationMapper(private val dateFormatter: DateFormatter) {
+interface AnnouncementPresentationMapper {
 
-    operator fun invoke(announcement: Announcement): AnnouncementPresentation {
-        return AnnouncementPresentation(
-            id = announcement.id,
-            title = announcement.title,
-            date = dateFormatter(announcement.date, "dd MMMM yyyy HH:mm"),
-            category = announcement.category.name,
-            publisherName = announcement.publisherName,
-            content = announcement.text,
-            hasAttachments = announcement.attachments.isNotEmpty()
-        )
-    }
+    operator fun invoke(announcement: Announcement): AnnouncementPresentation
 }

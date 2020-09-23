@@ -11,7 +11,6 @@ import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -31,7 +30,7 @@ class AnnouncementsRepositoryImpl(
         dataPagingSource?.invalidate()
     }
 
-    override suspend fun getAnnouncements(coroutineScope: CoroutineScope): Flow<PagingData<Announcement>> =
+    override suspend fun getAnnouncements(): Flow<PagingData<Announcement>> =
         withContext(Dispatchers.IO) {
             Pager(
                 config = PagingConfig(pageSize = AnnouncementsPagingSource.PAGE_SIZE),
