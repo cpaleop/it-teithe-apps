@@ -175,6 +175,5 @@ class CategoryFilterViewModelTest {
                 attachments = emptyList()
             )
         )
-
     }
 }

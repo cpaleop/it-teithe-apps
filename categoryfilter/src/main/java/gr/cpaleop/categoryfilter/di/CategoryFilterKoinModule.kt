@@ -20,7 +20,7 @@ val categoryFilterModule = module {
     viewModel { CategoryFilterViewModel(get(named<DefaultDispatcher>()), get(), get(), get()) }
     single<GetCategoryNameUseCase> { GetCategoryNameUseCaseImpl(get()) }
     single<ObserveAnnouncementsByCategoryUseCase> { ObserveAnnouncementsByCategoryUseCaseImpl(get()) }
-    single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl() }
+    single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get(named<DefaultDispatcher>())) }
     single { AnnouncementMapper() }
     single<AnnouncementsRepository> { AnnouncementsRepositoryImpl(get(), get(), get(), get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get()) }

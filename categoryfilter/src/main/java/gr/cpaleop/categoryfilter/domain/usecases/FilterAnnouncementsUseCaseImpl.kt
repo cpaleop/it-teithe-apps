@@ -1,15 +1,17 @@
 package gr.cpaleop.categoryfilter.domain.usecases
 
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
-import kotlinx.coroutines.Dispatchers
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class FilterAnnouncementsUseCaseImpl : FilterAnnouncementsUseCase {
+class FilterAnnouncementsUseCaseImpl(@DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher) :
+    FilterAnnouncementsUseCase {
 
     override suspend fun invoke(
         announcements: List<Announcement>,
         query: String
-    ): List<Announcement> = withContext(Dispatchers.Default) {
+    ): List<Announcement> = withContext(defaultDispatcher) {
         if (query.isEmpty()) return@withContext announcements
 
         announcements.filter { announcement ->
