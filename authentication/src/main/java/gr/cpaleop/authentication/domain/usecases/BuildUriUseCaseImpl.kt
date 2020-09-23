@@ -5,10 +5,10 @@ import gr.cpaleop.core.domain.Scope
 
 class BuildUriUseCaseImpl : BuildUriUseCase {
 
-    override fun invoke(loginUrl: String, clientId: String): String {
-        return loginUrl +
+    override fun invoke(): String {
+        return BuildConfig.LOGIN_URL +
                 "authorization/" +
-                "?client_id=${clientId}" +
+                "?client_id=${BuildConfig.CLIENT_ID}" +
                 "&response_type=code" +
                 "&scope=${Scope.ANNOUNCEMENTS}," +
                 "${Scope.EDIT_MAIL}," +

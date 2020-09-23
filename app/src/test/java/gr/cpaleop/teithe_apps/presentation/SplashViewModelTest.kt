@@ -62,7 +62,7 @@ class SplashViewModelTest {
     }
 
     @Test
-    fun `checkUserAuthentication throws exception`() {
+    fun `checkUserAuthentication catches exception`() {
         coEvery { authenticatedUseCase() } throws Throwable("")
         viewModel.checkUserAuthentication()
     }

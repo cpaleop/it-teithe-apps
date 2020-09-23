@@ -79,7 +79,6 @@ class DateFormatterImpl : DateFormatter {
 
     companion object {
 
-        /*private const val FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ssZ"*/
         private const val FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     }
 }

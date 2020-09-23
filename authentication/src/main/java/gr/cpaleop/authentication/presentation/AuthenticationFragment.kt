@@ -38,10 +38,10 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>() {
         }
     }
 
-    private fun openCustomTab(uri: Uri) {
+    private fun openCustomTab(uri: String) {
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(requireContext(), uri)
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(uri))
     }
 
     private fun navigateToDashboard() {
