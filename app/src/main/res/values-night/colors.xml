@@ -5,8 +5,8 @@
     <color name="colorPrimaryVariant">#303134</color>
     <color name="colorOnPrimary">#E8EAED</color>
     <color name="colorOnPrimaryVariant">#9AA0A6</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorAccentOpaque">#4DD81B60</color>
+    <color name="colorAccent">#8AB4F8</color>
+    <color name="colorAccentOpaque">#4D8AB4F8</color>
     <color name="colorAccentContrast">#8AB4F8</color>
     <color name="colorOnAccent">#FFFFFFFF</color>
     <color name="teal_200">#FF03DAC5</color>
@@ -17,4 +17,5 @@
     <color name="red_500">#DB4437</color>
     <color name="blue_A200">#4285F4</color>
     <color name="dialoFragmentBackground">@color/colorPrimaryVariant</color>
+    <color name="dialoFragmentBackgroundVariant">@color/colorPrimary</color>
 </resources>

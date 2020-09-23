@@ -17,4 +17,5 @@
     <color name="red_500">#DB4437</color>
     <color name="blue_A200">#4285F4</color>
     <color name="dialoFragmentBackground">@color/colorPrimary</color>
+    <color name="dialoFragmentBackgroundVariant">@color/colorPrimaryVariant</color>
 </resources>

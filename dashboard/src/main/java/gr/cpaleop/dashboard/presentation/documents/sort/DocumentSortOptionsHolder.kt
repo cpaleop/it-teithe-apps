@@ -16,7 +16,10 @@ class DocumentSortOptionsHolder(
             setOnClickListener { onClickListener(item.type, item.descending, item.selected) }
             isSelected = item.selected
         }
-        binding.optionLabel.setText(item.labelResource)
+        binding.optionLabel.run {
+            setText(item.labelResource)
+            isSelected = item.selected
+        }
         binding.optionImageView.run {
             visibility = if (item.selected) View.VISIBLE else View.INVISIBLE
             setImageResource(item.imageResource)
