@@ -15,6 +15,10 @@ import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.teithe_apps.BuildConfig
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.teithe_apps.di.dispatchers.IODispatcher
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -46,6 +50,9 @@ val networkModule = module {
             get()
         )
     }
+    single(named<MainDispatcher>()) { Dispatchers.Main }
+    single(named<DefaultDispatcher>()) { Dispatchers.Default }
+    single(named<IODispatcher>()) { Dispatchers.IO }
     single { provideAuthenticationApi(get(named<Authentication>())) }
     single(named<DownloadFolder>()) { provideDownloadFolder(get()) }
     single(named<Authority>()) { provideAuthority(get()) }
