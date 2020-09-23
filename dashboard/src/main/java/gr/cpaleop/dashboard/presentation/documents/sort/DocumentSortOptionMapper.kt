@@ -10,13 +10,15 @@ class DocumentSortOptionMapper {
         return when (documentSort.type) {
             DocumentSortType.TYPE_DATE -> DocumentSortOption(
                 type = documentSort.type,
-                label = R.string.documents_sort_date,
+                imageResource = if (documentSort.descending) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up,
+                labelResource = R.string.documents_sort_date,
                 selected = documentSort.selected,
                 descending = documentSort.descending
             )
             DocumentSortType.TYPE_ALPHABETICAL -> DocumentSortOption(
                 type = documentSort.type,
-                label = R.string.documents_sort_alphabetical,
+                imageResource = if (documentSort.descending) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up,
+                labelResource = R.string.documents_sort_alphabetical,
                 selected = documentSort.selected,
                 descending = documentSort.descending
             )

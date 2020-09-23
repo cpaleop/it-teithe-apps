@@ -224,7 +224,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private fun updateSortView(documentSortOption: DocumentSortOption) {
         binding.filesSortingTextView.run {
-            setText(documentSortOption.label)
+            setText(documentSortOption.labelResource)
             val drawable = drawableMap?.get(documentSortOption.descending)
             setCompoundDrawablesWithIntrinsicBounds(
                 null,

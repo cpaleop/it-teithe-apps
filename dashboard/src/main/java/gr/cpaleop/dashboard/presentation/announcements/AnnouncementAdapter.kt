@@ -24,14 +24,14 @@ class AnnouncementAdapter(private val onClickListener: (String) -> Unit) :
                     oldItem: AnnouncementPresentation,
                     newItem: AnnouncementPresentation
                 ): Boolean {
-                    return oldItem == newItem
+                    return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
                     oldItem: AnnouncementPresentation,
                     newItem: AnnouncementPresentation
                 ): Boolean {
-                    return oldItem.id == newItem.id
+                    return oldItem == newItem
                 }
             }
     }

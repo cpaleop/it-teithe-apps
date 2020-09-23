@@ -50,8 +50,8 @@ class AnnouncementsPagingSource(
 
                     listOf(announcementTextFiltered, announcementTitleFiltered).flatten()
                 } else {
-                announcementsApi.fetchAnnouncements(PAGE_SIZE, page, sort)
-            }
+                    announcementsApi.fetchAnnouncements(PAGE_SIZE, page, sort)
+                }
 
             appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
 
