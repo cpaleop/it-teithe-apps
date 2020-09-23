@@ -5,5 +5,5 @@ import kotlinx.coroutines.Dispatchers
 /**
  * Denotes that this dispatcher corresponds to [Dispatchers.Default]
  */
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.BINARY)
 annotation class DefaultDispatcher

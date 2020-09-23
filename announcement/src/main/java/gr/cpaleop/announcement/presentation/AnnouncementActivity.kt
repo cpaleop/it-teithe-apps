@@ -54,7 +54,7 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         }
 
         binding.announcementDownloadAttachmentButton.setOnClickListener {
-            viewModel.downloadAttachments()
+            viewModel.downloadAttachments(announcementId)
         }
     }
 

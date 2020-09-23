@@ -5,5 +5,5 @@ import kotlinx.coroutines.Dispatchers
 /**
  * Denotes that this dispatcher corresponds to [Dispatchers.IO]
  */
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.BINARY)
 annotation class IODispatcher
