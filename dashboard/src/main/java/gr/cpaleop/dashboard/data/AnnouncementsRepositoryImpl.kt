@@ -12,6 +12,7 @@ import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.domain.entities.AnnouncementSort
 import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
+import gr.cpaleop.dashboard.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +23,7 @@ class AnnouncementsRepositoryImpl(
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
+    private val preferencesRepository: PreferencesRepository,
     private val gson: Gson
 ) : AnnouncementsRepository {
 
@@ -35,6 +37,9 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getAnnouncements(coroutineScope: CoroutineScope): Flow<PagingData<Announcement>> =
         withContext(Dispatchers.IO) {
+            //Apply saved sort method
+            announcementSort = preferencesRepository.getAnnouncementSort()
+
             Pager(
                 config = PagingConfig(pageSize = AnnouncementsPagingSource.PAGE_SIZE),
                 pagingSourceFactory = {
