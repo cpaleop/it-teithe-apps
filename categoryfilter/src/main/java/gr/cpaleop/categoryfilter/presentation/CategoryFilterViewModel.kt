@@ -6,7 +6,7 @@ import gr.cpaleop.categoryfilter.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,8 +18,8 @@ import timber.log.Timber
 @FlowPreview
 @ExperimentalCoroutinesApi
 class CategoryFilterViewModel(
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher,
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
     private val getCategoryNameUseCase: GetCategoryNameUseCase,
     private val observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase,
     private val filterAnnouncementsUseCase: FilterAnnouncementsUseCase
@@ -47,7 +47,7 @@ class CategoryFilterViewModel(
     }
 
     fun presentCategoryName() {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _categoryName.value = getCategoryNameUseCase(categoryId)
             } catch (t: Throwable) {
@@ -57,11 +57,11 @@ class CategoryFilterViewModel(
     }
 
     fun presentAnnouncementsByCategory() {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(mainDispatcher) {
             try {
+                _loading.value = true
                 val filterFlow = announcementsFilterChannel
                     .asFlow()
-                    .flowOn(defaultDispatcher)
                     .debounce(200)
                     .onEach { _loading.value = true }
 
@@ -69,7 +69,7 @@ class CategoryFilterViewModel(
                     .combine(filterFlow) { announcements, query ->
                         filterAnnouncementsUseCase(announcements, query)
                     }
-                    .flowOn(defaultDispatcher)
+                    .flowOn(mainDispatcher)
                     .collect {
                         _loading.value = false
                         _announcements.value = it
@@ -81,7 +81,7 @@ class CategoryFilterViewModel(
     }
 
     fun filterAnnouncements(query: String) {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(mainDispatcher) {
             announcementsFilterChannel.send(query)
         }
     }

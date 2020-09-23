@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AnnouncementViewModel(
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher,
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
     private val getAnnouncementUseCase: GetAnnouncementUseCase,
     private val announcementDetailsMapper: AnnouncementDetailsMapper
 ) : ViewModel() {
@@ -25,7 +25,7 @@ class AnnouncementViewModel(
     val attachmentFileId: LiveData<AnnouncementDocument> = _attachmentFileId.toSingleEvent()
 
     fun presentAnnouncement(id: String) {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _announcement.value = announcementDetailsMapper(getAnnouncementUseCase(id))
             } catch (t: Throwable) {
@@ -35,7 +35,7 @@ class AnnouncementViewModel(
     }
 
     fun downloadAttachments(id: String) {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 val mAnnouncement = getAnnouncementUseCase(id)
                 _attachmentFileId.value =

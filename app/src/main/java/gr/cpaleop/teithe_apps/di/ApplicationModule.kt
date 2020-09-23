@@ -18,6 +18,7 @@ import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
 import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import gr.cpaleop.teithe_apps.di.dispatchers.IODispatcher
 import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -50,7 +51,7 @@ val networkModule = module {
             get()
         )
     }
-    single(named<MainDispatcher>()) { Dispatchers.Main }
+    single<CoroutineDispatcher>(named<MainDispatcher>()) { Dispatchers.Main }
     single(named<DefaultDispatcher>()) { Dispatchers.Default }
     single(named<IODispatcher>()) { Dispatchers.IO }
     single { provideAuthenticationApi(get(named<Authentication>())) }
