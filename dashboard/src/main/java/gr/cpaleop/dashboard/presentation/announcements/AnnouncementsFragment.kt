@@ -1,11 +1,9 @@
 package gr.cpaleop.dashboard.presentation.announcements
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -19,10 +17,7 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
-import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
-import gr.cpaleop.dashboard.presentation.announcements.options.AnnouncementSortOption
-import gr.cpaleop.dashboard.presentation.announcements.options.AnnouncementsSortOptionsDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import gr.cpaleop.teithe_apps.R as appR
@@ -35,7 +30,6 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     private var announcementAdapter: AnnouncementAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var drawableMap: MutableMap<Boolean, Drawable?>? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -51,7 +45,6 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         setupViews()
         observeViewModel()
         viewModel.presentAnnouncements()
-        viewModel.presentAnnouncementsSortSelected()
     }
 
     private fun setupPagingAdapter() {
@@ -68,22 +61,12 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     }
 
     private fun setupViews() {
-        drawableMap = mutableMapOf(
-            Pair(true, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down)),
-            Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
-        )
-
-        binding.announcementsSortingTextView.setOnClickListener {
-            openOptionsDialog()
-        }
-
         binding.categoryFilterFab.setOnClickListener {
             navigateToCategoryFilterDialog()
         }
 
         binding.announcementsSwipeRefreshLayout.setOnRefreshListener {
             announcementAdapter?.refresh()
-            viewModel.presentAnnouncementsSortSelected()
         }
 
         binding.annnouncementsSearchTextView.run {
@@ -159,34 +142,12 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     private fun observeViewModel() {
         viewModel.run {
             announcements.observe(viewLifecycleOwner, Observer(::updateAnnouncements))
-            announcementSort.observe(viewLifecycleOwner, Observer(::updateAnnouncementsSortOption))
         }
-    }
-
-    private fun openOptionsDialog() {
-        val optionsDialogFragment = AnnouncementsSortOptionsDialogFragment()
-        optionsDialogFragment.show(
-            childFragmentManager,
-            AnnouncementsSortOptionsDialogFragment.OPTIONS_DIALOG_NAME
-        )
     }
 
     private fun navigateToCategoryFilterDialog() {
         val directions = AnnouncementsFragmentDirections.announcementsToCategoryFilterDialog()
         navController.navigate(directions)
-    }
-
-    private fun updateAnnouncementsSortOption(announcementSortOption: AnnouncementSortOption) {
-        binding.announcementsSortingTextView.run {
-            setText(announcementSortOption.labelResource)
-            val drawable = drawableMap?.get(announcementSortOption.descending)
-            setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                drawable,
-                null
-            )
-        }
     }
 
     private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {

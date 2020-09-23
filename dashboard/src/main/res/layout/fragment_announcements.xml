@@ -52,32 +52,13 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintTop_toBottomOf="@id/annnouncementsSearchTextView">
 
-        <TextView
-            android:id="@+id/announcementsSortingTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:fontFamily="@font/googlesans_regular"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="@color/colorOnPrimaryVariant"
-            app:layout_constraintBottom_toTopOf="@id/announcementsSwipeRefreshLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:drawableEnd="@drawable/ic_arrow_down"
-            tools:text="@string/option_sort_by_date_published" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/announcementsSwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:fitsSystemWindows="false"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:layout_constraintTop_toBottomOf="@id/announcementsSortingTextView">
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/announcementsRecyclerView"

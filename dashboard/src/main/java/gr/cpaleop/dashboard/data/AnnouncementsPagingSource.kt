@@ -10,8 +10,6 @@ import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.dashboard.data.model.remote.RemoteAnnouncementTitleFilter
-import gr.cpaleop.dashboard.domain.entities.AnnouncementSort
-import gr.cpaleop.dashboard.domain.entities.AnnouncementSortType
 import timber.log.Timber
 
 class AnnouncementsPagingSource(
@@ -20,14 +18,12 @@ class AnnouncementsPagingSource(
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
     private val filterQuery: String?,
-    private val announcementsSort: AnnouncementSort?,
     private val gson: Gson
 ) : PagingSource<Int, Announcement>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Announcement> {
         val page = params.key ?: STARTING_PAGE
         return try {
-            val sort = getSort(announcementsSort)
             val remoteAnnouncementList =
                 //If there is a query, then filter requests, otherwise make a normal call
                 if (filterQuery?.isNotEmpty() == true || filterQuery?.isBlank() == false) {
@@ -38,20 +34,18 @@ class AnnouncementsPagingSource(
                         announcementsApi.fetchAnnouncementsFiltered(
                             textFilter,
                             PAGE_SIZE,
-                            page,
-                            sort
+                            page
                         )
                     val announcementTitleFiltered =
                         announcementsApi.fetchAnnouncementsFiltered(
                             titleFilter,
                             PAGE_SIZE,
-                            page,
-                            sort
+                            page
                         )
 
                     listOf(announcementTextFiltered, announcementTitleFiltered).flatten()
                 } else {
-                    announcementsApi.fetchAnnouncements(PAGE_SIZE, page, sort)
+                    announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
                 }
 
             appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
@@ -74,23 +68,6 @@ class AnnouncementsPagingSource(
             Timber.e(t)
             LoadResult.Error(t)
         }
-    }
-
-    //API sort formation
-    private fun getSort(announcementsSort: AnnouncementSort?): String {
-        if (announcementsSort == null) return "-date"
-        val field = when (announcementsSort.type) {
-            AnnouncementSortType.DATE -> "date"
-            AnnouncementSortType.TITLE -> "title"
-            else -> throw java.lang.IllegalArgumentException("No sort type found with value ${announcementsSort.type}")
-        }
-
-        val descendingPrefix = when (announcementsSort.descending) {
-            true -> "-"
-            false -> "+"
-        }
-
-        return "$descendingPrefix$field"
     }
 
     //API filter formation

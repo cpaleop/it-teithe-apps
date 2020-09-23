@@ -1,11 +1,8 @@
 package gr.cpaleop.dashboard.data
 
-import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.ANNOUNCEMENT_SORT_DESCENDING
-import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.ANNOUNCEMENT_SORT_TYPE
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.FILE_SORT_DESCENDING
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.FILE_SORT_TYPE
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.LANGUAGE
-import gr.cpaleop.dashboard.domain.entities.AnnouncementSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.Dispatchers
@@ -17,23 +14,6 @@ class PreferencesRepositoryImpl(private val preferencesRepository: gr.cpaleop.co
     override suspend fun getPreferredLanguage(): String? = withContext(Dispatchers.IO) {
         preferencesRepository.getString(LANGUAGE)
     }
-
-    override suspend fun getAnnouncementSort(): AnnouncementSort = withContext(Dispatchers.IO) {
-        AnnouncementSort(
-            type = preferencesRepository.getInt(ANNOUNCEMENT_SORT_TYPE),
-            descending = preferencesRepository.getBoolean(ANNOUNCEMENT_SORT_DESCENDING),
-            selected = true
-        )
-    }
-
-    override suspend fun updateAnnouncementSort(announcementSort: AnnouncementSort) =
-        withContext(Dispatchers.IO) {
-            preferencesRepository.putInt(ANNOUNCEMENT_SORT_TYPE, announcementSort.type)
-            preferencesRepository.putBoolean(
-                ANNOUNCEMENT_SORT_DESCENDING,
-                announcementSort.descending
-            )
-        }
 
     override suspend fun getDocumentSort(): DocumentSort = withContext(Dispatchers.IO) {
         DocumentSort(
