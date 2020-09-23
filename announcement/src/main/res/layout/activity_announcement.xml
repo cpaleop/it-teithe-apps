@@ -75,6 +75,7 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:textColor="@color/colorOnPrimary"
+            android:textIsSelectable="true"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
     </ScrollView>
 
