@@ -1,12 +1,8 @@
-package gr.cpaleop.announcement
+package gr.cpaleop.announcement.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
-import gr.cpaleop.announcement.presentation.AnnouncementDetails
-import gr.cpaleop.announcement.presentation.AnnouncementDetailsMapper
-import gr.cpaleop.announcement.presentation.AnnouncementDocument
-import gr.cpaleop.announcement.presentation.AnnouncementViewModel
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
