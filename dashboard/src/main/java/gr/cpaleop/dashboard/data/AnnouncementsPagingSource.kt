@@ -29,6 +29,7 @@ class AnnouncementsPagingSource(
         return try {
             val sort = getSort(announcementsSort)
             val remoteAnnouncementList =
+                //If there is a query, then filter requests, otherwise make a normal call
                 if (filterQuery?.isNotEmpty() == true || filterQuery?.isBlank() == false) {
                     val textFilter = parseTextFilter(filterQuery)
                     val titleFilter = parseTitleFilter(filterQuery)
@@ -55,6 +56,7 @@ class AnnouncementsPagingSource(
 
             appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
 
+            //Check if there are saved categories. If not, then populate database
             var localCategories = appDatabase.remoteCategoryDao().getAll()
             if (localCategories.isEmpty()) {
                 localCategories = categoriesApi.fetchCategories()
@@ -74,6 +76,7 @@ class AnnouncementsPagingSource(
         }
     }
 
+    //API sort formation
     private fun getSort(announcementsSort: AnnouncementSort?): String {
         if (announcementsSort == null) return "-date"
         val field = when (announcementsSort.type) {
@@ -90,6 +93,7 @@ class AnnouncementsPagingSource(
         return "$descendingPrefix$field"
     }
 
+    //API filter formation
     private fun parseTextFilter(filterQuery: String): String {
         val remoteAnnouncementTextFilter = RemoteAnnouncementTextFilter(filterQuery)
         return gson.toJson(remoteAnnouncementTextFilter)

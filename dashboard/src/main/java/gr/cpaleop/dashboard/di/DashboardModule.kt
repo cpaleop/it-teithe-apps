@@ -93,7 +93,6 @@ val dashboardModule = module {
             get(),
             get(),
             get(),
-            get(),
             get()
         )
     }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnnouncementsRepository {
 
-    fun invalidateDataSource()
+    suspend fun invalidateDataSource()
 
     suspend fun getAnnouncements(coroutineScope: CoroutineScope): Flow<PagingData<Announcement>>
 
