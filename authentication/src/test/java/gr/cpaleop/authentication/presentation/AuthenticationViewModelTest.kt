@@ -33,7 +33,7 @@ class AuthenticationViewModelTest {
 
     private lateinit var viewModel: AuthenticationViewModel
 
-    @Before()
+    @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = AuthenticationViewModel(

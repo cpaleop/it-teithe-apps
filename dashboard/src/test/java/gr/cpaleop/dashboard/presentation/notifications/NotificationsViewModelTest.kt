@@ -139,7 +139,7 @@ class NotificationsViewModelTest {
                 announcement = NotificationRelatedAnnouncement(
                     id = "id1",
                     category = "category1",
-                    date = 10000L,
+                    date = "some_date",
                     title = "title1",
                     publisherName = "publisher_name"
                 ),
@@ -150,7 +150,7 @@ class NotificationsViewModelTest {
                 announcement = NotificationRelatedAnnouncement(
                     id = "id2",
                     category = "category2",
-                    date = 10000L,
+                    date = "some_date",
                     title = "title2",
                     publisherName = "publisher_name"
                 ),
