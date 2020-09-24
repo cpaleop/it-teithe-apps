@@ -39,7 +39,14 @@ val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
     viewModel { AnnouncementsViewModel(get(named<MainDispatcher>()), get(), get(), get()) }
-    viewModel { NotificationsViewModel(get(named<MainDispatcher>()), get(), get()) }
+    viewModel {
+        NotificationsViewModel(
+            get(named<MainDispatcher>()),
+            get(named<DefaultDispatcher>()),
+            get(),
+            get()
+        )
+    }
     viewModel {
         DocumentsViewModel(
             get(named<MainDispatcher>()),
@@ -70,7 +77,7 @@ val dashboardModule = module {
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }
-    single { FileDocumentMapper(get(), get()) }
+    single { FileDocumentMapper(get(), get(named<DefaultDispatcher>()), get()) }
     single { AnnouncementMapper() }
     single { NotificationMapper() }
     single { ProfileMapper(get()) }

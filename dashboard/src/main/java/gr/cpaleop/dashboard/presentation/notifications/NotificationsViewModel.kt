@@ -5,14 +5,18 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class NotificationsViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val readAllNotificationsUseCase: ReadAllNotificationsUseCase
 ) : ViewModel() {
@@ -79,11 +83,13 @@ class NotificationsViewModel(
 
     fun searchNotifications(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            notifications.value = _notifications.value?.filter {
-                it.announcement.title.contains(query, true) ||
-                        it.announcement.category.contains(query, true) ||
-                        it.announcement.date.contains(query, true)
-            } ?: emptyList()
+            notifications.value = withContext(defaultDispatcher) {
+                _notifications.value?.filter {
+                    it.announcement.title.contains(query, true) ||
+                            it.announcement.category.contains(query, true) ||
+                            it.announcement.date.contains(query, true)
+                } ?: emptyList()
+            }
         }
     }
 }

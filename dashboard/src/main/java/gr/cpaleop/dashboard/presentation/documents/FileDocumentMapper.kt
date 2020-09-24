@@ -4,17 +4,20 @@ import android.content.Context
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
-import kotlinx.coroutines.Dispatchers
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class FileDocumentMapper(
     private val applicationContext: Context,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val dateFormatter: DateFormatter
 ) {
 
     suspend operator fun invoke(document: Document): FileDocument =
-        withContext(Dispatchers.Default) {
+        withContext(defaultDispatcher) {
             val lastModifiedHumanReadableFormat =
                 dateFormatter.fileFormat(document.lastModified, "dd-MM-yy HH:mm")
 
