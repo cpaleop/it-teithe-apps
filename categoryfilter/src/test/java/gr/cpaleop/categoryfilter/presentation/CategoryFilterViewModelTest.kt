@@ -64,7 +64,7 @@ class CategoryFilterViewModelTest {
 
     @Test
     fun `presentCategoryName throws`() {
-        coEvery { getCategoryNameUseCase(viewModel.categoryId) } throws Throwable("")
+        coEvery { getCategoryNameUseCase(viewModel.categoryId) } throws Throwable()
         viewModel.presentCategoryName()
     }
 

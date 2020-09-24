@@ -76,8 +76,8 @@ class NotificationsViewModelTest {
     }
 
     @Test
-    fun `readAllNotifications catches exception`() {
-        coEvery { readAllNotificationsUseCase() } throws Throwable("")
+    fun `readAllNotifications when fails catches exception`() {
+        coEvery { readAllNotificationsUseCase() } throws Throwable()
         viewModel.readAllNotifications()
     }
 

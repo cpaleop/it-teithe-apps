@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentSortDocumentsBinding
+import gr.cpaleop.dashboard.domain.entities.DocumentSort
+import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -30,7 +32,7 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
     }
 
     private fun setupViews() {
-        documentSortOptionsAdapter = DocumentSortOptionsAdapter(viewModel::updateSort)
+        documentSortOptionsAdapter = DocumentSortOptionsAdapter(::updateDocumentSort)
         binding.filesSortOptionsRecyclerView.adapter = documentSortOptionsAdapter
     }
 
@@ -43,5 +45,15 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
 
     private fun updateFileSortOptions(documentSortOptions: List<DocumentSortOption>) {
         documentSortOptionsAdapter?.submitList(documentSortOptions)
+    }
+
+    private fun updateDocumentSort(
+        @DocumentSortType type: Int,
+        descending: Boolean,
+        selected: Boolean
+    ) {
+        val descend = if (!selected) descending else !descending
+        val documentSort = DocumentSort(type = type, descending = descend, selected = true)
+        viewModel.updateSort(documentSort)
     }
 }

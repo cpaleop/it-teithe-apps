@@ -8,7 +8,6 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
-import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentDetails
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
@@ -16,7 +15,9 @@ import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentShareOptionData
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
-import kotlinx.coroutines.Dispatchers
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -24,6 +25,10 @@ import java.io.File
 import java.net.URI
 
 class DocumentsViewModel(
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getSavedDocumentsUseCase: GetSavedDocumentsUseCase,
     private val fileDocumentMapper: FileDocumentMapper,
     private val getDocumentOptionsUseCase: GetDocumentOptionsUseCase,
@@ -106,7 +111,7 @@ class DocumentsViewModel(
     }
 
     fun presentDocuments() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
                 _documents.value =
@@ -120,19 +125,19 @@ class DocumentsViewModel(
     }
 
     fun searchDocuments(query: String) {
-        viewModelScope.launch {
-            documents.value = withContext(Dispatchers.Default) {
+        viewModelScope.launch(mainDispatcher) {
+            documents.value = withContext(defaultDispatcher) {
                 _documents.value?.filter {
                     it.name.contains(query, true) ||
                             it.uri.contains(query, true) ||
                             it.lastModifiedDate.contains(query, true)
                 }
-            } ?: return@launch
+            } ?: emptyList()
         }
     }
 
     fun presentDocumentDetails(uri: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _document.value = getDocumentUseCase(uri)
             } catch (t: Throwable) {
@@ -142,7 +147,7 @@ class DocumentsViewModel(
     }
 
     fun presentDocumentOptions() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _documentOptions.value =
                     getDocumentOptionsUseCase().mapAsync(documentOptionMapper::invoke)
@@ -153,22 +158,24 @@ class DocumentsViewModel(
     }
 
     fun handleDocumentOptionChoice(optionType: DocumentOptionType) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             when (optionType) {
                 DocumentOptionType.ANNOUNCEMENT -> {
                     _optionNavigateAnnouncement.value =
                         _document.value?.announcementId ?: return@launch
                 }
                 DocumentOptionType.RENAME -> {
+                    val document = _document.value ?: return@launch
                     _optionRename.value = DocumentDetails(
-                        uri = _document.value?.uri ?: return@launch,
-                        name = _document.value?.name ?: return@launch
+                        uri = document.uri,
+                        name = document.name
                     )
                 }
                 DocumentOptionType.DELETE -> {
+                    val document = _document.value ?: return@launch
                     _optionDelete.value = DocumentDetails(
-                        uri = document.value?.uri ?: return@launch,
-                        name = document.value?.name ?: return@launch
+                        uri = document.uri,
+                        name = document.name
                     )
                 }
                 DocumentOptionType.SHARE -> {
@@ -185,7 +192,7 @@ class DocumentsViewModel(
     }
 
     fun deleteDocument(documentUri: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = deleteDocumentUseCase(documentUri)
             } catch (t: Throwable) {
@@ -195,7 +202,7 @@ class DocumentsViewModel(
     }
 
     fun renameDocument(documentUri: String, newName: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
             } catch (t: Throwable) {
@@ -205,7 +212,7 @@ class DocumentsViewModel(
     }
 
     fun presentDocumentSortSelected() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
                 documentSortOptionSelected.value =
                     documentSortOptionMapper(getDocumentSortUseCase())
@@ -216,9 +223,9 @@ class DocumentsViewModel(
     }
 
     fun presentDocumentSortOptions() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             try {
-                _documentSortOptions.value = withContext(Dispatchers.Default) {
+                _documentSortOptions.value = withContext(defaultDispatcher) {
                     getDocumentSortOptionsUseCase().mapAsync(documentSortOptionMapper::invoke)
                 }
             } catch (t: Throwable) {
@@ -227,19 +234,11 @@ class DocumentsViewModel(
         }
     }
 
-    fun updateSort(@DocumentSortType type: Int, descending: Boolean, selected: Boolean) {
-        viewModelScope.launch {
+    fun updateSort(documentSort: DocumentSort) {
+        viewModelScope.launch(mainDispatcher) {
             try {
-                val descend = if (!selected) descending else !descending
-                documentSortOptionSelected.value = documentSortOptionMapper(
-                    updateDocumentSortUseCase(
-                        DocumentSort(
-                            type = type,
-                            descending = descend,
-                            selected = true
-                        )
-                    )
-                )
+                documentSortOptionSelected.value =
+                    documentSortOptionMapper(updateDocumentSortUseCase(documentSort))
                 _refresh.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)

@@ -74,9 +74,9 @@ class AnnouncementViewModelTest {
     }
 
     @Test
-    fun `presentAnnouncement catches exception`() {
+    fun `presentAnnouncement when fails catches exception`() {
         val fakeAnnouncementId = "_id"
-        coEvery { getAnnouncementUseCase(fakeAnnouncementId) } throws Throwable("")
+        coEvery { getAnnouncementUseCase(fakeAnnouncementId) } throws Throwable()
         viewModel.presentAnnouncement(fakeAnnouncementId)
     }
 
@@ -115,9 +115,9 @@ class AnnouncementViewModelTest {
     }
 
     @Test
-    fun `downloadAttachments catches exception`() {
+    fun `downloadAttachments when fails catches exception`() {
         val announcementId = "_id"
-        coEvery { getAnnouncementUseCase(announcementId) } throws Throwable("")
+        coEvery { getAnnouncementUseCase(announcementId) } throws Throwable()
         viewModel.downloadAttachments(announcementId)
     }
 }

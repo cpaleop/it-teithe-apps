@@ -42,6 +42,8 @@ val dashboardModule = module {
     viewModel { NotificationsViewModel(get(named<MainDispatcher>()), get(), get()) }
     viewModel {
         DocumentsViewModel(
+            get(named<MainDispatcher>()),
+            get(named<DefaultDispatcher>()),
             get(),
             get(),
             get(),

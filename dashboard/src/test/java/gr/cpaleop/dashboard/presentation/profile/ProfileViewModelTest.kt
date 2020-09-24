@@ -67,8 +67,8 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `presentProfile catches exception`() {
-        coEvery { getProfileUseCase() } throws Throwable("")
+    fun `presentProfile when fails catches exception`() {
+        coEvery { getProfileUseCase() } throws Throwable()
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
@@ -152,10 +152,10 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `updateSocial catches exception`() {
+    fun `updateSocial when fails catches exception`() {
         val givenSocial = Social.FACEBOOK
         val givenValue = "facebook"
-        coEvery { updateSocialUseCase(givenSocial, givenValue) } throws Throwable("")
+        coEvery { updateSocialUseCase(givenSocial, givenValue) } throws Throwable()
         viewModel.updateSocial(givenSocial, givenValue)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }

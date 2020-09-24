@@ -75,9 +75,9 @@ class AnnouncementsViewModelTest {
     }
 
     @Test
-    fun `searchAnnouncements catches exception`() {
+    fun `searchAnnouncements when fails catches exception`() {
         val givenFilter = "query"
-        coEvery { filterAnnouncementsUseCase(givenFilter) } throws Throwable("")
+        coEvery { filterAnnouncementsUseCase(givenFilter) } throws Throwable()
         viewModel.searchAnnouncements(givenFilter)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
