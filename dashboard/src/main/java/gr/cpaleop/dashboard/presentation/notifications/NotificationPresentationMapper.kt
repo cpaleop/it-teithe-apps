@@ -7,7 +7,7 @@ class NotificationPresentationMapper(private val dateFormatter: DateFormatter) {
 
     operator fun invoke(notification: Notification): NotificationPresentation {
         return NotificationPresentation(
-            id = notification.id,
+            id = notification.announcement.id,
             seen = notification.seen,
             date = dateFormatter(
                 notification.announcement.date,
