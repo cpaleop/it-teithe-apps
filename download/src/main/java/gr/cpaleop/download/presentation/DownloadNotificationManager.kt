@@ -1,6 +1,7 @@
 package gr.cpaleop.download.presentation
 
 import android.app.Notification
+import gr.cpaleop.download.domain.entities.DownloadProgress
 
 interface DownloadNotificationManager {
 
@@ -10,7 +11,7 @@ interface DownloadNotificationManager {
 
     fun showFailure()
 
-    fun showProgress(current: Int, total: Int)
+    fun showProgress(downloadProgress: DownloadProgress)
 
     fun cancelProgress()
 

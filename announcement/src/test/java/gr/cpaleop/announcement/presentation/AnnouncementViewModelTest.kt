@@ -3,6 +3,7 @@ package gr.cpaleop.announcement.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
+import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
@@ -11,6 +12,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
@@ -31,6 +33,9 @@ class AnnouncementViewModelTest {
     @MockK
     private lateinit var announcementDetailsMapper: AnnouncementDetailsMapper
 
+    @MockK
+    private lateinit var observeDownloadNotifierUseCase: ObserveDownloadNotifierUseCase
+
     private lateinit var viewModel: AnnouncementViewModel
 
     @Before
@@ -39,34 +44,15 @@ class AnnouncementViewModelTest {
         viewModel = AnnouncementViewModel(
             testCoroutineDispatcher,
             getAnnouncementUseCase,
-            announcementDetailsMapper
+            announcementDetailsMapper,
+            observeDownloadNotifierUseCase
         )
     }
 
     @Test
     fun `presentAnnouncement success`() {
         val announcementId = "_id"
-        val announcement = Announcement(
-            id = announcementId,
-            attachments = emptyList(),
-            publisherName = "publisher_name",
-            text = "text",
-            title = "title",
-            date = "date",
-            category = Category(
-                id = "id",
-                name = "name"
-            )
-        )
-        val expectedValue = AnnouncementDetails(
-            title = "title",
-            category = "name",
-            date = "date",
-            text = "text",
-            publisherName = "publisher_name",
-            attachments = emptyList(),
-            id = announcementId
-        )
+        val expectedValue = announcementDetails
         coEvery { getAnnouncementUseCase(announcementId) } returns announcement
         coEvery { announcementDetailsMapper(announcement) } returns expectedValue
         viewModel.presentAnnouncement(announcementId)
@@ -83,27 +69,8 @@ class AnnouncementViewModelTest {
     @Test
     fun `presentAnnouncement and downloadAttachments has correct values`() {
         val announcementId = "_id"
-        val announcement = Announcement(
-            id = announcementId,
-            attachments = listOf("1"),
-            publisherName = "publisher_name",
-            text = "text",
-            title = "title",
-            date = "date",
-            category = Category(
-                id = "id",
-                name = "name"
-            )
-        )
-        val mappedAnnouncement = AnnouncementDetails(
-            title = "title",
-            category = "name",
-            date = "date",
-            text = "text",
-            publisherName = "publisher_name",
-            attachments = listOf("1"),
-            id = announcementId
-        )
+        val announcement = announcementWithAttachments
+        val mappedAnnouncement = announcementDetailsWithAttachments
         val expectedValue = AnnouncementDocument(
             announcementId = announcementId,
             fileIdList = listOf("1")
@@ -115,9 +82,82 @@ class AnnouncementViewModelTest {
     }
 
     @Test
+    fun `presentAnnouncement downloadStatus is true when already downloading`() {
+        val announcementId = "_id"
+        val downloadNotifierFlow = flow {
+            emit(true)
+        }
+        coEvery { getAnnouncementUseCase(announcementId) } returns announcement
+        coEvery { announcementDetailsMapper(announcement) } returns announcementDetails
+        coEvery { observeDownloadNotifierUseCase(announcementId) } returns downloadNotifierFlow
+        viewModel.presentAnnouncement(announcementId)
+        assertThat(LiveDataTest.getValue(viewModel.downloadStatus)).isEqualTo(true)
+    }
+
+    @Test
+    fun `presentAnnouncement downloadStatus is false when not downloading`() {
+        val announcementId = "_id"
+        val downloadNotifierFlow = flow {
+            emit(false)
+        }
+        coEvery { getAnnouncementUseCase(announcementId) } returns announcement
+        coEvery { announcementDetailsMapper(announcement) } returns announcementDetails
+        coEvery { observeDownloadNotifierUseCase(announcementId) } returns downloadNotifierFlow
+        viewModel.presentAnnouncement(announcementId)
+        assertThat(LiveDataTest.getValue(viewModel.downloadStatus)).isEqualTo(false)
+    }
+
+    @Test
     fun `downloadAttachments when fails catches exception`() {
         val announcementId = "_id"
         coEvery { getAnnouncementUseCase(announcementId) } throws Throwable()
         viewModel.downloadAttachments(announcementId)
+    }
+
+    companion object {
+
+        val announcementWithAttachments = Announcement(
+            id = "_id",
+            attachments = listOf("1"),
+            publisherName = "publisher_name",
+            text = "text",
+            title = "title",
+            date = "date",
+            category = Category(
+                id = "id",
+                name = "name"
+            )
+        )
+        val announcementDetailsWithAttachments = AnnouncementDetails(
+            title = "title",
+            category = "name",
+            date = "date",
+            text = "text",
+            publisherName = "publisher_name",
+            attachments = listOf("1"),
+            id = "_id"
+        )
+
+        val announcement = Announcement(
+            id = "_id",
+            attachments = emptyList(),
+            publisherName = "publisher_name",
+            text = "text",
+            title = "title",
+            date = "date",
+            category = Category(
+                id = "id",
+                name = "name"
+            )
+        )
+        val announcementDetails = AnnouncementDetails(
+            title = "title",
+            category = "name",
+            date = "date",
+            text = "text",
+            publisherName = "publisher_name",
+            attachments = emptyList(),
+            id = "_id"
+        )
     }
 }

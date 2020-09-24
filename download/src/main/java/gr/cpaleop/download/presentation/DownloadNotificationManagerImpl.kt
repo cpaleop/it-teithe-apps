@@ -12,6 +12,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import gr.cpaleop.download.R
+import gr.cpaleop.download.domain.entities.DownloadProgress
 
 class DownloadNotificationManagerImpl(
     private val context: Context
@@ -64,10 +65,15 @@ class DownloadNotificationManagerImpl(
         notificationManager.notify(MESSAGE_ID, builder.build())
     }
 
-    override fun showProgress(current: Int, total: Int) {
+    override fun showProgress(downloadProgress: DownloadProgress) {
         val title = context.getString(R.string.download_notification_title)
-        val text = context.getString(R.string.download_notification_text, current, total)
-        val percent = ((current.toFloat() / total.toFloat()) * 100).toInt()
+        val text = context.getString(
+            R.string.download_notification_text,
+            downloadProgress.current,
+            downloadProgress.total
+        )
+        val percent =
+            ((downloadProgress.current.toFloat() / downloadProgress.total.toFloat()) * 100).toInt()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_download_notification)

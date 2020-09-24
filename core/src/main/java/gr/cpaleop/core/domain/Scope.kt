@@ -7,6 +7,7 @@ object Scope {
 
     const val ANNOUNCEMENTS = "announcements"
     const val NOTIFICATIONS = "notifications"
+    const val EDIT_NOTIFICATIONS = "edit_notifications"
     const val EDIT_PROFILE = "edit_profile"
     const val EDIT_PASSWORD = "edit_password"
     const val EDIT_MAIL = "edit_mail"

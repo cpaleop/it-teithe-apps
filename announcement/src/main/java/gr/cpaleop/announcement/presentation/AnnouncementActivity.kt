@@ -62,8 +62,14 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
         viewModel.run {
             val lifecycleOwner = this@AnnouncementActivity
             announcement.observe(lifecycleOwner, Observer(::updateAnnouncement))
+            downloadStatus.observe(lifecycleOwner, Observer(::updateDownloadStatus))
             attachmentFileId.observe(lifecycleOwner, Observer(::initiateDownload))
         }
+    }
+
+    private fun updateDownloadStatus(isDownloading: Boolean) {
+        binding.announcementDownloadAttachmentButton.isVisible = !isDownloading
+        binding.announcementDownloadAttachmentProgress.isVisible = isDownloading
     }
 
     private fun updateAnnouncement(announcement: AnnouncementDetails) {

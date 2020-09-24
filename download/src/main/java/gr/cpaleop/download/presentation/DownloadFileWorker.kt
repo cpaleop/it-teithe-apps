@@ -2,24 +2,29 @@ package gr.cpaleop.download.presentation
 
 import android.content.Context
 import androidx.work.*
+import gr.cpaleop.download.domain.DownloadProgressNotifier
 import gr.cpaleop.download.domain.usecases.DownloadFileUseCase
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class DownloadFileWorker(
     context: Context,
     private val workerParameters: WorkerParameters
 ) : CoroutineWorker(context, workerParameters), KoinComponent {
 
+    private val workerCoroutineScope = CoroutineScope(Dispatchers.Default)
     private val downloadFilesUseCase: DownloadFileUseCase by inject()
     private val downloadNotificationManager: DownloadNotificationManager by inject()
+    private val downloadProgressNotifier: DownloadProgressNotifier by inject()
 
     override suspend fun doWork(): Result = coroutineScope {
-        val files = workerParameters.inputData.getStringArray(DATA_FILE_LIST)
+        val files = workerParameters.inputData.getStringArray(DATA_FILE_LIST)?.toList()
             ?: return@coroutineScope Result.failure()
 
         val announcementId = workerParameters.inputData.getString(DATA_ANNOUNCEMENT_ID)
@@ -27,17 +32,26 @@ class DownloadFileWorker(
 
         setupNotification(files.size)
         try {
-            files.forEachIndexed { index, fileId ->
-                delay(1000)
-                downloadFilesUseCase(announcementId, fileId)
-                downloadNotificationManager.showProgress(index + 1, files.size)
-            }
-            downloadNotificationManager.cancelProgress()
-            downloadNotificationManager.showSuccess(files.size)
+            observeProgress()
+            downloadFilesUseCase(announcementId, files)
             Result.success()
         } catch (t: Throwable) {
             Timber.e(t)
             Result.failure()
+        }
+    }
+
+    private fun observeProgress() {
+        workerCoroutineScope.launch {
+            downloadProgressNotifier.asFlow()
+                .collect { downloadProgress ->
+                    if (downloadProgress.current != downloadProgress.total) {
+                        downloadNotificationManager.showProgress(downloadProgress)
+                    } else {
+                        downloadNotificationManager.cancelProgress()
+                        downloadNotificationManager.showSuccess(downloadProgress.current)
+                    }
+                }
         }
     }
 

@@ -14,6 +14,7 @@ class BuildUriUseCaseImpl : BuildUriUseCase {
                 "${Scope.EDIT_MAIL}," +
                 "${Scope.EDIT_PASSWORD}," +
                 "${Scope.EDIT_PROFILE}," +
+                "${Scope.EDIT_NOTIFICATIONS}," +
                 "${Scope.NOTIFICATIONS}," +
                 "${Scope.PROFILE}," +
                 Scope.REFRESH_TOKEN +
