@@ -46,7 +46,7 @@ class DownloadNotificationManagerImpl(
         val text = context.getString(R.string.download_notification_text, 1, fileSize)
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.ic_download_notification)
             .setContentTitle(title)
             .setContentText(text)
             .setProgress(0, 0, true)
@@ -56,7 +56,7 @@ class DownloadNotificationManagerImpl(
 
     override fun showFailure() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.ic_download_notification)
             .setContentTitle(context.getString(R.string.download_notification_title))
             .setContentText(context.getString(R.string.download_notification_error))
             .setAutoCancel(true)
@@ -70,7 +70,7 @@ class DownloadNotificationManagerImpl(
         val percent = ((current.toFloat() / total.toFloat()) * 100).toInt()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.ic_download_notification)
             .setContentTitle(title)
             .setContentText(text)
             .setProgress(100, percent, false)
@@ -108,7 +108,7 @@ class DownloadNotificationManagerImpl(
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.ic_download_notification)
             .setContentTitle(context.getString(R.string.download_notification_filename, filename))
             .setContentText(context.getString(R.string.download_notification_no_space))
             .setAutoCancel(true)

@@ -16,13 +16,8 @@ data class ProfilePresentation(
 
 data class ProfileSocialDetails(
     val socialType: Social,
-    val type: ProfileDetailsType,
     @DrawableRes
     val socialLogoResource: Int,
     val label: String,
     val content: String
 )
-
-enum class ProfileDetailsType {
-    CONTENT, TITLE
-}

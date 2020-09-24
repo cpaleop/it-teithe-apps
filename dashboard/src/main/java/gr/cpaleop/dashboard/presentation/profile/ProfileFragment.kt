@@ -22,6 +22,7 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentProfileBinding
+import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOption
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {

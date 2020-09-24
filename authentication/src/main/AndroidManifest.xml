@@ -5,7 +5,6 @@
 
     <dist:module
         dist:instant="false"
-        dist:onDemand="false"
         dist:title="@string/title_authentication">
         <dist:delivery>
             <dist:install-time />

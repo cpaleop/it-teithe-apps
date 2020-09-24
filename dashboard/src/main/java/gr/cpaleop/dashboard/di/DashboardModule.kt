@@ -24,7 +24,11 @@ import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
+import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapperImpl
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
+import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
+import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapperImpl
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -51,10 +55,16 @@ val dashboardModule = module {
             get()
         )
     }
-    viewModel { ProfileViewModel(get(), get(), get()) }
+    viewModel { ProfileViewModel(get(named<MainDispatcher>()), get(), get(), get(), get()) }
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
-    single { ProfilePresentationMapper(get()) }
+    single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
+    single<ProfilePresentationMapper> {
+        ProfilePresentationMapperImpl(
+            get(),
+            get(named<DefaultDispatcher>())
+        )
+    }
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }

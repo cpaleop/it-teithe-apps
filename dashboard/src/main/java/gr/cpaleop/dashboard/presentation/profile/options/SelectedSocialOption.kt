@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.profile
+package gr.cpaleop.dashboard.presentation.profile.options
 
 import gr.cpaleop.dashboard.domain.entities.Social
 
