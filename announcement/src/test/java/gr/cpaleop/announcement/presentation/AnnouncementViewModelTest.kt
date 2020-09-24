@@ -5,9 +5,9 @@ import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

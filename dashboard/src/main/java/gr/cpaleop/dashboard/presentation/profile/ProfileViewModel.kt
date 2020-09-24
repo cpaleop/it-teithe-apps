@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.Social
 import gr.cpaleop.dashboard.domain.usecases.GetProfileUseCase
@@ -12,7 +13,6 @@ import gr.cpaleop.dashboard.domain.usecases.UpdateSocialUseCase
 import gr.cpaleop.dashboard.presentation.profile.options.ProfileOption
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOption
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber

@@ -3,6 +3,8 @@ package gr.cpaleop.dashboard.presentation.documents
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
@@ -14,8 +16,6 @@ import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

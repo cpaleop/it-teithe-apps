@@ -1,7 +1,7 @@
 package gr.cpaleop.categoryfilter.domain.usecases
 
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

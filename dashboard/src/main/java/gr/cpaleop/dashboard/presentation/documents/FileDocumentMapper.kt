@@ -1,10 +1,10 @@
 package gr.cpaleop.dashboard.presentation.documents
 
 import android.content.Context
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber

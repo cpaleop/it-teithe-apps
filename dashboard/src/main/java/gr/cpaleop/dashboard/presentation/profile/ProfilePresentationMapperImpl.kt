@@ -2,10 +2,10 @@ package gr.cpaleop.dashboard.presentation.profile
 
 import android.content.Context
 import gr.cpaleop.common.extensions.safe
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.Profile
 import gr.cpaleop.dashboard.domain.entities.Social
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

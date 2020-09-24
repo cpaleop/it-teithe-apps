@@ -1,6 +1,8 @@
 package gr.cpaleop.dashboard.di
 
 import gr.cpaleop.core.data.mappers.DocumentMapper
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
 import gr.cpaleop.dashboard.data.*
@@ -29,8 +31,6 @@ import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapperImpl
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapperImpl
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -84,7 +84,7 @@ val dashboardModule = module {
     single { AnnouncementMapper() }
     single { NotificationMapper(get(named<DefaultDispatcher>())) }
     single { ProfileMapper(get()) }
-    single { DocumentMapper() }
+    single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single { CategoryMapper() }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }

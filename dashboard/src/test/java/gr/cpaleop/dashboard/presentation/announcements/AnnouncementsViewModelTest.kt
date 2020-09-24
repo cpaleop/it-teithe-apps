@@ -4,11 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ObserveAnnouncementsUseCase
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

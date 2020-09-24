@@ -8,6 +8,9 @@ import gr.cpaleop.core.data.PreferencesRepositoryImpl
 import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
 import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.remote.AuthenticationApi
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.IODispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.Authentication
 import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
@@ -15,9 +18,6 @@ import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.teithe_apps.BuildConfig
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.IODispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient

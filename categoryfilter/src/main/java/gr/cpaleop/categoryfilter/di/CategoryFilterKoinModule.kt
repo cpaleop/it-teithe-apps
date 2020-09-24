@@ -7,8 +7,8 @@ import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.categoryfilter.domain.repositories.CategoriesRepository
 import gr.cpaleop.categoryfilter.domain.usecases.*
 import gr.cpaleop.categoryfilter.presentation.CategoryFilterViewModel
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel

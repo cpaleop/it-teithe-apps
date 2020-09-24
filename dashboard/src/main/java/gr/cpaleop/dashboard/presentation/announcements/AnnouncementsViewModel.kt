@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ObserveAnnouncementsUseCase
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn

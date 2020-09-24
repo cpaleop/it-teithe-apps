@@ -3,7 +3,7 @@ package gr.cpaleop.teithe_apps.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.teithe_apps.domain.usecases.AuthenticatedUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

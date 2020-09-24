@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.authentication.domain.usecases.BuildUriUseCase
 import gr.cpaleop.authentication.domain.usecases.RetrieveTokenUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber

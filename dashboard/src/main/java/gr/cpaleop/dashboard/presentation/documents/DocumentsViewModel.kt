@@ -5,6 +5,8 @@ import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
@@ -15,8 +17,6 @@ import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentShareOptionData
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

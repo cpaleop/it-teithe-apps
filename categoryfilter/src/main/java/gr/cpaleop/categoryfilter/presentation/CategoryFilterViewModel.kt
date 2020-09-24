@@ -6,7 +6,7 @@ import gr.cpaleop.categoryfilter.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

@@ -1,4 +1,4 @@
-package gr.cpaleop.teithe_apps.di.dispatchers
+package gr.cpaleop.core.dispatchers
 
 import kotlinx.coroutines.Dispatchers
 

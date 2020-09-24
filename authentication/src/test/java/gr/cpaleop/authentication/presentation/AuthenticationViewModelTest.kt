@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.authentication.domain.usecases.BuildUriUseCase
 import gr.cpaleop.authentication.domain.usecases.RetrieveTokenUseCase
 import gr.cpaleop.common_test.LiveDataTest
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

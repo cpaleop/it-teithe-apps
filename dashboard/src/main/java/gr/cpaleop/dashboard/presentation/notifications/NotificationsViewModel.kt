@@ -3,10 +3,10 @@ package gr.cpaleop.dashboard.presentation.notifications
 import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

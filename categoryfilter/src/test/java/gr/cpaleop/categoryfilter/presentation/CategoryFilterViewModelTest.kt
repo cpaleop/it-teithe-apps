@@ -7,7 +7,7 @@ import gr.cpaleop.categoryfilter.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common_test.LiveDataTest
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

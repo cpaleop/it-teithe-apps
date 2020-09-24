@@ -1,7 +1,7 @@
 package gr.cpaleop.teithe_apps.di
 
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.teithe_apps.data.PreferencesRepositoryImpl
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import gr.cpaleop.teithe_apps.domain.repositories.PreferencesRepository
 import gr.cpaleop.teithe_apps.domain.usecases.AuthenticatedUseCase
 import gr.cpaleop.teithe_apps.domain.usecases.AuthenticatedUseCaseImpl

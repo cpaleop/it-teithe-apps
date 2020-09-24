@@ -1,9 +1,9 @@
 package gr.cpaleop.dashboard.data.mappers
 
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.dashboard.data.model.remote.RemoteNotificationDetails
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.entities.NotificationRelatedAnnouncement
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

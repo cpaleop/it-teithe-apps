@@ -7,7 +7,7 @@ import gr.cpaleop.authentication.domain.usecases.BuildUriUseCaseImpl
 import gr.cpaleop.authentication.domain.usecases.RetrieveTokenUseCase
 import gr.cpaleop.authentication.domain.usecases.RetrieveTokenUseCaseImpl
 import gr.cpaleop.authentication.presentation.AuthenticationViewModel
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

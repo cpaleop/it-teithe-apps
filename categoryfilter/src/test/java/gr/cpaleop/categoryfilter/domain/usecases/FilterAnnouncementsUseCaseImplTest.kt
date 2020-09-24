@@ -3,7 +3,7 @@ package gr.cpaleop.categoryfilter.domain.usecases
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import io.mockk.MockKAnnotations
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

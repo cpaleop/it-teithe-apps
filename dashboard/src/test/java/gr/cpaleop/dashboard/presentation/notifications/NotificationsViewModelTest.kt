@@ -3,12 +3,12 @@ package gr.cpaleop.dashboard.presentation.notifications
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.entities.NotificationRelatedAnnouncement
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

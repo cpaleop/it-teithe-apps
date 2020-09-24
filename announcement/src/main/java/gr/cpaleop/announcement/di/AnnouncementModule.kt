@@ -10,8 +10,8 @@ import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCaseImp
 import gr.cpaleop.announcement.presentation.AnnouncementDetailsMapper
 import gr.cpaleop.announcement.presentation.AnnouncementDetailsMapperImpl
 import gr.cpaleop.announcement.presentation.AnnouncementViewModel
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

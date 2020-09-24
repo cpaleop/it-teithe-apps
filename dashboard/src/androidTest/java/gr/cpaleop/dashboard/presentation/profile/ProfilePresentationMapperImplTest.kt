@@ -4,9 +4,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.*
-import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

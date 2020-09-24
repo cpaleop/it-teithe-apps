@@ -3,6 +3,7 @@ package gr.cpaleop.dashboard.presentation.profile
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.*
 import gr.cpaleop.dashboard.domain.usecases.GetProfileUseCase
@@ -10,7 +11,6 @@ import gr.cpaleop.dashboard.domain.usecases.UpdateSocialUseCase
 import gr.cpaleop.dashboard.presentation.profile.options.ProfileOption
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOption
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
-import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
