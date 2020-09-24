@@ -56,10 +56,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun updateNotificationsCounterBadge(notificationsCounter: Int) {
-        binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).run {
-            isVisible = notificationsCounter != 0
-            badgeTextColor = Color.WHITE
-            number = notificationsCounter
+        binding.dashboardBottomNavigationView.post {
+            binding.dashboardBottomNavigationView.getOrCreateBadge(R.id.notificationsFragment).run {
+                isVisible = notificationsCounter != 0
+                badgeTextColor = Color.WHITE
+                number = notificationsCounter
+            }
         }
     }
 }

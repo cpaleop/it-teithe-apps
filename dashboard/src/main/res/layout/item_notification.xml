@@ -11,11 +11,14 @@
     android:background="@drawable/shape_round_outline_ripple">
 
     <TextView
-        android:id="@+id/notificationTitle"
+        android:id="@+id/announcementTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:ellipsize="end"
         android:fontFamily="@font/googlesans_medium"
         android:gravity="center"
+        android:lines="2"
+        android:maxLines="2"
         android:padding="16dp"
         android:textColor="@color/colorOnPrimary"
         android:textSize="16sp"
@@ -23,27 +26,53 @@
         tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
     <TextView
-        android:id="@+id/notificationCategory"
+        android:id="@+id/announcementCategory"
         style="@style/Theme.FilterStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationTitle"
+        app:layout_constraintTop_toBottomOf="@id/announcementTitle"
         tools:text="6ο ΕΞΑΜΗΝΟ" />
 
     <TextView
-        android:id="@+id/notificationDate"
+        android:id="@+id/announcementPublisher"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
+        android:maxLines="1"
         android:padding="8dp"
+        android:textColor="@color/colorOnPrimaryVariant"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/announcementTitle"
+        app:layout_constraintTop_toBottomOf="@id/announcementCategory"
+        app:layout_constraintWidth_percent="0.5"
+        tools:text="Κ. ΒΙΤΣΑΣ" />
+
+    <TextView
+        android:id="@+id/announcementDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/googlesans_regular"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textColor="@color/colorOnPrimaryVariant"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationCategory"
+        app:layout_constraintStart_toEndOf="@id/announcementPublisher"
+        app:layout_constraintTop_toTopOf="@id/announcementPublisher"
         tools:text="1/1/2020" />
 </androidx.constraintlayout.widget.ConstraintLayout>

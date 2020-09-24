@@ -11,4 +11,9 @@ interface DateFormatter {
     operator fun invoke(isoFormattedTimeStamp: String, targetFormat: String): String
 
     fun fileFormat(time: Long, format: String): String
+
+    companion object {
+
+        const val ANNOUNCEMENT_DATE_FORMAT = "dd-MM-yyyy, HH:mm"
+    }
 }

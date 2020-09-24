@@ -33,7 +33,7 @@ class RefreshTokenInterceptor(
                     refreshToken()
                     return@runBlocking chain.proceed(originalRequest)
                 } else {
-                    return@runBlocking repeatOriginalRequest(chain, originalRequest)
+                    return@runBlocking retryOriginalRequest(chain, originalRequest)
                 }
             } else {
                 return@runBlocking originalResponse
@@ -57,7 +57,7 @@ class RefreshTokenInterceptor(
         isRefreshing = false
     }
 
-    private suspend fun repeatOriginalRequest(
+    private suspend fun retryOriginalRequest(
         chain: Interceptor.Chain,
         originalRequest: Request
     ): Response {

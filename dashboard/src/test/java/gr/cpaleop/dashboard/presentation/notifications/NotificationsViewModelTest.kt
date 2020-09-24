@@ -7,9 +7,11 @@ import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.entities.NotificationRelatedAnnouncement
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
+import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
 import gr.cpaleop.teithe_apps.di.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -25,7 +27,10 @@ class NotificationsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MainDispatcher
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testMainCoroutineDispatcher = TestCoroutineDispatcher()
+
+    @DefaultDispatcher
+    private val testDefaultCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
     private lateinit var getNotificationsUseCase: GetNotificationsUseCase
@@ -33,36 +38,44 @@ class NotificationsViewModelTest {
     @MockK
     private lateinit var readAllNotificationsUseCase: ReadAllNotificationsUseCase
 
+    @MockK
+    private lateinit var notificationPresentationMapper: NotificationPresentationMapper
+
     private lateinit var viewModel: NotificationsViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = NotificationsViewModel(
-            testCoroutineDispatcher,
+            testMainCoroutineDispatcher,
+            testDefaultCoroutineDispatcher,
             getNotificationsUseCase,
-            readAllNotificationsUseCase
+            readAllNotificationsUseCase,
+            notificationPresentationMapper
         )
     }
 
     @Test
     fun `presentNotifications notifications not empty`() {
+        val expectedList = notificationsPresentationList
+        val expectedIsEmpty = false
         coEvery { getNotificationsUseCase() } returns notificationsList
+        every { notificationPresentationMapper(notificationsList[0]) } returns notificationsPresentationList[0]
+        every { notificationPresentationMapper(notificationsList[1]) } returns notificationsPresentationList[1]
         viewModel.presentNotifications()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
-        assertThat(LiveDataTest.getValue(viewModel.notificationsEmpty)).isEqualTo(false)
-        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
-            notificationsList
-        )
+        assertThat(LiveDataTest.getValue(viewModel.notificationsEmpty)).isEqualTo(expectedIsEmpty)
+        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(expectedList)
         assertThat(LiveDataTest.getValue(viewModel.notificationsCounter)).isEqualTo(1)
     }
 
     @Test
     fun `presentNotifications notifications empty`() {
+        val expected = true
         coEvery { getNotificationsUseCase() } returns notificationsEmptyList
         viewModel.presentNotifications()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
-        assertThat(LiveDataTest.getValue(viewModel.notificationsEmpty)).isEqualTo(true)
+        assertThat(LiveDataTest.getValue(viewModel.notificationsEmpty)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
             notificationsEmptyList
         )
@@ -84,10 +97,14 @@ class NotificationsViewModelTest {
     @Test
     fun `searchNotifications found result`() {
         val query = "date2"
-        val expectedList = listOf(notificationsList[1])
+        val expectedList = listOf(notificationsPresentationList[1])
         coEvery { getNotificationsUseCase() } returns notificationsList
+        every { notificationPresentationMapper(notificationsList[0]) } returns notificationsPresentationList[0]
+        every { notificationPresentationMapper(notificationsList[1]) } returns notificationsPresentationList[1]
         viewModel.presentNotifications()
-        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(notificationsList)
+        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
+            notificationsPresentationList
+        )
         viewModel.searchNotifications(query)
         assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
             expectedList
@@ -98,10 +115,14 @@ class NotificationsViewModelTest {
     @Test
     fun `searchNotifications not found result`() = runBlocking {
         val query = "date3"
-        val expectedList = emptyList<Notification>()
+        val expectedList = emptyList<NotificationPresentation>()
         coEvery { getNotificationsUseCase() } returns notificationsList
+        every { notificationPresentationMapper(notificationsList[0]) } returns notificationsPresentationList[0]
+        every { notificationPresentationMapper(notificationsList[1]) } returns notificationsPresentationList[1]
         viewModel.presentNotifications()
-        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(notificationsList)
+        assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
+            notificationsPresentationList
+        )
         viewModel.searchNotifications(query)
         assertThat(LiveDataTest.getValue(viewModel.notifications)).isEqualTo(
             expectedList
@@ -118,8 +139,9 @@ class NotificationsViewModelTest {
                 announcement = NotificationRelatedAnnouncement(
                     id = "id1",
                     category = "category1",
-                    date = "date1",
-                    title = "title1"
+                    date = 10000L,
+                    title = "title1",
+                    publisherName = "publisher_name"
                 ),
                 seen = true
             ),
@@ -128,9 +150,29 @@ class NotificationsViewModelTest {
                 announcement = NotificationRelatedAnnouncement(
                     id = "id2",
                     category = "category2",
-                    date = "date2",
-                    title = "title2"
+                    date = 10000L,
+                    title = "title2",
+                    publisherName = "publisher_name"
                 ),
+                seen = false
+            )
+        )
+
+        private val notificationsPresentationList = listOf(
+            NotificationPresentation(
+                id = "id1",
+                category = "category1",
+                title = "title1",
+                publisherName = "publisher_name",
+                date = "date1",
+                seen = true
+            ),
+            NotificationPresentation(
+                id = "id2",
+                category = "category2",
+                title = "title2",
+                publisherName = "publisher_name",
+                date = "date2",
                 seen = false
             )
         )

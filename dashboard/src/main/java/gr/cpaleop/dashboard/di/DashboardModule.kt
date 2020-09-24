@@ -21,6 +21,7 @@ import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import gr.cpaleop.dashboard.presentation.documents.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
+import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
 import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
@@ -44,6 +45,7 @@ val dashboardModule = module {
             get(named<MainDispatcher>()),
             get(named<DefaultDispatcher>()),
             get(),
+            get(),
             get()
         )
     }
@@ -65,6 +67,7 @@ val dashboardModule = module {
         )
     }
     viewModel { ProfileViewModel(get(named<MainDispatcher>()), get(), get(), get(), get()) }
+    single { NotificationPresentationMapper(get()) }
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
     single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
@@ -79,7 +82,7 @@ val dashboardModule = module {
     single { CategoryFilterMapper() }
     single { FileDocumentMapper(get(), get(named<DefaultDispatcher>()), get()) }
     single { AnnouncementMapper() }
-    single { NotificationMapper() }
+    single { NotificationMapper(get(named<DefaultDispatcher>()), get()) }
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
@@ -98,7 +101,7 @@ val dashboardModule = module {
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
     single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get(), get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
-    single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get(), get()) }
+    single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
     single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }

@@ -15,7 +15,7 @@ class DateFormatterImpl : DateFormatter {
         val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = time * 1000
         return SimpleDateFormat(
-            "dd-MM-yyyy, HH:mm",
+            DateFormatter.ANNOUNCEMENT_DATE_FORMAT,
             Locale.getDefault()
         ).format(calendar.timeInMillis)
     }
@@ -70,7 +70,7 @@ class DateFormatterImpl : DateFormatter {
 
     override fun fileFormat(time: Long, format: String): String {
         val calendar = Calendar.getInstance(Locale.getDefault())
-        calendar.timeInMillis = time/* * 1000*/
+        calendar.timeInMillis = time
         return SimpleDateFormat(
             format,
             Locale.getDefault()

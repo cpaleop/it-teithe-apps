@@ -21,8 +21,11 @@
             android:id="@+id/announcementTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/googlesans_medium"
             android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
             android:padding="16dp"
             android:textColor="@color/colorOnPrimary"
             android:textSize="16sp"
@@ -37,7 +40,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintEnd_toStartOf="@id/announcementHasAttachments"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/announcementContent"
             app:layout_constraintTop_toBottomOf="@id/announcementTitle"
             tools:text="6ο ΕΞΑΜΗΝΟ" />
@@ -50,9 +53,10 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/announcements_has_attachments"
+            app:layout_constraintBottom_toBottomOf="@id/announcementCategory"
             app:layout_constraintEnd_toEndOf="@id/announcementContent"
             app:layout_constraintStart_toEndOf="@id/announcementCategory"
-            app:layout_constraintTop_toBottomOf="@id/announcementTitle" />
+            app:layout_constraintTop_toTopOf="@id/announcementCategory" />
 
         <TextView
             android:id="@+id/announcementContent"
@@ -83,6 +87,8 @@
             app:layout_constraintEnd_toEndOf="@id/announcementTitle"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/announcementTitle"
+            app:layout_constraintTop_toBottomOf="@id/announcementContent"
+            app:layout_constraintVertical_bias="1"
             app:layout_constraintWidth_percent="0.5"
             tools:text="Κ. ΒΙΤΣΑΣ" />
 
@@ -100,20 +106,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/announcementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/announcementContent"
+            app:layout_constraintVertical_bias="1"
             tools:text="1/1/2020" />
-
-        <!--<com.google.android.material.chip.Chip
-            android:id="@+id/announcementChip"
-            style="@style/Widget.IOSched.FilterChip.Closeable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SKATASKATASKATA"
-            android:textColor="@color/colorOnPrimary"
-            app:chipIconEnabled="true"
-            app:chipStrokeColor="@color/colorPrimaryVariant"
-            app:chipStrokeWidth="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/announcementDate" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

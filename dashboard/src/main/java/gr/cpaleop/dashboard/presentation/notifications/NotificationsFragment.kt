@@ -16,7 +16,6 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
-import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import gr.cpaleop.teithe_apps.R as appR
@@ -147,7 +146,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         }
     }
 
-    private fun updateNotifications(notifications: List<Notification>) {
+    private fun updateNotifications(notifications: List<NotificationPresentation>) {
         notificationAdapter?.submitList(notifications) {
             submitListCallbackAction()
         }

@@ -1,8 +1,8 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
 import androidx.lifecycle.*
+import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import gr.cpaleop.teithe_apps.di.dispatchers.DefaultDispatcher
@@ -18,26 +18,31 @@ class NotificationsViewModel(
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
     private val getNotificationsUseCase: GetNotificationsUseCase,
-    private val readAllNotificationsUseCase: ReadAllNotificationsUseCase
+    private val readAllNotificationsUseCase: ReadAllNotificationsUseCase,
+    private val notificationPresentationMapper: NotificationPresentationMapper
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
-    private val _notifications = MutableLiveData<List<Notification>>()
+    private val _notifications = MutableLiveData<List<NotificationPresentation>>()
 
     val notificationsCounter: MediatorLiveData<Int> by lazy {
         MediatorLiveData<Int>().apply {
             addSource(_notifications) { notifications ->
-                this.value = notifications.count { !it.seen }
+                viewModelScope.launch(mainDispatcher) {
+                    this@apply.value = withContext(defaultDispatcher) {
+                        notifications.count { !it.seen }
+                    }
+                }
             }
         }
     }
 
-    val notifications: MediatorLiveData<List<Notification>> by lazy {
-        MediatorLiveData<List<Notification>>().apply {
+    val notifications: MediatorLiveData<List<NotificationPresentation>> by lazy {
+        MediatorLiveData<List<NotificationPresentation>>().apply {
             addSource(_notifications) {
-                this@apply.value = it
+                this.value = it
             }
         }
     }
@@ -62,7 +67,8 @@ class NotificationsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                _notifications.value = getNotificationsUseCase()
+                _notifications.value =
+                    getNotificationsUseCase().mapAsync(notificationPresentationMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
             } finally {
@@ -85,9 +91,9 @@ class NotificationsViewModel(
         viewModelScope.launch(mainDispatcher) {
             notifications.value = withContext(defaultDispatcher) {
                 _notifications.value?.filter {
-                    it.announcement.title.contains(query, true) ||
-                            it.announcement.category.contains(query, true) ||
-                            it.announcement.date.contains(query, true)
+                    it.title.contains(query, true) ||
+                            it.category.contains(query, true) ||
+                            it.date.contains(query, true)
                 } ?: emptyList()
             }
         }
