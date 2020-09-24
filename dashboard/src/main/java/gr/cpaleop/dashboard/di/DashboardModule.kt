@@ -82,7 +82,7 @@ val dashboardModule = module {
     single { CategoryFilterMapper() }
     single { FileDocumentMapper(get(), get(named<DefaultDispatcher>()), get()) }
     single { AnnouncementMapper() }
-    single { NotificationMapper(get(named<DefaultDispatcher>()), get()) }
+    single { NotificationMapper(get(named<DefaultDispatcher>())) }
     single { ProfileMapper(get()) }
     single { DocumentMapper() }
     single { CategoryMapper() }
