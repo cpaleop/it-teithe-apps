@@ -1,6 +1,5 @@
 package gr.cpaleop.core.data.mappers
 
-import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
@@ -12,7 +11,7 @@ class DocumentMapper(@DefaultDispatcher private val defaultDispatcher: Coroutine
 
     suspend operator fun invoke(file: File, announcementId: String): Document =
         withContext(defaultDispatcher) {
-            val mimeType = MimeTypeMap.getFileExtensionFromUrl(file.toURI().toASCIIString())
+            val mimeType = file.extension
             Document(
                 uri = file.toUri().toString(),
                 announcementId = announcementId,

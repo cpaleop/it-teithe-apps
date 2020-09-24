@@ -28,6 +28,7 @@ class FileDocumentMapper(
                 document.type.contains("docx") -> R.drawable.ic_docx
                 document.type.contains("rar") -> R.drawable.ic_rar
                 document.type.contains("zip") -> R.drawable.ic_zip
+                document.type.contains("ppt") -> R.drawable.ic_powerpoint
                 else -> {
                     Timber.e("Unknown document file type: ${document.type}")
                     R.drawable.ic_document
