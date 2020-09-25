@@ -13,6 +13,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
@@ -43,6 +44,8 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     @Authority
     private val authority: String by inject(named<Authority>())
+
+    private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
@@ -66,6 +69,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
+        viewModel.emptyDocumentList()
     }
 
     override fun onResume() {
@@ -79,7 +83,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
         )
 
-        announcementFolderAdapter = AnnouncementFolderAdapter()
+        announcementFolderAdapter = AnnouncementFolderAdapter(::navigateToDocumentsFragment)
         documentsAdapter = DocumentsAdapter(::openFile, ::navigateToFileOptionsDialog)
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
@@ -90,8 +94,11 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             navigateToFileSortOptionsDialog()
         }
 
-        binding.documentsPreviewImage.setOnClickListener {
-            viewModel.togglePreview()
+        /*binding.documentsPreviewImage.isVisible = announcementId == null*/
+        if (announcementId == null) {
+            binding.documentsPreviewImage.setOnClickListener {
+                viewModel.togglePreview()
+            }
         }
 
         binding.documentsSearchTextView.run {
@@ -179,10 +186,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
             documentsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyDocumentsView))
             documentSortOptionSelected.observe(viewLifecycleOwner, Observer(::updateSortView))
-            documentsFilterEmpty.observe(
-                viewLifecycleOwner,
-                Observer(::updateDocumentsNotFoundView)
-            )
             documentAnnouncementFolders.observe(
                 viewLifecycleOwner,
                 Observer(::updateAnnouncementFolders)
@@ -192,7 +195,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private fun refreshViewState() {
         binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
-        viewModel.presentDocuments()
+        viewModel.presentDocuments(announcementId)
         viewModel.presentDocumentSortSelected()
     }
 
@@ -211,6 +214,12 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         context?.startActivity(chooserIntent)
     }
 
+    private fun navigateToDocumentsFragment(announcementId: String) {
+        viewModel.emptyDocumentList()
+        val directions = DocumentsFragmentDirections.documentsToDocuments(announcementId)
+        navController.navigate(directions)
+    }
+
     private fun navigateToFileOptionsDialog(fileUri: String) {
         val directions = DocumentsFragmentDirections.documentsToDocumentOptionsDialog(fileUri)
         navController.navigate(directions)
@@ -223,8 +232,10 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
         binding.documentsPreviewImage.run {
-            setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
-            if (!isVisible) isVisible = true
+            if (announcementId == null) {
+                setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
+                if (!isVisible) isVisible = true
+            }
         }
         when (documentPreview) {
             DocumentPreview.FILE -> {
@@ -257,19 +268,13 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
         binding.documentsEmptyTextView.run {
             text = requireContext().getString(R.string.documents_empty)
-            isVisible = documentsEmpty
-        }
-    }
-
-    private fun updateDocumentsNotFoundView(documentsNotFound: Boolean) {
-        binding.documentsEmptyTextView.run {
-            text = requireContext().getString(R.string.documents_not_found)
-            isVisible = documentsNotFound
+            isVisible = documentsEmpty && !binding.documentsSwipeRefreshLayout.isRefreshing
         }
     }
 
     private fun updateSortView(documentSortOption: DocumentSortOption) {
         binding.filesSortingTextView.run {
+            isVisible = true
             setText(documentSortOption.labelResource)
             val drawable = drawableMap?.get(documentSortOption.descending)
             setCompoundDrawablesWithIntrinsicBounds(

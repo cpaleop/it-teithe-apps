@@ -1,10 +1,7 @@
 package gr.cpaleop.dashboard.presentation.documents
 
 import androidx.lifecycle.*
-import gr.cpaleop.common.extensions.getMimeType
-import gr.cpaleop.common.extensions.mapAsync
-import gr.cpaleop.common.extensions.mapAsyncSuspended
-import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.common.extensions.*
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
@@ -72,21 +69,10 @@ class DocumentsViewModel(
             addSource(_documents) {
                 this.value = it
             }
-        }
+        }.toSingleMediatorEvent()
     }
 
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
-        MediatorLiveData<Boolean>().apply {
-            addSource(_documents) {
-                viewModelScope.launch(mainDispatcher) {
-                    this@apply.value =
-                        it.isEmpty() && (getDocumentPreviewPreferenceUseCase() == DocumentPreview.FILE)
-                }
-            }
-        }
-    }
-
-    val documentsFilterEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
                 viewModelScope.launch(mainDispatcher) {
@@ -94,7 +80,7 @@ class DocumentsViewModel(
                         it.isEmpty() && (getDocumentPreviewPreferenceUseCase() == DocumentPreview.FILE)
                 }
             }
-        }
+        }.toSingleMediatorEvent()
     }
 
     /*
@@ -128,19 +114,25 @@ class DocumentsViewModel(
             addSource(_documentSortOptions) { documentSortOptionsList ->
                 this.value = documentSortOptionsList.firstOrNull { it.selected } ?: return@addSource
             }
-        }
+        }.toSingleMediatorEvent()
     }
 
-    fun presentDocuments() {
+    fun presentDocuments(announcementId: String?) {
         viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                val documentPreview = getDocumentPreviewPreferenceUseCase()
+                val documentPreview = if (announcementId == null) {
+                    getDocumentPreviewPreferenceUseCase()
+                } else {
+                    DocumentPreview.FILE
+                }
 
                 when (documentPreview) {
                     DocumentPreview.FILE -> {
                         _documents.value =
-                            getSavedDocumentsUseCase().mapAsyncSuspended(fileDocumentMapper::invoke)
+                            getSavedDocumentsUseCase(announcementId).mapAsyncSuspended(
+                                fileDocumentMapper::invoke
+                            )
                     }
                     DocumentPreview.FOLDER -> {
                         _documentAnnouncementFolders.value =
@@ -287,5 +279,9 @@ class DocumentsViewModel(
                 Timber.e(t)
             }
         }
+    }
+
+    fun emptyDocumentList() {
+        _documents.value = emptyList()
     }
 }

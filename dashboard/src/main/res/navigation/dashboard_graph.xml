@@ -53,6 +53,16 @@
         android:label="DocumentsFragment"
         tools:layout="@layout/fragment_documents">
 
+        <argument
+            android:name="announcementId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/documentsToDocuments"
+            app:destination="@id/documentsFragment" />
+
         <action
             android:id="@+id/documentsToDocumentOptionsDialog"
             app:destination="@id/documentOptionsDialog" />

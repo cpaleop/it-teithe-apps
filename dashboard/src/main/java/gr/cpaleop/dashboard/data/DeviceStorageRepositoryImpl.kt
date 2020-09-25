@@ -19,6 +19,11 @@ class DeviceStorageRepositoryImpl(
         return deviceStorageRepository.getDocuments()
     }
 
+    override suspend fun getDocumentsByAnnouncementId(announcementId: String): List<Document> =
+        withContext(ioDispatcher) {
+            deviceStorageRepository.getDocumentsByAnnouncementId(announcementId)
+        }
+
     override suspend fun getAnnouncementFolders(): List<AnnouncementFolder> =
         withContext(ioDispatcher) {
             val announcementFolders = deviceStorageRepository.getDocuments().map { document ->

@@ -8,6 +8,7 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
+import gr.cpaleop.dashboard.domain.entities.DocumentPreview
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.usecases.*
@@ -32,6 +33,7 @@ import org.junit.Test
  * Notice:
  * [DocumentsViewModel.handleDocumentOptionChoice] for type SHARE needs to be Instrumentation tested separately
  */
+//TODO: Test Announcement folder preview
 @ExperimentalCoroutinesApi
 class DocumentsViewModelTest {
 
@@ -77,6 +79,15 @@ class DocumentsViewModelTest {
     @MockK
     private lateinit var getDocumentSortUseCase: GetDocumentSortUseCase
 
+    @MockK
+    private lateinit var getDocumentsAnnouncementFoldersUseCase: GetDocumentsAnnouncementFoldersUseCase
+
+    @MockK
+    private lateinit var getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase
+
+    @MockK
+    private lateinit var toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
+
     private lateinit var viewModel: DocumentsViewModel
 
     @Before
@@ -95,17 +106,21 @@ class DocumentsViewModelTest {
             getDocumentSortOptionsUseCase,
             documentSortOptionMapper,
             updateDocumentSortUseCase,
-            getDocumentSortUseCase
+            getDocumentSortUseCase,
+            getDocumentsAnnouncementFoldersUseCase,
+            getDocumentPreviewPreferenceUseCase,
+            toggleDocumentPreviewPreferenceUseCase
         )
     }
 
     @Test
     fun `presentDocuments success with no empty list`() {
         val expected = fileDocumentList
-        coEvery { getSavedDocumentsUseCase() } returns documentList
+        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments()
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
@@ -114,8 +129,9 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
-        coEvery { getSavedDocumentsUseCase() } returns emptyList()
-        viewModel.presentDocuments()
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        coEvery { getSavedDocumentsUseCase(null) } returns emptyList()
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
@@ -123,8 +139,9 @@ class DocumentsViewModelTest {
 
     @Test
     fun `presentDocuments when fails catches exception`() {
-        coEvery { getSavedDocumentsUseCase() } throws Throwable()
-        viewModel.presentDocuments()
+        coEvery { getSavedDocumentsUseCase(null) } throws Throwable()
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
@@ -133,17 +150,18 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with multiple results`() {
-        coEvery { getSavedDocumentsUseCase() } returns documentList
+        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments()
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
 
         val givenQuery = "name"
         val expected = listOf(fileDocumentList[0], fileDocumentList[1])
         viewModel.searchDocuments(givenQuery)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsFilterEmpty)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
     }
 
     /**
@@ -151,17 +169,18 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with one result`() {
-        coEvery { getSavedDocumentsUseCase() } returns documentList
+        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments()
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
 
         val givenQuery = "name1"
         val expected = listOf(fileDocumentList[1])
         viewModel.searchDocuments(givenQuery)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsFilterEmpty)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
     }
 
     /**
@@ -169,17 +188,18 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with empty list`() {
-        coEvery { getSavedDocumentsUseCase() } returns documentList
+        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments()
+        viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
 
         val givenQuery = "name111"
         val expected = emptyList<FileDocument>()
         viewModel.searchDocuments(givenQuery)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsFilterEmpty)).isEqualTo(true)
+        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
     }
 
     @Test

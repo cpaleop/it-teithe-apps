@@ -8,6 +8,8 @@ interface DeviceStorageRepository {
 
     suspend fun getDocuments(): List<Document>
 
+    suspend fun getDocumentsByAnnouncementId(announcementId: String): List<Document>
+
     suspend fun getDocumentByUri(uri: String): Document
 
     suspend fun deleteDocument(uri: String)

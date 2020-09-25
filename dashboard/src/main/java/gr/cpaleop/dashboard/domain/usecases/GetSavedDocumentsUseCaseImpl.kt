@@ -10,27 +10,32 @@ class GetSavedDocumentsUseCaseImpl(
     private val preferencesRepository: PreferencesRepository
 ) : GetSavedDocumentsUseCase {
 
-    override suspend fun invoke(): List<Document> {
+    override suspend fun invoke(announcementId: String?): List<Document> {
         val documentSortOption = preferencesRepository.getDocumentSort()
+        val documents = when (announcementId) {
+            null -> deviceStorageRepository.getDocuments()
+            else -> deviceStorageRepository.getDocumentsByAnnouncementId(announcementId)
+        }
+
         return when (documentSortOption.type) {
             DocumentSortType.ALPHABETICAL -> {
                 if (documentSortOption.descending) {
-                    deviceStorageRepository.getDocuments().sortedByDescending { document ->
+                    documents.sortedByDescending { document ->
                         document.name
                     }
                 } else {
-                    deviceStorageRepository.getDocuments().sortedBy { document ->
+                    documents.sortedBy { document ->
                         document.name
                     }
                 }
             }
             DocumentSortType.DATE -> {
                 if (documentSortOption.descending) {
-                    deviceStorageRepository.getDocuments().sortedByDescending { document ->
+                    documents.sortedByDescending { document ->
                         document.lastModified
                     }
                 } else {
-                    deviceStorageRepository.getDocuments().sortedBy { document ->
+                    documents.sortedBy { document ->
                         document.lastModified
                     }
                 }

@@ -48,6 +48,11 @@ class DeviceStorageRepositoryImpl(
         return@withContext validatedDocuments
     }
 
+    override suspend fun getDocumentsByAnnouncementId(announcementId: String): List<Document> =
+        withContext(Dispatchers.IO) {
+            appDatabase.documentDao().fetchByAnnouncementId(announcementId)
+        }
+
     override suspend fun getDocumentByUri(uri: String): Document {
         return appDatabase.documentDao().fetchByUri(uri)
     }

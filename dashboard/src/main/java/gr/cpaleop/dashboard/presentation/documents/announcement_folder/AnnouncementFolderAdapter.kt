@@ -5,13 +5,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
 
-class AnnouncementFolderAdapter :
+class AnnouncementFolderAdapter(private val onClickListener: (String) -> Unit) :
     ListAdapter<AnnouncementFolder, AnnouncementFolderHolder>(
         DIFF_UTIL_ANNOUNCEMENT_FOLDER
     ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnnouncementFolderHolder {
-        return AnnouncementFolderHolder.create(parent)
+        return AnnouncementFolderHolder.create(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: AnnouncementFolderHolder, position: Int) {

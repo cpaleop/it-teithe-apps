@@ -4,5 +4,5 @@ import gr.cpaleop.core.domain.entities.Document
 
 interface GetSavedDocumentsUseCase {
 
-    suspend operator fun invoke(): List<Document>
+    suspend operator fun invoke(announcementId: String?): List<Document>
 }
