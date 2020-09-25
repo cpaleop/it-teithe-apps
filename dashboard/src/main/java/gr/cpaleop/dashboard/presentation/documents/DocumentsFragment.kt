@@ -33,7 +33,7 @@ import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import java.io.File
 import gr.cpaleop.teithe_apps.R as appR
@@ -41,7 +41,7 @@ import gr.cpaleop.teithe_apps.R as appR
 @ExperimentalCoroutinesApi
 class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
-    private val viewModel: DocumentsViewModel by sharedViewModel()
+    private val viewModel: DocumentsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
 
     @Authority
@@ -51,7 +51,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var submitListCallbackAction: () -> Unit = {}
     private var startDrawable: Drawable? = null
     private var drawableMap: MutableMap<Boolean, Drawable?>? = null
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
@@ -157,11 +156,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
                     search(text.toString())
-                    submitListCallbackAction = if (text.isNotEmpty()) {
-                        { binding.documentsRecyclerView.smoothScrollToPosition(0) }
-                    } else {
-                        {}
-                    }
 
                     var animDrawable: AnimatedVectorDrawableCompat? = null
                     if (text.isEmpty()) {
@@ -221,8 +215,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
                             }
                         }
                     }
-                } else {
-                    submitListCallbackAction = {}
                 }
             }
         }
@@ -317,13 +309,13 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolder>) {
         announcementFolderAdapter?.submitList(announcementFolders) {
-            submitListCallbackAction()
+            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
         documentsAdapter?.submitList(documents) {
-            submitListCallbackAction()
+            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 

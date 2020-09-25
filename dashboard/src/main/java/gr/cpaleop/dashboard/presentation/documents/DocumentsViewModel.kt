@@ -8,7 +8,6 @@ import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 import gr.cpaleop.dashboard.domain.entities.DocumentPreview
-import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.documents.document.FileDocument
 import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
@@ -22,7 +21,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.net.URI
@@ -40,10 +38,8 @@ class DocumentsViewModel(
     private val getDocumentUseCase: GetDocumentUseCase,
     private val deleteDocumentUseCase: DeleteDocumentUseCase,
     private val renameDocumentUseCase: RenameDocumentUseCase,
-    private val getDocumentSortOptionsUseCase: GetDocumentSortOptionsUseCase,
     private val documentSortOptionMapper: DocumentSortOptionMapper,
-    private val updateDocumentSortUseCase: UpdateDocumentSortUseCase,
-    private val getDocumentSortUseCase: GetDocumentSortUseCase,
+    private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
     private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
@@ -98,21 +94,9 @@ class DocumentsViewModel(
     private val _optionShare = MutableLiveData<DocumentShareOptionData>()
     val optionShare: LiveData<DocumentShareOptionData> = _optionShare.toSingleEvent()
 
-    /*
-    Document Sort options
-     */
-
-    private val _documentSortOptions = MutableLiveData<List<DocumentSortOption>>()
-    val documentSortOptions: LiveData<List<DocumentSortOption>> =
-        _documentSortOptions/*.toSingleEvent()*/
-
-    val documentSortOptionSelected: MediatorLiveData<DocumentSortOption> by lazy {
-        MediatorLiveData<DocumentSortOption>().apply {
-            addSource(_documentSortOptions) { documentSortOptionsList ->
-                this.value = documentSortOptionsList.firstOrNull { it.selected } ?: return@addSource
-            }
-        }.toSingleMediatorEvent()
-    }
+    private val _documentSortOptionSelected = MutableLiveData<DocumentSortOption>()
+    val documentSortOptionSelected: LiveData<DocumentSortOption> =
+        _documentSortOptionSelected.toSingleEvent()
 
     fun presentDocuments(announcementId: String?) {
         viewModelScope.launch(mainDispatcher) {
@@ -181,30 +165,28 @@ class DocumentsViewModel(
 
     fun handleDocumentOptionChoice(optionType: DocumentOptionType) {
         viewModelScope.launch(mainDispatcher) {
+            val document = _document.value ?: return@launch
             when (optionType) {
                 DocumentOptionType.ANNOUNCEMENT -> {
-                    _optionNavigateAnnouncement.value =
-                        _document.value?.announcementId ?: return@launch
+                    _optionNavigateAnnouncement.value = document.announcementId
                 }
                 DocumentOptionType.RENAME -> {
-                    val document = _document.value ?: return@launch
                     _optionRename.value = DocumentDetails(
                         uri = document.uri,
                         name = document.name
                     )
                 }
                 DocumentOptionType.DELETE -> {
-                    val document = _document.value ?: return@launch
                     _optionDelete.value = DocumentDetails(
                         uri = document.uri,
                         name = document.name
                     )
                 }
                 DocumentOptionType.SHARE -> {
-                    val uri = _document.value?.uri ?: return@launch
+                    val uri = document.uri
                     val fileMimeType = File(URI(uri)).getMimeType()
                     _optionShare.value = DocumentShareOptionData(
-                        uri = _document.value?.uri ?: return@launch,
+                        uri = uri,
                         mimeType = fileMimeType
 
                     )
@@ -236,32 +218,10 @@ class DocumentsViewModel(
     fun presentDocumentSortSelected() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                documentSortOptionSelected.value =
-                    documentSortOptionMapper(getDocumentSortUseCase())
-            } catch (t: Throwable) {
-                Timber.e(t)
-            }
-        }
-    }
-
-    fun presentDocumentSortOptions() {
-        viewModelScope.launch(mainDispatcher) {
-            try {
-                _documentSortOptions.value = withContext(defaultDispatcher) {
-                    getDocumentSortOptionsUseCase().mapAsync(documentSortOptionMapper::invoke)
-                }
-            } catch (t: Throwable) {
-                Timber.e(t)
-            }
-        }
-    }
-
-    fun updateSort(documentSort: DocumentSort) {
-        viewModelScope.launch(mainDispatcher) {
-            try {
-                documentSortOptionSelected.value =
-                    documentSortOptionMapper(updateDocumentSortUseCase(documentSort))
-                _refresh.value = Unit
+                observeDocumentSortUseCase()
+                    .map(documentSortOptionMapper::invoke)
+                    .flowOn(defaultDispatcher)
+                    .collect(_documentSortOptionSelected::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
             }

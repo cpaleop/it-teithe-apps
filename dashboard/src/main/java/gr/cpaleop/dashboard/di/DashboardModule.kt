@@ -24,6 +24,7 @@ import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
 import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
+import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
@@ -32,11 +33,13 @@ import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapperImpl
 import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
 import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapperImpl
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+@ExperimentalCoroutinesApi
 val dashboardModule = module {
     viewModel { CategoryFilterViewModel(get(), get()) }
     viewModel { CategoriesFilterViewModel(get(), get()) }
@@ -65,6 +68,13 @@ val dashboardModule = module {
             get(),
             get(),
             get(),
+            get()
+        )
+    }
+    viewModel {
+        DocumentSortOptionsViewModel(
+            get(named<MainDispatcher>()),
+            get(named<DefaultDispatcher>()),
             get(),
             get(),
             get()
@@ -99,8 +109,7 @@ val dashboardModule = module {
     }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
-    single<GetDocumentSortUseCase> { GetDocumentSortUseCaseImpl(get()) }
-    single<UpdateDocumentSortUseCase> { UpdateDocumentSortUseCaseImpl(get()) }
+    single<ObserveDocumentSortUseCase> { ObserveDocumentSortUseCaseImpl(get()) }
     single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
     single<RenameDocumentUseCase> { RenameDocumentUseCaseImpl(get()) }
     single<DeleteDocumentUseCase> { DeleteDocumentUseCaseImpl(get()) }

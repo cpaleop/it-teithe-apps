@@ -21,13 +21,13 @@ class DownloadFilesUseCaseImpl(
     override suspend fun invoke(announcementId: String, fileIdList: List<String>) {
         downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, true))
         fileIdList.forEachIndexed { index, fileId ->
-            downloadProgressNotifier.emit(DownloadProgress(fileIdList.size, index + 1))
             val downloadedFile = fileRepository.getFile(fileId)
             deviceStorageRepository.saveFile(
                 announcementId,
                 downloadedFile.name,
                 downloadedFile.data.toByteArray()
             )
+            downloadProgressNotifier.emit(DownloadProgress(fileIdList.size, index + 1))
         }
         downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, false))
     }

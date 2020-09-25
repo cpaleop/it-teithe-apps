@@ -9,12 +9,13 @@ import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentSortDocumentsBinding
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
-import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocumentsBinding>() {
 
-    private val viewModel: DocumentsViewModel by sharedViewModel()
+    private val viewModel: DocumentSortOptionsViewModel by viewModel()
     private var documentSortOptionsAdapter: DocumentSortOptionsAdapter? = null
 
     override fun inflateViewBinding(
@@ -38,7 +39,7 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
 
     private fun observeViewModel() {
         viewModel.run {
-            refresh.observe(viewLifecycleOwner, { dismiss() })
+            dismissDialog.observe(viewLifecycleOwner, { dismiss() })
             documentSortOptions.observe(viewLifecycleOwner, Observer(::updateFileSortOptions))
         }
     }

@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="@id/option_label"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/option_label" />
+        app:layout_constraintTop_toTopOf="@id/option_label"
+        app:tint="@color/colorAccent" />
 
     <TextView
         android:id="@+id/option_label"
