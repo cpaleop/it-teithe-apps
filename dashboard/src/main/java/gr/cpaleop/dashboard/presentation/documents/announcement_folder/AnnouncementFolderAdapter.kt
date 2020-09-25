@@ -22,6 +22,7 @@ class AnnouncementFolderAdapter(private val onClickListener: (String) -> Unit) :
 
         private val DIFF_UTIL_ANNOUNCEMENT_FOLDER =
             object : DiffUtil.ItemCallback<AnnouncementFolder>() {
+
                 override fun areItemsTheSame(
                     oldItem: AnnouncementFolder,
                     newItem: AnnouncementFolder

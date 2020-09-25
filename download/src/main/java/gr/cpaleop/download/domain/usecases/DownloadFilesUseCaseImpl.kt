@@ -11,12 +11,12 @@ import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class DownloadFileUseCaseImpl(
+class DownloadFilesUseCaseImpl(
     private val downloadAnnouncementNotifier: DownloadAnnouncementNotifier,
     private val downloadProgressNotifier: DownloadProgressNotifier,
     private val fileRepository: FileRepository,
     private val deviceStorageRepository: DeviceStorageRepository
-) : DownloadFileUseCase {
+) : DownloadFilesUseCase {
 
     override suspend fun invoke(announcementId: String, fileIdList: List<String>) {
         downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, true))

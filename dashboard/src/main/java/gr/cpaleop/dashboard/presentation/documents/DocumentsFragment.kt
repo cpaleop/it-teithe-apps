@@ -88,10 +88,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
         refreshViewState()
     }
 

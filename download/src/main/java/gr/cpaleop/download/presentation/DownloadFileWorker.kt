@@ -3,7 +3,7 @@ package gr.cpaleop.download.presentation
 import android.content.Context
 import androidx.work.*
 import gr.cpaleop.download.domain.DownloadProgressNotifier
-import gr.cpaleop.download.domain.usecases.DownloadFileUseCase
+import gr.cpaleop.download.domain.usecases.DownloadFilesUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import org.koin.core.KoinComponent
@@ -19,7 +19,7 @@ class DownloadFileWorker(
 ) : CoroutineWorker(context, workerParameters), KoinComponent {
 
     private val workerCoroutineScope = CoroutineScope(Dispatchers.Default)
-    private val downloadFilesUseCase: DownloadFileUseCase by inject()
+    private val downloadFilesUseCase: DownloadFilesUseCase by inject()
     private val downloadNotificationManager: DownloadNotificationManager by inject()
     private val downloadProgressNotifier: DownloadProgressNotifier by inject()
 
