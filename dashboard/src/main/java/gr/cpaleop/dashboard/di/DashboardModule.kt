@@ -92,9 +92,9 @@ val dashboardModule = module {
     single { CategoryMapper() }
     single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
     single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
-    single<GetDocumentsAnnouncementFoldersUseCase> {
-        GetDocumentsAnnouncementFoldersUseCaseImpl(
-            get(named<DefaultDispatcher>()), get(), get()
+    single<ObserveDocumentsAnnouncementFoldersUseCase> {
+        ObserveDocumentsAnnouncementFoldersUseCaseImpl(
+            get(named<DefaultDispatcher>()), get(), get(), get()
         )
     }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
@@ -110,7 +110,7 @@ val dashboardModule = module {
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<GetSavedDocumentsUseCase> { GetSavedDocumentsUseCaseImpl(get(), get()) }
+    single<ObserveDocumentsUseCase> { ObserveDocumentsUseCaseImpl(get(), get(), get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }

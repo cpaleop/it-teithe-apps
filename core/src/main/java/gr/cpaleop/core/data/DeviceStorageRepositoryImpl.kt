@@ -8,6 +8,8 @@ import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import okio.BufferedSink
 import okio.appendingSink
@@ -39,16 +41,22 @@ class DeviceStorageRepositoryImpl(
             return@withContext
         }
 
-    override suspend fun getDocuments(): List<Document> = withContext(Dispatchers.IO) {
-        val documentList = appDatabase.documentDao().fetchAll()
-        val validatedDocuments = validateDocumentFiles(documentList)
+    override suspend fun getDocumentsFlow(): Flow<List<Document>> = withContext(Dispatchers.IO) {
+        return@withContext appDatabase.documentDao().fetchAll().map { documentList ->
+            val validatedDocuments = validateDocumentFiles(documentList)
+            val obsoleteDocumentList = documentList.diff(validatedDocuments)
+            /*deleteObsoleteFiles(obsoleteDocumentList)*/
+            appDatabase.documentDao().deleteAll(obsoleteDocumentList)
+            validatedDocuments
+        }
+
+        /*val validatedDocuments = validateDocumentFiles(documentList)
         val obsoleteDocumentList = documentList.diff(validatedDocuments)
-        /*deleteObsoleteFiles(obsoleteDocumentList)*/
         appDatabase.documentDao().deleteAll(obsoleteDocumentList)
-        return@withContext validatedDocuments
+        return@withContext validatedDocuments*/
     }
 
-    override suspend fun getDocumentsByAnnouncementId(announcementId: String): List<Document> =
+    override suspend fun getDocumentsByAnnouncementId(announcementId: String): Flow<List<Document>> =
         withContext(Dispatchers.IO) {
             appDatabase.documentDao().fetchByAnnouncementId(announcementId)
         }

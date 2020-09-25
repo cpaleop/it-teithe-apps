@@ -7,7 +7,8 @@ class GetDocumentPreviewPreferenceUseCaseImpl(private val preferencesRepository:
     GetDocumentPreviewPreferenceUseCase {
 
     @DocumentPreview
-    override suspend fun invoke(): Int {
-        return preferencesRepository.getDocumentPreviewPreference()
+    override suspend fun invoke(announcementId: String?): Int {
+        return if (announcementId != null) DocumentPreview.FILE
+        else preferencesRepository.getDocumentPreviewPreference()
     }
 }

@@ -47,7 +47,7 @@ class DocumentsViewModelTest {
     val testDefaultCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private lateinit var getSavedDocumentsUseCase: GetSavedDocumentsUseCase
+    private lateinit var observeDocumentsUseCase: ObserveDocumentsUseCase
 
     @MockK
     private lateinit var fileDocumentMapper: FileDocumentMapper
@@ -80,7 +80,7 @@ class DocumentsViewModelTest {
     private lateinit var getDocumentSortUseCase: GetDocumentSortUseCase
 
     @MockK
-    private lateinit var getDocumentsAnnouncementFoldersUseCase: GetDocumentsAnnouncementFoldersUseCase
+    private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase
 
     @MockK
     private lateinit var getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase
@@ -96,7 +96,7 @@ class DocumentsViewModelTest {
         viewModel = DocumentsViewModel(
             testMainCoroutineDispatcher,
             testDefaultCoroutineDispatcher,
-            getSavedDocumentsUseCase,
+            observeDocumentsUseCase,
             fileDocumentMapper,
             getDocumentOptionsUseCase,
             documentOptionMapper,
@@ -107,7 +107,7 @@ class DocumentsViewModelTest {
             documentSortOptionMapper,
             updateDocumentSortUseCase,
             getDocumentSortUseCase,
-            getDocumentsAnnouncementFoldersUseCase,
+            observeDocumentsAnnouncementFoldersUseCase,
             getDocumentPreviewPreferenceUseCase,
             toggleDocumentPreviewPreferenceUseCase
         )
@@ -116,7 +116,7 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments success with no empty list`() {
         val expected = fileDocumentList
-        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { observeDocumentsUseCase(null) } returns documentList
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
@@ -130,7 +130,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
-        coEvery { getSavedDocumentsUseCase(null) } returns emptyList()
+        coEvery { observeDocumentsUseCase(null) } returns emptyList()
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
@@ -139,7 +139,7 @@ class DocumentsViewModelTest {
 
     @Test
     fun `presentDocuments when fails catches exception`() {
-        coEvery { getSavedDocumentsUseCase(null) } throws Throwable()
+        coEvery { observeDocumentsUseCase(null) } throws Throwable()
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
@@ -150,7 +150,7 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with multiple results`() {
-        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { observeDocumentsUseCase(null) } returns documentList
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
@@ -169,7 +169,7 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with one result`() {
-        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { observeDocumentsUseCase(null) } returns documentList
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
@@ -188,7 +188,7 @@ class DocumentsViewModelTest {
      */
     @Test
     fun `searchDocuments when given query success with empty list`() {
-        coEvery { getSavedDocumentsUseCase(null) } returns documentList
+        coEvery { observeDocumentsUseCase(null) } returns documentList
         coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]

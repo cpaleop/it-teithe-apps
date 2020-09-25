@@ -8,7 +8,7 @@ import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.repositories.DeviceStorageRepository
 import gr.cpaleop.dashboard.domain.repositories.PreferencesRepository
-import gr.cpaleop.dashboard.domain.usecases.GetDocumentsAnnouncementFoldersUseCaseImpl
+import gr.cpaleop.dashboard.domain.usecases.ObserveDocumentsAnnouncementFoldersUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class GetDocumentsAnnouncementFoldersUseCaseImplTest {
+class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -34,12 +34,12 @@ class GetDocumentsAnnouncementFoldersUseCaseImplTest {
     @MockK
     private lateinit var preferencesRepository: PreferencesRepository
 
-    private lateinit var getDocumentsAnnouncementFoldersUseCase: GetDocumentsAnnouncementFoldersUseCaseImpl
+    private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCaseImpl
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
-        getDocumentsAnnouncementFoldersUseCase = GetDocumentsAnnouncementFoldersUseCaseImpl(
+        observeDocumentsAnnouncementFoldersUseCase = ObserveDocumentsAnnouncementFoldersUseCaseImpl(
             testDefaultCoroutineDispatcher,
             deviceStorageRepository,
             preferencesRepository
@@ -51,9 +51,9 @@ class GetDocumentsAnnouncementFoldersUseCaseImplTest {
         runBlocking {
             val expected = announcementFoldersDateDescending
             coEvery { preferencesRepository.getDocumentSort() } returns SORT_DATE_DESCENDING
-            coEvery { deviceStorageRepository.getAnnouncementFolders() } returns announcementFolders
+            coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFolders
 
-            val actual = getDocumentsAnnouncementFoldersUseCase()
+            val actual = observeDocumentsAnnouncementFoldersUseCase()
 
             assertThat(actual).isEqualTo(expected)
         }
@@ -62,9 +62,9 @@ class GetDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `invoke returns distinct and sorted list when sort type is date ascending`() = runBlocking {
         val expected = announcementFoldersDateAscending
         coEvery { preferencesRepository.getDocumentSort() } returns SORT_DATE_ASCENDING
-        coEvery { deviceStorageRepository.getAnnouncementFolders() } returns announcementFolders
+        coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFolders
 
-        val actual = getDocumentsAnnouncementFoldersUseCase()
+        val actual = observeDocumentsAnnouncementFoldersUseCase()
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -74,9 +74,9 @@ class GetDocumentsAnnouncementFoldersUseCaseImplTest {
         runBlocking {
             val expected = announcementFoldersNameDescending
             coEvery { preferencesRepository.getDocumentSort() } returns SORT_ALPHABETICAL_DESCENDING
-            coEvery { deviceStorageRepository.getAnnouncementFolders() } returns announcementFolders
+            coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFolders
 
-            val actual = getDocumentsAnnouncementFoldersUseCase()
+            val actual = observeDocumentsAnnouncementFoldersUseCase()
 
             assertThat(actual).isEqualTo(expected)
         }
@@ -86,9 +86,9 @@ class GetDocumentsAnnouncementFoldersUseCaseImplTest {
         runBlocking {
             val expected = announcementFoldersNameAscending
             coEvery { preferencesRepository.getDocumentSort() } returns SORT_ALPHABETICAL_ASCENDING
-            coEvery { deviceStorageRepository.getAnnouncementFolders() } returns announcementFolders
+            coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFolders
 
-            val actual = getDocumentsAnnouncementFoldersUseCase()
+            val actual = observeDocumentsAnnouncementFoldersUseCase()
 
             assertThat(actual).isEqualTo(expected)
         }

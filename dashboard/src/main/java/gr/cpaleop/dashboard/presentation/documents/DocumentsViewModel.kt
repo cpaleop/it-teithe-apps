@@ -19,18 +19,21 @@ import gr.cpaleop.dashboard.presentation.documents.options.DocumentShareOptionDa
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.net.URI
 
+@ExperimentalCoroutinesApi
 class DocumentsViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
-    private val getSavedDocumentsUseCase: GetSavedDocumentsUseCase,
+    private val observeDocumentsUseCase: ObserveDocumentsUseCase,
     private val fileDocumentMapper: FileDocumentMapper,
     private val getDocumentOptionsUseCase: GetDocumentOptionsUseCase,
     private val documentOptionMapper: DocumentOptionMapper,
@@ -41,7 +44,7 @@ class DocumentsViewModel(
     private val documentSortOptionMapper: DocumentSortOptionMapper,
     private val updateDocumentSortUseCase: UpdateDocumentSortUseCase,
     private val getDocumentSortUseCase: GetDocumentSortUseCase,
-    private val getDocumentsAnnouncementFoldersUseCase: GetDocumentsAnnouncementFoldersUseCase,
+    private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
 ) : ViewModel() {
@@ -58,27 +61,21 @@ class DocumentsViewModel(
     private val _documentPreview = MutableLiveData<Int>()
     val documentPreview: LiveData<Int> = _documentPreview.toSingleEvent()
 
-    private val _documentAnnouncementFolders =
-        MutableLiveData<List<AnnouncementFolder>>()
+    private val _documentAnnouncementFolders = MutableLiveData<List<AnnouncementFolder>>()
     val documentAnnouncementFolders: LiveData<List<AnnouncementFolder>> =
         _documentAnnouncementFolders.toSingleEvent()
 
     private val _documents = MutableLiveData<List<FileDocument>>()
-    val documents: MediatorLiveData<List<FileDocument>> by lazy {
-        MediatorLiveData<List<FileDocument>>().apply {
-            addSource(_documents) {
-                this.value = it
-            }
-        }.toSingleMediatorEvent()
-    }
+    val documents: LiveData<List<FileDocument>> = _documents.toSingleEvent()
 
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
-                viewModelScope.launch(mainDispatcher) {
-                    this@apply.value =
-                        it.isEmpty() && (getDocumentPreviewPreferenceUseCase() == DocumentPreview.FILE)
-                }
+                this.value = it.isEmpty()
+            }
+
+            addSource(documentAnnouncementFolders) {
+                this.value = it.isEmpty()
             }
         }.toSingleMediatorEvent()
     }
@@ -120,26 +117,27 @@ class DocumentsViewModel(
     fun presentDocuments(announcementId: String?) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _loading.value = true
-                val documentPreview = if (announcementId == null) {
-                    getDocumentPreviewPreferenceUseCase()
-                } else {
-                    DocumentPreview.FILE
+                var documentPreview: Int
+                _documentPreview.value = getDocumentPreviewPreferenceUseCase(announcementId).also {
+                    documentPreview = it
                 }
-
                 when (documentPreview) {
                     DocumentPreview.FILE -> {
-                        _documents.value =
-                            getSavedDocumentsUseCase(announcementId).mapAsyncSuspended(
-                                fileDocumentMapper::invoke
-                            )
+                        observeDocumentsUseCase(announcementId)
+                            .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
+                            .flowOn(defaultDispatcher)
+                            .onStart { _loading.value = true }
+                            .onEach { _loading.value = false }
+                            .collect(_documents::setValue)
                     }
                     DocumentPreview.FOLDER -> {
-                        _documentAnnouncementFolders.value =
-                            getDocumentsAnnouncementFoldersUseCase()
+                        observeDocumentsAnnouncementFoldersUseCase()
+                            .flowOn(defaultDispatcher)
+                            .onStart { _loading.value = true }
+                            .onEach { _loading.value = false }
+                            .collect(_documentAnnouncementFolders::setValue)
                     }
                 }
-                _documentPreview.value = documentPreview
             } catch (t: Throwable) {
                 Timber.e(t)
             } finally {
@@ -150,13 +148,13 @@ class DocumentsViewModel(
 
     fun searchDocuments(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            documents.value = withContext(defaultDispatcher) {
-                _documents.value?.filter {
-                    it.name.contains(query, true) ||
-                            it.uri.contains(query, true) ||
-                            it.lastModifiedDate.contains(query, true)
-                }
-            } ?: emptyList()
+            observeDocumentsUseCase.filter(query)
+        }
+    }
+
+    fun searchAnnouncementFolders(query: String) {
+        viewModelScope.launch(mainDispatcher) {
+            observeDocumentsAnnouncementFoldersUseCase.filter(query)
         }
     }
 
@@ -279,9 +277,5 @@ class DocumentsViewModel(
                 Timber.e(t)
             }
         }
-    }
-
-    fun emptyDocumentList() {
-        _documents.value = emptyList()
     }
 }

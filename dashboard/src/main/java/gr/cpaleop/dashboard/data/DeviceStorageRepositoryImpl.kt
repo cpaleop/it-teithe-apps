@@ -1,11 +1,14 @@
 package gr.cpaleop.dashboard.data
 
+import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
 import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.dashboard.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class DeviceStorageRepositoryImpl(
@@ -15,26 +18,33 @@ class DeviceStorageRepositoryImpl(
     private val announcementsRepository: AnnouncementsRepository
 ) : DeviceStorageRepository {
 
-    override suspend fun getDocuments(): List<Document> {
-        return deviceStorageRepository.getDocuments()
+    override suspend fun getDocumentsFlow(): Flow<List<Document>> {
+        return deviceStorageRepository.getDocumentsFlow()
     }
 
-    override suspend fun getDocumentsByAnnouncementId(announcementId: String): List<Document> =
+    override suspend fun getDocumentsByAnnouncementId(announcementId: String): Flow<List<Document>> =
         withContext(ioDispatcher) {
             deviceStorageRepository.getDocumentsByAnnouncementId(announcementId)
         }
 
-    override suspend fun getAnnouncementFolders(): List<AnnouncementFolder> =
+    override suspend fun getAnnouncementFoldersFlow(): Flow<List<AnnouncementFolder>> =
         withContext(ioDispatcher) {
-            val announcementFolders = deviceStorageRepository.getDocuments().map { document ->
+            return@withContext deviceStorageRepository.getDocumentsFlow().map { documentList ->
+                documentList.mapAsyncSuspended { document ->
+                    AnnouncementFolder(
+                        id = document.announcementId,
+                        title = announcementsRepository.getAnnouncementTitleById(document.announcementId),
+                        lastModified = document.lastModified
+                    )
+                }
+            }
+
+            /*val announcementFolders = deviceStorageRepository.getDocumentsFlow().map { document ->
                 AnnouncementFolder(
                     id = document.announcementId,
                     title = announcementsRepository.getAnnouncementTitleById(document.announcementId),
                     lastModified = document.lastModified
                 )
-            }
-            return@withContext announcementFolders/*.distinctBy { announcementFolder ->
-                announcementFolder.id
             }*/
         }
 

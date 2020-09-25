@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import gr.cpaleop.common.OnCompoundDrawableClickListener
+import gr.cpaleop.common.CompoundDrawableTouchListener
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
@@ -31,12 +31,14 @@ import gr.cpaleop.dashboard.presentation.documents.document.DocumentsAdapter
 import gr.cpaleop.dashboard.presentation.documents.document.FileDocument
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.qualifier.named
 import java.io.File
 import gr.cpaleop.teithe_apps.R as appR
 
+@ExperimentalCoroutinesApi
 class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private val viewModel: DocumentsViewModel by sharedViewModel()
@@ -44,18 +46,35 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     @Authority
     private val authority: String by inject(named<Authority>())
-
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
     private var submitListCallbackAction: () -> Unit = {}
+    private var startDrawable: Drawable? = null
     private var drawableMap: MutableMap<Boolean, Drawable?>? = null
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
         Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
         Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
     )
+
+    private val searchDocuments: (String) -> Unit = { query ->
+        viewModel.searchDocuments(query)
+    }
+
+    private val searchAnnouncementFolders: (String) -> Unit = { query ->
+        viewModel.searchAnnouncementFolders(query)
+    }
+
+    /**
+     * The actual call to viewmodel in order to search content.
+     *
+     * Note: This is empty until a [DocumentPreview] has been set in the view model.
+     * After a [DocumentPreview] has been set then the corresponding function will be set
+     * via [setSearchFunction], eiter [searchDocuments] or [searchAnnouncementFolders]
+     */
+    private var search: (String) -> Unit = { }
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -69,7 +88,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
-        viewModel.emptyDocumentList()
     }
 
     override fun onResume() {
@@ -94,7 +112,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             navigateToFileSortOptionsDialog()
         }
 
-        /*binding.documentsPreviewImage.isVisible = announcementId == null*/
         if (announcementId == null) {
             binding.documentsPreviewImage.setOnClickListener {
                 viewModel.togglePreview()
@@ -106,25 +123,44 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
                 requireContext(),
                 appR.drawable.search_to_cancel
             )
-            setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                endDrawable,
-                null
+
+            startDrawable = ContextCompat.getDrawable(
+                requireContext(),
+                appR.drawable.ic_arrow_back_round
             )
 
-            setOnTouchListener(
-                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
+            if (announcementId != null) {
+                setCompoundDrawablesWithIntrinsicBounds(
+                    startDrawable,
+                    null,
+                    endDrawable,
+                    null
+                )
+            } else {
+                setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    endDrawable,
+                    null
+                )
+            }
+
+            setOnTouchListener(CompoundDrawableTouchListener(
+                leftTouchListener = {
+                    activity?.onBackPressed()
+                    return@CompoundDrawableTouchListener true
+                },
+                rightTouchListener = {
                     text.clear()
                     clearFocus()
                     binding.root.hideKeyboard()
-                    return@OnCompoundDrawableClickListener true
+                    return@CompoundDrawableTouchListener true
                 }
-            )
+            ))
 
             doOnTextChanged { text, _, _, _ ->
                 if (text != null) {
-                    viewModel.searchDocuments(text.toString())
+                    search(text.toString())
                     submitListCallbackAction = if (text.isNotEmpty()) {
                         { binding.documentsRecyclerView.smoothScrollToPosition(0) }
                     } else {
@@ -139,12 +175,21 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
                                     requireContext(),
                                     appR.drawable.cancel_to_search
                                 )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
+                                if (announcementId != null) {
+                                    setCompoundDrawablesWithIntrinsicBounds(
+                                        startDrawable,
+                                        null,
+                                        animDrawable,
+                                        null
+                                    )
+                                } else {
+                                    setCompoundDrawablesWithIntrinsicBounds(
+                                        null,
+                                        null,
+                                        animDrawable,
+                                        null
+                                    )
+                                }
 
                                 animDrawable?.start()
                                 hasSearchViewAnimatedToCancel = false
@@ -158,12 +203,21 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
                                     requireContext(),
                                     appR.drawable.search_to_cancel
                                 )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
+                                if (announcementId != null) {
+                                    setCompoundDrawablesWithIntrinsicBounds(
+                                        startDrawable,
+                                        null,
+                                        animDrawable,
+                                        null
+                                    )
+                                } else {
+                                    setCompoundDrawablesWithIntrinsicBounds(
+                                        null,
+                                        null,
+                                        animDrawable,
+                                        null
+                                    )
+                                }
 
                                 animDrawable?.start()
                                 hasSearchViewAnimatedToSearch = false
@@ -193,8 +247,20 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         }
     }
 
+    /**
+     * Convenient function to change search listener when document preview changes.
+     * TODO: Maybe handle in viewModel
+     * For more see [search]
+     */
+    private fun setSearchFunction(@DocumentPreview documentPreview: Int) {
+        search = when (documentPreview) {
+            DocumentPreview.FILE -> searchDocuments
+            DocumentPreview.FOLDER -> searchAnnouncementFolders
+            else -> { _ -> }
+        }
+    }
+
     private fun refreshViewState() {
-        binding.documentsSearchTextView.setText(requireContext().getString(appR.string.empty))
         viewModel.presentDocuments(announcementId)
         viewModel.presentDocumentSortSelected()
     }
@@ -215,7 +281,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     }
 
     private fun navigateToDocumentsFragment(announcementId: String) {
-        viewModel.emptyDocumentList()
         val directions = DocumentsFragmentDirections.documentsToDocuments(announcementId)
         navController.navigate(directions)
     }
@@ -231,6 +296,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     }
 
     private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
+        setSearchFunction(documentPreview)
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
                 setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
