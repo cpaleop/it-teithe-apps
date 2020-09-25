@@ -61,7 +61,11 @@
 
         <action
             android:id="@+id/documentsToDocuments"
-            app:destination="@id/documentsFragment" />
+            app:destination="@id/documentsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/static_fade_in"
+            app:popExitAnim="@anim/fade_out" />
 
         <action
             android:id="@+id/documentsToDocumentOptionsDialog"

@@ -18,23 +18,38 @@ class CompoundDrawableTouchListener(
         }
 
         if (event.action == MotionEvent.ACTION_DOWN) {
-            val leftCompoundDrawable = view.compoundDrawables[0] ?: return false
-            val topCompoundDrawable = view.compoundDrawables[0] ?: return false
-            val rightCompoundDrawable = view.compoundDrawables[0] ?: return false
-            val bottomCompoundDrawable = view.compoundDrawables[0] ?: return false
+            val leftCompoundDrawable = view.compoundDrawables[0] ?: null
+            val topCompoundDrawable = view.compoundDrawables[1] ?: null
+            val rightCompoundDrawable = view.compoundDrawables[2] ?: null
+            val bottomCompoundDrawable = view.compoundDrawables[3] ?: null
 
-
-            val rightCalc = view.right - rightCompoundDrawable.bounds.width() - view.paddingRight
-            val leftCalc = view.left + leftCompoundDrawable.bounds.width() + view.paddingLeft
-            val bottomCalc =
+            val rightCalc = if (rightCompoundDrawable != null) {
+                view.right - rightCompoundDrawable.bounds.width() - view.paddingRight
+            } else {
+                null
+            }
+            val leftCalc = if (leftCompoundDrawable != null) {
+                view.left + leftCompoundDrawable.bounds.width() + view.paddingLeft
+            } else {
+                null
+            }
+            val bottomCalc = if (bottomCompoundDrawable != null) {
                 view.bottom - bottomCompoundDrawable.bounds.height() - view.paddingBottom
-            val topCalc = topCompoundDrawable.bounds.height() - view.paddingTop
+            } else {
+                null
+            }
+
+            val topCalc = if (topCompoundDrawable != null) {
+                topCompoundDrawable.bounds.height() - view.paddingTop
+            } else {
+                null
+            }
 
             return when {
-                event.rawX >= rightCalc -> rightTouchListener()
-                event.rawX <= leftCalc -> leftTouchListener()
-                event.rawY >= bottomCalc -> bottomTouchListener()
-                event.rawY <= topCalc -> topTouchListener()
+                rightCalc != null && event.rawX >= rightCalc -> rightTouchListener()
+                leftCalc != null && event.rawX <= leftCalc -> leftTouchListener()
+                bottomCalc != null && event.rawY >= bottomCalc -> bottomTouchListener()
+                topCalc != null && event.rawY <= topCalc -> topTouchListener()
                 else -> view.performClick()
             }
         }

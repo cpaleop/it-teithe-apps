@@ -9,9 +9,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
@@ -25,9 +22,6 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     private val viewModel: NotificationsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var notificationAdapter: NotificationAdapter? = null
-    private var hasSearchViewAnimatedToCancel: Boolean = false
-    private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var submitListCallbackAction: () -> Unit = {}
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -58,78 +52,14 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
         }
 
         binding.notificationsSearchTextView.run {
-            val endDrawable = AnimatedVectorDrawableCompat.create(
-                requireContext(),
-                appR.drawable.search_to_cancel
-            )
-            setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                endDrawable,
-                null
-            )
-
-            setOnTouchListener(
-                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                    text.clear()
-                    clearFocus()
-                    binding.root.hideKeyboard()
-                    return@OnCompoundDrawableClickListener true
-                }
-            )
-
             doOnTextChanged { text, _, _, _ ->
-                if (text != null) {
-                    viewModel.searchNotifications(text.toString())
-                    submitListCallbackAction = if (text.isNotEmpty()) {
-                        { binding.notificationsRecyclerView.smoothScrollToPosition(0) }
-                    } else {
-                        {}
-                    }
-
-                    var animDrawable: AnimatedVectorDrawableCompat?
-                    if (text.isEmpty()) {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToSearch) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.cancel_to_search
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToCancel = false
-                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
-                            }
-                        }
-                    } else {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToCancel) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.search_to_cancel
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToSearch = false
-                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
-                            }
-                        }
-                    }
-                } else {
-                    submitListCallbackAction = {}
-                }
+                viewModel.searchNotifications(text.toString())
+            }
+            setRightDrawableListener {
+                text?.clear()
+                clearFocus()
+                binding.root.hideKeyboard()
+                return@setRightDrawableListener true
             }
         }
     }
@@ -148,7 +78,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
         notificationAdapter?.submitList(notifications) {
-            submitListCallbackAction()
+            binding.notificationsRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 

@@ -12,15 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import gr.cpaleop.common.OnCompoundDrawableClickListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.databinding.FragmentAnnouncementsBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalPagingApi
 class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
@@ -28,8 +24,6 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     private val viewModel: AnnouncementsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var announcementAdapter: AnnouncementAdapter? = null
-    private var hasSearchViewAnimatedToCancel: Boolean = false
-    private var hasSearchViewAnimatedToSearch: Boolean = false
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -70,71 +64,14 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
         }
 
         binding.annnouncementsSearchTextView.run {
-            val endDrawable = AnimatedVectorDrawableCompat.create(
-                requireContext(),
-                appR.drawable.search_to_cancel
-            )
-            setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                endDrawable,
-                null
-            )
-
-            setOnTouchListener(
-                OnCompoundDrawableClickListener(OnCompoundDrawableClickListener.DRAWABLE_RIGHT) {
-                    text.clear()
-                    clearFocus()
-                    binding.root.hideKeyboard()
-                    return@OnCompoundDrawableClickListener true
-                }
-            )
-
             doOnTextChanged { text, _, _, _ ->
-                if (text != null) {
-                    viewModel.searchAnnouncements(text.toString())
-
-                    var animDrawable: AnimatedVectorDrawableCompat?
-                    if (text.isEmpty()) {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToSearch) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.cancel_to_search
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToCancel = false
-                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
-                            }
-                        }
-                    } else {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToCancel) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.search_to_cancel
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToSearch = false
-                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
-                            }
-                        }
-                    }
-                }
+                viewModel.searchAnnouncements(text.toString())
+            }
+            setRightDrawableListener {
+                text?.clear()
+                clearFocus()
+                binding.root.hideKeyboard()
+                return@setRightDrawableListener true
             }
         }
     }

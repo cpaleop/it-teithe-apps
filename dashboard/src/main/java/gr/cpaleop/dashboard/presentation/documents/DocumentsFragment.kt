@@ -16,9 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import gr.cpaleop.common.CompoundDrawableTouchListener
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
@@ -36,7 +33,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import java.io.File
-import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
@@ -49,9 +45,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
-    private var hasSearchViewAnimatedToCancel: Boolean = false
-    private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var startDrawable: Drawable? = null
     private var drawableMap: MutableMap<Boolean, Drawable?>? = null
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
         Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
@@ -114,108 +107,19 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         }
 
         binding.documentsSearchTextView.run {
-            val endDrawable = AnimatedVectorDrawableCompat.create(
-                requireContext(),
-                appR.drawable.search_to_cancel
-            )
-
-            startDrawable = ContextCompat.getDrawable(
-                requireContext(),
-                appR.drawable.ic_arrow_back_round
-            )
-
-            if (announcementId != null) {
-                setCompoundDrawablesWithIntrinsicBounds(
-                    startDrawable,
-                    null,
-                    endDrawable,
-                    null
-                )
-            } else {
-                setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    endDrawable,
-                    null
-                )
-            }
-
-            setOnTouchListener(CompoundDrawableTouchListener(
-                leftTouchListener = {
-                    activity?.onBackPressed()
-                    return@CompoundDrawableTouchListener true
-                },
-                rightTouchListener = {
-                    text.clear()
-                    clearFocus()
-                    binding.root.hideKeyboard()
-                    return@CompoundDrawableTouchListener true
-                }
-            ))
-
+            enableLeftDrawable(announcementId != null)
             doOnTextChanged { text, _, _, _ ->
-                if (text != null) {
-                    search(text.toString())
-
-                    var animDrawable: AnimatedVectorDrawableCompat? = null
-                    if (text.isEmpty()) {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToSearch) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.cancel_to_search
-                                )
-                                if (announcementId != null) {
-                                    setCompoundDrawablesWithIntrinsicBounds(
-                                        startDrawable,
-                                        null,
-                                        animDrawable,
-                                        null
-                                    )
-                                } else {
-                                    setCompoundDrawablesWithIntrinsicBounds(
-                                        null,
-                                        null,
-                                        animDrawable,
-                                        null
-                                    )
-                                }
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToCancel = false
-                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
-                            }
-                        }
-                    } else {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToCancel) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.search_to_cancel
-                                )
-                                if (announcementId != null) {
-                                    setCompoundDrawablesWithIntrinsicBounds(
-                                        startDrawable,
-                                        null,
-                                        animDrawable,
-                                        null
-                                    )
-                                } else {
-                                    setCompoundDrawablesWithIntrinsicBounds(
-                                        null,
-                                        null,
-                                        animDrawable,
-                                        null
-                                    )
-                                }
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToSearch = false
-                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
-                            }
-                        }
-                    }
-                }
+                search(text.toString())
+            }
+            setLeftDrawableListener {
+                activity?.onBackPressed()
+                return@setLeftDrawableListener true
+            }
+            setRightDrawableListener {
+                text?.clear()
+                clearFocus()
+                binding.root.hideKeyboard()
+                return@setRightDrawableListener true
             }
         }
     }

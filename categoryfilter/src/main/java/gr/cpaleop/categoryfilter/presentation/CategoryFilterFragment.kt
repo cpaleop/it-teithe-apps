@@ -1,28 +1,22 @@
 package gr.cpaleop.categoryfilter.presentation
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
-import gr.cpaleop.common.CompoundDrawableTouchListener
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -31,10 +25,6 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     private val viewModel: CategoryFilterViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var announcementsAdapter: AnnouncementsAdapter? = null
-    private var hasSearchViewAnimatedToCancel: Boolean = false
-    private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var startDrawable: Drawable? = null
-    private var submitListCallbackAction: () -> Unit = {}
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -65,88 +55,19 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
         }
 
         binding.categoryAnnouncementsSearchTextView.run {
-            val endDrawable = AnimatedVectorDrawableCompat.create(
-                requireContext(),
-                appR.drawable.search_to_cancel
-            )
-
-            startDrawable = ContextCompat.getDrawable(
-                requireContext(),
-                appR.drawable.ic_arrow_back_round
-            )
-
-            setCompoundDrawablesWithIntrinsicBounds(
-                startDrawable,
-                null,
-                endDrawable,
-                null
-            )
-
-            setOnTouchListener(CompoundDrawableTouchListener(
-                leftTouchListener = {
-                    activity?.onBackPressed()
-                    return@CompoundDrawableTouchListener true
-                },
-                rightTouchListener = {
-                    text.clear()
-                    clearFocus()
-                    binding.root.hideKeyboard()
-                    return@CompoundDrawableTouchListener true
-                }
-            ))
-
+            enableLeftDrawable(true)
             doOnTextChanged { text, _, _, _ ->
-                if (text != null) {
-                    viewModel.filterAnnouncements(text.toString())
-                    submitListCallbackAction = if (text.isNotEmpty()) {
-                        { binding.categoryAnnouncementsRecyclerView.smoothScrollToPosition(0) }
-                    } else {
-                        {}
-                    }
-
-                    var animDrawable: AnimatedVectorDrawableCompat?
-                    if (text.isEmpty()) {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToSearch) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.cancel_to_search
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    startDrawable,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToCancel = false
-                                hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
-                            }
-                        }
-                    } else {
-                        (compoundDrawables[2] as Animatable2Compat).apply {
-                            if (!hasSearchViewAnimatedToCancel) {
-                                animDrawable = AnimatedVectorDrawableCompat.create(
-                                    requireContext(),
-                                    appR.drawable.search_to_cancel
-                                )
-                                setCompoundDrawablesWithIntrinsicBounds(
-                                    startDrawable,
-                                    null,
-                                    animDrawable,
-                                    null
-                                )
-
-                                animDrawable?.start()
-                                hasSearchViewAnimatedToSearch = false
-                                hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
-                            }
-                        }
-                    }
-                } else {
-                    submitListCallbackAction = {}
-                }
+                viewModel.filterAnnouncements(text.toString())
+            }
+            setLeftDrawableListener {
+                activity?.onBackPressed()
+                return@setLeftDrawableListener true
+            }
+            setRightDrawableListener {
+                text?.clear()
+                clearFocus()
+                binding.root.hideKeyboard()
+                return@setRightDrawableListener true
             }
         }
     }
@@ -167,7 +88,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
 
     private fun updateAnnouncements(announcements: List<Announcement>) {
         announcementsAdapter?.submitList(announcements) {
-            submitListCallbackAction()
+            binding.categoryAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 
