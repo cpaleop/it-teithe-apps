@@ -8,9 +8,13 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
 import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
+import gr.cpaleop.dashboard.domain.entities.DocumentPreview
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.usecases.*
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocument
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentDetails
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
@@ -39,7 +43,10 @@ class DocumentsViewModel(
     private val getDocumentSortOptionsUseCase: GetDocumentSortOptionsUseCase,
     private val documentSortOptionMapper: DocumentSortOptionMapper,
     private val updateDocumentSortUseCase: UpdateDocumentSortUseCase,
-    private val getDocumentSortUseCase: GetDocumentSortUseCase
+    private val getDocumentSortUseCase: GetDocumentSortUseCase,
+    private val getDocumentsAnnouncementFoldersUseCase: GetDocumentsAnnouncementFoldersUseCase,
+    private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
+    private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -50,6 +57,14 @@ class DocumentsViewModel(
 
     private val _document = MutableLiveData<Document>()
     val document: LiveData<Document> = _document.toSingleEvent()
+
+    private val _documentPreview = MutableLiveData<Int>()
+    val documentPreview: LiveData<Int> = _documentPreview.toSingleEvent()
+
+    private val _documentAnnouncementFolders =
+        MutableLiveData<List<AnnouncementFolder>>()
+    val documentAnnouncementFolders: LiveData<List<AnnouncementFolder>> =
+        _documentAnnouncementFolders.toSingleEvent()
 
     private val _documents = MutableLiveData<List<FileDocument>>()
     val documents: MediatorLiveData<List<FileDocument>> by lazy {
@@ -63,7 +78,10 @@ class DocumentsViewModel(
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(_documents) {
-                this.value = it.isEmpty()
+                viewModelScope.launch(mainDispatcher) {
+                    this@apply.value =
+                        it.isEmpty() && (getDocumentPreviewPreferenceUseCase() == DocumentPreview.FILE)
+                }
             }
         }
     }
@@ -71,7 +89,10 @@ class DocumentsViewModel(
     val documentsFilterEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
-                this.value = it.isEmpty()
+                viewModelScope.launch(mainDispatcher) {
+                    this@apply.value =
+                        it.isEmpty() && (getDocumentPreviewPreferenceUseCase() == DocumentPreview.FILE)
+                }
             }
         }
     }
@@ -114,8 +135,19 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                _documents.value =
-                    getSavedDocumentsUseCase().mapAsyncSuspended(fileDocumentMapper::invoke)
+                val documentPreview = getDocumentPreviewPreferenceUseCase()
+
+                when (documentPreview) {
+                    DocumentPreview.FILE -> {
+                        _documents.value =
+                            getSavedDocumentsUseCase().mapAsyncSuspended(fileDocumentMapper::invoke)
+                    }
+                    DocumentPreview.FOLDER -> {
+                        _documentAnnouncementFolders.value =
+                            getDocumentsAnnouncementFoldersUseCase()
+                    }
+                }
+                _documentPreview.value = documentPreview
             } catch (t: Throwable) {
                 Timber.e(t)
             } finally {
@@ -239,6 +271,17 @@ class DocumentsViewModel(
             try {
                 documentSortOptionSelected.value =
                     documentSortOptionMapper(updateDocumentSortUseCase(documentSort))
+                _refresh.value = Unit
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun togglePreview() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _documentPreview.value = toggleDocumentPreviewPreferenceUseCase()
                 _refresh.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)

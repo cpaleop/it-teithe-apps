@@ -11,6 +11,8 @@ import gr.cpaleop.dashboard.domain.entities.DocumentOptionType
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
 import gr.cpaleop.dashboard.domain.usecases.*
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocument
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentDetails
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOption
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
@@ -333,7 +335,7 @@ class DocumentsViewModelTest {
 
     @Test
     fun `updateSort success`() {
-        val givenType = DocumentSortType.TYPE_DATE
+        val givenType = DocumentSortType.DATE
         val givenDescending = true
         val givenSelected = true
         val givenDocumentSort = DocumentSort(givenType, givenSelected, givenDescending)
@@ -347,7 +349,7 @@ class DocumentsViewModelTest {
 
     @Test
     fun `updateSort when fails catches exception`() {
-        val givenType = DocumentSortType.TYPE_DATE
+        val givenType = DocumentSortType.DATE
         val givenDescending = true
         val givenSelected = true
         val givenDocumentSort = DocumentSort(givenType, givenSelected, givenDescending)
@@ -359,14 +361,14 @@ class DocumentsViewModelTest {
 
         private val documentSortOptionsList = listOf(
             DocumentSortOption(
-                type = DocumentSortType.TYPE_DATE,
+                type = DocumentSortType.DATE,
                 imageResource = R.drawable.ic_arrow_down,
                 labelResource = R.string.documents_sort_date,
                 selected = true,
                 descending = true
             ),
             DocumentSortOption(
-                type = DocumentSortType.TYPE_ALPHABETICAL,
+                type = DocumentSortType.ALPHABETICAL,
                 imageResource = R.drawable.ic_arrow_up,
                 labelResource = R.string.documents_sort_alphabetical,
                 selected = false,
@@ -376,19 +378,19 @@ class DocumentsViewModelTest {
 
         private val documentSortList = listOf(
             DocumentSort(
-                type = DocumentSortType.TYPE_DATE,
+                type = DocumentSortType.DATE,
                 selected = true,
                 descending = true
             ),
             DocumentSort(
-                type = DocumentSortType.TYPE_ALPHABETICAL,
+                type = DocumentSortType.ALPHABETICAL,
                 selected = false,
                 descending = false
             )
         )
 
         private val selectedDocumentSortOption = DocumentSortOption(
-            type = DocumentSortType.TYPE_DATE,
+            type = DocumentSortType.DATE,
             imageResource = R.drawable.ic_arrow_down,
             labelResource = R.string.documents_sort_date,
             selected = true,
@@ -396,7 +398,7 @@ class DocumentsViewModelTest {
         )
 
         private val selectedDocumentSort = DocumentSort(
-            type = DocumentSortType.TYPE_DATE,
+            type = DocumentSortType.DATE,
             selected = true,
             descending = true
         )

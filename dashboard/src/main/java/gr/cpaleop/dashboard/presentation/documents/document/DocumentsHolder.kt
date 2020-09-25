@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.documents
+package gr.cpaleop.dashboard.presentation.documents.document
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

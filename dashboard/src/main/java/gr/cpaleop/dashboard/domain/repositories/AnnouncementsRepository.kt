@@ -10,5 +10,7 @@ interface AnnouncementsRepository {
 
     suspend fun getAnnouncements(): Flow<PagingData<Announcement>>
 
+    suspend fun getAnnouncementTitleById(announcementId: String): String
+
     suspend fun filter(filterQuery: String)
 }

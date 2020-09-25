@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.documents
+package gr.cpaleop.dashboard.presentation.documents.document
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

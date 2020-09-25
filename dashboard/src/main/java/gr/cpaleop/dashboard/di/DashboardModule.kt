@@ -2,6 +2,7 @@ package gr.cpaleop.dashboard.di
 
 import gr.cpaleop.core.data.mappers.DocumentMapper
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
@@ -20,7 +21,7 @@ import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
 import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
-import gr.cpaleop.dashboard.presentation.documents.FileDocumentMapper
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
 import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
@@ -63,6 +64,9 @@ val dashboardModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
+            get(),
             get()
         )
     }
@@ -86,6 +90,13 @@ val dashboardModule = module {
     single { ProfileMapper(get()) }
     single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single { CategoryMapper() }
+    single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
+    single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
+    single<GetDocumentsAnnouncementFoldersUseCase> {
+        GetDocumentsAnnouncementFoldersUseCaseImpl(
+            get(named<DefaultDispatcher>()), get(), get()
+        )
+    }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<GetDocumentSortUseCase> { GetDocumentSortUseCaseImpl(get()) }
@@ -104,10 +115,17 @@ val dashboardModule = module {
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
-    single<DeviceStorageRepository> { DeviceStorageRepositoryImpl(get()) }
+    single<DeviceStorageRepository> {
+        DeviceStorageRepositoryImpl(
+            get(named<IODispatcher>()),
+            get(),
+            get()
+        )
+    }
     single<NotificationsRepository> { NotificationsRepositoryImpl(get(), get()) }
     single<AnnouncementsRepository> {
         AnnouncementsRepositoryImpl(
+            get(named<IODispatcher>()),
             get(),
             get(),
             get(),
@@ -115,7 +133,7 @@ val dashboardModule = module {
             get()
         )
     }
-    single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
+    single<PreferencesRepository> { PreferencesRepositoryImpl(get(named<IODispatcher>()), get()) }
     single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
     single { provideNotificationsApi(get()) }
     single { provideProfileApi(get()) }

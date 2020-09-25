@@ -10,15 +10,15 @@ data class DocumentSort(
 )
 
 @IntDef(
-    DocumentSortType.TYPE_DATE,
-    DocumentSortType.TYPE_ALPHABETICAL
+    DocumentSortType.DATE,
+    DocumentSortType.ALPHABETICAL
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class DocumentSortType {
 
     companion object {
 
-        const val TYPE_DATE: Int = -1
-        const val TYPE_ALPHABETICAL: Int = 1
+        const val DATE: Int = -1
+        const val ALPHABETICAL: Int = 1
     }
 }

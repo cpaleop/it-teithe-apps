@@ -13,12 +13,12 @@ class GetDocumentSortOptionsUseCaseImpl(private val preferencesRepository: Prefe
 
         val documentSortOptions = listOf(
             DocumentSort(
-                type = DocumentSortType.TYPE_DATE,
+                type = DocumentSortType.DATE,
                 selected = false,
                 descending = false
             ),
             DocumentSort(
-                type = DocumentSortType.TYPE_ALPHABETICAL,
+                type = DocumentSortType.ALPHABETICAL,
                 selected = false,
                 descending = false
             )

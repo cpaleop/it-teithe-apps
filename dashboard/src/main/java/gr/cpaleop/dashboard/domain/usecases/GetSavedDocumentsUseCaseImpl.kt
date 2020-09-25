@@ -13,7 +13,7 @@ class GetSavedDocumentsUseCaseImpl(
     override suspend fun invoke(): List<Document> {
         val documentSortOption = preferencesRepository.getDocumentSort()
         return when (documentSortOption.type) {
-            DocumentSortType.TYPE_ALPHABETICAL -> {
+            DocumentSortType.ALPHABETICAL -> {
                 if (documentSortOption.descending) {
                     deviceStorageRepository.getDocuments().sortedByDescending { document ->
                         document.name
@@ -24,7 +24,7 @@ class GetSavedDocumentsUseCaseImpl(
                     }
                 }
             }
-            DocumentSortType.TYPE_DATE -> {
+            DocumentSortType.DATE -> {
                 if (documentSortOption.descending) {
                     deviceStorageRepository.getDocuments().sortedByDescending { document ->
                         document.lastModified

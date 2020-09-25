@@ -38,7 +38,7 @@ class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocum
 
     private fun observeViewModel() {
         viewModel.run {
-            refresh.observe(viewLifecycleOwner, Observer { dismiss() })
+            refresh.observe(viewLifecycleOwner, { dismiss() })
             documentSortOptions.observe(viewLifecycleOwner, Observer(::updateFileSortOptions))
         }
     }

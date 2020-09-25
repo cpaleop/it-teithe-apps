@@ -1,4 +1,4 @@
-package gr.cpaleop.dashboard.presentation.documents
+package gr.cpaleop.dashboard.presentation.documents.document
 
 import androidx.annotation.DrawableRes
 

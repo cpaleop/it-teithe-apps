@@ -13,6 +13,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import gr.cpaleop.common.OnCompoundDrawableClickListener
@@ -21,6 +23,11 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentDocumentsBinding
+import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
+import gr.cpaleop.dashboard.domain.entities.DocumentPreview
+import gr.cpaleop.dashboard.presentation.documents.announcement_folder.AnnouncementFolderAdapter
+import gr.cpaleop.dashboard.presentation.documents.document.DocumentsAdapter
+import gr.cpaleop.dashboard.presentation.documents.document.FileDocument
 import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
 import org.koin.android.ext.android.inject
@@ -37,10 +44,15 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     @Authority
     private val authority: String by inject(named<Authority>())
     private var documentsAdapter: DocumentsAdapter? = null
+    private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var hasSearchViewAnimatedToCancel: Boolean = false
     private var hasSearchViewAnimatedToSearch: Boolean = false
     private var submitListCallbackAction: () -> Unit = {}
     private var drawableMap: MutableMap<Boolean, Drawable?>? = null
+    private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
+        Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
+        Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
+    )
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -67,8 +79,8 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
             Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
         )
 
+        announcementFolderAdapter = AnnouncementFolderAdapter()
         documentsAdapter = DocumentsAdapter(::openFile, ::navigateToFileOptionsDialog)
-        binding.documentsRecyclerView.adapter = documentsAdapter
 
         binding.documentsSwipeRefreshLayout.setOnRefreshListener {
             refreshViewState()
@@ -76,6 +88,10 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
         binding.filesSortingTextView.setOnClickListener {
             navigateToFileSortOptionsDialog()
+        }
+
+        binding.documentsPreviewImage.setOnClickListener {
+            viewModel.togglePreview()
         }
 
         binding.documentsSearchTextView.run {
@@ -158,16 +174,19 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoader))
-            refresh.observe(viewLifecycleOwner, Observer {
-                refreshViewState()
-            })
+            refresh.observe(viewLifecycleOwner, { refreshViewState() })
+            documentPreview.observe(viewLifecycleOwner, Observer(::updatePreviewPreference))
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
             documentsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyDocumentsView))
+            documentSortOptionSelected.observe(viewLifecycleOwner, Observer(::updateSortView))
             documentsFilterEmpty.observe(
                 viewLifecycleOwner,
                 Observer(::updateDocumentsNotFoundView)
             )
-            documentSortOptionSelected.observe(viewLifecycleOwner, Observer(::updateSortView))
+            documentAnnouncementFolders.observe(
+                viewLifecycleOwner,
+                Observer(::updateAnnouncementFolders)
+            )
         }
     }
 
@@ -200,6 +219,33 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private fun navigateToFileSortOptionsDialog() {
         val directions = DocumentsFragmentDirections.documentsToDocumentSortOptionsDialog()
         navController.navigate(directions)
+    }
+
+    private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
+        binding.documentsPreviewImage.run {
+            setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
+            if (!isVisible) isVisible = true
+        }
+        when (documentPreview) {
+            DocumentPreview.FILE -> {
+                binding.documentsRecyclerView.run {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = documentsAdapter
+                }
+            }
+            DocumentPreview.FOLDER -> {
+                binding.documentsRecyclerView.run {
+                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    adapter = announcementFolderAdapter
+                }
+            }
+        }
+    }
+
+    private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolder>) {
+        announcementFolderAdapter?.submitList(announcementFolders) {
+            submitListCallbackAction()
+        }
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
