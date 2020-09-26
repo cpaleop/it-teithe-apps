@@ -55,7 +55,27 @@ class DocumentsViewModel(
     val document: LiveData<Document> = _document.toSingleEvent()
 
     private val _documentPreview = MutableLiveData<Int>()
-    val documentPreview: LiveData<Int> = _documentPreview.toSingleEvent()
+    val documentPreview: MediatorLiveData<Int> by lazy {
+        MediatorLiveData<Int>().apply {
+            addSource(_documentPreview) {
+                this.value = it
+                search = when (it) {
+                    DocumentPreview.FILE -> this@DocumentsViewModel::searchDocuments
+                    DocumentPreview.FOLDER -> this@DocumentsViewModel::searchAnnouncementFolders
+                    else -> { _ -> }
+                }
+            }
+        }
+    }
+
+    /**
+     * The actual call in order to search content.
+     *
+     * Note: This is empty until a [DocumentPreview] has been set at [_documentPreview].
+     * After a [DocumentPreview] has been set then the corresponding function will be set
+     * via [documentPreview] MediatorLiveData, this will be either [searchDocuments] or [searchAnnouncementFolders]
+     */
+    private var search: (String) -> Unit = { }
 
     private val _documentAnnouncementFolders = MutableLiveData<List<AnnouncementFolder>>()
     val documentAnnouncementFolders: LiveData<List<AnnouncementFolder>> =
@@ -130,13 +150,19 @@ class DocumentsViewModel(
         }
     }
 
-    fun searchDocuments(query: String) {
+    fun filter(query: String) {
+        viewModelScope.launch(mainDispatcher) {
+            search(query)
+        }
+    }
+
+    private fun searchDocuments(query: String) {
         viewModelScope.launch(mainDispatcher) {
             observeDocumentsUseCase.filter(query)
         }
     }
 
-    fun searchAnnouncementFolders(query: String) {
+    private fun searchAnnouncementFolders(query: String) {
         viewModelScope.launch(mainDispatcher) {
             observeDocumentsAnnouncementFoldersUseCase.filter(query)
         }

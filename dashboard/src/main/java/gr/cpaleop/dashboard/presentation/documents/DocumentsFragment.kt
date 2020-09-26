@@ -45,28 +45,11 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
-    private var drawableMap: MutableMap<Boolean, Drawable?>? = null
+    private var documentSortDrawableMap: MutableMap<Boolean, Drawable?>? = null
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
         Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
         Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
     )
-
-    private val searchDocuments: (String) -> Unit = { query ->
-        viewModel.searchDocuments(query)
-    }
-
-    private val searchAnnouncementFolders: (String) -> Unit = { query ->
-        viewModel.searchAnnouncementFolders(query)
-    }
-
-    /**
-     * The actual call to viewmodel in order to search content.
-     *
-     * Note: This is empty until a [DocumentPreview] has been set in the view model.
-     * After a [DocumentPreview] has been set then the corresponding function will be set
-     * via [setSearchFunction], eiter [searchDocuments] or [searchAnnouncementFolders]
-     */
-    private var search: (String) -> Unit = { }
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -84,7 +67,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     }
 
     private fun setupViews() {
-        drawableMap = mutableMapOf(
+        documentSortDrawableMap = mutableMapOf(
             Pair(true, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down)),
             Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
         )
@@ -109,7 +92,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         binding.documentsSearchTextView.run {
             enableLeftDrawable(announcementId != null)
             doOnTextChanged { text, _, _, _ ->
-                search(text.toString())
+                viewModel.filter(text.toString())
             }
             setLeftDrawableListener {
                 activity?.onBackPressed()
@@ -136,19 +119,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
                 viewLifecycleOwner,
                 Observer(::updateAnnouncementFolders)
             )
-        }
-    }
-
-    /**
-     * Convenient function to change search listener when document preview changes.
-     * TODO: Maybe handle in viewModel
-     * For more see [search]
-     */
-    private fun setSearchFunction(@DocumentPreview documentPreview: Int) {
-        search = when (documentPreview) {
-            DocumentPreview.FILE -> searchDocuments
-            DocumentPreview.FOLDER -> searchAnnouncementFolders
-            else -> { _ -> }
         }
     }
 
@@ -188,7 +158,6 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
     }
 
     private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
-        setSearchFunction(documentPreview)
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
                 setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
@@ -234,7 +203,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         binding.filesSortingTextView.run {
             isVisible = true
             setText(documentSortOption.labelResource)
-            val drawable = drawableMap?.get(documentSortOption.descending)
+            val drawable = documentSortDrawableMap?.get(documentSortOption.descending)
             setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
