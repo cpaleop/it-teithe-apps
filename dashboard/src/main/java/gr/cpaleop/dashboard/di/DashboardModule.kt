@@ -104,7 +104,7 @@ val dashboardModule = module {
     single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
     single<ObserveDocumentsAnnouncementFoldersUseCase> {
         ObserveDocumentsAnnouncementFoldersUseCaseImpl(
-            get(named<DefaultDispatcher>()), get(), get(), get()
+            get(named<DefaultDispatcher>()), get(), get()
         )
     }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }

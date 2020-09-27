@@ -1,7 +1,6 @@
 package gr.cpaleop.dashboard.domain.usecases
 
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
-import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.dashboard.domain.entities.AnnouncementFolder
 import gr.cpaleop.dashboard.domain.entities.DocumentSort
 import gr.cpaleop.dashboard.domain.entities.DocumentSortType
@@ -21,7 +20,6 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
     private val deviceStorageRepository: DeviceStorageRepository,
-    private val dateFormatter: DateFormatter,
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase
 ) : ObserveDocumentsAnnouncementFoldersUseCase {
 
@@ -58,12 +56,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
     ): List<AnnouncementFolder> {
         return announcementFolderList.filter { announcementFolder ->
             if (query.isEmpty()) return@filter true
-            val lastModifiedDate = dateFormatter(
-                announcementFolder.lastModified,
-                DateFormatter.ANNOUNCEMENT_DATE_FORMAT
-            )
-            announcementFolder.title.contains(query, true) ||
-                    lastModifiedDate.contains(query, true)
+            announcementFolder.title.contains(query, true)
         }
     }
 
@@ -86,7 +79,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
                     announcementFolderList.sortedBy(titleSelector)
                 }
             }
-            else -> throw IllegalArgumentException("No sorting type found with the name ${documentSort.type}")
+            else -> throw IllegalArgumentException("No sorting type found with the value ${documentSort.type}")
         }.distinctBy(distinctSelector)
     }
 }

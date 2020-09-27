@@ -24,6 +24,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
@@ -32,6 +33,9 @@ import org.junit.Test
 /**
  * Notice:
  * [DocumentsViewModel.handleDocumentOptionChoice] for type SHARE needs to be Instrumentation tested separately
+ *
+ * Also, we do not test [DocumentsViewModel.filter] function cause it's logic its tight with [ObserveDocumentsUseCase] and [ObserveDocumentsAnnouncementFoldersUseCase].
+ * Prefer to test usecases separately for this functionality
  */
 //TODO: Test Announcement folder preview
 @ExperimentalCoroutinesApi
@@ -68,19 +72,13 @@ class DocumentsViewModelTest {
     private lateinit var renameDocumentUseCase: RenameDocumentUseCase
 
     @MockK
-    private lateinit var getDocumentSortOptionsUseCase: GetDocumentSortOptionsUseCase
-
-    @MockK
     private lateinit var documentSortOptionMapper: DocumentSortOptionMapper
 
     @MockK
-    private lateinit var updateDocumentSortUseCase: UpdateDocumentSortUseCase
-
-    @MockK
-    private lateinit var getDocumentSortUseCase: GetDocumentSortUseCase
-
-    @MockK
     private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase
+
+    @MockK
+    private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     @MockK
     private lateinit var getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase
@@ -103,10 +101,8 @@ class DocumentsViewModelTest {
             getDocumentUseCase,
             deleteDocumentUseCase,
             renameDocumentUseCase,
-            getDocumentSortOptionsUseCase,
             documentSortOptionMapper,
-            updateDocumentSortUseCase,
-            getDocumentSortUseCase,
+            observeDocumentSortUseCase,
             observeDocumentsAnnouncementFoldersUseCase,
             getDocumentPreviewPreferenceUseCase,
             toggleDocumentPreviewPreferenceUseCase
@@ -116,8 +112,11 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments success with no empty list`() {
         val expected = fileDocumentList
-        coEvery { observeDocumentsUseCase(null) } returns documentList
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        val documentListFlow = flow {
+            emit(documentList)
+        }
+        coEvery { observeDocumentsUseCase(null) } returns documentListFlow
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
         viewModel.presentDocuments(null)
@@ -129,8 +128,9 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
-        coEvery { observeDocumentsUseCase(null) } returns emptyList()
+        val emptyDocumentListFlow = flow<List<Document>> { emit(emptyList()) }
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        coEvery { observeDocumentsUseCase(null) } returns emptyDocumentListFlow
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
@@ -140,66 +140,9 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments when fails catches exception`() {
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
-    }
-
-    /**
-     * We need to call [DocumentsViewModel.presentDocuments] in order to populate livedata and search them
-     */
-    @Test
-    fun `searchDocuments when given query success with multiple results`() {
-        coEvery { observeDocumentsUseCase(null) } returns documentList
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
-        coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
-        coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
-
-        val givenQuery = "name"
-        val expected = listOf(fileDocumentList[0], fileDocumentList[1])
-        viewModel.searchDocuments(givenQuery)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
-    }
-
-    /**
-     * We need to call [DocumentsViewModel.presentDocuments] in order to populate livedata and search them
-     */
-    @Test
-    fun `searchDocuments when given query success with one result`() {
-        coEvery { observeDocumentsUseCase(null) } returns documentList
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
-        coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
-        coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
-
-        val givenQuery = "name1"
-        val expected = listOf(fileDocumentList[1])
-        viewModel.searchDocuments(givenQuery)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
-    }
-
-    /**
-     * We need to call [DocumentsViewModel.presentDocuments] in order to populate livedata and search them
-     */
-    @Test
-    fun `searchDocuments when given query success with empty list`() {
-        coEvery { observeDocumentsUseCase(null) } returns documentList
-        coEvery { getDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
-        coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
-        coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
-        viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(fileDocumentList)
-
-        val givenQuery = "name111"
-        val expected = emptyList<FileDocument>()
-        viewModel.searchDocuments(givenQuery)
-        assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
     }
 
     @Test
@@ -321,7 +264,8 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocumentSortSelected success`() {
         val expected = selectedDocumentSortOption
-        coEvery { getDocumentSortUseCase() } returns selectedDocumentSort
+        val documentSortFlow = flow { emit(selectedDocumentSort) }
+        coEvery { observeDocumentSortUseCase() } returns documentSortFlow
         every { documentSortOptionMapper(selectedDocumentSort) } returns selectedDocumentSortOption
         viewModel.presentDocumentSortSelected()
         assertThat(LiveDataTest.getValue(viewModel.documentSortOptionSelected)).isEqualTo(expected)
@@ -329,85 +273,35 @@ class DocumentsViewModelTest {
 
     @Test
     fun `presentDocumentSortSelected when fails catches exception`() {
-        coEvery { getDocumentSortUseCase() } throws Throwable()
+        coEvery { observeDocumentSortUseCase() } throws Throwable()
         viewModel.presentDocumentSortSelected()
     }
 
     @Test
-    fun `presentDocumentSortOptions success`() {
-        val expected = documentSortOptionsList
-        val expectedSortOptionSelected = documentSortOptionsList[0]
-        coEvery { getDocumentSortOptionsUseCase() } returns documentSortList
-        every { documentSortOptionMapper(documentSortList[0]) } returns documentSortOptionsList[0]
-        every { documentSortOptionMapper(documentSortList[1]) } returns documentSortOptionsList[1]
-        viewModel.presentDocumentSortOptions()
-        assertThat(LiveDataTest.getValue(viewModel.documentSortOptions)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.documentSortOptionSelected)).isEqualTo(
-            expectedSortOptionSelected
-        )
-    }
-
-    @Test
-    fun `presentDocumentSortOptions when fails catches exception`() {
-        coEvery { getDocumentSortOptionsUseCase() } throws Throwable()
-        viewModel.presentDocumentSortOptions()
-    }
-
-    @Test
-    fun `updateSort success`() {
-        val givenType = DocumentSortType.DATE
-        val givenDescending = true
-        val givenSelected = true
-        val givenDocumentSort = DocumentSort(givenType, givenSelected, givenDescending)
-        val expected = selectedDocumentSortOption
-        coEvery { updateDocumentSortUseCase(givenDocumentSort) } returns selectedDocumentSort
-        every { documentSortOptionMapper(selectedDocumentSort) } returns selectedDocumentSortOption
-        viewModel.updateSort(givenDocumentSort)
-        assertThat(LiveDataTest.getValue(viewModel.documentSortOptionSelected)).isEqualTo(expected)
+    fun `togglePreview when type is FILE and becomes FOLDER is successful`() {
+        val expected = DocumentPreview.FOLDER
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FOLDER
+        viewModel.togglePreview()
+        assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
     }
 
     @Test
-    fun `updateSort when fails catches exception`() {
-        val givenType = DocumentSortType.DATE
-        val givenDescending = true
-        val givenSelected = true
-        val givenDocumentSort = DocumentSort(givenType, givenSelected, givenDescending)
-        coEvery { updateDocumentSortUseCase(givenDocumentSort) } throws Throwable()
-        viewModel.updateSort(givenDocumentSort)
+    fun `togglePreview when type is FOLDER and becomes FILE is successful`() {
+        val expected = DocumentPreview.FILE
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        viewModel.togglePreview()
+        assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
+    }
+
+    @Test
+    fun `togglePreview catches exception`() {
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } throws Throwable()
+        viewModel.togglePreview()
     }
 
     companion object {
-
-        private val documentSortOptionsList = listOf(
-            DocumentSortOption(
-                type = DocumentSortType.DATE,
-                imageResource = R.drawable.ic_arrow_down,
-                labelResource = R.string.documents_sort_date,
-                selected = true,
-                descending = true
-            ),
-            DocumentSortOption(
-                type = DocumentSortType.ALPHABETICAL,
-                imageResource = R.drawable.ic_arrow_up,
-                labelResource = R.string.documents_sort_alphabetical,
-                selected = false,
-                descending = false
-            )
-        )
-
-        private val documentSortList = listOf(
-            DocumentSort(
-                type = DocumentSortType.DATE,
-                selected = true,
-                descending = true
-            ),
-            DocumentSort(
-                type = DocumentSortType.ALPHABETICAL,
-                selected = false,
-                descending = false
-            )
-        )
 
         private val selectedDocumentSortOption = DocumentSortOption(
             type = DocumentSortType.DATE,
