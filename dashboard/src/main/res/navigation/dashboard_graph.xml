@@ -52,53 +52,10 @@
         app:graphResName="graph_documents"
         app:moduleName="documents" />
 
-    <!--<fragment
-        android:id="@+id/documentsFragment"
-        android:name="gr.cpaleop.documents.presentation.DocumentsFragment"
-        android:label="DocumentsFragment"
-        app:moduleName="documents">
-
-        <argument
-            android:name="announcementId"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
-        <action
-            android:id="@+id/documentsToDocuments"
-            app:destination="@id/documentsFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/static_fade_in"
-            app:popExitAnim="@anim/fade_out" />
-
-        <action
-            android:id="@+id/documentsToDocumentOptionsDialog"
-            app:destination="@id/documentOptionsDialog" />
-
-        <action
-            android:id="@+id/documentsToDocumentSortOptionsDialog"
-            app:destination="@id/documentSortOptionsDialog" />
-    </fragment>-->
-
-    <fragment
+    <include-dynamic
         android:id="@+id/profileFragment"
-        android:name="gr.cpaleop.dashboard.presentation.profile.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile">
-
-        <action
-            android:id="@+id/profileToProfileOptionsDialog"
-            app:destination="@id/profileOptionsDialog" />
-
-        <action
-            android:id="@+id/profileToSettings"
-            app:destination="@id/settingsActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </fragment>
+        app:graphResName="graph_profile"
+        app:moduleName="profile" />
 
     <dialog
         android:id="@+id/categoryFilterDialog"
@@ -113,18 +70,6 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/profileOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.profile.options.ProfileOptionsDialogFragment"
-        android:label="ProfileOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_profile_options">
-
-        <argument
-            android:name="socialName"
-            app:argType="string"
-            app:nullable="false" />
     </dialog>
 
     <activity
@@ -150,9 +95,4 @@
             app:argType="string"
             app:nullable="false" />
     </activity>
-
-    <activity
-        android:id="@+id/settingsActivity"
-        android:name="gr.cpaleop.dashboard.presentation.profile.settings.SettingsActivity"
-        android:label="SettingsActivity" />
 </navigation>

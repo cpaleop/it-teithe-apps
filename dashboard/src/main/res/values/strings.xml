@@ -16,36 +16,6 @@
     <string name="notifications_not_found">No notifications found</string>
     <string name="notifications_search">Search notifications</string>
 
-    <!-- Profile -->
-    <!-- Personal details -->
-    <string name="profile_personal_details_title">Personal details</string>
-    <string name="profile_personal_lastname_title">Surname</string>
-    <string name="profile_personal_givenName_title">Given name</string>
-    <string name="profile_personal_website_title">Website</string>
-    <string name="profile_personal_description_title">Description</string>
-    <string name="profile_personal_telephoneNumber_title">Personal telephone number</string>
-    <string name="profile_social_edit">Edit %1$s</string>
-    <string name="profile_social_edit_submit">OK</string>
-    <string name="profile_social_edit_cancel">Cancel</string>
-    <string name="profile_toast_clipboard">Copied!</string>
-
-    <!-- Academic details -->
-    <string name="profile_academic_details_title">Academic details</string>
-    <string name="profile_academic_username_title">Username</string>
-    <string name="profile_academic_type_title">Type</string>
-    <string name="profile_academic_am_title">AM</string>
-    <string name="profile_academic_displayName_title">Display name</string>
-    <string name="profile_academic_registeredYear_title">Registered year</string>
-    <string name="profile_academic_currentSemester_title">Current semester</string>
-
-    <!-- Social -->
-    <string name="profile_socials_title">Socials</string>
-    <string name="profile_socials_googleplus_title" translatable="false">Google+</string>
-    <string name="profile_socials_facebook_title" translatable="false">Facebook</string>
-    <string name="profile_socials_github_title" translatable="false">Github</string>
-    <string name="profile_socials_twitter_title" translatable="false">Twitter</string>
-    <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
-
     <!-- Categories filter -->
     <string name="categories_filter_dialog_title">Follow boards</string>
     <string name="categories_filter_clear">Clear</string>

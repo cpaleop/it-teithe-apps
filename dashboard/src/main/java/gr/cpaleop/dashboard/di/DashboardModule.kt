@@ -6,14 +6,16 @@ import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
-import gr.cpaleop.dashboard.data.*
+import gr.cpaleop.dashboard.data.AnnouncementsRepositoryImpl
+import gr.cpaleop.dashboard.data.CategoriesRepositoryImpl
+import gr.cpaleop.dashboard.data.NotificationsRepositoryImpl
 import gr.cpaleop.dashboard.data.mappers.AnnouncementMapper
 import gr.cpaleop.dashboard.data.mappers.CategoryMapper
 import gr.cpaleop.dashboard.data.mappers.NotificationMapper
-import gr.cpaleop.dashboard.data.mappers.ProfileMapper
 import gr.cpaleop.dashboard.data.remote.NotificationsApi
-import gr.cpaleop.dashboard.data.remote.ProfileApi
-import gr.cpaleop.dashboard.domain.repositories.*
+import gr.cpaleop.dashboard.domain.repositories.AnnouncementsRepository
+import gr.cpaleop.dashboard.domain.repositories.CategoriesRepository
+import gr.cpaleop.dashboard.domain.repositories.NotificationsRepository
 import gr.cpaleop.dashboard.domain.usecases.*
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationMapper
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationMapperImpl
@@ -23,11 +25,6 @@ import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.Cate
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
-import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapper
-import gr.cpaleop.dashboard.presentation.profile.ProfilePresentationMapperImpl
-import gr.cpaleop.dashboard.presentation.profile.ProfileViewModel
-import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapper
-import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMapperImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -48,30 +45,19 @@ val dashboardModule = module {
             get()
         )
     }
-    viewModel { ProfileViewModel(get(named<MainDispatcher>()), get(), get(), get(), get()) }
     single { NotificationPresentationMapper(get()) }
-    single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
-    single<ProfilePresentationMapper> {
-        ProfilePresentationMapperImpl(
-            get(),
-            get(named<DefaultDispatcher>())
-        )
-    }
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }
     single { AnnouncementMapper() }
     single { NotificationMapper(get(named<DefaultDispatcher>())) }
-    single { ProfileMapper(get()) }
     single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single { CategoryMapper() }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
-    single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
@@ -86,16 +72,9 @@ val dashboardModule = module {
             get()
         )
     }
-    single<PreferencesRepository> { PreferencesRepositoryImpl(get(named<IODispatcher>()), get()) }
-    single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
     single { provideNotificationsApi(get()) }
-    single { provideProfileApi(get()) }
 }
 
 private fun provideNotificationsApi(retrofit: Retrofit): NotificationsApi {
     return retrofit.create(NotificationsApi::class.java)
-}
-
-private fun provideProfileApi(retrofit: Retrofit): ProfileApi {
-    return retrofit.create(ProfileApi::class.java)
 }

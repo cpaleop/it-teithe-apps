@@ -63,18 +63,26 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         return FragmentDocumentsBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         loadKoinModules(documentsModule)
-        super.onViewCreated(view, savedInstanceState)
-        binding.root.hideKeyboard()
-        setupViews()
-        observeViewModel()
-        refreshViewState()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onDestroyView() {
         unloadKoinModules(documentsModule)
         super.onDestroyView()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.root.hideKeyboard()
+        setupViews()
+        observeViewModel()
+        refreshViewState()
     }
 
     private fun setupViews() {
