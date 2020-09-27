@@ -104,7 +104,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         }
 
     @Test
-    fun `filter when not empty and sort is ALPHABETICAL ASCENDING returns correct values`() =
+    fun `filter when not empty and sort is ALPHABETICAL ASCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
             val expected = announcementFoldersFilteredTitleAscending
@@ -117,7 +117,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
 
     // Make use of reversed list function to reuse dataset
     @Test
-    fun `filter when not empty and sort is ALPHABETICAL DESCENDING returns correct values`() =
+    fun `filter when not empty and sort is ALPHABETICAL DESCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
             val expected = announcementFoldersFilteredTitleAscending.reversed()
@@ -129,7 +129,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         }
 
     @Test
-    fun `filter when not empty and sort is DATE ASCENDING returns correct values`() =
+    fun `filter when not empty and sort is DATE ASCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
             val expected = announcementFoldersFilteredDateAscending
@@ -142,10 +142,22 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
 
     // Make use of reversed list function to reuse dataset
     @Test
-    fun `filter when not empty and sort is DATE DESCENDING returns correct values`() =
+    fun `filter when not empty and sort is DATE DESCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
             val expected = announcementFoldersFilteredDateAscending.reversed()
+            coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
+            coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            val actual = observeDocumentsAnnouncementFoldersUseCase().first()
+            assertThat(actual).isEqualTo(expected)
+        }
+
+    @Test
+    fun `filter when empty and sort is DATE DESCENDING returns original items`() =
+        runBlocking {
+            val givenFilterQuery = ""
+            val expected = announcementFoldersDateDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
             observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)

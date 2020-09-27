@@ -119,7 +119,13 @@ val dashboardModule = module {
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<ObserveDocumentsUseCase> { ObserveDocumentsUseCaseImpl(get(), get(), get()) }
+    single<ObserveDocumentsUseCase> {
+        ObserveDocumentsUseCaseImpl(
+            get(named<IODispatcher>()),
+            get(),
+            get()
+        )
+    }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
