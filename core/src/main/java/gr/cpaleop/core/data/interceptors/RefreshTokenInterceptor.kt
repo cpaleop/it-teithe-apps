@@ -10,7 +10,6 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import timber.log.Timber
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class RefreshTokenInterceptor(
@@ -27,9 +26,7 @@ class RefreshTokenInterceptor(
 
         return runBlocking {
             if (isTokenExpired(originalResponse)) {
-                Timber.e("SKATA Token expired")
                 if (!isRefreshing) {
-                    Timber.e("SKATA Token expired and not refreshing. Time to refresh")
                     refreshToken()
                     return@runBlocking chain.proceed(originalRequest)
                 } else {
@@ -45,7 +42,6 @@ class RefreshTokenInterceptor(
         response.code == UNAUTHORIZED_HTTP_ERROR
 
     private suspend fun refreshToken() {
-        Timber.e("SKATA Refreshing token")
         isRefreshing = true
         val newToken =
             authenticationRepository.refreshToken(
@@ -64,7 +60,6 @@ class RefreshTokenInterceptor(
         var retryCount = 1
         var response: Response
         do {
-            Timber.e("SKATA Retrying original request")
             delay(RETRY_DELAY_MS)
             response = chain.proceed(originalRequest)
         } while (++retryCount < RETRY_MAX_TRIES && isTokenExpired(response))
