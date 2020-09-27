@@ -16,6 +16,7 @@ import gr.cpaleop.dashboard.presentation.profile.options.SelectedSocialOptionMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import gr.cpaleop.teithe_apps.R as appR
 
 class ProfileViewModel(
     @MainDispatcher
@@ -64,7 +65,7 @@ class ProfileViewModel(
                 ),
                 ProfileOption(
                     "Edit",
-                    R.drawable.ic_edit
+                    appR.drawable.ic_edit
                 )
             )
         }

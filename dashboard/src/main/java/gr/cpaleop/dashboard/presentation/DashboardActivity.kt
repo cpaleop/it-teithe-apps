@@ -27,8 +27,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         loadKoinModules(dashboardModule)
         super.onCreate(savedInstanceState)
-        setupViews()
         observeViewModel()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        setupViews()
     }
 
     override fun onDestroy() {

@@ -20,6 +20,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class ProfileViewModelTest {
@@ -82,7 +83,7 @@ class ProfileViewModelTest {
             ),
             ProfileOption(
                 "Edit",
-                R.drawable.ic_edit
+                appR.drawable.ic_edit
             )
         )
         viewModel.presentSocialOptions()

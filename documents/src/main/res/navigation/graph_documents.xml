@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/documentsFragment">
+
+    <fragment
+        android:id="@+id/documentsFragment"
+        android:name="gr.cpaleop.documents.presentation.DocumentsFragment"
+        android:label="DocumentsFragment"
+        app:moduleName="documents">
+
+        <argument
+            android:name="announcementId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/documentsToDocuments"
+            app:destination="@id/documentsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/static_fade_in"
+            app:popExitAnim="@anim/fade_out" />
+
+        <action
+            android:id="@+id/documentsToDocumentOptionsDialog"
+            app:destination="@id/documentOptionsDialog" />
+
+        <action
+            android:id="@+id/documentsToDocumentSortOptionsDialog"
+            app:destination="@id/documentSortOptionsDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/documentSortOptionsDialog"
+        android:name="gr.cpaleop.documents.presentation.sort.DocumentSortDialogFragment"
+        android:label="FileSortDialogFragment"
+        tools:layout="@layout/dialog_fragment_sort_documents" />
+
+    <dialog
+        android:id="@+id/documentOptionsDialog"
+        android:name="gr.cpaleop.documents.presentation.options.DocumentOptionsDialogFragment"
+        android:label="DocumentOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_document_options">
+
+        <argument
+            android:name="uri"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/documentOptionsDialogToAnnouncementActivity"
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </dialog>
+
+    <activity
+        android:id="@+id/announcementActivity"
+        android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
+        android:label="AnnouncementActivity"
+        app:moduleName="announcement">
+
+        <argument
+            android:name="announcementId"
+            app:argType="string"
+            app:nullable="false" />
+    </activity>
+</navigation>

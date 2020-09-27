@@ -6,4 +6,5 @@
     <string name="title_announcement">announcement</string>
     <string name="title_notifications">notifications</string>
     <string name="title_categoryfilter">CategoryFilter</string>
+    <string name="title_documents">Documents</string>
 </resources>

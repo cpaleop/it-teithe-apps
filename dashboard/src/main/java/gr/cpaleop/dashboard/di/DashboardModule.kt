@@ -20,11 +20,6 @@ import gr.cpaleop.dashboard.presentation.announcements.AnnouncementPresentationM
 import gr.cpaleop.dashboard.presentation.announcements.AnnouncementsViewModel
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterViewModel
-import gr.cpaleop.dashboard.presentation.documents.DocumentsViewModel
-import gr.cpaleop.dashboard.presentation.documents.document.FileDocumentMapper
-import gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionMapper
-import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionMapper
-import gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortOptionsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.NotificationPresentationMapper
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterViewModel
@@ -53,37 +48,8 @@ val dashboardModule = module {
             get()
         )
     }
-    viewModel {
-        DocumentsViewModel(
-            get(named<MainDispatcher>()),
-            get(named<DefaultDispatcher>()),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        DocumentSortOptionsViewModel(
-            get(named<MainDispatcher>()),
-            get(named<DefaultDispatcher>()),
-            get(),
-            get(),
-            get()
-        )
-    }
     viewModel { ProfileViewModel(get(named<MainDispatcher>()), get(), get(), get(), get()) }
     single { NotificationPresentationMapper(get()) }
-    single { DocumentSortOptionMapper() }
-    single { DocumentOptionMapper() }
     single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
     single<ProfilePresentationMapper> {
         ProfilePresentationMapperImpl(
@@ -94,49 +60,21 @@ val dashboardModule = module {
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single<DateFormatter> { DateFormatterImpl() }
     single { CategoryFilterMapper() }
-    single { FileDocumentMapper(get(), get(named<DefaultDispatcher>()), get()) }
     single { AnnouncementMapper() }
     single { NotificationMapper(get(named<DefaultDispatcher>())) }
     single { ProfileMapper(get()) }
     single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single { CategoryMapper() }
-    single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
-    single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
-    single<ObserveDocumentsAnnouncementFoldersUseCase> {
-        ObserveDocumentsAnnouncementFoldersUseCaseImpl(
-            get(named<DefaultDispatcher>()), get(), get()
-        )
-    }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
-    single<ObserveDocumentSortUseCase> { ObserveDocumentSortUseCaseImpl(get()) }
-    single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
-    single<RenameDocumentUseCase> { RenameDocumentUseCaseImpl(get()) }
-    single<DeleteDocumentUseCase> { DeleteDocumentUseCaseImpl(get()) }
-    single<GetDocumentUseCase> { GetDocumentUseCaseImpl(get()) }
     single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
-    single<GetDocumentOptionsUseCase> { GetDocumentOptionsUseCaseImpl() }
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<ObserveDocumentsUseCase> {
-        ObserveDocumentsUseCaseImpl(
-            get(named<IODispatcher>()),
-            get(),
-            get()
-        )
-    }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
-    single<DeviceStorageRepository> {
-        DeviceStorageRepositoryImpl(
-            get(named<IODispatcher>()),
-            get(),
-            get()
-        )
-    }
     single<NotificationsRepository> { NotificationsRepositoryImpl(get(), get()) }
     single<AnnouncementsRepository> {
         AnnouncementsRepositoryImpl(

@@ -47,11 +47,16 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <fragment
+    <include-dynamic
         android:id="@+id/documentsFragment"
-        android:name="gr.cpaleop.dashboard.presentation.documents.DocumentsFragment"
+        app:graphResName="graph_documents"
+        app:moduleName="documents" />
+
+    <!--<fragment
+        android:id="@+id/documentsFragment"
+        android:name="gr.cpaleop.documents.presentation.DocumentsFragment"
         android:label="DocumentsFragment"
-        tools:layout="@layout/fragment_documents">
+        app:moduleName="documents">
 
         <argument
             android:name="announcementId"
@@ -74,7 +79,7 @@
         <action
             android:id="@+id/documentsToDocumentSortOptionsDialog"
             app:destination="@id/documentSortOptionsDialog" />
-    </fragment>
+    </fragment>-->
 
     <fragment
         android:id="@+id/profileFragment"
@@ -109,32 +114,6 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </dialog>
-
-    <dialog
-        android:id="@+id/documentOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionsDialogFragment"
-        android:label="DocumentOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_document_options">
-
-        <argument
-            android:name="uri"
-            app:argType="string"
-            app:nullable="false" />
-
-        <action
-            android:id="@+id/documentOptionsDialogToAnnouncementActivity"
-            app:destination="@id/announcementActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/documentSortOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortDialogFragment"
-        android:label="FileSortDialogFragment"
-        tools:layout="@layout/dialog_fragment_sort_documents" />
 
     <dialog
         android:id="@+id/profileOptionsDialog"
