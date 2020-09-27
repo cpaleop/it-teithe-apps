@@ -5,11 +5,6 @@
     <string name="profile_bottom_navigation_menu_title">Profile</string>
     <string name="notifications_bottom_navigation_menu_title">Notifications</string>
     <string name="saved_files_bottom_navigation_menu_title">Documents</string>
-    <string name="announcements_error_message">Something went wrong</string>
-
-    <!-- Announcements -->
-    <string name="announcements_search">Search announcements</string>
-    <string name="announcements_has_attachments">Attachments</string>
 
     <!-- Notifications -->
     <string name="notifications_empty">No available notifications</string>
@@ -20,7 +15,4 @@
     <string name="categories_filter_dialog_title">Follow boards</string>
     <string name="categories_filter_clear">Clear</string>
     <string name="categories_filter_submit">Submit</string>
-
-    <!-- Category filter -->
-    <string name="category_filter_dialog_title">Show announcements from category</string>
 </resources>

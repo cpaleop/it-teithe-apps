@@ -35,7 +35,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dynamicFeatures = [':authentication', ':dashboard', ':announcement', ':categoryfilter', ':documents', ':profile']
+    dynamicFeatures = [':authentication', ':dashboard', ':announcement', ':categoryfilter', ':documents', ':profile', ':announcements']
 }
 
 dependencies {

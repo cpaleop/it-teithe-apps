@@ -15,7 +15,8 @@ class AnnouncementMapper {
     ): Announcement = withContext(Dispatchers.Default) {
         val category = Category(
             id = remoteCategory.id,
-            name = remoteCategory.name ?: ""
+            name = remoteCategory.name ?: "",
+            isRegistered = false
         )
 
         Announcement(

@@ -3,7 +3,7 @@ package gr.cpaleop.dashboard.presentation.notifications.categories
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import gr.cpaleop.dashboard.domain.entities.Category
+import gr.cpaleop.core.domain.entities.Category
 
 class CategoryFilterAdapter(private val onClickListener: (String, Boolean) -> Unit) :
     ListAdapter<Category, CategoryFilterHolder>(CATEGORY_DIFF_UTIL) {

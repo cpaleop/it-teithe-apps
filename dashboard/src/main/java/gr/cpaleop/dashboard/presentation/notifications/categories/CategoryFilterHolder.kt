@@ -3,8 +3,8 @@ package gr.cpaleop.dashboard.presentation.notifications.categories
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.databinding.ItemCategoryFilterBinding
-import gr.cpaleop.dashboard.domain.entities.Category
 
 class CategoryFilterHolder(
     private val binding: ItemCategoryFilterBinding,

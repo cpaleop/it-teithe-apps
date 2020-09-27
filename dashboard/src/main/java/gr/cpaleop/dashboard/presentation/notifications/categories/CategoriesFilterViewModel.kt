@@ -3,7 +3,7 @@ package gr.cpaleop.dashboard.presentation.notifications.categories
 import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.dashboard.domain.entities.Category
+import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
 import kotlinx.coroutines.Dispatchers

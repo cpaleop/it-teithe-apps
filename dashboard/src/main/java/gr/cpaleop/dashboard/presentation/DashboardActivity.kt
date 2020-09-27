@@ -11,10 +11,12 @@ import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.ActivityDashboardBinding
 import gr.cpaleop.dashboard.di.dashboardModule
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
+@ExperimentalCoroutinesApi
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
     private val notificationsViewModel: NotificationsViewModel by viewModel()
