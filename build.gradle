@@ -42,10 +42,9 @@ subprojects {
 
                 signingConfigs {
                     release {
-                        /*storeFile file('keystore/opapkey')*/
                         keyAlias 'opap'
-                        storePassword 'opap2014!'
-                        keyPassword 'opap2014!'
+                        storePassword 'ieeapps!@#$'
+                        keyPassword 'ieeapps!@#$'
                     }
 
                     debug {
