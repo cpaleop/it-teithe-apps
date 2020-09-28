@@ -35,8 +35,8 @@ class CategoryFilterActivity : BaseActivity<ActivityCategoryFilterBinding>() {
     override fun finish() {
         super.finish()
         overridePendingTransition(
-            appR.anim.anim_pop_enter_fade_in,
-            appR.anim.anim_fade_out,
+            appR.anim.pop_enter_fade_in,
+            appR.anim.fade_out,
         )
     }
 

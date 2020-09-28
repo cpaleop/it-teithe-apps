@@ -13,10 +13,10 @@
         <action
             android:id="@+id/categoryFilterToAnnouncement"
             app:destination="@id/announcementActivity"
-            app:enterAnim="@anim/anim_fade_in"
-            app:exitAnim="@anim/anim_fade_out"
-            app:popEnterAnim="@anim/anim_pop_enter_fade_in"
-            app:popExitAnim="@anim/anim_fade_out" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <activity
