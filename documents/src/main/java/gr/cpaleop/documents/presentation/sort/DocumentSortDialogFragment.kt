@@ -10,8 +10,10 @@ import gr.cpaleop.documents.databinding.DialogFragmentSortDocumentsBinding
 import gr.cpaleop.documents.domain.entities.DocumentSort
 import gr.cpaleop.documents.domain.entities.DocumentSortType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 class DocumentSortDialogFragment : BaseBottomSheetDialog<DialogFragmentSortDocumentsBinding>() {
 

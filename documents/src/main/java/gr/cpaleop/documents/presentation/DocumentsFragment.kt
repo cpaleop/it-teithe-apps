@@ -21,7 +21,7 @@ import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
-import gr.cpaleop.documents.di.documentsModule
+import gr.cpaleop.documents.di.DocumentsKoinLoader
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentPreview
 import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderAdapter
@@ -33,8 +33,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 import org.koin.core.qualifier.named
 import java.io.File
 
@@ -47,7 +45,7 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     @Authority
     private val authority: String by inject(named<Authority>())
-    private val announcementId: String? by lazy { /*arguments?.getString(EXTRA_ANNOUNCEMENT_ID)*/ navArgs<DocumentsFragmentArgs>().value.announcementId }
+    private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var documentSortDrawableMap: MutableMap<Boolean, Drawable?>? = null
@@ -68,12 +66,12 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        loadKoinModules(documentsModule)
+        DocumentsKoinLoader.load()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onDestroyView() {
-        unloadKoinModules(documentsModule)
+        DocumentsKoinLoader.unload()
         super.onDestroyView()
     }
 
@@ -234,10 +232,5 @@ class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
 
     private fun updateLoader(shouldLoad: Boolean) {
         binding.documentsSwipeRefreshLayout.isRefreshing = shouldLoad
-    }
-
-    companion object {
-
-        private const val EXTRA_ANNOUNCEMENT_ID = "announcementId"
     }
 }

@@ -18,4 +18,5 @@
     <color name="blue_A200">#4285F4</color>
     <color name="dialoFragmentBackground">@color/colorPrimaryVariant</color>
     <color name="dialoFragmentBackgroundVariant">@color/colorPrimary</color>
+    <color name="colorControlNormal">#80868B</color>
 </resources>
