@@ -15,7 +15,22 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
         holder.bind(currentList[position])
     }
 
+    override fun onBindViewHolder(
+        holder: ProfileSocialHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)
+        else {
+            if (payloads.contains(PAYLOAD_CONTENT)) {
+                holder.bindContent(currentList[position].content)
+            }
+        }
+    }
+
     companion object {
+
+        private const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
 
         private val PROFILE_DIFF_UTIL =
             object : DiffUtil.ItemCallback<ProfileSocialDetails>() {
@@ -24,7 +39,7 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
                     oldItem: ProfileSocialDetails,
                     newItem: ProfileSocialDetails
                 ): Boolean {
-                    return oldItem == newItem
+                    return oldItem.socialType == newItem.socialType
                 }
 
                 override fun areContentsTheSame(
@@ -32,6 +47,14 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
                     newItem: ProfileSocialDetails
                 ): Boolean {
                     return oldItem == newItem
+                }
+
+                override fun getChangePayload(
+                    oldItem: ProfileSocialDetails,
+                    newItem: ProfileSocialDetails
+                ): Any? {
+                    if (oldItem.content != newItem.content) return PAYLOAD_CONTENT
+                    return super.getChangePayload(oldItem, newItem)
                 }
             }
     }

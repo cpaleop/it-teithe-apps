@@ -34,7 +34,7 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>() {
     private fun observeViewModel() {
         viewModel.run {
             uri.observe(viewLifecycleOwner, Observer(::openCustomTab))
-            tokenRetrieved.observe(viewLifecycleOwner, Observer { navigateToDashboard() })
+            tokenRetrieved.observe(viewLifecycleOwner, { navigateToDashboard() })
         }
     }
 

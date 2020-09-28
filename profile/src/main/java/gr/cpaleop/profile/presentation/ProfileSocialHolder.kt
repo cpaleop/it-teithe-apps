@@ -16,6 +16,10 @@ class ProfileSocialHolder(
         binding.profileSocialContentTextView.text = item.content
     }
 
+    fun bindContent(item: String) {
+        binding.profileSocialContentTextView.text = item
+    }
+
     companion object {
 
         fun create(parent: ViewGroup, moreClickListener: (String) -> Unit): ProfileSocialHolder {
