@@ -13,10 +13,10 @@
         <action
             android:id="@+id/announcementsToAnnouncement"
             app:destination="@id/announcementActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/anim_fade_in"
+            app:exitAnim="@anim/anim_fade_out"
+            app:popEnterAnim="@anim/anim_pop_enter_fade_in"
+            app:popExitAnim="@anim/anim_fade_out" />
 
         <action
             android:id="@+id/announcementsToCategoryFilterDialog"
@@ -25,10 +25,10 @@
         <action
             android:id="@+id/announcementsToCategoryFilter"
             app:destination="@id/categoryFilterActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/anim_fade_in"
+            app:exitAnim="@anim/anim_fade_out"
+            app:popEnterAnim="@anim/anim_pop_enter_fade_in"
+            app:popExitAnim="@anim/anim_fade_out" />
     </fragment>
 
     <dialog
@@ -40,10 +40,10 @@
         <action
             android:id="@+id/categoryFilterDialogToCategoryFilterActivity"
             app:destination="@id/categoryFilterActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/anim_fade_in"
+            app:exitAnim="@anim/anim_fade_out"
+            app:popEnterAnim="@anim/anim_pop_enter_fade_in"
+            app:popExitAnim="@anim/anim_fade_out" />
     </dialog>
 
     <activity

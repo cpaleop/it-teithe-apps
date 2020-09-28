@@ -41,7 +41,7 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(appR.anim.fade_in, appR.anim.fade_out)
+        overridePendingTransition(appR.anim.anim_pop_enter_fade_in, appR.anim.anim_fade_out)
     }
 
     private fun handleIntent() {
