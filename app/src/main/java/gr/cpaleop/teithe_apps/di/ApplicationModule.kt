@@ -40,7 +40,7 @@ val networkModule = module {
     }
     single { provideOkHttpClient(get(), get(), get()) }
     single(named<Authentication>()) { provideAuthenticationOkHttpClient(get(), get()) }
-    single { provideRefreshTokenInterceptor(get(), get()) }
+    single { provideRefreshTokenInterceptor(get(), get(), get()) }
     single { provideTokenInterceptor(get()) }
     single { provideHttpLoggingInterceptor() }
     single { provideGson() }
@@ -139,9 +139,10 @@ private fun provideAuthenticationOkHttpClient(
 
 private fun provideRefreshTokenInterceptor(
     preferencesRepository: PreferencesRepository,
-    authenticationRepository: AuthenticationRepository
+    authenticationRepository: AuthenticationRepository,
+    gson: Gson
 ): RefreshTokenInterceptor {
-    return RefreshTokenInterceptor(preferencesRepository, authenticationRepository)
+    return RefreshTokenInterceptor(preferencesRepository, authenticationRepository, gson)
 }
 
 private fun provideTokenInterceptor(preferencesRepository: PreferencesRepository): TokenInterceptor {

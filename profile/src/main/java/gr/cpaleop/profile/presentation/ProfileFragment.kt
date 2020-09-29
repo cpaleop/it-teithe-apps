@@ -91,6 +91,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun updateProfileDetails(profilePresentation: ProfilePresentation) {
         binding.profilePictureImageView.load(profilePresentation.profilePhotoUrl) {
+            placeholder(R.drawable.ic_person_placeholder)
             crossfade(true)
             transformations(CircleCropTransformation())
         }

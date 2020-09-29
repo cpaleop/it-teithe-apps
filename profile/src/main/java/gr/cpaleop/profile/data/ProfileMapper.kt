@@ -46,7 +46,7 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
             givenName = givenName,
             websiteUrl = remoteProfile.labeledURI.orEmpty(),
             description = description,
-            profileImageUrl = /*remoteProfile.profilePhoto.safe()*/ "https://pbs.twimg.com/profile_images/712048543670730753/D24VsCTN_400x400.jpg",
+            profileImageUrl = /*remoteProfile.profilePhoto.orEmpty()*/ "https://pbs.twimg.com/profile_images/712048543670730753/D24VsCTN_400x400.jpg",
             telephoneNumber = remoteProfile.telephoneNumber.orEmpty()
         )
 

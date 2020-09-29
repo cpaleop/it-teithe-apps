@@ -52,10 +52,10 @@
         android:label="AnnouncementActivity"
         app:moduleName="announcement">
 
-        <argument
+        <!--<argument
             android:name="announcementId"
             app:argType="string"
-            app:nullable="false" />
+            app:nullable="false" />-->
     </activity>
 
     <activity

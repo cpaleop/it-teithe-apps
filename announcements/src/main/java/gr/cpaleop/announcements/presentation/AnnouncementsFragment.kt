@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import gr.cpaleop.announcements.R
 import gr.cpaleop.announcements.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.announcements.di.announcementsModule
 import gr.cpaleop.common.extensions.hideKeyboard
@@ -112,7 +113,10 @@ class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
-        val directions = AnnouncementsFragmentDirections.announcementsToAnnouncement(announcementId)
-        navController.navigate(directions)
+        /*val directions = AnnouncementsFragmentDirections.announcementsToAnnouncement(announcementId)*/
+        val bundle = Bundle().apply {
+            putString("announcementId", announcementId)
+        }
+        navController.navigate(R.id.announcementsToAnnouncement, bundle)
     }
 }

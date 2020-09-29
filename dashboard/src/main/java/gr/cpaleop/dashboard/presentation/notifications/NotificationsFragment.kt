@@ -105,8 +105,11 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
-        val directions = NotificationsFragmentDirections.announcementsToAnnouncement(announcementId)
-        navController.navigate(directions)
+        /*val directions = NotificationsFragmentDirections.announcementsToAnnouncement(announcementId)*/
+        val bundle = Bundle().apply {
+            putString("announcementId", announcementId)
+        }
+        navController.navigate(R.id.notificationsToAnnouncement, bundle)
     }
 
     private fun toggleLoading(shouldLoad: Boolean) {

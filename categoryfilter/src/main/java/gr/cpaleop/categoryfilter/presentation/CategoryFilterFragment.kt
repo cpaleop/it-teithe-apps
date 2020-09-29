@@ -101,8 +101,11 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
-        val directions =
-            CategoryFilterFragmentDirections.categoryFilterToAnnouncement(announcementId)
-        navController.navigate(directions)
+        /*val directions =
+            CategoryFilterFragmentDirections.categoryFilterToAnnouncement(announcementId)*/
+        val bundle = Bundle().apply {
+            putString("announcementId", announcementId)
+        }
+        navController.navigate(R.id.categoryFilterToAnnouncement, bundle)
     }
 }

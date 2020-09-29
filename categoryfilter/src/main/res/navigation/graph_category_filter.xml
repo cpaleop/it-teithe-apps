@@ -22,12 +22,12 @@
     <activity
         android:id="@+id/announcementActivity"
         android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
-        android:label="AnnouncementActivity"
+        android:label="AnnouncementActivityCategoryFilter"
         app:moduleName="announcement">
 
-        <argument
+        <!--<argument
             android:name="announcementId"
             app:argType="string"
-            app:nullable="false" />
+            app:nullable="false" />-->
     </activity>
 </navigation>
