@@ -44,6 +44,7 @@
     <!-- BottomSheet Dialog-->
     <style name="BottomSheetDialog_Rounded" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="bottomSheetStyle">@style/BottomSheet_Rounded</item>
     </style>
 
