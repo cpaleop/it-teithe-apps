@@ -1,86 +1,83 @@
-package gr.cpaleop.announcements
+package gr.cpaleop.public_announcements.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
-import gr.cpaleop.announcements.domain.usecases.FilterAnnouncementsUseCase
-import gr.cpaleop.announcements.domain.usecases.ObserveAnnouncementsUseCase
-import gr.cpaleop.announcements.presentation.AnnouncementsViewModel
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncementsUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class AnnouncementsViewModelTest {
+class PublicAnnouncementsViewModelTest {
 
     @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MainDispatcher
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testMainDispatcher = TestCoroutineDispatcher()
+
+    @MainDispatcher
+    private val testDefaultDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private lateinit var observeAnnouncementsUseCase: ObserveAnnouncementsUseCase
-
-    @MockK
-    private lateinit var filterAnnouncementsUseCase: FilterAnnouncementsUseCase
+    private lateinit var observePublicAnnouncementsUseCase: ObservePublicAnnouncementsUseCase
 
     @MockK
     private lateinit var announcementPresentationMapper: AnnouncementPresentationMapper
 
-    private lateinit var viewModel: AnnouncementsViewModel
+    private lateinit var viewModel: PublicAnnouncementsViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
-        viewModel = AnnouncementsViewModel(
-            testCoroutineDispatcher,
-            observeAnnouncementsUseCase,
-            announcementPresentationMapper,
-            filterAnnouncementsUseCase
+        viewModel = PublicAnnouncementsViewModel(
+            testMainDispatcher,
+            testDefaultDispatcher,
+            observePublicAnnouncementsUseCase,
+            announcementPresentationMapper
         )
     }
 
-    /**
-     * Not working cause of equality of [PagingData] object.
-     * Keep assertion to `isNotEqualTo`
-     */
     @Test
-    fun `presentAnnouncements collects paging data`() = testCoroutineDispatcher.runBlockingTest {
-        val expected = announcementPresentationPagingData
-        val announcementPagingDataFlow = flow {
-            emit(announcementPagingData)
-        }
-        coEvery { observeAnnouncementsUseCase() } returns announcementPagingDataFlow
+    fun `presentAnnouncements when full list is success`() = runBlocking {
+        val expected = announcementPresentationList
+        coEvery { observePublicAnnouncementsUseCase() } returns flow { emit(announcementList) }
+        coEvery { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
+        coEvery { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
         viewModel.presentAnnouncements()
-        assertThat(LiveDataTest.getValue(viewModel.announcements)).isNotEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(false)
     }
 
     @Test
-    fun `searchAnnouncements success`() {
-        val givenFilter = "query"
-        coEvery { filterAnnouncementsUseCase(givenFilter) } returns Unit
-        viewModel.searchAnnouncements(givenFilter)
+    fun `presentAnnouncements when empty list is success`() = runBlocking {
+        val expected = emptyList<AnnouncementPresentation>()
+        coEvery { observePublicAnnouncementsUseCase() } returns flow { emit(emptyList<Announcement>()) }
+        viewModel.presentAnnouncements()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(true)
     }
 
     @Test
-    fun `searchAnnouncements when fails catches exception`() {
-        val givenFilter = "query"
-        coEvery { filterAnnouncementsUseCase(givenFilter) } throws Throwable()
-        viewModel.searchAnnouncements(givenFilter)
+    fun `presentAnnouncements when failure catches exception`() = runBlocking {
+        coEvery { observePublicAnnouncementsUseCase() } throws Throwable()
+        viewModel.presentAnnouncements()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     companion object {
@@ -113,6 +110,7 @@ class AnnouncementsViewModelTest {
                 )
             )
         )
+
         private val announcementPresentationList = listOf(
             AnnouncementPresentation(
                 id = "id",
@@ -133,8 +131,5 @@ class AnnouncementsViewModelTest {
                 category = "category_name1"
             )
         )
-        private val announcementPagingData = PagingData.from(announcementList)
-        private val announcementPresentationPagingData =
-            PagingData.from(announcementPresentationList)
     }
 }

@@ -1,18 +1,18 @@
 package gr.cpaleop.announcements.di
 
-import gr.cpaleop.announcements.data.AnnouncementMapper
 import gr.cpaleop.announcements.data.AnnouncementsRepositoryImpl
 import gr.cpaleop.announcements.data.CategoriesRepositoryImpl
 import gr.cpaleop.announcements.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.announcements.domain.repositories.CategoriesRepository
 import gr.cpaleop.announcements.domain.usecases.*
-import gr.cpaleop.announcements.presentation.AnnouncementPresentationMapper
-import gr.cpaleop.announcements.presentation.AnnouncementPresentationMapperImpl
 import gr.cpaleop.announcements.presentation.AnnouncementsViewModel
 import gr.cpaleop.announcements.presentation.categoryfilterdialog.CategoryFilterMapper
 import gr.cpaleop.announcements.presentation.categoryfilterdialog.CategoryFilterViewModel
+import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapperImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

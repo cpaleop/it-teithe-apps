@@ -1,4 +1,4 @@
-package gr.cpaleop.announcements.data
+package gr.cpaleop.core.data.mappers
 
 import gr.cpaleop.core.data.model.response.RemoteAnnouncement
 import gr.cpaleop.core.data.model.response.RemoteCategory

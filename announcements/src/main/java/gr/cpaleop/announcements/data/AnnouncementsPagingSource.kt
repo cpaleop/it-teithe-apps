@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTitleFilter
 import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
@@ -47,7 +48,7 @@ class AnnouncementsPagingSource(
                     announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
                 }
 
-            appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
+            appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncementList)
 
             //Check if there are saved categories. If not, then populate database
             var localCategories = appDatabase.remoteCategoryDao().getAll()

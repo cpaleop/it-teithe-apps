@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_splash">
 
         <action
-            android:id="@+id/splash_to_authentication"
-            app:destination="@id/authenticationActivity"
+            android:id="@+id/splash_to_public_announcements"
+            app:destination="@id/publicAnnouncementsFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/pop_enter_fade_in"
@@ -28,11 +28,10 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <activity
-        android:id="@+id/authenticationActivity"
-        android:name="gr.cpaleop.authentication.presentation.AuthenticationActivity"
-        android:label="AuthenticationActivity"
-        app:moduleName="authentication" />
+    <include-dynamic
+        android:id="@+id/publicAnnouncementsFragment"
+        app:graphResName="graph_public_announcements"
+        app:moduleName="public_announcements" />
 
     <activity
         android:id="@+id/dashboardActivity"

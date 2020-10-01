@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.google.gson.Gson
 import gr.cpaleop.common.extensions.mapAsync
+import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi

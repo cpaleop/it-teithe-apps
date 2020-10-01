@@ -23,5 +23,5 @@ interface RemoteAnnouncementsDao {
     suspend fun getFromId(id: String): List<RemoteAnnouncement>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(remoteAnnouncementList: List<RemoteAnnouncement>)
+    suspend fun insertAll(remoteAnnouncementList: List<RemoteAnnouncement>)
 }

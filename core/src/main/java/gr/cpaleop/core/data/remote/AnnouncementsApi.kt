@@ -8,6 +8,9 @@ import retrofit2.http.Query
 
 interface AnnouncementsApi {
 
+    @GET("public/announcements")
+    suspend fun fetchPublicAnnouncements(): List<RemoteAnnouncement>
+
     @GET("announcements")
     suspend fun fetchAnnouncements(
         @Query("pageSize") pageSize: Int,

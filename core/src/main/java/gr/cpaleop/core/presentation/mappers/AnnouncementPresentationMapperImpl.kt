@@ -1,7 +1,8 @@
-package gr.cpaleop.announcements.presentation
+package gr.cpaleop.core.presentation.mappers
 
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Announcement
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 class AnnouncementPresentationMapperImpl(private val dateFormatter: DateFormatter) :
     AnnouncementPresentationMapper {
