@@ -5,23 +5,22 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.public_announcements.databinding.ItemAnnouncementBinding
+import gr.cpaleop.public_announcements.databinding.ItemPublicAnnouncementBinding
 
 class AnnouncementPresentationHolder(
-    private val binding: ItemAnnouncementBinding,
+    private val binding: ItemPublicAnnouncementBinding,
     private val onClickListener: (String) -> Unit
-) :
-    RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: AnnouncementPresentation) {
         binding.run {
             root.setOnClickListener { onClickListener(item.id) }
-            announcementTitle.text = item.title
-            announcementContent.text = item.content
-            announcementCategory.text = item.category
-            announcementDate.text = item.date
-            announcementPublisher.text = item.publisherName
-            announcementHasAttachments.isVisible = item.hasAttachments
+            publicAnnouncementTitle.text = item.title
+            publicAnnouncementContent.text = item.content
+            publicAnnouncementCategory.text = item.category
+            publicAnnouncementDate.text = item.date
+            publicAnnouncementPublisher.text = item.publisherName
+            publicAnnouncementHasAttachments.isVisible = item.hasAttachments
         }
     }
 
@@ -32,7 +31,7 @@ class AnnouncementPresentationHolder(
             onClickListener: (String) -> Unit
         ): AnnouncementPresentationHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val binding = ItemAnnouncementBinding.inflate(layoutInflater, parent, false)
+            val binding = ItemPublicAnnouncementBinding.inflate(layoutInflater, parent, false)
             return AnnouncementPresentationHolder(binding, onClickListener)
         }
     }

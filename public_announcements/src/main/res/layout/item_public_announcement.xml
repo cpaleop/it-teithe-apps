@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/announcementTitle"
+            android:id="@+id/publicAnnouncementTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -33,33 +33,33 @@
             tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
         <TextView
-            android:id="@+id/announcementCategory"
+            android:id="@+id/publicAnnouncementCategory"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            app:layout_constraintEnd_toStartOf="@id/announcementHasAttachments"
+            app:layout_constraintEnd_toStartOf="@id/publicAnnouncementHasAttachments"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@id/announcementContent"
-            app:layout_constraintTop_toBottomOf="@id/announcementTitle"
+            app:layout_constraintStart_toStartOf="@id/publicAnnouncementContent"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementTitle"
             tools:text="6ο ΕΞΑΜΗΝΟ" />
 
         <TextView
-            android:id="@+id/announcementHasAttachments"
+            android:id="@+id/publicAnnouncementHasAttachments"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/public_announcements_has_attachments"
-            app:layout_constraintBottom_toBottomOf="@id/announcementCategory"
-            app:layout_constraintEnd_toEndOf="@id/announcementContent"
-            app:layout_constraintStart_toEndOf="@id/announcementCategory"
-            app:layout_constraintTop_toTopOf="@id/announcementCategory" />
+            app:layout_constraintBottom_toBottomOf="@id/publicAnnouncementCategory"
+            app:layout_constraintEnd_toEndOf="@id/publicAnnouncementContent"
+            app:layout_constraintStart_toEndOf="@id/publicAnnouncementCategory"
+            app:layout_constraintTop_toTopOf="@id/publicAnnouncementCategory" />
 
         <TextView
-            android:id="@+id/announcementContent"
+            android:id="@+id/publicAnnouncementContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="24dp"
@@ -68,12 +68,12 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/googlesans_regular"
             android:textColor="@color/colorOnPrimary"
-            app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
-            app:layout_constraintTop_toBottomOf="@id/announcementCategory"
+            app:layout_constraintBottom_toTopOf="@id/publicAnnouncementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
         <TextView
-            android:id="@+id/announcementPublisher"
+            android:id="@+id/publicAnnouncementPublisher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -84,16 +84,16 @@
             android:textColor="@color/colorOnPrimaryVariant"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+            app:layout_constraintEnd_toEndOf="@id/publicAnnouncementTitle"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/announcementTitle"
-            app:layout_constraintTop_toBottomOf="@id/announcementContent"
+            app:layout_constraintStart_toStartOf="@id/publicAnnouncementTitle"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementContent"
             app:layout_constraintVertical_bias="1"
             app:layout_constraintWidth_percent="0.5"
             tools:text="Κ. ΒΙΤΣΑΣ" />
 
         <TextView
-            android:id="@+id/announcementDate"
+            android:id="@+id/publicAnnouncementDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -105,8 +105,8 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/announcementPublisher"
-            app:layout_constraintTop_toBottomOf="@id/announcementContent"
+            app:layout_constraintStart_toEndOf="@id/publicAnnouncementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementContent"
             app:layout_constraintVertical_bias="1"
             tools:text="1/1/2020" />
     </androidx.constraintlayout.widget.ConstraintLayout>
