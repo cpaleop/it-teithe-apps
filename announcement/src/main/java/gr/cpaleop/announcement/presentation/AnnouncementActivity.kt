@@ -1,17 +1,22 @@
 package gr.cpaleop.announcement.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.announcement.databinding.ActivityAnnouncementBinding
 import gr.cpaleop.announcement.di.announcementModule
 import gr.cpaleop.core.presentation.BaseActivity
 import gr.cpaleop.download.presentation.DownloadFileWorker
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import gr.cpaleop.teithe_apps.R as appR
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     private val viewModel: AnnouncementViewModel by viewModel()
@@ -68,8 +73,10 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
     }
 
     private fun updateDownloadStatus(isDownloading: Boolean) {
-        binding.announcementDownloadAttachmentButton.isVisible = !isDownloading
-        binding.announcementDownloadAttachmentProgress.isVisible = isDownloading
+        binding.announcementDownloadAttachmentButton.visibility =
+            if (!isDownloading) View.VISIBLE else View.INVISIBLE
+        binding.announcementDownloadAttachmentProgress.visibility =
+            if (isDownloading) View.VISIBLE else View.INVISIBLE
     }
 
     private fun updateAnnouncement(announcement: AnnouncementDetails) {
@@ -81,8 +88,8 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
             isVisible = announcement.category.isNotEmpty()
         }
         binding.announcementContent.text = announcement.text
-        binding.announcementDownloadAttachmentButton.isVisible =
-            announcement.attachments.isNotEmpty()
+        binding.announcementDownloadAttachmentButton.visibility =
+            if (announcement.attachments.isNotEmpty()) View.VISIBLE else View.INVISIBLE
     }
 
     private fun initiateDownload(announcementDocument: AnnouncementDocument) {
