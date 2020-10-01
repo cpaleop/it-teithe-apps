@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface AnnouncementsApi {
 
-    @GET("public/announcements")
+    @GET("announcements/public")
     suspend fun fetchPublicAnnouncements(): List<RemoteAnnouncement>
 
     @GET("announcements")

@@ -3,8 +3,6 @@ package gr.cpaleop.dashboard.di
 import gr.cpaleop.core.data.mappers.DocumentMapper
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.core.domain.DateFormatter
-import gr.cpaleop.core.domain.DateFormatterImpl
 import gr.cpaleop.dashboard.data.CategoriesRepositoryImpl
 import gr.cpaleop.dashboard.data.NotificationsRepositoryImpl
 import gr.cpaleop.dashboard.data.mappers.NotificationMapper
@@ -34,7 +32,6 @@ val dashboardModule = module {
         )
     }
     single { NotificationPresentationMapper(get()) }
-    single<DateFormatter> { DateFormatterImpl() }
     single { NotificationMapper(get(named<DefaultDispatcher>())) }
     single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }

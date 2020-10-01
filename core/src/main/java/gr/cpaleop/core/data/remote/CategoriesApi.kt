@@ -6,6 +6,9 @@ import retrofit2.http.*
 
 interface CategoriesApi {
 
+    @GET("categories/public")
+    suspend fun fetchPublicCategories(): List<RemoteCategory>
+
     @GET("categories")
     suspend fun fetchCategories(): List<RemoteCategory>
 

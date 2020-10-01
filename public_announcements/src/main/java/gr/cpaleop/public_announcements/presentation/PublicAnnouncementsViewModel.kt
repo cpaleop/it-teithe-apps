@@ -41,6 +41,7 @@ class PublicAnnouncementsViewModel(
     fun presentAnnouncements() {
         viewModelScope.launch(mainDispatcher) {
             try {
+                _loading.value = true
                 observePublicAnnouncementsUseCase()
                     .map { it.mapAsync(announcementPresentationMapper::invoke) }
                     .flowOn(defaultDispatcher)
@@ -51,6 +52,12 @@ class PublicAnnouncementsViewModel(
                 Timber.e(t)
                 _loading.value = false
             }
+        }
+    }
+
+    fun search(query: String) {
+        viewModelScope.launch(mainDispatcher) {
+            observePublicAnnouncementsUseCase.filter(query)
         }
     }
 }

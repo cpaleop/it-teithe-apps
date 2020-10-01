@@ -16,5 +16,5 @@ interface RemoteCategoryDao {
     suspend fun getFromId(id: String): RemoteCategory?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(remoteCategorytList: List<RemoteCategory>)
+    suspend fun insertAll(remoteCategorytList: List<RemoteCategory>)
 }

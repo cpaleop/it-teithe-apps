@@ -54,7 +54,7 @@ class AnnouncementsPagingSource(
             var localCategories = appDatabase.remoteCategoryDao().getAll()
             if (localCategories.isEmpty()) {
                 localCategories = categoriesApi.fetchCategories()
-                appDatabase.remoteCategoryDao().insert(localCategories)
+                appDatabase.remoteCategoryDao().insertAll(localCategories)
             }
 
             val announcements =
