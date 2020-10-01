@@ -16,11 +16,25 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/pop_enter_fade_in"
             app:popExitAnim="@anim/fade_out" />
+
+        <action
+            android:id="@+id/public_announcements_to_announcement"
+            app:destination="@id/announcementActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <activity
         android:id="@+id/authenticationActivity"
         android:name="gr.cpaleop.authentication.presentation.AuthenticationActivity"
+        android:label="AuthenticationActivity"
+        app:moduleName="authentication" />
+
+    <activity
+        android:id="@+id/announcementActivity"
+        android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
         android:label="AuthenticationActivity"
         app:moduleName="authentication" />
 </navigation>

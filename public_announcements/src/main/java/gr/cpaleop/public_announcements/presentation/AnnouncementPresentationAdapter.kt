@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 
-class AnnouncementPresentationAdapter :
+class AnnouncementPresentationAdapter(private val onClickListener: (String) -> Unit) :
     ListAdapter<AnnouncementPresentation, AnnouncementPresentationHolder>(
         DIFF_UTIL_ANNOUNCEMENT_PRESENTATION
     ) {
@@ -14,7 +14,7 @@ class AnnouncementPresentationAdapter :
         parent: ViewGroup,
         viewType: Int
     ): AnnouncementPresentationHolder {
-        return AnnouncementPresentationHolder.create(parent)
+        return AnnouncementPresentationHolder.create(parent, onClickListener)
     }
 
     override fun onBindViewHolder(holder: AnnouncementPresentationHolder, position: Int) {

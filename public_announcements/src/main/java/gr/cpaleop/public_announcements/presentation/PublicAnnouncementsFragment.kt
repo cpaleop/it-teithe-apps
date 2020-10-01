@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.public_announcements.R
 import gr.cpaleop.public_announcements.databinding.FragmentPublicAnnouncementsBinding
 import gr.cpaleop.public_announcements.di.PublicAnnouncementsScope
 import gr.cpaleop.public_announcements.di.publicAnnouncementsModule
@@ -63,7 +64,7 @@ class PublicAnnouncementsFragment : BaseFragment<FragmentPublicAnnouncementsBind
     }
 
     private fun setupViews() {
-        announcementPresentationAdapter = AnnouncementPresentationAdapter()
+        announcementPresentationAdapter = AnnouncementPresentationAdapter(::navigateToAnnouncement)
         binding.publicAnnouncementsRecyclerView.adapter = announcementPresentationAdapter
         binding.publicAnnouncementsLoginFab.setOnClickListener {
             navigateToAuthentication()
@@ -93,6 +94,13 @@ class PublicAnnouncementsFragment : BaseFragment<FragmentPublicAnnouncementsBind
     private fun navigateToAuthentication() {
         val directions = PublicAnnouncementsFragmentDirections.publicAnnouncementsToAuthentication()
         navController.navigate(directions)
+    }
+
+    private fun navigateToAnnouncement(announcementId: String) {
+        val bundle = Bundle().apply {
+            putString("announcementId", announcementId)
+        }
+        navController.navigate(R.id.public_announcements_to_announcement, bundle)
     }
 
     private fun updateAnnouncements(announcementList: List<AnnouncementPresentation>) {

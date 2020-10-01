@@ -11,11 +11,7 @@ class TokenInterceptor(private val preferencesRepository: PreferencesRepository)
         val request = chain.request()
 
         if (token.isNullOrBlank()) {
-            return chain.proceed(
-                request.newBuilder()
-                    .addHeader(AUTH_HEADER_KEY, "")
-                    .build()
-            )
+            return chain.proceed(request)
         }
 
         val newRequest = request.newBuilder()
