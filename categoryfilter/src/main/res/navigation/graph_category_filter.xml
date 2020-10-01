@@ -15,19 +15,19 @@
             app:destination="@id/announcementActivity"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <activity
         android:id="@+id/announcementActivity"
         android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
-        android:label="AnnouncementActivity"
+        android:label="AnnouncementActivityCategoryFilter"
         app:moduleName="announcement">
 
-        <argument
+        <!--<argument
             android:name="announcementId"
             app:argType="string"
-            app:nullable="false" />
+            app:nullable="false" />-->
     </activity>
 </navigation>

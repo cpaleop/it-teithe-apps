@@ -5,32 +5,10 @@
     android:id="@+id/dashboard_graph"
     app:startDestination="@id/announcementsFragment">
 
-    <fragment
+    <include-dynamic
         android:id="@+id/announcementsFragment"
-        android:name="gr.cpaleop.dashboard.presentation.announcements.AnnouncementsFragment"
-        android:label="AnnouncementsFragment"
-        tools:layout="@layout/fragment_announcements">
-
-        <action
-            android:id="@+id/announcementsToAnnouncement"
-            app:destination="@id/announcementActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-
-        <action
-            android:id="@+id/announcementsToCategoryFilterDialog"
-            app:destination="@id/categoryFilterDialog" />
-
-        <action
-            android:id="@+id/announcementsToCategoryFilter"
-            app:destination="@id/categoryFilterActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </fragment>
+        app:graphResName="graph_announcements"
+        app:moduleName="announcements" />
 
     <fragment
         android:id="@+id/notificationsFragment"
@@ -39,141 +17,33 @@
         tools:layout="@layout/fragment_notifications">
 
         <action
-            android:id="@+id/announcementsToAnnouncement"
+            android:id="@+id/notificationsToAnnouncement"
             app:destination="@id/announcementActivity"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 
-    <fragment
+    <include-dynamic
         android:id="@+id/documentsFragment"
-        android:name="gr.cpaleop.dashboard.presentation.documents.DocumentsFragment"
-        android:label="DocumentsFragment"
-        tools:layout="@layout/fragment_documents">
+        app:graphResName="graph_documents"
+        app:moduleName="documents" />
 
-        <argument
-            android:name="announcementId"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
-        <action
-            android:id="@+id/documentsToDocuments"
-            app:destination="@id/documentsFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/static_fade_in"
-            app:popExitAnim="@anim/fade_out" />
-
-        <action
-            android:id="@+id/documentsToDocumentOptionsDialog"
-            app:destination="@id/documentOptionsDialog" />
-
-        <action
-            android:id="@+id/documentsToDocumentSortOptionsDialog"
-            app:destination="@id/documentSortOptionsDialog" />
-    </fragment>
-
-    <fragment
+    <include-dynamic
         android:id="@+id/profileFragment"
-        android:name="gr.cpaleop.dashboard.presentation.profile.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile">
-
-        <action
-            android:id="@+id/profileToProfileOptionsDialog"
-            app:destination="@id/profileOptionsDialog" />
-
-        <action
-            android:id="@+id/profileToSettings"
-            app:destination="@id/settingsActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/categoryFilterDialog"
-        android:name="gr.cpaleop.dashboard.presentation.announcements.categoryfilterdialog.CategoryFilterDialogFragment"
-        android:label="CategoryFilterDialogFragment"
-        tools:layout="@layout/dialog_fragment_category_filter">
-
-        <action
-            android:id="@+id/categoryFilterDialogToCategoryFilterActivity"
-            app:destination="@id/categoryFilterActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/documentOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.documents.options.DocumentOptionsDialogFragment"
-        android:label="DocumentOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_document_options">
-
-        <argument
-            android:name="uri"
-            app:argType="string"
-            app:nullable="false" />
-
-        <action
-            android:id="@+id/documentOptionsDialogToAnnouncementActivity"
-            app:destination="@id/announcementActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/documentSortOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.documents.sort.DocumentSortDialogFragment"
-        android:label="FileSortDialogFragment"
-        tools:layout="@layout/dialog_fragment_sort_documents" />
-
-    <dialog
-        android:id="@+id/profileOptionsDialog"
-        android:name="gr.cpaleop.dashboard.presentation.profile.options.ProfileOptionsDialogFragment"
-        android:label="ProfileOptionsDialogFragment"
-        tools:layout="@layout/dialog_fragment_profile_options">
-
-        <argument
-            android:name="socialName"
-            app:argType="string"
-            app:nullable="false" />
-    </dialog>
+        app:graphResName="graph_profile"
+        app:moduleName="profile" />
 
     <activity
         android:id="@+id/announcementActivity"
         android:name="gr.cpaleop.announcement.presentation.AnnouncementActivity"
-        android:label="AnnouncementActivity"
+        android:label="AnnouncementActivityDashboard"
         app:moduleName="announcement">
 
-        <argument
+        <!--<argument
             android:name="announcementId"
             app:argType="string"
-            app:nullable="false" />
+            app:nullable="false" />-->
     </activity>
-
-    <activity
-        android:id="@+id/categoryFilterActivity"
-        android:name="gr.cpaleop.categoryfilter.presentation.CategoryFilterActivity"
-        android:label="CategoryFilterActivity"
-        app:moduleName="categoryfilter">
-
-        <argument
-            android:name="categoryId"
-            app:argType="string"
-            app:nullable="false" />
-    </activity>
-
-    <activity
-        android:id="@+id/settingsActivity"
-        android:name="gr.cpaleop.dashboard.presentation.profile.settings.SettingsActivity"
-        android:label="SettingsActivity" />
 </navigation>

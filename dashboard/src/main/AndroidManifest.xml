@@ -20,7 +20,7 @@
             android:theme="@style/Theme.Itteitheapps" />
 
         <activity
-            android:name=".presentation.profile.settings.SettingsActivity"
+            android:name="gr.cpaleop.profile.presentation.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Itteitheapps" />
     </application>

@@ -2,6 +2,7 @@ package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
 import androidx.room.Room
+import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.mappers.TokenMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.model.local.Migration
@@ -12,6 +13,7 @@ import retrofit2.Retrofit
 
 val coreModule = module {
     single { TokenMapper() }
+    single { CategoryMapper() }
     single { provideAppDatabase(get()) }
     single { provideAnnouncementsApi(get()) }
     single { provideCategoriesApi(get()) }

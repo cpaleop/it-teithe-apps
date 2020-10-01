@@ -1,12 +1,11 @@
 package gr.cpaleop.dashboard.data
 
 import com.google.gson.Gson
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.CategoriesApi
-import gr.cpaleop.dashboard.data.mappers.CategoryMapper
-import gr.cpaleop.dashboard.domain.entities.Category
+import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.repositories.CategoriesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,17 +27,6 @@ class CategoriesRepositoryImpl(
             )
         }.filterNotNull()
     }
-
-    override suspend fun getCachedCategories(): List<gr.cpaleop.core.domain.entities.Category> =
-        withContext(Dispatchers.IO) {
-            val cachedRemoteCategories = appDatabase.remoteCategoryDao().getAll()
-            cachedRemoteCategories.mapAsync {
-                gr.cpaleop.core.domain.entities.Category(
-                    id = it.id,
-                    name = it.name ?: ""
-                )
-            }
-        }
 
     override suspend fun updateRegisteredCategories(
         registeredCategories: List<String>,

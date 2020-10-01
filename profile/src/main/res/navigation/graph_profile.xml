@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="gr.cpaleop.profile.presentation.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/profileToProfileOptionsDialog"
+            app:destination="@id/profileOptionsDialog" />
+
+        <action
+            android:id="@+id/profileToSettings"
+            app:destination="@id/settingsActivity"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/profileOptionsDialog"
+        android:name="gr.cpaleop.profile.presentation.options.ProfileOptionsDialogFragment"
+        android:label="ProfileOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_profile_options">
+
+        <argument
+            android:name="socialName"
+            app:argType="string"
+            app:nullable="false" />
+    </dialog>
+
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="gr.cpaleop.profile.presentation.settings.SettingsActivity"
+        android:label="SettingsActivity" />
+</navigation>

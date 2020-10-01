@@ -16,7 +16,7 @@
             app:destination="@id/authenticationActivity"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
             app:popExitAnim="@anim/fade_out" />
 
         <action
@@ -24,7 +24,7 @@
             app:destination="@id/dashboardActivity"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/pop_enter_fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
 

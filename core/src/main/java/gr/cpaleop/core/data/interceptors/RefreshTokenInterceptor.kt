@@ -1,5 +1,6 @@
 package gr.cpaleop.core.data.interceptors
 
+import com.google.gson.Gson
 import gr.cpaleop.core.domain.entities.Token
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
@@ -14,7 +15,8 @@ import okhttp3.Response
 @Suppress("BlockingMethodInNonBlockingContext")
 class RefreshTokenInterceptor(
     private val preferencesRepository: PreferencesRepository,
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val gson: Gson
 ) : Interceptor {
 
     private var isRefreshing: Boolean = false
@@ -27,9 +29,11 @@ class RefreshTokenInterceptor(
         return runBlocking {
             if (isTokenExpired(originalResponse)) {
                 if (!isRefreshing) {
+                    originalResponse.close()
                     refreshToken()
                     return@runBlocking chain.proceed(originalRequest)
                 } else {
+                    originalResponse.close()
                     return@runBlocking retryOriginalRequest(chain, originalRequest)
                 }
             } else {
@@ -62,7 +66,13 @@ class RefreshTokenInterceptor(
         do {
             delay(RETRY_DELAY_MS)
             response = chain.proceed(originalRequest)
-        } while (++retryCount < RETRY_MAX_TRIES && isTokenExpired(response))
+            val tokenExpired = if (isTokenExpired(response)) {
+                response.close()
+                true
+            } else {
+                false
+            }
+        } while (++retryCount < RETRY_MAX_TRIES && tokenExpired)
         return response
     }
 

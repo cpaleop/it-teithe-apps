@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class gr.cpaleop.core.data.model** { *; }
+-keep class gr.cpaleop.profile.data.model** { *; }
+-keep class gr.cpaleop.dashboard.data.model** { *; }
+-keep class gr.cpaleop.announcement.data.model** { *; }
+-keep class gr.cpaleop.announcements.data.model** { *; }
+-keep class gr.cpaleop.categoryfilter.data.model** { *; }

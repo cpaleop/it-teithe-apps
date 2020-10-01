@@ -22,8 +22,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            debuggable true
         }
     }
 
@@ -35,7 +41,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dynamicFeatures = [':authentication', ':dashboard', ':announcement', ':categoryfilter']
+    dynamicFeatures = [':authentication', ':dashboard', ':announcement', ':categoryfilter', ':documents', ':profile', ':announcements']
 }
 
 dependencies {

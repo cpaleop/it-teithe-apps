@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="announcements_search">Search announcements</string>
+    <string name="announcements_has_attachments">Attachments</string>
+    <string name="announcements_error_message">Something went wrong</string>
+
+    <!-- Category filter -->
+    <string name="category_filter_dialog_title">Show announcements from category</string>
+</resources>

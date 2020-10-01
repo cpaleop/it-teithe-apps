@@ -1,6 +1,6 @@
 package gr.cpaleop.dashboard.domain.usecases
 
-import gr.cpaleop.dashboard.domain.entities.Category
+import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.repositories.CategoriesRepository
 
 class UpdateRegisteredCategoriesUseCaseImpl(private val categoriesRepository: CategoriesRepository) :

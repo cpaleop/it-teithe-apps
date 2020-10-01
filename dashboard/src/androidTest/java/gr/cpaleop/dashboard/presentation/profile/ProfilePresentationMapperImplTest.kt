@@ -6,7 +6,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.dashboard.R
-import gr.cpaleop.dashboard.domain.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -22,12 +21,15 @@ class ProfilePresentationMapperImplTest {
     @DefaultDispatcher
     private val defaultDispatcher = Dispatchers.Default
 
-    private lateinit var profilePresentationMapper: ProfilePresentationMapper
+    private lateinit var profilePresentationMapper: gr.cpaleop.profile.presentation.ProfilePresentationMapper
 
     @Before
     fun setup() {
         profilePresentationMapper =
-            ProfilePresentationMapperImpl(applicationContext, defaultDispatcher)
+            gr.cpaleop.profile.presentation.ProfilePresentationMapperImpl(
+                applicationContext,
+                defaultDispatcher
+            )
     }
 
     @Test
@@ -40,25 +42,27 @@ class ProfilePresentationMapperImplTest {
 
     companion object {
 
-        private val profileAcademicDetails = ProfileAcademicDetails(
-            am = "am",
-            type = "student",
-            displayName = "display_name",
-            registeredYear = "2014",
-            username = "username",
-            currentSemester = "12"
-        )
+        private val profileAcademicDetails =
+            gr.cpaleop.profile.domain.entities.ProfileAcademicDetails(
+                am = "am",
+                type = "student",
+                displayName = "display_name",
+                registeredYear = "2014",
+                username = "username",
+                currentSemester = "12"
+            )
 
-        private val profilePersonalDetails = ProfilePersonalDetails(
-            lastName = "last_name",
-            profileImageUrl = "image_url",
-            websiteUrl = "website_url",
-            telephoneNumber = "telephone_number",
-            givenName = "given_name",
-            description = "description"
-        )
+        private val profilePersonalDetails =
+            gr.cpaleop.profile.domain.entities.ProfilePersonalDetails(
+                lastName = "last_name",
+                profileImageUrl = "image_url",
+                websiteUrl = "website_url",
+                telephoneNumber = "telephone_number",
+                givenName = "given_name",
+                description = "description"
+            )
 
-        private val profileSocialMedia = SocialMedia(
+        private val profileSocialMedia = gr.cpaleop.profile.domain.entities.SocialMedia(
             facebook = "facebook",
             googlePlus = "google_plus",
             linkedIn = "linkedIn",
@@ -66,7 +70,7 @@ class ProfilePresentationMapperImplTest {
             github = "github"
         )
 
-        private val profile = Profile(
+        private val profile = gr.cpaleop.profile.domain.entities.Profile(
             email = "email@domain.com",
             academicDetails = profileAcademicDetails,
             personalDetails = profilePersonalDetails,
@@ -74,39 +78,39 @@ class ProfilePresentationMapperImplTest {
         )
 
         private val profileSocialDetails = listOf(
-            ProfileSocialDetails(
-                socialType = Social.FACEBOOK,
+            gr.cpaleop.profile.presentation.ProfileSocialDetails(
+                socialType = gr.cpaleop.profile.domain.entities.Social.FACEBOOK,
                 content = "facebook",
                 socialLogoResource = R.drawable.ic_facebook,
                 label = "Facebook"
             ),
-            ProfileSocialDetails(
-                socialType = Social.GITHUB,
+            gr.cpaleop.profile.presentation.ProfileSocialDetails(
+                socialType = gr.cpaleop.profile.domain.entities.Social.GITHUB,
                 content = "github",
                 socialLogoResource = R.drawable.ic_github,
                 label = "Github"
             ),
-            ProfileSocialDetails(
-                socialType = Social.TWITTER,
+            gr.cpaleop.profile.presentation.ProfileSocialDetails(
+                socialType = gr.cpaleop.profile.domain.entities.Social.TWITTER,
                 content = "twitter",
                 socialLogoResource = R.drawable.ic_twitter,
                 label = "Twitter"
             ),
-            ProfileSocialDetails(
-                socialType = Social.LINKEDIN,
+            gr.cpaleop.profile.presentation.ProfileSocialDetails(
+                socialType = gr.cpaleop.profile.domain.entities.Social.LINKEDIN,
                 content = "linkedIn",
                 socialLogoResource = R.drawable.ic_linkedin,
                 label = "LinkedIn"
             ),
-            ProfileSocialDetails(
-                socialType = Social.GOOGLEPLUS,
+            gr.cpaleop.profile.presentation.ProfileSocialDetails(
+                socialType = gr.cpaleop.profile.domain.entities.Social.GOOGLEPLUS,
                 content = "google_plus",
                 socialLogoResource = R.drawable.ic_google_plus,
                 label = "Google+"
             )
         )
 
-        private val profilePresentation = ProfilePresentation(
+        private val profilePresentation = gr.cpaleop.profile.presentation.ProfilePresentation(
             profilePhotoUrl = "image_url",
             username = "username",
             registeredYear = "2014",
