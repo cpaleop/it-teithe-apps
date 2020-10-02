@@ -17,7 +17,7 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getAnnouncementById(id: String): Announcement =
         withContext(Dispatchers.IO) {
-            val cachedRemoteAnnouncements = appDatabase.remoteAnnouncementsDao().getFromId(id)
+            val cachedRemoteAnnouncements = appDatabase.remoteAnnouncementsDao().fetchFromId(id)
             val remoteAnnouncement = if (cachedRemoteAnnouncements.isNullOrEmpty()) {
                 announcementsApi.fetchAnnouncementById(id)
             } else {

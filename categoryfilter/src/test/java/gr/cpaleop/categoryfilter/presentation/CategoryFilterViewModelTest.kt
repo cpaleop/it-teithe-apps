@@ -3,19 +3,21 @@ package gr.cpaleop.categoryfilter.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.categoryfilter.domain.entities.Announcement
-import gr.cpaleop.categoryfilter.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common_test.LiveDataTest
-import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.MainDispatcher
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,8 +29,8 @@ class CategoryFilterViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @DefaultDispatcher
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    @MainDispatcher
+    private val testMainCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
     private lateinit var getCategoryNameUseCase: GetCategoryNameUseCase
@@ -36,19 +38,15 @@ class CategoryFilterViewModelTest {
     @MockK
     private lateinit var observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase
 
-    @MockK
-    private lateinit var filterAnnouncementsUseCase: FilterAnnouncementsUseCase
-
     private lateinit var viewModel: CategoryFilterViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = CategoryFilterViewModel(
-            testCoroutineDispatcher,
+            testMainCoroutineDispatcher,
             getCategoryNameUseCase,
-            observeAnnouncementsByCategoryUseCase,
-            filterAnnouncementsUseCase
+            observeAnnouncementsByCategoryUseCase
         ).apply {
             categoryId = "id"
         }
@@ -63,97 +61,64 @@ class CategoryFilterViewModelTest {
     }
 
     @Test
-    fun `presentCategoryName throws`() {
+    fun `presentCategoryName when fails catches exception`() {
         coEvery { getCategoryNameUseCase(viewModel.categoryId) } throws Throwable()
         viewModel.presentCategoryName()
     }
 
-    /**
-     * This test case makes use of [TestCoroutineDispatcher.advanceTimeBy] method because the produced flow has a debounce
-     */
     @Test
-    fun `presentAnnouncementsByCategory emits correct values with no filter`() =
-        testCoroutineDispatcher.runBlockingTest {
+    fun `presentAnnouncements is success`() {
+        coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } returns Unit
+        viewModel.presentAnnouncements()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+    }
+
+    @Test
+    fun `presentAnnouncements when fails catches exception`() {
+        coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } throws Throwable()
+        viewModel.presentAnnouncements()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+    }
+
+    @Test
+    fun `announcements livedata correct values with no filter`() =
+        testMainCoroutineDispatcher.runBlockingTest {
+            Dispatchers.setMain(testMainCoroutineDispatcher)
             val expectedAnnouncementList = announcementList
             val expectedFlow = flow {
                 emit(expectedAnnouncementList)
             }
-
-            coEvery {
-                filterAnnouncementsUseCase(
-                    expectedAnnouncementList,
-                    ""
-                )
-            } returns expectedAnnouncementList
-            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
-            viewModel.presentAnnouncementsByCategory()
-            advanceTimeBy(200)
+            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow.flowOn(
+                testMainCoroutineDispatcher
+            )
             assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(
                 expectedAnnouncementList
             )
             assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(false)
         }
 
-    /**
-     * This test case makes use of [TestCoroutineDispatcher.advanceTimeBy] method because the produced flow has a debounce
-     */
     @Test
-    fun `presentAnnouncementsByCategory emits correct values with filter`() =
-        testCoroutineDispatcher.runBlockingTest {
-            val originalAnnouncementList = announcementList
-            val expectedFilteredAnnouncementList = listOf(announcementList[1])
-            val expectedFlow = flow {
-                emit(originalAnnouncementList)
-            }
-            coEvery {
-                filterAnnouncementsUseCase(
-                    originalAnnouncementList,
-                    "title1"
-                )
-            } returns expectedFilteredAnnouncementList
-            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
-            viewModel.filterAnnouncements("title1")
-            viewModel.presentAnnouncementsByCategory()
-            advanceTimeBy(200)
-            assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(
-                expectedFilteredAnnouncementList
-            )
-            assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(false)
+    fun `announcements livedata empty list`() = testMainCoroutineDispatcher.runBlockingTest {
+        Dispatchers.setMain(testMainCoroutineDispatcher)
+        val emptyAnnouncementList = emptyList<Announcement>()
+        val expectedFlow = flow {
+            emit(emptyAnnouncementList)
         }
-
-    /**
-     * This test case makes use of [TestCoroutineDispatcher.advanceTimeBy] method because the produced flow has a debounce
-     */
-    @Test
-    fun `presentAnnouncementsByCategory emits empty list`() =
-        testCoroutineDispatcher.runBlockingTest {
-            val emptyAnnouncementList = emptyList<Announcement>()
-            val expectedFlow = flow {
-                emit(emptyAnnouncementList)
-            }
-            coEvery {
-                filterAnnouncementsUseCase(
-                    emptyAnnouncementList,
-                    ""
-                )
-            } returns emptyAnnouncementList
-            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
-            viewModel.presentAnnouncementsByCategory()
-            advanceTimeBy(200)
-            assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(
-                emptyAnnouncementList
-            )
-            assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(true)
-        }
+        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
+        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(
+            emptyAnnouncementList
+        )
+        assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(true)
+    }
 
     @Test
-    fun `presentAnnouncementsByCategory throws exception`() =
-        testCoroutineDispatcher.runBlockingTest {
-            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } throws Throwable(
-                ""
-            )
-            viewModel.presentAnnouncementsByCategory()
-        }
+    fun `announcements livedata throws exception`() = testMainCoroutineDispatcher.runBlockingTest {
+        val expected = null
+        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } throws Throwable(
+            ""
+        )
+        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
+    }
 
     companion object {
 
