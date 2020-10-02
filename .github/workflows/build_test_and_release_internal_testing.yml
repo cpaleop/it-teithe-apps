@@ -31,3 +31,36 @@ jobs:
       # Run unit tests
       - name: Run tests
         run: ./gradlew test --parallel
+
+  internal-sharing-release:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Set up JDK
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      # Build bundle
+      - name: Build bundle
+        run: ./gradlew :app:bundlePRODRelease
+
+      # Create service_acount.json file
+      - name: Create service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      # Upload to PlayStore for Internal Testing
+      - name: Deplay to PlayStore (Internal Testing)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: gr.cpaleop.teithe_apps
+          releaseFile: app/build/output/bundle/pRODRelease/app-pROD-release.aab
+          track: internalsharing
+          userFraction: 1.0
+          whatsNewDirectory: distribution/whatsnew/
+          mappingFile: app/build/outputs/mapping/pRODRelease/mapping.txt
