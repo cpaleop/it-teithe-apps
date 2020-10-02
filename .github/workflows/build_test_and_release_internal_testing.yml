@@ -54,13 +54,12 @@ jobs:
         run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
       # Upload to PlayStore for Internal Testing
-      - name: Deplay to PlayStore (Internal Testing)
+      - name: Deplay to PlayStore (Internal App Sharing)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: service_account.json
           packageName: gr.cpaleop.teithe_apps
           releaseFile: app/build/output/bundle/pRODRelease/app-pROD-release.aab
           track: internalsharing
-          userFraction: 1.0
           whatsNewDirectory: distribution/whatsnew/
           mappingFile: app/build/outputs/mapping/pRODRelease/mapping.txt
