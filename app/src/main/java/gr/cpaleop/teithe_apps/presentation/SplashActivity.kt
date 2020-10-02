@@ -31,6 +31,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     override fun attachBaseContext(newBase: Context) {
         var language = preferencesRepository.getString(PreferencesRepository.LANGUAGE) ?: return
         if (language == "") {

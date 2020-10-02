@@ -35,9 +35,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     private fun handleUserNavigation(isLoggedIn: Boolean) {
         if (!isLoggedIn) {
-            val directions = SplashFragmentDirections.splashToAuthentication()
+            val directions = SplashFragmentDirections.splashToPublicAnnouncements()
             navController.navigate(directions)
-            activity?.finishAffinity()
         } else {
             val directions = SplashFragmentDirections.splashToDashboard()
             navController.navigate(directions)
