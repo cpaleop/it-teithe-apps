@@ -16,6 +16,6 @@
         <activity
             android:name=".presentation.AnnouncementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Itteitheapps" />
+            android:theme="@style/Theme.Itteitheapps.Inverted" />
     </application>
 </manifest>

@@ -29,13 +29,35 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
     </style>
 
+    <style name="Theme.Itteitheapps.Inverted" parent="Theme.Itteitheapps">
+        <item name="colorPrimary">@color/colorPrimaryVariant</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
+        <item name="android:background">@drawable/shape_round_white_opaque</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:fontFamily">@font/googlesans_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lines">3</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <style name="Theme.FilterStyle" parent="Theme.Itteitheapps">
-        <item name="android:background">@drawable/shape_round_edges_transparent</item>
+        <item name="android:background">@drawable/shape_filter_white_opaque</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
-        <item name="android:layout_margin">4dp</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorAccent</item>

@@ -14,10 +14,7 @@
         <shape android:shape="rectangle">
 
             <corners android:radius="8dp" />
-            <solid android:color="@android:color/transparent" />
-            <stroke
-                android:width="0.7dp"
-                android:color="?attr/colorButtonNormal" />
+            <solid android:color="@color/colorPrimaryVariant" />
         </shape>
     </item>
 </ripple>
