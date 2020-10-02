@@ -25,6 +25,8 @@ class NotificationsViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
+    private val _readNotifications = MutableLiveData<Unit>()
+
     private val _notifications = MutableLiveData<List<NotificationPresentation>>()
 
     val notificationsCounter: MediatorLiveData<Int> by lazy {
@@ -35,6 +37,9 @@ class NotificationsViewModel(
                         notifications.count { !it.seen }
                     }
                 }
+            }
+            addSource(_readNotifications) {
+                this.value = 0
             }
         }
     }
@@ -80,7 +85,7 @@ class NotificationsViewModel(
     fun readAllNotifications() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                readAllNotificationsUseCase()
+                _readNotifications.value = readAllNotificationsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
             }
