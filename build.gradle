@@ -43,7 +43,7 @@ subprojects {
                 signingConfigs {
                     release {
                         //shrinkResources true
-                        storeFile file('/home/cpaleop/keystore')
+                        storeFile file('keystore/keystore')
                         keyAlias 'key0'
                         storePassword 'ieeapps!@#$'
                         keyPassword 'ieeapps!@#$'
