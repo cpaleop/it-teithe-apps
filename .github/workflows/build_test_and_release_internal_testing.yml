@@ -59,7 +59,7 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: gr.cpaleop.teithe_apps
-          releaseFile: app/build/output/bundle/pRODRelease/app-pROD-release.aab
+          releaseFile: app/build/outputs/bundle/pRODRelease/app-pROD-release.aab
           track: internalsharing
           whatsNewDirectory: distribution/whatsnew/
           mappingFile: app/build/outputs/mapping/pRODRelease/mapping.txt
