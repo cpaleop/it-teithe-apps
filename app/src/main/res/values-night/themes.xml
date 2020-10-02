@@ -31,9 +31,9 @@
 
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
         <item name="android:background">@drawable/shape_round_white_opaque</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:padding">16dp</item>
         <item name="android:fontFamily">@font/googlesans_medium</item>
@@ -55,7 +55,7 @@
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- BottomSheet Dialog-->
