@@ -18,7 +18,7 @@ class CategoriesRepositoryImpl(
 ) : CategoriesRepository {
 
     override suspend fun getCategories(): List<Category> = withContext(Dispatchers.IO) {
-        val remoteCategories = appDatabase.remoteCategoryDao().getAll()
+        val remoteCategories = appDatabase.remoteCategoryDao().fetchAll()
         val remoteRegisteredCategories = categoriesApi.fetchRegisteredCategories()
         return@withContext remoteCategories.mapAsyncSuspended {
             categoryMapper(

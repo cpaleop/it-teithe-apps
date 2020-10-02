@@ -29,7 +29,7 @@ class AnnouncementsRepositoryImpl(
                 ?: throw IllegalArgumentException("Announcement category was null")
 
             val remoteCategory = try {
-                appDatabase.remoteCategoryDao().getFromId(categoryId)
+                appDatabase.remoteCategoryDao().fetchFromId(categoryId)
                     ?: throw IllegalArgumentException("No announcement found with id $id")
             } catch (t: Throwable) {
                 categoriesApi.fetchCategories().firstOrNull { it.id == categoryId }

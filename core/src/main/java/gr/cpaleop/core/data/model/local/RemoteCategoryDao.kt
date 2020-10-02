@@ -10,10 +10,13 @@ import gr.cpaleop.core.data.model.response.RemoteCategory
 interface RemoteCategoryDao {
 
     @Query("SELECT * FROM remotecategory")
-    suspend fun getAll(): List<RemoteCategory>
+    suspend fun fetchAll(): List<RemoteCategory>
 
     @Query("SELECT * FROM remotecategory WHERE id = :id")
-    suspend fun getFromId(id: String): RemoteCategory?
+    suspend fun fetchFromId(id: String?): RemoteCategory?
+
+    @Query("SELECT * FROM remotecategory WHERE id = :id")
+    suspend fun fetchAllFromId(id: String?): List<RemoteCategory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteCategorytList: List<RemoteCategory>)

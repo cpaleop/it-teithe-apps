@@ -11,9 +11,8 @@ class AnnouncementMapper {
 
     suspend operator fun invoke(
         remoteAnnouncement: RemoteAnnouncement,
-        remoteCategories: List<RemoteCategory>
+        remoteCategory: RemoteCategory?
     ): Announcement = withContext(Dispatchers.Default) {
-        val remoteCategory = remoteCategories.firstOrNull { it.id == remoteAnnouncement.about }
         val category = Category(
             id = remoteCategory?.id ?: "",
             name = remoteCategory?.name ?: "",

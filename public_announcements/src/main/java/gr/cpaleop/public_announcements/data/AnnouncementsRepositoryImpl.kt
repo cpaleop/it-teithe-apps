@@ -29,10 +29,8 @@ class AnnouncementsRepositoryImpl(
             appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncements)
             flow {
                 emit(remoteAnnouncements.mapAsyncSuspended {
-                    announcementMapper(
-                        it,
-                        remoteCategories
-                    )
+                    val remoteCategory = appDatabase.remoteCategoryDao().fetchFromId(it.about)
+                    announcementMapper(it, remoteCategory)
                 })
             }
         }
