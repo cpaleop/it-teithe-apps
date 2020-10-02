@@ -57,7 +57,6 @@ jobs:
       - name: Deplay to PlayStore (Internal App Sharing)
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: service_account.json
           packageName: gr.cpaleop.teithe_apps
           releaseFile: app/build/outputs/bundle/pRODRelease/app-pROD-release.aab
           track: internalsharing
