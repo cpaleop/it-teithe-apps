@@ -5,5 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface ObserveAnnouncementsByCategoryUseCase {
 
-    suspend operator fun invoke(categoryId: String): Flow<List<Announcement>>
+    operator fun invoke(categoryId: String): Flow<List<Announcement>>
+
+    suspend fun refresh(categoryId: String)
+
+    fun filter(filterQuery: String)
 }

@@ -19,7 +19,7 @@ class AnnouncementsRepositoryImpl(
         withContext(ioDispatcher) {
             var announcementName = ""
             val cachedAnnouncements =
-                appDatabase.remoteAnnouncementsDao().getFromId(announcementId)
+                appDatabase.remoteAnnouncementsDao().fetchFromId(announcementId)
 
             if (cachedAnnouncements.isEmpty()) {
                 val remoteAnnouncementsTitles =

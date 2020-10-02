@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.Flow
 interface RemoteAnnouncementsDao {
 
     @Query("SELECT * FROM remoteannouncement")
-    suspend fun getAll(): List<RemoteAnnouncement>
+    suspend fun fetchAll(): List<RemoteAnnouncement>
 
     @Query("SELECT * FROM remoteannouncement")
     fun observeAll(): Flow<List<RemoteAnnouncement>>
 
     @Query("SELECT * FROM remoteannouncement WHERE about = (:categoryId)")
-    fun observeCategory(categoryId: String): Flow<List<RemoteAnnouncement>>
+    fun observeByCategoryId(categoryId: String): Flow<List<RemoteAnnouncement>>
 
     @Query("SELECT * FROM remoteannouncement WHERE id= :id")
-    suspend fun getFromId(id: String): List<RemoteAnnouncement>
+    suspend fun fetchFromId(id: String): List<RemoteAnnouncement>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteAnnouncementList: List<RemoteAnnouncement>)

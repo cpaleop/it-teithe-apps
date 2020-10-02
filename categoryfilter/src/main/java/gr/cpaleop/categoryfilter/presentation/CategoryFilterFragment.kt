@@ -42,7 +42,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     override fun onResume() {
         super.onResume()
         viewModel.presentCategoryName()
-        viewModel.presentAnnouncementsByCategory()
+        viewModel.presentAnnouncements()
     }
 
     private fun setupViews() {
@@ -51,7 +51,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
 
         binding.categoryAnnouncementsSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentCategoryName()
-            viewModel.presentAnnouncementsByCategory()
+            viewModel.presentAnnouncements()
         }
 
         binding.categoryAnnouncementsSearchTextView.run {
@@ -101,8 +101,6 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
-        /*val directions =
-            CategoryFilterFragmentDirections.categoryFilterToAnnouncement(announcementId)*/
         val bundle = Bundle().apply {
             putString("announcementId", announcementId)
         }

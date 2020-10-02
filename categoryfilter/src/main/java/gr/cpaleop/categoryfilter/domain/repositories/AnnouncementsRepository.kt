@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnnouncementsRepository {
 
-    suspend fun getAnnouncementsByCategory(category: String): Flow<List<Announcement>>
+    suspend fun updateCachedAnnouncementsByCategoryFlow(category: String)
+
+    fun getCachedAnnouncementsByCategoryFlow(category: String): Flow<List<Announcement>>
 }
