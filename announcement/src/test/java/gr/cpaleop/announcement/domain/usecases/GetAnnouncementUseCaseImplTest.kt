@@ -40,7 +40,8 @@ class GetAnnouncementUseCaseImplTest {
             date = "date",
             category = Category(
                 id = "category_id",
-                name = "category_name"
+                name = "category_name",
+                isRegistered = false
             )
         )
         val announcementId = "id"

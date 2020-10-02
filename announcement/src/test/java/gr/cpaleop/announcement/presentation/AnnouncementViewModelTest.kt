@@ -125,7 +125,8 @@ class AnnouncementViewModelTest {
             date = "date",
             category = Category(
                 id = "id",
-                name = "name"
+                name = "name",
+                isRegistered = false
             )
         )
         val announcementDetailsWithAttachments = AnnouncementDetails(
@@ -147,7 +148,8 @@ class AnnouncementViewModelTest {
             date = "date",
             category = Category(
                 id = "id",
-                name = "name"
+                name = "name",
+                isRegistered = false
             )
         )
         val announcementDetails = AnnouncementDetails(
