@@ -5,20 +5,20 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.categoryfilter.databinding.ItemAnnouncementCategoryBinding
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 class AnnouncementHolder(
     private val binding: ItemAnnouncementCategoryBinding,
     private val onClickListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Announcement) {
+    fun bind(item: AnnouncementPresentation) {
         binding.root.setOnClickListener { onClickListener(item.id) }
         binding.announcementTitle.text = item.title
-        binding.announcementContent.text = item.text
+        binding.announcementContent.text = item.content
         binding.announcementDate.text = item.date
         binding.announcementPublisher.text = item.publisherName
-        binding.announcementCategory.isVisible = item.attachments.isNotEmpty()
+        binding.announcementCategory.isVisible = item.hasAttachments
     }
 
     companion object {

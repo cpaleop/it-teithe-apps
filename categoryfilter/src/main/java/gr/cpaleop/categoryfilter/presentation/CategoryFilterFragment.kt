@@ -11,8 +11,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.common.extensions.hideKeyboard
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.core.presentation.BaseFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -86,7 +86,7 @@ class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
             getString(R.string.category_filter_search_hint, categoryName)
     }
 
-    private fun updateAnnouncements(announcements: List<Announcement>) {
+    private fun updateAnnouncements(announcements: List<AnnouncementPresentation>) {
         announcementsAdapter?.submitList(announcements) {
             binding.categoryAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
         }

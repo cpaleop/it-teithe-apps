@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="profile_personal_details_title">Personal details</string>
-    <string name="profile_personal_lastname_title">Surname</string>
-    <string name="profile_personal_givenName_title">Given name</string>
-    <string name="profile_personal_website_title">Website</string>
-    <string name="profile_personal_description_title">Description</string>
-    <string name="profile_personal_telephoneNumber_title">Personal telephone number</string>
+    <string name="profile_am">am:</string>
+    <string name="profile_email">email:</string>
+    <string name="profile_username">username:</string>
+    <string name="profile_semester">semester:</string>
+    <string name="profile_registered_year">registered year:</string>
     <string name="profile_social_edit">Edit %1$s</string>
     <string name="profile_social_edit_submit">OK</string>
     <string name="profile_social_edit_cancel">Cancel</string>

@@ -1,14 +1,14 @@
 package gr.cpaleop.categoryfilter.data
 
 import com.google.gson.Gson
-import gr.cpaleop.categoryfilter.data.mappers.AnnouncementMapper
 import gr.cpaleop.categoryfilter.data.model.AnnouncementCategoryFilter
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
-import gr.cpaleop.common.extensions.mapAsync
+import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.dispatchers.IODispatcher
+import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -33,12 +33,13 @@ class AnnouncementsRepositoryImpl(
             appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncements)
         }
 
-    override fun getCachedAnnouncementsByCategoryFlow(category: String): Flow<List<Announcement>> {
-        return appDatabase.remoteAnnouncementsDao().observeByCategoryId(category)
+    override fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>> {
+        return appDatabase.remoteAnnouncementsDao().observeByCategoryId(categoryId)
             .map { remoteAnnouncementList ->
+                val category = appDatabase.remoteCategoryDao().fetchFromId(categoryId)
                 remoteAnnouncementList
                     .sortedByDescending { it.date }
-                    .mapAsync(announcementMapper::invoke)
+                    .mapAsyncSuspended { announcementMapper(it, category) }
             }.flowOn(ioDispatcher)
     }
 }

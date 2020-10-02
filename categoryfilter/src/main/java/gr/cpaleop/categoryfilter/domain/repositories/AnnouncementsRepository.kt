@@ -1,11 +1,11 @@
 package gr.cpaleop.categoryfilter.domain.repositories
 
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
+import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.flow.Flow
 
 interface AnnouncementsRepository {
 
     suspend fun updateCachedAnnouncementsByCategoryFlow(category: String)
 
-    fun getCachedAnnouncementsByCategoryFlow(category: String): Flow<List<Announcement>>
+    fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>>
 }

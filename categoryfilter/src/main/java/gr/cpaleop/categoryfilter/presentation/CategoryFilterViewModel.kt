@@ -1,15 +1,19 @@
 package gr.cpaleop.categoryfilter.presentation
 
 import androidx.lifecycle.*
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
+import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -18,8 +22,11 @@ import timber.log.Timber
 class CategoryFilterViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getCategoryNameUseCase: GetCategoryNameUseCase,
-    private val observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase
+    private val observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase,
+    private val announcementPresentationMapper: AnnouncementPresentationMapper
 ) : ViewModel() {
 
     var categoryId: String = ""
@@ -30,11 +37,12 @@ class CategoryFilterViewModel(
     private val _categoryName = MutableLiveData<String>()
     val categoryName: LiveData<String> = _categoryName.toSingleEvent()
 
-    val announcements: LiveData<List<Announcement>> by lazy {
+    val announcements: LiveData<List<AnnouncementPresentation>> by lazy {
         try {
             observeAnnouncementsByCategoryUseCase(categoryId)
-                .flowOn(mainDispatcher)
-                .asLiveData()
+                .map { it.mapAsync { announcement -> announcementPresentationMapper(announcement) } }
+                .flowOn(defaultDispatcher)
+                .asLiveData(mainDispatcher)
         } catch (t: Throwable) {
             Timber.e(t)
             MutableLiveData()

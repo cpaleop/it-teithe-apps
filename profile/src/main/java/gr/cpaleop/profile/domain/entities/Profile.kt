@@ -21,7 +21,7 @@ data class ProfilePersonalDetails(
     val givenName: String,
     val websiteUrl: String,
     val description: String,
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
     val telephoneNumber: String
 )
 

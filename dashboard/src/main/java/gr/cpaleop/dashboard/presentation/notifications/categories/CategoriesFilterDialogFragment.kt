@@ -37,7 +37,6 @@ class CategoriesFilterDialogFragment :
     private fun setupViews() {
         categoryFilterAdapter = CategoryFilterAdapter(viewModel::updateSelectedCategories)
         binding.categoryFilterRecyclerView.run {
-            /*layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)*/
             layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexDirection = FlexDirection.ROW
                 justifyContent = JustifyContent.FLEX_START

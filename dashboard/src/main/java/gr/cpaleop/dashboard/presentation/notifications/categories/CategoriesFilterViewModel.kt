@@ -14,11 +14,13 @@ import timber.log.Timber
 class CategoriesFilterViewModel(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val updateRegisteredCategoriesUseCase: UpdateRegisteredCategoriesUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
+
+    private val _dismissDialog = MutableLiveData<Unit>()
+    val dismissDialog: LiveData<Unit> = _dismissDialog.toSingleEvent()
 
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories.toSingleEvent()
@@ -77,8 +79,8 @@ class CategoriesFilterViewModel(
                 val nonRegisteredCategories =
                     _categories.value?.filter { !it.isRegistered }?.mapAsync { it.id }
                         ?: return@launch
-                updateRegisteredCategoriesUseCase(registeredCategories, nonRegisteredCategories)
-                _categories.value = getCategoriesUseCase()
+                _dismissDialog.value =
+                    updateRegisteredCategoriesUseCase(registeredCategories, nonRegisteredCategories)
             } catch (t: Throwable) {
                 Timber.e(t)
 

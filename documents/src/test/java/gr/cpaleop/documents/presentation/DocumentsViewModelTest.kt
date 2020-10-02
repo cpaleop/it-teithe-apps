@@ -358,7 +358,7 @@ class DocumentsViewModelTest {
                 name = "name1",
                 size = 10000L,
                 absolutePath = "absolute_path/name1",
-                type = "docx",
+                type = "doc",
                 lastModified = 10000L,
                 previewUri = "preview_uri1",
                 announcementId = "announcement_id1"

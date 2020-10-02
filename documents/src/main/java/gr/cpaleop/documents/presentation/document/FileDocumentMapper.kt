@@ -26,7 +26,7 @@ class FileDocumentMapper(
                 document.type.contains("pdf") -> R.drawable.ic_pdf
                 document.type.contains("png") -> R.drawable.ic_image
                 document.type.contains("folder") -> appR.drawable.ic_folder
-                document.type.contains("docx") -> R.drawable.ic_docx
+                document.type.contains("doc") -> R.drawable.ic_docx
                 document.type.contains("rar") -> R.drawable.ic_rar
                 document.type.contains("zip") -> R.drawable.ic_zip
                 document.type.contains("ppt") -> R.drawable.ic_powerpoint

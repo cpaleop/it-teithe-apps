@@ -1,7 +1,7 @@
 package gr.cpaleop.categoryfilter.domain.usecases
 
-import gr.cpaleop.categoryfilter.domain.entities.Announcement
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
+import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

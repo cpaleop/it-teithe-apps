@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import gr.cpaleop.profile.domain.entities.Social
 
 data class ProfilePresentation(
-    val profilePhotoUrl: String,
+    val profilePhotoUrl: String?,
     val am: String,
     val email: String,
     val username: String,
