@@ -16,7 +16,7 @@ class CategoriesRepositoryImpl(
 
     override suspend fun getCategoryNameById(categoryId: String): String =
         withContext(Dispatchers.IO) {
-            val cachedCategory = appDatabase.remoteCategoryDao().getFromId(categoryId)?.name
+            val cachedCategory = appDatabase.remoteCategoryDao().fetchFromId(categoryId)?.name
 
             if (cachedCategory.isNullOrEmpty()) {
                 val categoryQuery = gson.toJson(RemoteCategoryFilter(categoryId))

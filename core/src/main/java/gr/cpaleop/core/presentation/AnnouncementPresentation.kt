@@ -1,4 +1,4 @@
-package gr.cpaleop.announcements.presentation
+package gr.cpaleop.core.presentation
 
 data class AnnouncementPresentation(
     val id: String,

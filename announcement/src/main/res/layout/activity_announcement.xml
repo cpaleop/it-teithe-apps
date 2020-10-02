@@ -25,7 +25,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/empty"
         android:padding="8dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,8 +38,9 @@
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/empty"
+        android:indeterminateTint="@color/colorAccent"
         android:padding="8dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,14 +50,18 @@
 
     <TextView
         android:id="@+id/announcementTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/googlesans_bold"
         android:gravity="center"
+        android:lines="3"
+        android:maxLines="3"
         android:padding="16dp"
         android:textColor="@color/colorOnPrimary"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/announcementBackButton"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/announcementDownloadAttachmentButton"
+        app:layout_constraintStart_toEndOf="@id/announcementBackButton"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
     <TextView
@@ -64,12 +69,11 @@
         style="@style/Theme.FilterStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/announcementScrollView"
-        app:layout_constraintEnd_toEndOf="@id/announcementTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/announcementTitle"
         tools:text="6ο ΕΞΑΜΗΝΟ" />
@@ -78,6 +82,7 @@
         android:id="@+id/announcementScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
         app:layout_constraintTop_toBottomOf="@id/announcementCategory">
 
@@ -87,11 +92,13 @@
             android:layout_height="wrap_content"
             android:autoLink="all"
             android:fontFamily="@font/googlesans_regular"
+            android:lineSpacingExtra="2dp"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:textColor="@color/colorOnPrimary"
+            android:textColorLink="@color/colorAccent"
             android:textIsSelectable="true"
-            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
+            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content api.it.teithe.gr" />
     </ScrollView>
 
     <TextView

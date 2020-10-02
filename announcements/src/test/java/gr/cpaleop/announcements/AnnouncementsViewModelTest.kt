@@ -5,13 +5,13 @@ import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.announcements.domain.usecases.FilterAnnouncementsUseCase
 import gr.cpaleop.announcements.domain.usecases.ObserveAnnouncementsUseCase
-import gr.cpaleop.announcements.presentation.AnnouncementPresentation
-import gr.cpaleop.announcements.presentation.AnnouncementPresentationMapper
 import gr.cpaleop.announcements.presentation.AnnouncementsViewModel
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
+import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

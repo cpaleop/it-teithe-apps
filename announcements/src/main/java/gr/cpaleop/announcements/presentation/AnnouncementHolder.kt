@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.announcements.databinding.ItemAnnouncementBinding
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 class AnnouncementHolder(
     private val binding: ItemAnnouncementBinding,
     private val onClickListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: gr.cpaleop.announcements.presentation.AnnouncementPresentation) {
+    fun bind(item: AnnouncementPresentation) {
         binding.root.setOnClickListener { onClickListener(item.id) }
         binding.announcementTitle.text = item.title
         binding.announcementDate.text = item.date

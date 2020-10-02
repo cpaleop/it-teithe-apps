@@ -24,7 +24,7 @@ class AnnouncementsRepositoryImpl(
         withContext(Dispatchers.IO) {
             val filterQuery = gson.toJson(AnnouncementCategoryFilter(about = category))
             val remoteAnnouncements = announcementsApi.fetchAnnouncementsByCategory(filterQuery)
-            appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncements)
+            appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncements)
             appDatabase.remoteAnnouncementsDao().observeCategory(category)
                 .map { it.mapAsync(announcementMapper::invoke) }
         }

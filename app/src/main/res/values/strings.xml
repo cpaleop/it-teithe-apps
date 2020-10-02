@@ -9,4 +9,5 @@
     <string name="title_documents">Documents</string>
     <string name="title_profile">Profile</string>
     <string name="title_announcements">Announcements</string>
+    <string name="title_public_announcements">PublicAnnouncements</string>
 </resources>

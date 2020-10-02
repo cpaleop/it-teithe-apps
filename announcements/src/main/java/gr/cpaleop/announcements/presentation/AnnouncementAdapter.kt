@@ -3,6 +3,7 @@ package gr.cpaleop.announcements.presentation
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 class AnnouncementAdapter(private val onClickListener: (String) -> Unit) :
     PagingDataAdapter<AnnouncementPresentation, AnnouncementHolder>(ANNOUNCEMENT_DIFF_UTIL) {

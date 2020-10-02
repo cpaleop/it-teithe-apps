@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTitleFilter
 import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
@@ -47,17 +48,23 @@ class AnnouncementsPagingSource(
                     announcementsApi.fetchAnnouncements(PAGE_SIZE, page)
                 }
 
-            appDatabase.remoteAnnouncementsDao().insert(remoteAnnouncementList)
+            appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncementList)
 
-            //Check if there are saved categories. If not, then populate database
-            var localCategories = appDatabase.remoteCategoryDao().getAll()
-            if (localCategories.isEmpty()) {
-                localCategories = categoriesApi.fetchCategories()
-                appDatabase.remoteCategoryDao().insert(localCategories)
+            remoteAnnouncementList.forEach {
+                val cachedRemoteCategory = appDatabase.remoteCategoryDao().fetchFromId(it.about)
+                if (cachedRemoteCategory == null) {
+                    val remoteCategories = categoriesApi.fetchCategories()
+                    appDatabase.remoteCategoryDao().insertAll(remoteCategories)
+                    return@forEach
+                }
             }
 
             val announcements =
-                remoteAnnouncementList.mapAsyncSuspended { announcementMapper(it, localCategories) }
+                remoteAnnouncementList.mapAsyncSuspended { remoteAnnouncement ->
+                    val category =
+                        appDatabase.remoteCategoryDao().fetchFromId(remoteAnnouncement.about)
+                    announcementMapper(remoteAnnouncement, category)
+                }
             LoadResult.Page(
                 data = announcements,
                 prevKey = if (page == STARTING_PAGE) null else page - 1,

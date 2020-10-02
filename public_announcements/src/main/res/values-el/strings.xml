@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="public_announcements_empty">No public announcements found</string>
+    <string name="public_announcements_search">Search public announcements</string>
+    <string name="public_announcements_has_attachments">Attachments</string>
+</resources>

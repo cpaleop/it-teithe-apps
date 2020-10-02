@@ -16,6 +16,7 @@ import gr.cpaleop.announcements.R
 import gr.cpaleop.announcements.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.announcements.di.announcementsModule
 import gr.cpaleop.common.extensions.hideKeyboard
+import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.core.presentation.BaseFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

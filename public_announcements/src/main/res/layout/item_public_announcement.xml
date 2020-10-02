@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/shape_round_outline_ripple">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/publicAnnouncementTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_medium"
+            android:gravity="center"
+            android:lines="3"
+            android:maxLines="3"
+            android:padding="16dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
+
+        <TextView
+            android:id="@+id/publicAnnouncementCategory"
+            style="@style/Theme.FilterStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/publicAnnouncementHasAttachments"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/publicAnnouncementContent"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementTitle"
+            tools:text="6ο ΕΞΑΜΗΝΟ" />
+
+        <TextView
+            android:id="@+id/publicAnnouncementHasAttachments"
+            style="@style/Theme.FilterStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/public_announcements_has_attachments"
+            app:layout_constraintBottom_toBottomOf="@id/publicAnnouncementCategory"
+            app:layout_constraintEnd_toEndOf="@id/publicAnnouncementContent"
+            app:layout_constraintStart_toEndOf="@id/publicAnnouncementCategory"
+            app:layout_constraintTop_toTopOf="@id/publicAnnouncementCategory" />
+
+        <TextView
+            android:id="@+id/publicAnnouncementContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/colorOnPrimary"
+            app:layout_constraintBottom_toTopOf="@id/publicAnnouncementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementCategory"
+            tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
+
+        <TextView
+            android:id="@+id/publicAnnouncementPublisher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_regular"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/colorOnPrimaryVariant"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/publicAnnouncementTitle"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/publicAnnouncementTitle"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementContent"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Κ. ΒΙΤΣΑΣ" />
+
+        <TextView
+            android:id="@+id/publicAnnouncementDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/googlesans_regular"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/colorOnPrimaryVariant"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/publicAnnouncementPublisher"
+            app:layout_constraintTop_toBottomOf="@id/publicAnnouncementContent"
+            app:layout_constraintVertical_bias="1"
+            tools:text="1/1/2020" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
