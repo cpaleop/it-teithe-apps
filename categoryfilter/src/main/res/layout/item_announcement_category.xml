@@ -49,7 +49,7 @@
             android:lineSpacingExtra="2dp"
             android:lines="7"
             android:maxLines="7"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="@color/colorOnPrimaryVariant"
             app:layout_constraintBottom_toTopOf="@id/announcementPublisher"
             app:layout_constraintTop_toBottomOf="@id/announcementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
