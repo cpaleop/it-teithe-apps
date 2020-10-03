@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/categoryFilterTitleTextView"
-        android:background="@color/colorOnPrimaryVariant"
+        android:background="?attr/colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/categoryFilterTitleTextView" />
 
     <ProgressBar

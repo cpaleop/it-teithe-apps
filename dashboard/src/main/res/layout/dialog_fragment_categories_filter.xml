@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/categoryFilterTitleTextView"
-        android:background="@color/colorOnPrimaryVariant" />
+        android:background="?attr/colorControlNormal" />
 
     <ProgressBar
         android:id="@+id/categoryFilterProgressBar"

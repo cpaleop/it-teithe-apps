@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:background="?attr/selectableItemBackground"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/documentPreview"
@@ -27,6 +23,7 @@
         android:id="@+id/documentTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_medium"
         android:gravity="center_vertical"
@@ -38,15 +35,16 @@
         app:layout_constraintEnd_toStartOf="@id/documentMoreImageView"
         app:layout_constraintStart_toEndOf="@id/documentPreview"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="ANAKOINWSH LMAOANAKOINWSH LMAOANAKOINWSH LMAOANAKOINWSH LMAO" />
+        tools:text="ANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TEST" />
 
     <TextView
         android:id="@+id/documentLastModifiedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/googlesans_regular"
         android:padding="4dp"
-        android:textColor="@color/colorOnPrimaryVariant"
+        android:textColor="?attr/colorControlNormal"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/documentPreview"
