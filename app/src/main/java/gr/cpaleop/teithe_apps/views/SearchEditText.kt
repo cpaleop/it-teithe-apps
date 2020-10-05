@@ -27,7 +27,7 @@ class SearchEditText @JvmOverloads constructor(
 
     private val startDrawable = ContextCompat.getDrawable(
         context,
-        R.drawable.ic_arrow_back_round
+        R.drawable.ic_left_arrow
     )
 
     private var leftDrawableListener: () -> Boolean = { false }
