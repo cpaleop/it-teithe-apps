@@ -78,7 +78,7 @@ class ProfilePresentationMapperImpl(
                 profilePhotoUrl = profile.personalDetails.profileImageUrl,
                 am = profile.academicDetails.am,
                 username = profile.academicDetails.username,
-                displayName = profile.academicDetails.displayName,
+                displayName = profile.personalDetails.givenName + " " + profile.personalDetails.lastName,
                 semester = profile.academicDetails.currentSemester,
                 registeredYear = profile.academicDetails.registeredYear,
                 social = socialsList,

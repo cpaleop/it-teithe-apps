@@ -16,7 +16,7 @@
     <color name="red_300">#E57373</color>
     <color name="red_500">#DB4437</color>
     <color name="blue_A200">#4285F4</color>
-    <color name="white_opaque">#10000000</color>
+    <color name="white_opaque">#F4F4F4</color>
     <color name="white_opaque_more">#09000000</color>
     <color name="dialoFragmentBackground">@color/colorPrimary</color>
     <color name="dialoFragmentBackgroundVariant">@color/colorPrimaryVariant</color>
