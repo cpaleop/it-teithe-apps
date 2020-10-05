@@ -13,7 +13,7 @@ class ProfilePersonalHolder(
 
     fun bind(item: ProfilePersonalDetails) {
         binding.run {
-            root.setOnClickListener { onClickListener(item.label) }
+            profileDetailEditImageView.setOnClickListener { onClickListener(item.label) }
             profileDetailLabelTextView.text = item.label
             profileDetailValueTextView.text = item.value
         }

@@ -179,12 +179,12 @@ class ProfileViewModel(
         viewModelScope.launch(mainDispatcher) {
             val selectedProfileSocialDetails =
                 _profile.value?.social?.find { it.label == value } ?: return@launch
-            val selectedSocialOption = selectedSocialOptionMapper(selectedProfileSocialDetails)
 
             when (choice) {
                 "Copy" -> _choiceCopyToClipboard.value =
                     optionDataMapper(selectedProfileSocialDetails)
-                "Edit" -> _choiceEditSocial.value = selectedSocialOption
+                "Edit" -> _choiceEditSocial.value =
+                    selectedSocialOptionMapper(selectedProfileSocialDetails)
             }
         }
     }

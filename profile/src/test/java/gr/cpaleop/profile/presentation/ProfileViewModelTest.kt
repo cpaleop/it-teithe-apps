@@ -1,19 +1,14 @@
-package gr.cpaleop.profile
+package gr.cpaleop.profile.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.*
-import gr.cpaleop.profile.domain.usecases.GetProfileUseCase
-import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCase
-import gr.cpaleop.profile.presentation.ProfilePresentation
-import gr.cpaleop.profile.presentation.ProfilePresentationMapper
-import gr.cpaleop.profile.presentation.ProfileSocialDetails
-import gr.cpaleop.profile.presentation.ProfileViewModel
-import gr.cpaleop.profile.presentation.options.ProfileOption
-import gr.cpaleop.profile.presentation.options.SelectedSocialOption
-import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapper
+import gr.cpaleop.profile.domain.usecases.*
+import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.settings.ThemeMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -44,7 +39,25 @@ class ProfileViewModelTest {
     private lateinit var updateSocialUseCase: UpdateSocialUseCase
 
     @MockK
+    private lateinit var updatePersonalDetailsUseCase: UpdatePersonalDetailsUseCase
+
+    @MockK
     private lateinit var selectedSocialOptionMapper: SelectedSocialOptionMapper
+
+    @MockK
+    private lateinit var optionDataMapper: OptionDataMapper
+
+    @MockK
+    private lateinit var getPreferredThemeUseCase: GetPreferredThemeUseCase
+
+    @MockK
+    private lateinit var updatePreferredThemeUseCase: UpdatePreferredThemeUseCase
+
+    @MockK
+    private lateinit var themeMapper: ThemeMapper
+
+    @MockK
+    private lateinit var logoutUseCase: LogoutUseCase
 
     private lateinit var viewModel: ProfileViewModel
 
@@ -56,7 +69,13 @@ class ProfileViewModelTest {
             getProfileUseCase,
             profilePresentationMapper,
             updateSocialUseCase,
-            selectedSocialOptionMapper
+            updatePersonalDetailsUseCase,
+            selectedSocialOptionMapper,
+            optionDataMapper,
+            getPreferredThemeUseCase,
+            updatePreferredThemeUseCase,
+            themeMapper,
+            logoutUseCase
         )
     }
 
@@ -127,8 +146,7 @@ class ProfileViewModelTest {
         val givenChoice = "Copy"
         val givenValue = "Facebook"
         val expectedProfile = profilePresentation
-        val expected = SelectedSocialOption(
-            Social.FACEBOOK,
+        val expected = OptionData(
             "Facebook",
             "facebook"
         )
@@ -136,7 +154,7 @@ class ProfileViewModelTest {
         coEvery { getProfileUseCase() } returns profile
         coEvery { profilePresentationMapper(profile) } returns profilePresentation
         coEvery {
-            selectedSocialOptionMapper(
+            optionDataMapper(
                 ProfileSocialDetails(
                     label = "Facebook",
                     socialLogoResource = R.drawable.ic_facebook,
@@ -191,7 +209,8 @@ class ProfileViewModelTest {
                 websiteUrl = "website_url",
                 telephoneNumber = "telephone_number",
                 givenName = "given_name",
-                description = "description"
+                description = "description",
+                email = "email@domain.com"
             )
 
         private val profileSocialMedia = SocialMedia(
@@ -203,7 +222,6 @@ class ProfileViewModelTest {
         )
 
         private val profile = Profile(
-            email = "email@domain.com",
             academicDetails = profileAcademicDetails,
             personalDetails = profilePersonalDetails,
             socialMedia = profileSocialMedia
@@ -248,9 +266,30 @@ class ProfileViewModelTest {
             registeredYear = "2014",
             displayName = "display_name",
             semester = "12",
-            email = "email@domain.com",
             social = profileSocialDetails,
-            am = "am"
+            am = "am",
+            personalDetails = listOf(
+                ProfilePersonalDetails(
+                    type = Personal.DISPLAY_NAME,
+                    label = "Name",
+                    value = profile.academicDetails.displayName
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.TELEPHONE_NUMBER,
+                    label = "Telephone number",
+                    value = profile.personalDetails.telephoneNumber
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.MAIL,
+                    label = "Mail",
+                    value = profile.personalDetails.email
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.DESCRIPTION,
+                    label = "Description",
+                    value = profile.personalDetails.description
+                )
+            )
         )
     }
 }

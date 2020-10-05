@@ -38,6 +38,7 @@
         android:id="@+id/profileDetailEditImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/empty"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
