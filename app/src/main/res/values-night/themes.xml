@@ -124,7 +124,7 @@
     </style>
 
     <style name="Theme.Itteitheapps.TabLayout.TextAppearance" parent="Widget.MaterialComponents.TabLayout">
-        <item name="android:fontFamily">@font/googlesans_regular</item>
+        <item name="android:fontFamily">@font/googlesans_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>

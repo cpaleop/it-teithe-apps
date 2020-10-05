@@ -1,6 +1,7 @@
 package gr.cpaleop.core.data
 
 import android.content.Context
+import androidx.core.content.edit
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -53,5 +54,11 @@ class PreferencesRepositoryImpl(private val applicationContext: Context) : Prefe
 
     override fun getInt(key: String?): Int {
         return sharedPreferences.getInt(key, -1)
+    }
+
+    override fun clear() {
+        sharedPreferences.edit {
+            clear()
+        }
     }
 }

@@ -15,13 +15,19 @@
             app:destination="@id/profileOptionsDialog" />
 
         <action
-            android:id="@+id/profileToSettings"
-            app:destination="@id/settingsActivity"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/pop_enter_fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            android:id="@+id/profileToSelectThemeDialog"
+            app:destination="@id/profileSelectThemeDialog" />
+
+        <action
+            android:id="@+id/profileToSplash"
+            app:destination="@id/splashActivity" />
     </fragment>
+
+    <dialog
+        android:id="@+id/profileSelectThemeDialog"
+        android:name="gr.cpaleop.profile.presentation.settings.SelectThemeBottomSheetDialogFragment"
+        android:label="SelectThemeBottomSheetDialogFragment"
+        tools:layout="@layout/dialog_fragment_select_theme" />
 
     <dialog
         android:id="@+id/profileOptionsDialog"
@@ -41,7 +47,7 @@
     </dialog>
 
     <activity
-        android:id="@+id/settingsActivity"
-        android:name="gr.cpaleop.profile.presentation.settings.SettingsActivity"
-        android:label="SettingsActivity" />
+        android:id="@+id/splashActivity"
+        android:name="gr.cpaleop.teithe_apps.presentation.SplashActivity"
+        android:label="SplashActivity" />
 </navigation>

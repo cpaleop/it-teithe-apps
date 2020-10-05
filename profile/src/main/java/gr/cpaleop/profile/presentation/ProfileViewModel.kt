@@ -5,12 +5,15 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
-import gr.cpaleop.profile.domain.usecases.GetProfileUseCase
-import gr.cpaleop.profile.domain.usecases.UpdatePersonalDetailsUseCase
-import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCase
+import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.settings.Setting
+import gr.cpaleop.profile.presentation.settings.SettingType
+import gr.cpaleop.profile.presentation.settings.ThemeMapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -22,7 +25,11 @@ class ProfileViewModel(
     private val updateSocialUseCase: UpdateSocialUseCase,
     private val updatePersonalDetailsUseCase: UpdatePersonalDetailsUseCase,
     private val selectedSocialOptionMapper: SelectedSocialOptionMapper,
-    private val optionDataMapper: OptionDataMapper
+    private val optionDataMapper: OptionDataMapper,
+    private val getPreferredThemeUseCase: GetPreferredThemeUseCase,
+    private val updatePreferredThemeUseCase: UpdatePreferredThemeUseCase,
+    private val themeMapper: ThemeMapper,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -46,6 +53,18 @@ class ProfileViewModel(
             }
         }
     }
+
+    private val _settings = MutableLiveData<List<Setting>>()
+    val settings: LiveData<List<Setting>> = _settings.toSingleEvent()
+
+    private val _preferredTheme = MutableLiveData<Int>()
+    val preferredTheme: LiveData<Int> = _preferredTheme.toSingleEvent()
+
+    private val _updatedTheme = MutableLiveData<Int>()
+    val updatedTheme: LiveData<Int> = _updatedTheme.toSingleEvent()
+
+    private val _logoutSuccess = MutableLiveData<Unit>()
+    val logoutSuccess: LiveData<Unit> = _logoutSuccess.toSingleEvent()
 
     private val _socialOptions = MutableLiveData<List<ProfileOption>>()
     val socialOptions: LiveData<List<ProfileOption>> = _socialOptions.toSingleEvent()
@@ -85,6 +104,74 @@ class ProfileViewModel(
                     appR.drawable.ic_edit
                 )
             )
+        }
+    }
+
+    fun presentSettings() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _settings.value = withContext(Dispatchers.Default) {
+                    listOf(
+                        Setting(
+                            type = SettingType.SECTION_TITLE,
+                            title = "Account"
+                        ),
+                        Setting(
+                            type = SettingType.CONTENT,
+                            iconRes = R.drawable.ic_key,
+                            title = "Change password"
+                        ),
+                        Setting(
+                            type = SettingType.CONTENT,
+                            iconRes = R.drawable.ic_logout,
+                            title = "Logout"
+                        ),
+                        Setting(
+                            type = SettingType.SECTION_TITLE,
+                            title = "Appearance"
+                        ),
+                        Setting(
+                            type = SettingType.CONTENT,
+                            iconRes = R.drawable.ic_theme,
+                            title = "Change theme",
+                            value = themeMapper(getPreferredThemeUseCase())
+                        )
+                    )
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun presentPreferredTheme() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _preferredTheme.value = getPreferredThemeUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun updatePreferredTheme(theme: Int) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                updatePreferredThemeUseCase(theme)
+                _updatedTheme.value = theme
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _logoutSuccess.value = logoutUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
         }
     }
 

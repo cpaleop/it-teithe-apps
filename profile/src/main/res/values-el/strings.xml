@@ -10,6 +10,10 @@
     <string name="profile_social_edit_submit">OK</string>
     <string name="profile_social_edit_cancel">Cancel</string>
     <string name="profile_toast_clipboard">Copied!</string>
+    <string name="profile_theme_title">Select theme</string>
+    <string name="profile_theme_light">Light</string>
+    <string name="profile_theme_dark">Dark</string>
+    <string name="profile_theme_system">Follow system</string>
 
     <!-- Personal details -->
     <string name="profile_personal_name">Display name</string>

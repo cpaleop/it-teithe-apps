@@ -20,6 +20,8 @@ interface PreferencesRepository {
 
     fun getInt(key: String?): Int
 
+    fun clear()
+
     companion object {
 
         const val PREFERENCES_FILE_KEY = "gr.cpaleop.itteitheapps.preferences"

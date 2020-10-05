@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.afollestad.materialdialogs.MaterialDialog
@@ -31,8 +29,7 @@ import org.koin.core.context.unloadKoinModules
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
-    private val navController: NavController by lazy { findNavController() }
-    private var profilePagerAdapter: ProfilePagerAdapter? = null
+    private var profileStateAdapter: ProfileStateAdapter? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -68,21 +65,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun setupViews() {
-        profilePagerAdapter = ProfilePagerAdapter(this)
-        binding.profileViewPager.adapter = profilePagerAdapter
+        profileStateAdapter = ProfileStateAdapter(this)
+        binding.profileViewPager.adapter = profileStateAdapter
 
         TabLayoutMediator(binding.profileTabLayout, binding.profileViewPager) { tab, position ->
-            tab.text = ProfilePagerAdapter.titles[position]
+            tab.text = ProfileStateAdapter.titles[position]
         }.attach()
 
-        binding.profileSettingsImageView.setOnClickListener {
-            val directions = ProfileFragmentDirections.profileToSettings()
-            navController.navigate(directions)
-        }
-
-        /*binding.profileSwipeRefreshLayout.setOnRefreshListener {
+        binding.profileSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentProfile()
-        }*/
+        }
     }
 
     private fun observeViewModel() {
@@ -115,7 +107,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun updateLoader(shouldLoad: Boolean) {
-        /*binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad*/
+        binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 
     private fun copyToClipboard(optionData: OptionData) {
