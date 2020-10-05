@@ -26,6 +26,7 @@ val profileModule = module {
     viewModel {
         ProfileViewModel(
             get(named<MainDispatcher>()),
+            get(named<DefaultDispatcher>()),
             get(),
             get(),
             get(),

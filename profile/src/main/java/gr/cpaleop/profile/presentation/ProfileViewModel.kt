@@ -2,6 +2,7 @@ package gr.cpaleop.profile.presentation
 
 import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
@@ -11,7 +12,6 @@ import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.ThemeMapper
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -20,6 +20,8 @@ import gr.cpaleop.teithe_apps.R as appR
 class ProfileViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getProfileUseCase: GetProfileUseCase,
     private val profilePresentationMapper: ProfilePresentationMapper,
     private val updateSocialUseCase: UpdateSocialUseCase,
@@ -110,7 +112,7 @@ class ProfileViewModel(
     fun presentSettings() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _settings.value = withContext(Dispatchers.Default) {
+                _settings.value = withContext(defaultDispatcher) {
                     listOf(
                         Setting(
                             type = SettingType.SECTION_TITLE,
