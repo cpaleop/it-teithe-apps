@@ -132,7 +132,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocuments when fails catches exception`() {
+    fun `presentDocuments catches exception when throws`() {
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
         viewModel.presentDocuments(null)
@@ -149,7 +149,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentDetails when fails catches exception`() {
+    fun `presentDocumentDetails catches exception when throws`() {
         val givenUri = "uri"
         coEvery { getDocumentUseCase(givenUri) } throws Throwable()
         viewModel.presentDocumentDetails(givenUri)
@@ -168,7 +168,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentOptions when fails catches exception`() {
+    fun `presentDocumentOptions catches exception when throws`() {
         coEvery { getDocumentOptionsUseCase() } throws Throwable()
         viewModel.presentDocumentOptions()
     }
@@ -231,7 +231,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `deleteDocument when fails catches exception`() {
+    fun `deleteDocument catches exception when throws`() {
         val givenUri = "uri"
         coEvery { deleteDocumentUseCase(givenUri) } throws Throwable()
         viewModel.deleteDocument(givenUri)
@@ -248,7 +248,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `renameDocument when fails catches exception`() {
+    fun `renameDocument catches exception when throws`() {
         val givenUri = "uri"
         val givenNewName = "newName"
         coEvery { renameDocumentUseCase(givenUri, givenNewName) } throws Throwable()
@@ -266,7 +266,7 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentSortSelected when fails catches exception`() {
+    fun `presentDocumentSortSelected catches exception when throws`() {
         coEvery { observeDocumentSortUseCase() } throws Throwable()
         viewModel.presentDocumentSortSelected()
     }

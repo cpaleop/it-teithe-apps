@@ -74,7 +74,7 @@ class CategoryFilterViewModelTest {
     }
 
     @Test
-    fun `presentCategoryName when fails catches exception`() {
+    fun `presentCategoryName catches exception when throws`() {
         coEvery { getCategoryNameUseCase(viewModel.categoryId) } throws Throwable()
         viewModel.presentCategoryName()
     }
@@ -87,7 +87,7 @@ class CategoryFilterViewModelTest {
     }
 
     @Test
-    fun `presentAnnouncements when fails catches exception`() {
+    fun `presentAnnouncements catches exception when throws`() {
         coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } throws Throwable()
         viewModel.presentAnnouncements()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)

@@ -108,7 +108,7 @@ class DocumentSortOptionsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentSortOptions when fails catches exception`() {
+    fun `presentDocumentSortOptions catches exception when throws`() {
         coEvery { getDocumentSortOptionsUseCase() } throws Throwable()
         viewModel.presentDocumentSortOptions()
     }
@@ -128,7 +128,7 @@ class DocumentSortOptionsViewModelTest {
     }
 
     @Test
-    fun `updateSort when fails catches exception`() {
+    fun `updateSort catches exception when throws`() {
         val givenType = DocumentSortType.DATE
         val givenDescending = true
         val givenSelected = true

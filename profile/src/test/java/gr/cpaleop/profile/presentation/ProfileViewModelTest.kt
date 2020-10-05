@@ -1,16 +1,21 @@
 package gr.cpaleop.profile.presentation
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.*
 import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.settings.Setting
+import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.ThemeMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -27,7 +32,10 @@ class ProfileViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MainDispatcher
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testMainCoroutineDispatcher = TestCoroutineDispatcher()
+
+    @DefaultDispatcher
+    private val testDefaultCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
     private lateinit var getProfileUseCase: GetProfileUseCase
@@ -65,7 +73,8 @@ class ProfileViewModelTest {
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = ProfileViewModel(
-            testCoroutineDispatcher,
+            testMainCoroutineDispatcher,
+            testDefaultCoroutineDispatcher,
             getProfileUseCase,
             profilePresentationMapper,
             updateSocialUseCase,
@@ -86,11 +95,13 @@ class ProfileViewModelTest {
         coEvery { profilePresentationMapper(profile) } returns profilePresentation
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.profileSocials)).isEqualTo(expected.social)
+        assertThat(LiveDataTest.getValue(viewModel.profilePersonalDetails)).isEqualTo(expected.personalDetails)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     @Test
-    fun `presentProfile when fails catches exception`() {
+    fun `presentProfile catches exception when throws`() {
         coEvery { getProfileUseCase() } throws Throwable()
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
@@ -113,7 +124,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `handleOptionChoice correct values when option is edit`() = runBlocking {
+    fun `handleOptionChoiceSocial correct values when option is edit`() = runBlocking {
         val givenChoice = "Edit"
         val givenValue = "Facebook"
         val expectedProfile = profilePresentation
@@ -142,7 +153,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `handleOptionChoice correct values when option is copy`() = runBlocking {
+    fun `handleOptionChoiceSocial correct values when option is copy`() = runBlocking {
         val givenChoice = "Copy"
         val givenValue = "Facebook"
         val expectedProfile = profilePresentation
@@ -182,7 +193,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `updateSocial when fails catches exception`() {
+    fun `updateSocial catches exception when throws`() {
         val givenSocial = Social.FACEBOOK
         val givenValue = "facebook"
         coEvery { updateSocialUseCase(givenSocial, givenValue) } throws Throwable()
@@ -190,7 +201,273 @@ class ProfileViewModelTest {
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
+    @Test
+    fun `presentSettings success when preferred theme is dark`() {
+        val expected = settingsListDarkTheme
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_YES
+        coEvery { getPreferredThemeUseCase() } returns givenTheme
+        every { themeMapper(givenTheme) } returns "Dark"
+        viewModel.presentSettings()
+        assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentSettings success when preferred theme is light`() {
+        val expected = settingsListLightTheme
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_NO
+        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_NO
+        every { themeMapper(givenTheme) } returns "Light"
+        viewModel.presentSettings()
+        assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentSettings success when preferred theme is following system`() {
+        val expected = settingsListSystemTheme
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        coEvery { getPreferredThemeUseCase() } returns givenTheme
+        every { themeMapper(givenTheme) } returns "Follow system"
+        viewModel.presentSettings()
+        assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredTheme success when preferred theme is dark`() {
+        val expected = AppCompatDelegate.MODE_NIGHT_YES
+        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_YES
+        viewModel.presentPreferredTheme()
+        assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredTheme success when preferred theme is light`() {
+        val expected = AppCompatDelegate.MODE_NIGHT_NO
+        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_NO
+        viewModel.presentPreferredTheme()
+        assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredTheme success when preferred theme is following system`() {
+        val expected = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        viewModel.presentPreferredTheme()
+        assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredTheme catches exception when throws`() {
+        coEvery { getPreferredThemeUseCase() } throws Throwable()
+        viewModel.presentPreferredTheme()
+    }
+
+    @Test
+    fun `updatePreferredTheme success when preferred theme is dark`() {
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_YES
+        val expected = AppCompatDelegate.MODE_NIGHT_YES
+        coEvery { updatePreferredThemeUseCase(givenTheme) } returns Unit
+        viewModel.updatePreferredTheme(givenTheme)
+        assertThat(LiveDataTest.getValue(viewModel.updatedTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `updatePreferredTheme success when preferred theme is light`() {
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_NO
+        val expected = AppCompatDelegate.MODE_NIGHT_NO
+        coEvery { updatePreferredThemeUseCase(givenTheme) } returns Unit
+        viewModel.updatePreferredTheme(givenTheme)
+        assertThat(LiveDataTest.getValue(viewModel.updatedTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `updatePreferredTheme success when preferred theme is following system`() {
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        val expected = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        coEvery { updatePreferredThemeUseCase(givenTheme) } returns Unit
+        viewModel.updatePreferredTheme(givenTheme)
+        assertThat(LiveDataTest.getValue(viewModel.updatedTheme)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `updatePreferredTheme catches exception when throws`() {
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        coEvery { updatePreferredThemeUseCase(givenTheme) } throws Throwable()
+        viewModel.updatePreferredTheme(givenTheme)
+    }
+
+    @Test
+    fun `logout success`() {
+        coEvery { logoutUseCase() } returns Unit
+        viewModel.logout()
+        assertThat(LiveDataTest.getValue(viewModel.logoutSuccess)).isEqualTo(Unit)
+    }
+
+    @Test
+    fun `logout catches exception when throws`() {
+        coEvery { logoutUseCase() } throws Throwable()
+        viewModel.logout()
+    }
+
+    @Test
+    fun `updatePersonal success`() {
+        val givenPersonalLabel = "label"
+        val givenPersonalValue = "value"
+        val expected = profilePresentation
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
+        viewModel.updatePersonal(givenPersonalLabel, givenPersonalValue)
+        assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+    }
+
+    @Test
+    fun `updatePersonal catches exception when throws`() {
+        val givenPersonalLabel = "label"
+        val givenPersonalValue = "value"
+        coEvery { getProfileUseCase() } throws Throwable()
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
+        viewModel.updatePersonal(givenPersonalLabel, givenPersonalValue)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+    }
+
+    @Test
+    fun `handleOptionChoicePersonal success when choice is edit`() = runBlocking {
+        val givenChoice = "Edit"
+        val givenValue = "Mail"
+        val expectedProfile = profilePresentation
+        val expected = OptionData(
+            "Mail",
+            "email@domain.com"
+        )
+
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        coEvery {
+            optionDataMapper(
+                ProfilePersonalDetails(
+                    type = Personal.MAIL,
+                    label = "Mail",
+                    value = "email@domain.com"
+                )
+            )
+        } returns expected
+        viewModel.presentProfile()
+        assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
+        viewModel.handleOptionChoicePersonal(givenChoice, givenValue)
+        assertThat(LiveDataTest.getValue(viewModel.choiceEditPersonal)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `handleOptionChoicePersonal success when choice is copy`() = runBlocking {
+        val givenChoice = "Copy"
+        val givenValue = "Mail"
+        val expectedProfile = profilePresentation
+        val expected = OptionData(
+            "Mail",
+            "email@domain.com"
+        )
+
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        coEvery {
+            optionDataMapper(
+                ProfilePersonalDetails(
+                    type = Personal.MAIL,
+                    label = "Mail",
+                    value = "email@domain.com"
+                )
+            )
+        } returns expected
+        viewModel.presentProfile()
+        assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
+        viewModel.handleOptionChoicePersonal(givenChoice, givenValue)
+        assertThat(LiveDataTest.getValue(viewModel.choiceCopyToClipboard)).isEqualTo(expected)
+    }
+
     companion object {
+
+        private val settingsListSystemTheme = listOf(
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Account"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_key,
+                title = "Change password"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_logout,
+                title = "Logout"
+            ),
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Appearance"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_theme,
+                title = "Change theme",
+                value = "Follow system"
+            )
+        )
+
+        private val settingsListLightTheme = listOf(
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Account"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_key,
+                title = "Change password"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_logout,
+                title = "Logout"
+            ),
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Appearance"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_theme,
+                title = "Change theme",
+                value = "Light"
+            )
+        )
+
+        private val settingsListDarkTheme = listOf(
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Account"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_key,
+                title = "Change password"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_logout,
+                title = "Logout"
+            ),
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                title = "Appearance"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_theme,
+                title = "Change theme",
+                value = "Dark"
+            )
+        )
 
         private val profileAcademicDetails =
             AcademicDetails(

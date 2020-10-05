@@ -193,13 +193,17 @@ class ProfileViewModel(
 
     fun handleOptionChoicePersonal(choice: String, value: String) {
         viewModelScope.launch(mainDispatcher) {
-            val selectedProfileSocialDetails =
-                _profile.value?.personalDetails?.find { it.label == value } ?: return@launch
+            try {
+                val selectedPersonalDetails =
+                    _profile.value?.personalDetails?.find { it.label == value } ?: return@launch
 
-            when (choice) {
-                "Copy" -> _choiceCopyToClipboard.value =
-                    optionDataMapper(selectedProfileSocialDetails)
-                "Edit" -> _choiceEditPersonal.value = optionDataMapper(selectedProfileSocialDetails)
+                val optionData = optionDataMapper(selectedPersonalDetails)
+                when (choice) {
+                    "Copy" -> _choiceCopyToClipboard.value = optionData
+                    "Edit" -> _choiceEditPersonal.value = optionData
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }

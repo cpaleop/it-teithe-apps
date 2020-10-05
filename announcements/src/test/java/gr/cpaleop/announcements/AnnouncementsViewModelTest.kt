@@ -77,7 +77,7 @@ class AnnouncementsViewModelTest {
     }
 
     @Test
-    fun `searchAnnouncements when fails catches exception`() {
+    fun `searchAnnouncements catches exception when throws`() {
         val givenFilter = "query"
         coEvery { filterAnnouncementsUseCase(givenFilter) } throws Throwable()
         viewModel.searchAnnouncements(givenFilter)

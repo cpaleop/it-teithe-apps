@@ -52,7 +52,7 @@ class AuthenticationViewModelTest {
     }
 
     @Test
-    fun `retrieveToken when fails catches exception`() {
+    fun `retrieveToken catches exception when throws`() {
         val code = "code"
         coEvery { retrieveTokenUseCase(code) } throws Throwable()
         viewModel.retrieveToken(code)
@@ -67,7 +67,7 @@ class AuthenticationViewModelTest {
     }
 
     @Test
-    fun `presentUri when fails catches exception`() {
+    fun `presentUri catches exception when throws`() {
         every { buildUriUseCase() } throws Throwable()
         viewModel.presentUri()
     }
