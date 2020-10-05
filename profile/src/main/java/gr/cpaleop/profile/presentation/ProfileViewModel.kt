@@ -1,18 +1,14 @@
 package gr.cpaleop.profile.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.GetProfileUseCase
+import gr.cpaleop.profile.domain.usecases.UpdatePersonalDetailsUseCase
 import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCase
-import gr.cpaleop.profile.presentation.options.ProfileOption
-import gr.cpaleop.profile.presentation.options.SelectedSocialOption
-import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapper
+import gr.cpaleop.profile.presentation.options.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -24,7 +20,9 @@ class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
     private val profilePresentationMapper: ProfilePresentationMapper,
     private val updateSocialUseCase: UpdateSocialUseCase,
-    private val selectedSocialOptionMapper: SelectedSocialOptionMapper
+    private val updatePersonalDetailsUseCase: UpdatePersonalDetailsUseCase,
+    private val selectedSocialOptionMapper: SelectedSocialOptionMapper,
+    private val optionDataMapper: OptionDataMapper
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -33,15 +31,34 @@ class ProfileViewModel(
     private val _profile = MutableLiveData<ProfilePresentation>()
     val profile: LiveData<ProfilePresentation> = _profile.toSingleEvent()
 
+    val profileSocials: MediatorLiveData<List<ProfileSocialDetails>> by lazy {
+        MediatorLiveData<List<ProfileSocialDetails>>().apply {
+            addSource(profile) {
+                this.value = it.social
+            }
+        }
+    }
+
+    val profilePersonalDetails: MediatorLiveData<List<ProfilePersonalDetails>> by lazy {
+        MediatorLiveData<List<ProfilePersonalDetails>>().apply {
+            addSource(profile) {
+                this.value = it.personalDetails
+            }
+        }
+    }
+
     private val _socialOptions = MutableLiveData<List<ProfileOption>>()
     val socialOptions: LiveData<List<ProfileOption>> = _socialOptions.toSingleEvent()
 
-    private val _choiceCopyToClipboard = MutableLiveData<SelectedSocialOption>()
-    val choiceCopyToClipboard: LiveData<SelectedSocialOption> =
+    private val _choiceCopyToClipboard = MutableLiveData<OptionData>()
+    val choiceCopyToClipboard: LiveData<OptionData> =
         _choiceCopyToClipboard.toSingleEvent()
 
-    private val _choiceEdit = MutableLiveData<SelectedSocialOption>()
-    val choiceEdit: LiveData<SelectedSocialOption> = _choiceEdit.toSingleEvent()
+    private val _choiceEditSocial = MutableLiveData<SelectedSocialOption>()
+    val choiceEditSocial: LiveData<SelectedSocialOption> = _choiceEditSocial.toSingleEvent()
+
+    private val _choiceEditPersonal = MutableLiveData<OptionData>()
+    val choiceEditPersonal: LiveData<OptionData> = _choiceEditPersonal.toSingleEvent()
 
     fun presentProfile() {
         viewModelScope.launch(mainDispatcher) {
@@ -71,15 +88,46 @@ class ProfileViewModel(
         }
     }
 
-    fun handleOptionChoice(choice: String, value: String) {
+    fun handleOptionChoiceSocial(choice: String, value: String) {
         viewModelScope.launch(mainDispatcher) {
             val selectedProfileSocialDetails =
                 _profile.value?.social?.find { it.label == value } ?: return@launch
             val selectedSocialOption = selectedSocialOptionMapper(selectedProfileSocialDetails)
 
             when (choice) {
-                "Copy" -> _choiceCopyToClipboard.value = selectedSocialOption
-                "Edit" -> _choiceEdit.value = selectedSocialOption
+                "Copy" -> _choiceCopyToClipboard.value =
+                    optionDataMapper(selectedProfileSocialDetails)
+                "Edit" -> _choiceEditSocial.value = selectedSocialOption
+            }
+        }
+    }
+
+    fun handleOptionChoicePersonal(choice: String, value: String) {
+        viewModelScope.launch(mainDispatcher) {
+            val selectedProfileSocialDetails =
+                _profile.value?.personalDetails?.find { it.label == value } ?: return@launch
+
+            when (choice) {
+                "Copy" -> _choiceCopyToClipboard.value =
+                    optionDataMapper(selectedProfileSocialDetails)
+                "Edit" -> _choiceEditPersonal.value = optionDataMapper(selectedProfileSocialDetails)
+            }
+        }
+    }
+
+    fun updatePersonal(personalLabel: String, value: String) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _loading.value = true
+                val personalType =
+                    profile.value?.personalDetails?.find { it.label == personalLabel }?.type
+                        ?: return@launch
+                _profile.value =
+                    profilePresentationMapper(updatePersonalDetailsUseCase(personalType, value))
+            } catch (t: Throwable) {
+                Timber.e(t)
+            } finally {
+                _loading.value = false
             }
         }
     }

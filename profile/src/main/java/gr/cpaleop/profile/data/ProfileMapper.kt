@@ -3,9 +3,9 @@ package gr.cpaleop.profile.data
 import gr.cpaleop.common.extensions.orEmpty
 import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.profile.data.model.remote.RemoteProfile
+import gr.cpaleop.profile.domain.entities.AcademicDetails
+import gr.cpaleop.profile.domain.entities.PersonalDetails
 import gr.cpaleop.profile.domain.entities.Profile
-import gr.cpaleop.profile.domain.entities.ProfileAcademicDetails
-import gr.cpaleop.profile.domain.entities.ProfilePersonalDetails
 import gr.cpaleop.profile.domain.entities.SocialMedia
 import gr.cpaleop.profile.domain.repositories.PreferencesRepository
 
@@ -41,16 +41,17 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
             }
         }
 
-        val personalDetails = ProfilePersonalDetails(
+        val personalDetails = PersonalDetails(
             lastName = surname,
             givenName = givenName,
             websiteUrl = remoteProfile.labeledURI.orEmpty(),
             description = description,
             profileImageUrl = remoteProfile.profilePhoto,
-            telephoneNumber = remoteProfile.telephoneNumber.orEmpty()
+            telephoneNumber = remoteProfile.telephoneNumber.orEmpty(),
+            email = remoteProfile.mail ?: remoteProfile.secondarymail.orEmpty(),
         )
 
-        val academidDetails = ProfileAcademicDetails(
+        val academidDetails = AcademicDetails(
             am = remoteProfile.am.orEmpty(),
             type = remoteProfile.eduPersonAffiliation.orEmpty(),
             username = remoteProfile.username.orEmpty(),
@@ -60,7 +61,6 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
         )
 
         return Profile(
-            email = remoteProfile.mail ?: remoteProfile.secondarymail ?: "",
             personalDetails = personalDetails,
             academicDetails = academidDetails,
             socialMedia = SocialMedia(

@@ -30,7 +30,12 @@
         tools:layout="@layout/dialog_fragment_profile_options">
 
         <argument
-            android:name="socialName"
+            android:name="type"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="profileValue"
             app:argType="string"
             app:nullable="false" />
     </dialog>

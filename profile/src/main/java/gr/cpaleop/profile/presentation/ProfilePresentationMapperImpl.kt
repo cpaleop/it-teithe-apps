@@ -4,6 +4,7 @@ import android.content.Context
 import gr.cpaleop.common.extensions.orEmpty
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.profile.R
+import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Profile
 import gr.cpaleop.profile.domain.entities.Social
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,43 +23,66 @@ class ProfilePresentationMapperImpl(
                     socialType = Social.FACEBOOK,
                     label = applicationContext.getString(R.string.profile_socials_facebook_title),
                     socialLogoResource = R.drawable.ic_facebook,
-                    content = profile.socialMedia.facebook.orEmpty("-")
+                    value = profile.socialMedia.facebook.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.GITHUB,
                     label = applicationContext.getString(R.string.profile_socials_github_title),
                     socialLogoResource = R.drawable.ic_github,
-                    content = profile.socialMedia.github.orEmpty("-")
+                    value = profile.socialMedia.github.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.TWITTER,
                     label = applicationContext.getString(R.string.profile_socials_twitter_title),
                     socialLogoResource = R.drawable.ic_twitter,
-                    content = profile.socialMedia.twitter.orEmpty("-")
+                    value = profile.socialMedia.twitter.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.LINKEDIN,
                     label = applicationContext.getString(R.string.profile_socials_linkedin_title),
                     socialLogoResource = R.drawable.ic_linkedin,
-                    content = profile.socialMedia.linkedIn.orEmpty("-")
+                    value = profile.socialMedia.linkedIn.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.GOOGLEPLUS,
                     socialLogoResource = R.drawable.ic_google_plus,
                     label = applicationContext.getString(R.string.profile_socials_googleplus_title),
-                    content = profile.socialMedia.googlePlus.orEmpty("-")
+                    value = profile.socialMedia.googlePlus.orEmpty("-")
+                )
+            )
+
+            val personalDetails = listOf(
+                ProfilePersonalDetails(
+                    type = Personal.DISPLAY_NAME,
+                    label = applicationContext.getString(R.string.profile_personal_name),
+                    value = profile.academicDetails.displayName
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.TELEPHONE_NUMBER,
+                    label = applicationContext.getString(R.string.profile_personal_telephone),
+                    value = profile.personalDetails.telephoneNumber
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.MAIL,
+                    label = applicationContext.getString(R.string.profile_personal_mail),
+                    value = profile.personalDetails.email
+                ),
+                ProfilePersonalDetails(
+                    type = Personal.DESCRIPTION,
+                    label = applicationContext.getString(R.string.profile_personal_description),
+                    value = profile.personalDetails.description
                 )
             )
 
             return@withContext ProfilePresentation(
                 profilePhotoUrl = profile.personalDetails.profileImageUrl,
                 am = profile.academicDetails.am,
-                email = profile.email,
                 username = profile.academicDetails.username,
                 displayName = profile.academicDetails.displayName,
                 semester = profile.academicDetails.currentSemester,
                 registeredYear = profile.academicDetails.registeredYear,
-                social = socialsList
+                social = socialsList,
+                personalDetails = personalDetails
             )
         }
 }

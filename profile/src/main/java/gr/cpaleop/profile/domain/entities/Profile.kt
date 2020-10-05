@@ -1,13 +1,12 @@
 package gr.cpaleop.profile.domain.entities
 
 data class Profile(
-    val email: String,
-    val personalDetails: ProfilePersonalDetails,
-    val academicDetails: ProfileAcademicDetails,
+    val personalDetails: PersonalDetails,
+    val academicDetails: AcademicDetails,
     val socialMedia: SocialMedia
 )
 
-data class ProfileAcademicDetails(
+data class AcademicDetails(
     val am: String,
     val type: String,
     val username: String,
@@ -16,7 +15,8 @@ data class ProfileAcademicDetails(
     val currentSemester: String
 )
 
-data class ProfilePersonalDetails(
+data class PersonalDetails(
+    val email: String,
     val lastName: String,
     val givenName: String,
     val websiteUrl: String,

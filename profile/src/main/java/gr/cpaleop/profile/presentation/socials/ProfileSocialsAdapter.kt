@@ -1,10 +1,11 @@
-package gr.cpaleop.profile.presentation
+package gr.cpaleop.profile.presentation.socials
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import gr.cpaleop.profile.presentation.ProfileSocialDetails
 
-class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
+class ProfileSocialsAdapter(private val moreClickListener: (String) -> Unit) :
     ListAdapter<ProfileSocialDetails, ProfileSocialHolder>(PROFILE_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileSocialHolder {
@@ -23,7 +24,7 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
         if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)
         else {
             if (payloads.contains(PAYLOAD_CONTENT)) {
-                holder.bindContent(currentList[position].content)
+                holder.bindContent(currentList[position].value)
             }
         }
     }
@@ -53,7 +54,7 @@ class ProfileAdapter(private val moreClickListener: (String) -> Unit) :
                     oldItem: ProfileSocialDetails,
                     newItem: ProfileSocialDetails
                 ): Any? {
-                    if (oldItem.content != newItem.content) return PAYLOAD_CONTENT
+                    if (oldItem.value != newItem.value) return PAYLOAD_CONTENT
                     return super.getChangePayload(oldItem, newItem)
                 }
             }

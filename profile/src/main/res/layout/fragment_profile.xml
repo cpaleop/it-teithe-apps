@@ -74,37 +74,6 @@
             tools:text="144169" />
 
         <TextView
-            android:id="@+id/profileEmailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/googlesans_regular"
-            android:padding="8dp"
-            android:text="@string/profile_email"
-            android:textColor="?attr/colorControlNormal"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-            app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
-            app:layout_constraintWidth_percent="0.5" />
-
-        <TextView
-            android:id="@+id/profileEmailValueTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="email"
-            android:fontFamily="@font/googlesans_medium"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="@color/colorOnPrimary"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/profileEmailTextView"
-            app:layout_constraintStart_toEndOf="@id/profileEmailTextView"
-            app:layout_constraintTop_toTopOf="@id/profileEmailTextView"
-            app:layout_constraintWidth_percent="0.5"
-            tools:text="paleboom96@gmail.com" />
-
-        <TextView
             android:id="@+id/profileUsernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +85,7 @@
             android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
-            app:layout_constraintTop_toBottomOf="@id/profileEmailTextView"
+            app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
             app:layout_constraintWidth_percent="0.5" />
 
         <TextView
@@ -210,18 +179,27 @@
         app:layout_constraintWidth_percent="0.09"
         app:srcCompat="@drawable/ic_outline_settings" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/profileSwipeRefreshLayout"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/profileTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/profileCardLayout"
+        app:tabIndicator="@drawable/shape_tab_indicator"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextAppearance="@style/Theme.Itteitheapps.TabLayout.TextAppearance" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/profileViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_round_primary_variant"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileSettingsImageView">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/profileRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_profile_social" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@id/profileTabLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

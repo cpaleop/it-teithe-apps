@@ -8,7 +8,7 @@ class SelectedSocialOptionMapperImpl : SelectedSocialOptionMapper {
         return SelectedSocialOption(
             profileSocialDetails.socialType,
             profileSocialDetails.label,
-            profileSocialDetails.content
+            profileSocialDetails.value
         )
     }
 }

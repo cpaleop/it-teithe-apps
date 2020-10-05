@@ -11,6 +11,12 @@
     <string name="profile_social_edit_cancel">Cancel</string>
     <string name="profile_toast_clipboard">Copied!</string>
 
+    <!-- Personal details -->
+    <string name="profile_personal_name">Display name</string>
+    <string name="profile_personal_telephone">Telephone number</string>
+    <string name="profile_personal_mail">Mail</string>
+    <string name="profile_personal_description">Description</string>
+
     <!-- Academic details -->
     <string name="profile_academic_details_title">Academic details</string>
     <string name="profile_academic_username_title">Username</string>

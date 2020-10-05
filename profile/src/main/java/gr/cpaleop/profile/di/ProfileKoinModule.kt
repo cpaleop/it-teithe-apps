@@ -9,13 +9,11 @@ import gr.cpaleop.profile.data.ProfileRepositoryImpl
 import gr.cpaleop.profile.data.remote.ProfileApi
 import gr.cpaleop.profile.domain.repositories.PreferencesRepository
 import gr.cpaleop.profile.domain.repositories.ProfileRepository
-import gr.cpaleop.profile.domain.usecases.GetProfileUseCase
-import gr.cpaleop.profile.domain.usecases.GetProfileUseCaseImpl
-import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCase
-import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCaseImpl
+import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.ProfilePresentationMapper
 import gr.cpaleop.profile.presentation.ProfilePresentationMapperImpl
 import gr.cpaleop.profile.presentation.ProfileViewModel
+import gr.cpaleop.profile.presentation.options.OptionDataMapper
 import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapper
 import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapperImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,9 +28,12 @@ val profileModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
             get()
         )
     }
+    single { OptionDataMapper() }
     single { ProfileMapper(get()) }
     single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
     single<ProfilePresentationMapper> {
@@ -41,10 +42,11 @@ val profileModule = module {
             get(named<DefaultDispatcher>())
         )
     }
+    single<UpdatePersonalDetailsUseCase> { UpdatePersonalDetailsUseCaseImpl(get()) }
     single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get(named<IODispatcher>()), get()) }
-    single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
+    single<ProfileRepository> { ProfileRepositoryImpl(get(named<IODispatcher>()), get(), get()) }
     single { provideProfileApi(get()) }
 }
 

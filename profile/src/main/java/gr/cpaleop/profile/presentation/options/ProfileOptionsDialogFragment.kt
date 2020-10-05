@@ -32,7 +32,7 @@ class ProfileOptionsDialogFragment : BaseBottomSheetDialog<DialogFragmentProfile
 
     private fun setupViews() {
         binding.profileOptionsTitleTextView.text =
-            navArgs<ProfileOptionsDialogFragmentArgs>().value.socialName
+            navArgs<ProfileOptionsDialogFragmentArgs>().value.profileValue
         profileOptionsAdapter =
             ProfileOptionsAdapter(::handleChoice)
         binding.profileOptionsRecyclerView.adapter = profileOptionsAdapter
@@ -47,10 +47,20 @@ class ProfileOptionsDialogFragment : BaseBottomSheetDialog<DialogFragmentProfile
     }
 
     private fun handleChoice(choice: String) {
-        viewModel.handleOptionChoice(
-            choice,
-            navArgs<ProfileOptionsDialogFragmentArgs>().value.socialName
-        )
+        when (navArgs<ProfileOptionsDialogFragmentArgs>().value.type) {
+            "social" -> {
+                viewModel.handleOptionChoiceSocial(
+                    choice,
+                    navArgs<ProfileOptionsDialogFragmentArgs>().value.profileValue
+                )
+            }
+            "personal" -> {
+                viewModel.handleOptionChoicePersonal(
+                    choice,
+                    navArgs<ProfileOptionsDialogFragmentArgs>().value.profileValue
+                )
+            }
+        }
         dismissAllowingStateLoss()
     }
 }

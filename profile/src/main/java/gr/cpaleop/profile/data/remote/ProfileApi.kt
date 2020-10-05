@@ -18,6 +18,10 @@ interface ProfileApi {
         @Field("twitter") twitter: String? = null,
         @Field("github") github: String? = null,
         @Field("googlePlus") googlePlus: String? = null,
-        @Field("linkedIn") linkedIn: String? = null
+        @Field("linkedIn") linkedIn: String? = null,
+        @Field("description") description: String? = null,
+        @Field("telephoneNumber") telephoneNumber: String? = null,
+        @Field("mail") mail: String? = null,
+        @Field("displayName;lang-el") displayName: String? = null
     )
 }

@@ -16,11 +16,13 @@ import coil.transform.CircleCropTransformation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentProfileBinding
 import gr.cpaleop.profile.di.profileModule
+import gr.cpaleop.profile.presentation.options.OptionData
 import gr.cpaleop.profile.presentation.options.SelectedSocialOption
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.context.loadKoinModules
@@ -30,7 +32,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
-    private var profileAdapter: ProfileAdapter? = null
+    private var profilePagerAdapter: ProfilePagerAdapter? = null
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -66,25 +68,29 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun setupViews() {
-        profileAdapter =
-            ProfileAdapter(::navigateToProfileOptionsDialogFragment)
-        binding.profileRecyclerView.adapter = profileAdapter
+        profilePagerAdapter = ProfilePagerAdapter(this)
+        binding.profileViewPager.adapter = profilePagerAdapter
+
+        TabLayoutMediator(binding.profileTabLayout, binding.profileViewPager) { tab, position ->
+            tab.text = ProfilePagerAdapter.titles[position]
+        }.attach()
 
         binding.profileSettingsImageView.setOnClickListener {
             val directions = ProfileFragmentDirections.profileToSettings()
             navController.navigate(directions)
         }
 
-        binding.profileSwipeRefreshLayout.setOnRefreshListener {
+        /*binding.profileSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentProfile()
-        }
+        }*/
     }
 
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoader))
             profile.observe(viewLifecycleOwner, Observer(::updateProfileDetails))
-            choiceEdit.observe(viewLifecycleOwner, Observer(::editSocial))
+            choiceEditSocial.observe(viewLifecycleOwner, Observer(::editSocial))
+            choiceEditPersonal.observe(viewLifecycleOwner, Observer(::editPersonal))
             choiceCopyToClipboard.observe(viewLifecycleOwner, Observer(::copyToClipboard))
         }
     }
@@ -97,33 +103,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             transformations(CircleCropTransformation())
         }
         binding.profileAmTextView.visibility = View.VISIBLE
-        binding.profileEmailTextView.visibility = View.VISIBLE
         binding.profileUsernameTextView.visibility = View.VISIBLE
         binding.profileSemesterTextView.visibility = View.VISIBLE
         binding.profileRegisteredYearTextView.visibility = View.VISIBLE
 
         binding.profileAmValueTextView.text = profilePresentation.am
-        binding.profileEmailValueTextView.text = profilePresentation.email
         binding.profileUsernameValueTextView.text = profilePresentation.username
         binding.profileDisplayNameTextView.text = profilePresentation.displayName
         binding.profileSemesterValueTextView.text = profilePresentation.semester
         binding.profileRegisteredYearValueTextView.text = profilePresentation.registeredYear
-        profileAdapter?.submitList(profilePresentation.social)
     }
 
     private fun updateLoader(shouldLoad: Boolean) {
-        binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
+        /*binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad*/
     }
 
-    private fun navigateToProfileOptionsDialogFragment(title: String) {
-        val directions = ProfileFragmentDirections.profileToProfileOptionsDialog(title)
-        navController.navigate(directions)
-    }
-
-    private fun copyToClipboard(selectedSocialOption: SelectedSocialOption) {
+    private fun copyToClipboard(optionData: OptionData) {
         val clipboard =
             activity?.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(selectedSocialOption.title, selectedSocialOption.value)
+        val clip = ClipData.newPlainText(optionData.title, optionData.value)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(
             activity?.applicationContext,
@@ -140,6 +138,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             .positiveButton(R.string.profile_social_edit_submit)
             .input(prefill = selectedSocialOption.value) { materialDialog, input ->
                 viewModel.updateSocial(selectedSocialOption.social, input.toString())
+                materialDialog.dismiss()
+            }
+            .negativeButton(R.string.profile_social_edit_cancel) {
+                it.cancel()
+            }
+            .show()
+    }
+
+    private fun editPersonal(optionData: OptionData) {
+        MaterialDialog(requireContext())
+            .lifecycleOwner(viewLifecycleOwner)
+            .title(R.string.profile_social_edit, optionData.title)
+            .cancelOnTouchOutside(true)
+            .positiveButton(R.string.profile_social_edit_submit)
+            .input(prefill = optionData.value) { materialDialog, input ->
+                viewModel.updatePersonal(optionData.title, input.toString())
                 materialDialog.dismiss()
             }
             .negativeButton(R.string.profile_social_edit_cancel) {

@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.*
 import gr.cpaleop.profile.domain.usecases.GetProfileUseCase
 import gr.cpaleop.profile.domain.usecases.UpdateSocialUseCase
@@ -112,15 +111,15 @@ class ProfileViewModelTest {
                 ProfileSocialDetails(
                     label = "Facebook",
                     socialLogoResource = R.drawable.ic_facebook,
-                    content = "facebook",
+                    value = "facebook",
                     socialType = Social.FACEBOOK
                 )
             )
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoice(givenChoice, givenValue)
-        assertThat(LiveDataTest.getValue(viewModel.choiceEdit)).isEqualTo(expected)
+        viewModel.handleOptionChoiceSocial(givenChoice, givenValue)
+        assertThat(LiveDataTest.getValue(viewModel.choiceEditSocial)).isEqualTo(expected)
     }
 
     @Test
@@ -141,14 +140,14 @@ class ProfileViewModelTest {
                 ProfileSocialDetails(
                     label = "Facebook",
                     socialLogoResource = R.drawable.ic_facebook,
-                    content = "facebook",
+                    value = "facebook",
                     socialType = Social.FACEBOOK
                 )
             )
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoice(givenChoice, givenValue)
+        viewModel.handleOptionChoiceSocial(givenChoice, givenValue)
         assertThat(LiveDataTest.getValue(viewModel.choiceCopyToClipboard)).isEqualTo(expected)
     }
 
@@ -176,7 +175,7 @@ class ProfileViewModelTest {
     companion object {
 
         private val profileAcademicDetails =
-            ProfileAcademicDetails(
+            AcademicDetails(
                 am = "am",
                 type = "student",
                 displayName = "display_name",
@@ -186,7 +185,7 @@ class ProfileViewModelTest {
             )
 
         private val profilePersonalDetails =
-            ProfilePersonalDetails(
+            PersonalDetails(
                 lastName = "last_name",
                 profileImageUrl = "image_url",
                 websiteUrl = "website_url",
@@ -213,31 +212,31 @@ class ProfileViewModelTest {
         private val profileSocialDetails = listOf(
             ProfileSocialDetails(
                 socialType = Social.GOOGLEPLUS,
-                content = "google_plus",
+                value = "google_plus",
                 socialLogoResource = R.drawable.ic_google_plus,
                 label = "Google+"
             ),
             ProfileSocialDetails(
                 socialType = Social.FACEBOOK,
-                content = "facebook",
+                value = "facebook",
                 socialLogoResource = R.drawable.ic_facebook,
                 label = "Facebook"
             ),
             ProfileSocialDetails(
                 socialType = Social.TWITTER,
-                content = "twitter",
+                value = "twitter",
                 socialLogoResource = R.drawable.ic_twitter,
                 label = "Twitter"
             ),
             ProfileSocialDetails(
                 socialType = Social.LINKEDIN,
-                content = "linkedIn",
+                value = "linkedIn",
                 socialLogoResource = R.drawable.ic_linkedin,
                 label = "LinkedIn"
             ),
             ProfileSocialDetails(
                 socialType = Social.GITHUB,
-                content = "github",
+                value = "github",
                 socialLogoResource = R.drawable.ic_github,
                 label = "Github"
             )
