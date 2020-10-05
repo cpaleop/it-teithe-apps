@@ -2,6 +2,7 @@ package gr.cpaleop.teithe_apps
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.NIGHT_MODE
 import gr.cpaleop.download.di.downloadModule
@@ -27,6 +28,8 @@ class AppsApplication : Application() {
             androidContext(this@AppsApplication)
             modules(networkModule, coreModule, downloadModule)
         }
+
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.DEBUG)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
