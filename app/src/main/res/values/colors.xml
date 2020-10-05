@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="colorPrimary">#FFFFFFFF</color>
-    <color name="colorPrimaryVariant">#EFF0F5</color>
+    <color name="colorPrimary">#F3F4F5</color>#
+    <color name="colorPrimaryVariant">#FFFFFFFF</color>
     <color name="colorOnPrimary">#050505</color>
     <color name="colorOnPrimaryVariant">#41434E</color>
     <color name="colorAccent">#1A73E8</color>
@@ -16,7 +16,7 @@
     <color name="red_300">#E57373</color>
     <color name="red_500">#DB4437</color>
     <color name="blue_A200">#4285F4</color>
-    <color name="white_opaque">#75FFFFFF</color>
+    <color name="white_opaque">#10000000</color>
     <color name="white_opaque_more">#09000000</color>
     <color name="dialoFragmentBackground">@color/colorPrimary</color>
     <color name="dialoFragmentBackgroundVariant">@color/colorPrimaryVariant</color>

@@ -30,32 +30,35 @@
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/selectThemeLightRadioButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/selector_theme"
             android:fontFamily="@font/googlesans_medium"
+            android:paddingStart="14dp"
             android:text="@string/profile_theme_light"
             android:textColor="@color/selector_theme"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/selectThemeDarkRadioButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/selector_theme"
             android:fontFamily="@font/googlesans_medium"
+            android:paddingStart="14dp"
             android:text="@string/profile_theme_dark"
             android:textColor="@color/selector_theme"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/selectThemeSystemRadioButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/selector_theme"
             android:fontFamily="@font/googlesans_medium"
+            android:paddingStart="14dp"
             android:text="@string/profile_theme_system"
             android:textColor="@color/selector_theme"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </RadioGroup>
 </RelativeLayout>
