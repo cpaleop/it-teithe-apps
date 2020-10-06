@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
+import gr.cpaleop.core.data.interceptors.ConnectionInterceptor
 import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
 import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.remote.AuthenticationApi
@@ -13,7 +14,6 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.Authentication
 import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
-import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.teithe_apps.BuildConfig
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
@@ -37,11 +37,8 @@ val networkModule = module {
             get()
         )
     }
-    single { provideOkHttpClient(get(), get(), get()) }
-    single(named<Authentication>()) { provideAuthenticationOkHttpClient(get(), get()) }
-    single { provideRefreshTokenInterceptor(get(), get(), get()) }
-    single { provideTokenInterceptor(get()) }
-    single { provideHttpLoggingInterceptor() }
+    single { provideOkHttpClient(get(), get(), get(), get()) }
+    single(named<Authentication>()) { provideAuthenticationOkHttpClient(get(), get(), get()) }
     single { provideGson() }
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(
@@ -93,10 +90,12 @@ private fun provideRetrofit(
 // The order of interceptors matters.
 private fun provideOkHttpClient(
     httpLoggingInterceptor: HttpLoggingInterceptor,
+    connectionInterceptor: ConnectionInterceptor,
     tokenInterceptor: TokenInterceptor,
     refreshTokenInterceptor: RefreshTokenInterceptor
 ): OkHttpClient {
     val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(connectionInterceptor)
         .addInterceptor(refreshTokenInterceptor)
         .addInterceptor(tokenInterceptor)
         .connectTimeout(15, TimeUnit.SECONDS)
@@ -120,9 +119,11 @@ private fun provideAuthenticationRetrofit(okHttpClient: OkHttpClient, gson: Gson
 
 private fun provideAuthenticationOkHttpClient(
     httpLoggingInterceptor: HttpLoggingInterceptor,
+    connectionInterceptor: ConnectionInterceptor,
     tokenInterceptor: TokenInterceptor
 ): OkHttpClient {
     val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(connectionInterceptor)
         .addInterceptor(tokenInterceptor)
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(15, TimeUnit.SECONDS)
@@ -133,22 +134,6 @@ private fun provideAuthenticationOkHttpClient(
     }
 
     return okHttpClient.build()
-}
-
-private fun provideRefreshTokenInterceptor(
-    preferencesRepository: PreferencesRepository,
-    authenticationRepository: AuthenticationRepository,
-    gson: Gson
-): RefreshTokenInterceptor {
-    return RefreshTokenInterceptor(preferencesRepository, authenticationRepository)
-}
-
-private fun provideTokenInterceptor(preferencesRepository: PreferencesRepository): TokenInterceptor {
-    return TokenInterceptor(preferencesRepository)
-}
-
-private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-    return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 }
 
 private fun provideGson(): Gson {

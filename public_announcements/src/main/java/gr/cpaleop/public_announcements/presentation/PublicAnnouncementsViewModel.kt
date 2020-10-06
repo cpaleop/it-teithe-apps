@@ -54,6 +54,7 @@ class PublicAnnouncementsViewModel(
                     .collect(_announcements::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+            } finally {
                 _loading.value = false
             }
         }
