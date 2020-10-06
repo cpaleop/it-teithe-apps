@@ -17,16 +17,15 @@ import gr.cpaleop.announcements.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.announcements.di.announcementsModule
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
 @ExperimentalPagingApi
-class AnnouncementsFragment : BaseFragment<FragmentAnnouncementsBinding>() {
+class AnnouncementsFragment :
+    BaseApiFragment<FragmentAnnouncementsBinding, AnnouncementsViewModel>(AnnouncementsViewModel::class) {
 
-    private val viewModel: AnnouncementsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var announcementAdapter: AnnouncementAdapter? = null
 

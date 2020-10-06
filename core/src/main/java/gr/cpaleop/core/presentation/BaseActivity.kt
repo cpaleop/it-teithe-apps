@@ -5,9 +5,11 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseActivity<VB : ViewBinding>() : AppCompatActivity() {
+abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     protected lateinit var binding: VB
+
+    abstract fun inflateViewBinding(): VB
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +17,4 @@ abstract class BaseActivity<VB : ViewBinding>() : AppCompatActivity() {
         binding = inflateViewBinding()
         setContentView(binding.root)
     }
-
-    abstract fun inflateViewBinding(): VB
 }

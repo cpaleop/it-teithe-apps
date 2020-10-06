@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.public_announcements.R
 import gr.cpaleop.public_announcements.databinding.FragmentPublicAnnouncementsBinding
 import gr.cpaleop.public_announcements.di.PublicAnnouncementsScope
@@ -21,15 +21,16 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class PublicAnnouncementsFragment : BaseFragment<FragmentPublicAnnouncementsBinding>() {
+class PublicAnnouncementsFragment :
+    BaseApiFragment<FragmentPublicAnnouncementsBinding, PublicAnnouncementsViewModel>(
+        PublicAnnouncementsViewModel::class
+    ) {
 
-    private val viewModel: PublicAnnouncementsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
     private var announcementPresentationAdapter: AnnouncementPresentationAdapter? = null
 

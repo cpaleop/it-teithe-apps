@@ -1,9 +1,13 @@
 package gr.cpaleop.dashboard.presentation.notifications.categories
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +18,7 @@ import timber.log.Timber
 class CategoriesFilterViewModel(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val updateRegisteredCategoriesUseCase: UpdateRegisteredCategoriesUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()

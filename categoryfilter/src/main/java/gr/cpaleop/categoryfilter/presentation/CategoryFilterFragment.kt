@@ -13,16 +13,15 @@ import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class CategoryFilterFragment : BaseFragment<FragmentCategoryFilterBinding>() {
+class CategoryFilterFragment :
+    BaseApiFragment<FragmentCategoryFilterBinding, CategoryFilterViewModel>(CategoryFilterViewModel::class) {
 
-    private val viewModel: CategoryFilterViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var announcementsAdapter: AnnouncementsAdapter? = null
 

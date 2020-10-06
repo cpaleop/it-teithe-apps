@@ -1,11 +1,15 @@
 package gr.cpaleop.documents.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.*
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
@@ -45,7 +49,7 @@ class DocumentsViewModel(
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase,
     private val filterChannel: FilterChannel
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()

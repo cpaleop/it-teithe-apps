@@ -1,9 +1,13 @@
 package gr.cpaleop.profile.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.*
@@ -32,7 +36,7 @@ class ProfileViewModel(
     private val updatePreferredThemeUseCase: UpdatePreferredThemeUseCase,
     private val themeMapper: ThemeMapper,
     private val logoutUseCase: LogoutUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()

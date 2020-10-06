@@ -10,12 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.authentication.databinding.FragmentAuthenticationBinding
-import gr.cpaleop.core.presentation.BaseFragment
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import gr.cpaleop.core.presentation.BaseApiFragment
 
-class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>() {
+class AuthenticationFragment :
+    BaseApiFragment<FragmentAuthenticationBinding, AuthenticationViewModel>(AuthenticationViewModel::class) {
 
-    private val viewModel: AuthenticationViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
 
     override fun inflateViewBinding(

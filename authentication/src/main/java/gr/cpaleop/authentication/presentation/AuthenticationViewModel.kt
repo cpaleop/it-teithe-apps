@@ -2,12 +2,12 @@ package gr.cpaleop.authentication.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.authentication.domain.usecases.BuildUriUseCase
 import gr.cpaleop.authentication.domain.usecases.RetrieveTokenUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -17,7 +17,7 @@ class AuthenticationViewModel(
     private val mainDispatcher: CoroutineDispatcher,
     private val retrieveTokenUseCase: RetrieveTokenUseCase,
     private val buildUriUseCase: BuildUriUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uri = MutableLiveData<String>()
     val uri: LiveData<String> = _uri.toSingleEvent()

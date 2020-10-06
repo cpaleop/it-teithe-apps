@@ -10,16 +10,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.common.extensions.hideKeyboard
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import gr.cpaleop.teithe_apps.R as appR
 
-class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
+class NotificationsFragment :
+    BaseApiFragment<FragmentNotificationsBinding, NotificationsViewModel>(NotificationsViewModel::class) {
 
-    private val viewModel: NotificationsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var notificationAdapter: NotificationAdapter? = null
 

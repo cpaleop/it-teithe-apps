@@ -6,20 +6,19 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.announcement.databinding.ActivityAnnouncementBinding
 import gr.cpaleop.announcement.di.announcementModule
-import gr.cpaleop.core.presentation.BaseActivity
+import gr.cpaleop.core.presentation.BaseApiActivity
 import gr.cpaleop.download.presentation.DownloadFileWorker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import gr.cpaleop.teithe_apps.R as appR
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
+class AnnouncementActivity :
+    BaseApiActivity<ActivityAnnouncementBinding, AnnouncementViewModel>(AnnouncementViewModel::class) {
 
-    private val viewModel: AnnouncementViewModel by viewModel()
     private var announcementId: String = ""
 
     override fun inflateViewBinding(): ActivityAnnouncementBinding {

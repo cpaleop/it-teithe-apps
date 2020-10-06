@@ -8,6 +8,7 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +28,7 @@ class CategoryFilterViewModel(
     private val getCategoryNameUseCase: GetCategoryNameUseCase,
     private val observeAnnouncementsByCategoryUseCase: ObserveAnnouncementsByCategoryUseCase,
     private val announcementPresentationMapper: AnnouncementPresentationMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
     var categoryId: String = ""
 

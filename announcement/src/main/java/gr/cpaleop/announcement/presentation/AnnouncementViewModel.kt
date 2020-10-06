@@ -1,10 +1,14 @@
 package gr.cpaleop.announcement.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -17,7 +21,7 @@ class AnnouncementViewModel(
     private val getAnnouncementUseCase: GetAnnouncementUseCase,
     private val announcementDetailsMapper: AnnouncementDetailsMapper,
     private val observeDownloadNotifierUseCase: ObserveDownloadNotifierUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _announcement = MutableLiveData<AnnouncementDetails>()
     val announcement: LiveData<AnnouncementDetails> = _announcement.toSingleEvent()

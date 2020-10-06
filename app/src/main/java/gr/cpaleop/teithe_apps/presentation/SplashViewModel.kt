@@ -2,10 +2,10 @@ package gr.cpaleop.teithe_apps.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.teithe_apps.domain.usecases.AuthenticatedUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ class SplashViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
     private val authenticatedUseCase: AuthenticatedUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _isUserLoggedIn = MutableLiveData<Boolean>()
     val isUserLoggedIn: LiveData<Boolean> = _isUserLoggedIn.toSingleEvent()

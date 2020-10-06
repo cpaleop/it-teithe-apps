@@ -2,7 +2,6 @@ package gr.cpaleop.announcements.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import gr.cpaleop.announcements.domain.usecases.FilterAnnouncementsUseCase
@@ -10,6 +9,7 @@ import gr.cpaleop.announcements.domain.usecases.ObserveAnnouncementsUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
@@ -23,7 +23,7 @@ class AnnouncementsViewModel(
     private val observeAnnouncementsUseCase: ObserveAnnouncementsUseCase,
     private val announcementPresentationMapper: AnnouncementPresentationMapper,
     private val filterAnnouncementsUseCase: FilterAnnouncementsUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _announcements = MutableLiveData<PagingData<AnnouncementPresentation>>()
     val announcements: LiveData<PagingData<AnnouncementPresentation>> =

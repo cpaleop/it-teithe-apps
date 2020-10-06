@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.DocumentPreview
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
@@ -32,15 +32,14 @@ import gr.cpaleop.teithe_apps.di.Authority
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class DocumentsFragment : BaseFragment<FragmentDocumentsBinding>() {
+class DocumentsFragment :
+    BaseApiFragment<FragmentDocumentsBinding, DocumentsViewModel>(DocumentsViewModel::class) {
 
-    private val viewModel: DocumentsViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
 
     @Authority

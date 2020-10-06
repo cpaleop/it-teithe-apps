@@ -2,18 +2,18 @@ package gr.cpaleop.announcements.presentation.categoryfilterdialog
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcements.domain.usecases.GetCachedCategoriesUseCase
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class CategoryFilterViewModel(
     private val getCachedCategoriesUseCase: GetCachedCategoriesUseCase,
     private val categoryFilterMapper: CategoryFilterMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()

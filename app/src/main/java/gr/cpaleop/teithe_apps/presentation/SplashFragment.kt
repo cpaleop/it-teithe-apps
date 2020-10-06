@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.teithe_apps.databinding.FragmentSplashBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashFragment : BaseFragment<FragmentSplashBinding>() {
+class SplashFragment :
+    BaseApiFragment<FragmentSplashBinding, SplashViewModel>(SplashViewModel::class) {
 
-    private val viewModel: SplashViewModel by viewModel()
     private val navController: NavController by lazy { findNavController() }
 
     override fun inflateViewBinding(

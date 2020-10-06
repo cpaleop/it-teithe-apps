@@ -1,10 +1,14 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +24,7 @@ class NotificationsViewModel(
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val readAllNotificationsUseCase: ReadAllNotificationsUseCase,
     private val notificationPresentationMapper: NotificationPresentationMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()

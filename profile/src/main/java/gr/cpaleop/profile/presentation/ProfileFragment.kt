@@ -16,19 +16,18 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.hideKeyboard
-import gr.cpaleop.core.presentation.BaseFragment
+import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentProfileBinding
 import gr.cpaleop.profile.di.profileModule
 import gr.cpaleop.profile.presentation.options.OptionData
 import gr.cpaleop.profile.presentation.options.SelectedSocialOption
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
-class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+class ProfileFragment :
+    BaseApiFragment<FragmentProfileBinding, ProfileViewModel>(ProfileViewModel::class) {
 
-    private val viewModel: ProfileViewModel by sharedViewModel()
     private var profileStateAdapter: ProfileStateAdapter? = null
 
     override fun inflateViewBinding(
