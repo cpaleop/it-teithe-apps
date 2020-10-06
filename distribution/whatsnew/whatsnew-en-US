@@ -1,1 +1,6 @@
-Testing Internal testing release
+Users who have an older version need to reinstall the app completely otherwise crashes will occur.
+
+-Overall restyle
+-Finish Profile feature, but:
+    "Logout" and "Change password" not functional at this moment
+-Some changes under the hood aiming to improve performance and feature stability
