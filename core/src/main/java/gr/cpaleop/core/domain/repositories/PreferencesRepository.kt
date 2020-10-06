@@ -1,37 +1,34 @@
 package gr.cpaleop.core.domain.repositories
 
+import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.Token
+import kotlinx.coroutines.flow.Flow
+
 interface PreferencesRepository {
 
-    fun putStringAsync(key: String?, value: String?)
+    suspend fun updateToken(token: Token)
 
-    suspend fun putString(key: String?, value: String?)
+    fun getTokenFlow(): Flow<Token>
 
-    fun getString(key: String?): String?
+    suspend fun updateNightMode(nightMode: Int)
 
-    fun putBooleanAsync(key: String?, value: Boolean)
+    fun getNightModeFlow(): Flow<Int>
 
-    suspend fun putBoolean(key: String?, value: Boolean)
+    suspend fun updateLanguage(languageCode: String)
 
-    fun getBoolean(key: String?): Boolean
+    fun getLanguageFlow(): Flow<String>
 
-    fun putIntAsync(key: String?, value: Int)
+    suspend fun updateDocumentSort(documentSort: DocumentSort)
 
-    suspend fun putInt(key: String?, value: Int)
+    fun getDocumentSortFlow(): Flow<DocumentSort>
 
-    fun getInt(key: String?): Int
+    suspend fun updateDocumentPreview(@DocumentPreview documentPreview: Int)
 
-    fun clear()
+    fun getDocumentPreviewFlow(): Flow<Int>
 
     companion object {
 
         const val PREFERENCES_FILE_KEY = "gr.cpaleop.itteitheapps.preferences"
-
-        const val ACCESS_TOKEN = "ACCESS_TOKEN"
-        const val REFRESH_TOKEN = "REFRESH_TOKEN"
-        const val NIGHT_MODE = "NIGHT_MODE"
-        const val LANGUAGE = "LANGUAGE_CODE"
-        const val DOCUMENT_SORT_TYPE = "DOCUMENT_SORT_TYPE"
-        const val DOCUMENT_SORT_DESCENDING = "DOCUMENT_SORT_DESCENDING"
-        const val DOCUMENT_PREVIEW = "DOCUMENT_PREVIEW"
     }
 }

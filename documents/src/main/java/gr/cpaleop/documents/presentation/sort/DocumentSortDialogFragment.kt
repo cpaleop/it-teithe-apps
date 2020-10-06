@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.documents.databinding.DialogFragmentSortDocumentsBinding
-import gr.cpaleop.documents.domain.entities.DocumentSort
-import gr.cpaleop.documents.domain.entities.DocumentSortType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel

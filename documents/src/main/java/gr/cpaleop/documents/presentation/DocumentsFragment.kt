@@ -18,12 +18,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
+import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
-import gr.cpaleop.documents.domain.entities.DocumentPreview
 import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderAdapter
 import gr.cpaleop.documents.presentation.document.DocumentsAdapter
 import gr.cpaleop.documents.presentation.document.FileDocument

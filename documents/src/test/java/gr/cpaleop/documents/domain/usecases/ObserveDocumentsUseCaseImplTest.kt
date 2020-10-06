@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -257,7 +259,7 @@ class ObserveDocumentsUseCaseImplTest {
 
         private val SORT_TYPE_UNKNOWN_FLOW = flow {
             emit(
-                gr.cpaleop.documents.domain.entities.DocumentSort(
+                DocumentSort(
                     type = -10,
                     selected = true,
                     descending = true
@@ -267,8 +269,8 @@ class ObserveDocumentsUseCaseImplTest {
 
         private val SORT_DATE_DESCENDING_FLOW = flow {
             emit(
-                gr.cpaleop.documents.domain.entities.DocumentSort(
-                    type = gr.cpaleop.documents.domain.entities.DocumentSortType.DATE,
+                DocumentSort(
+                    type = DocumentSortType.DATE,
                     selected = true,
                     descending = true
                 )
@@ -277,8 +279,8 @@ class ObserveDocumentsUseCaseImplTest {
 
         private val SORT_DATE_ASCENDING_FLOW = flow {
             emit(
-                gr.cpaleop.documents.domain.entities.DocumentSort(
-                    type = gr.cpaleop.documents.domain.entities.DocumentSortType.DATE,
+                DocumentSort(
+                    type = DocumentSortType.DATE,
                     selected = true,
                     descending = false
                 )
@@ -287,8 +289,8 @@ class ObserveDocumentsUseCaseImplTest {
 
         private val SORT_ALPHABETICAL_DESCENDING_FLOW = flow {
             emit(
-                gr.cpaleop.documents.domain.entities.DocumentSort(
-                    type = gr.cpaleop.documents.domain.entities.DocumentSortType.ALPHABETICAL,
+                DocumentSort(
+                    type = DocumentSortType.ALPHABETICAL,
                     selected = true,
                     descending = true
                 )
@@ -297,8 +299,8 @@ class ObserveDocumentsUseCaseImplTest {
 
         private val SORT_ALPHABETICAL_ASCENDING_FLOW = flow {
             emit(
-                gr.cpaleop.documents.domain.entities.DocumentSort(
-                    type = gr.cpaleop.documents.domain.entities.DocumentSortType.ALPHABETICAL,
+                DocumentSort(
+                    type = DocumentSortType.ALPHABETICAL,
                     selected = true,
                     descending = false
                 )

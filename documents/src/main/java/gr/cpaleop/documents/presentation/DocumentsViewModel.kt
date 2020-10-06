@@ -5,9 +5,9 @@ import gr.cpaleop.common.extensions.*
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
-import gr.cpaleop.documents.domain.entities.DocumentPreview
 import gr.cpaleop.documents.domain.usecases.*
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper

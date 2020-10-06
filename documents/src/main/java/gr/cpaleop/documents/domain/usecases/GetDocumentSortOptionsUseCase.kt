@@ -1,6 +1,6 @@
 package gr.cpaleop.documents.domain.usecases
 
-import gr.cpaleop.documents.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSort
 
 interface GetDocumentSortOptionsUseCase {
 

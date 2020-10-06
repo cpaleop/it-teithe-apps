@@ -18,6 +18,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
@@ -56,7 +57,7 @@ class ProfileViewModelTest {
     private lateinit var optionDataMapper: OptionDataMapper
 
     @MockK
-    private lateinit var getPreferredThemeUseCase: GetPreferredThemeUseCase
+    private lateinit var observePreferredThemeUseCase: ObservePreferredThemeUseCase
 
     @MockK
     private lateinit var updatePreferredThemeUseCase: UpdatePreferredThemeUseCase
@@ -81,7 +82,7 @@ class ProfileViewModelTest {
             updatePersonalDetailsUseCase,
             selectedSocialOptionMapper,
             optionDataMapper,
-            getPreferredThemeUseCase,
+            observePreferredThemeUseCase,
             updatePreferredThemeUseCase,
             themeMapper,
             logoutUseCase
@@ -205,7 +206,10 @@ class ProfileViewModelTest {
     fun `presentSettings success when preferred theme is dark`() {
         val expected = settingsListDarkTheme
         val givenTheme = AppCompatDelegate.MODE_NIGHT_YES
-        coEvery { getPreferredThemeUseCase() } returns givenTheme
+        val givenThemeFlow = flow {
+            emit(givenTheme)
+        }
+        every { observePreferredThemeUseCase() } returns givenThemeFlow
         every { themeMapper(givenTheme) } returns "Dark"
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
@@ -215,7 +219,10 @@ class ProfileViewModelTest {
     fun `presentSettings success when preferred theme is light`() {
         val expected = settingsListLightTheme
         val givenTheme = AppCompatDelegate.MODE_NIGHT_NO
-        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_NO
+        val givenThemeFlow = flow {
+            emit(givenTheme)
+        }
+        every { observePreferredThemeUseCase() } returns givenThemeFlow
         every { themeMapper(givenTheme) } returns "Light"
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
@@ -225,7 +232,10 @@ class ProfileViewModelTest {
     fun `presentSettings success when preferred theme is following system`() {
         val expected = settingsListSystemTheme
         val givenTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        coEvery { getPreferredThemeUseCase() } returns givenTheme
+        val givenThemeFlow = flow {
+            emit(givenTheme)
+        }
+        every { observePreferredThemeUseCase() } returns givenThemeFlow
         every { themeMapper(givenTheme) } returns "Follow system"
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
@@ -234,7 +244,10 @@ class ProfileViewModelTest {
     @Test
     fun `presentPreferredTheme success when preferred theme is dark`() {
         val expected = AppCompatDelegate.MODE_NIGHT_YES
-        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_YES
+        val themeFlow = flow {
+            emit(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        every { observePreferredThemeUseCase() } returns themeFlow
         viewModel.presentPreferredTheme()
         assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
     }
@@ -242,7 +255,10 @@ class ProfileViewModelTest {
     @Test
     fun `presentPreferredTheme success when preferred theme is light`() {
         val expected = AppCompatDelegate.MODE_NIGHT_NO
-        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_NO
+        val themeFlow = flow {
+            emit(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+        every { observePreferredThemeUseCase() } returns themeFlow
         viewModel.presentPreferredTheme()
         assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
     }
@@ -250,14 +266,17 @@ class ProfileViewModelTest {
     @Test
     fun `presentPreferredTheme success when preferred theme is following system`() {
         val expected = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        coEvery { getPreferredThemeUseCase() } returns AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        val themeFlow = flow {
+            emit(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+        every { observePreferredThemeUseCase() } returns themeFlow
         viewModel.presentPreferredTheme()
         assertThat(LiveDataTest.getValue(viewModel.preferredTheme)).isEqualTo(expected)
     }
 
     @Test
     fun `presentPreferredTheme catches exception when throws`() {
-        coEvery { getPreferredThemeUseCase() } throws Throwable()
+        every { observePreferredThemeUseCase() } throws Throwable()
         viewModel.presentPreferredTheme()
     }
 

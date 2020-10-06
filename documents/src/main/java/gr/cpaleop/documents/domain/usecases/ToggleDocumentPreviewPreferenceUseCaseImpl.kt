@@ -1,6 +1,6 @@
 package gr.cpaleop.documents.domain.usecases
 
-import gr.cpaleop.documents.domain.entities.DocumentPreview
+import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
 
 class ToggleDocumentPreviewPreferenceUseCaseImpl(private val preferencesRepository: PreferencesRepository) :

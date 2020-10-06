@@ -1,4 +1,4 @@
-package gr.cpaleop.documents.domain.entities
+package gr.cpaleop.core.domain.entities
 
 import androidx.annotation.IntDef
 

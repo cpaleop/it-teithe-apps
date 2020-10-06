@@ -11,8 +11,10 @@ import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
+import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapperImpl
+import gr.cpaleop.teithe_apps.data.PreferencesRepositoryImpl
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -22,6 +24,7 @@ val coreModule = module {
     single { CategoryMapper() }
     single { AnnouncementMapper() }
     single<DateFormatter> { DateFormatterImpl() }
+    single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
     single { provideAppDatabase(get()) }
     single { provideAnnouncementsApi(get()) }
     single { provideCategoriesApi(get()) }

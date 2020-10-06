@@ -1,16 +1,18 @@
 package gr.cpaleop.core.data.interceptors
 
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class TokenInterceptor(private val preferencesRepository: PreferencesRepository) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = preferencesRepository.getString(PreferencesRepository.ACCESS_TOKEN)
+        val token = runBlocking { retrieveToken() }
         val request = chain.request()
 
-        if (token.isNullOrBlank()) {
+        if (token.isBlank()) {
             return chain.proceed(request)
         }
 
@@ -19,6 +21,10 @@ class TokenInterceptor(private val preferencesRepository: PreferencesRepository)
             .addHeader(AUTH_CONTENT_TYPE, AUTH_JSON_CONTENT_TYPE)
             .build()
         return chain.proceed(newRequest)
+    }
+
+    private suspend fun retrieveToken(): String {
+        return preferencesRepository.getTokenFlow().first().accessToken
     }
 
     companion object {

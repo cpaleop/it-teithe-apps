@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
-import gr.cpaleop.core.data.PreferencesRepositoryImpl
 import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
 import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.remote.AuthenticationApi
@@ -44,7 +43,6 @@ val networkModule = module {
     single { provideTokenInterceptor(get()) }
     single { provideHttpLoggingInterceptor() }
     single { provideGson() }
-    single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(
             get(),
@@ -142,7 +140,7 @@ private fun provideRefreshTokenInterceptor(
     authenticationRepository: AuthenticationRepository,
     gson: Gson
 ): RefreshTokenInterceptor {
-    return RefreshTokenInterceptor(preferencesRepository, authenticationRepository, gson)
+    return RefreshTokenInterceptor(preferencesRepository, authenticationRepository)
 }
 
 private fun provideTokenInterceptor(preferencesRepository: PreferencesRepository): TokenInterceptor {

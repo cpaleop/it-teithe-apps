@@ -2,7 +2,7 @@ package gr.cpaleop.documents.presentation.sort
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import gr.cpaleop.documents.domain.entities.DocumentSortType
+import gr.cpaleop.core.domain.entities.DocumentSortType
 
 data class DocumentSortOption(
     @DocumentSortType

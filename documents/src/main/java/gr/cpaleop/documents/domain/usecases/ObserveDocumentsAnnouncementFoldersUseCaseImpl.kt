@@ -1,6 +1,8 @@
 package gr.cpaleop.documents.domain.usecases
 
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -63,17 +65,17 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
 
     private fun sortAnnouncementFolderList(
         announcementFolderList: List<gr.cpaleop.documents.domain.entities.AnnouncementFolder>,
-        documentSort: gr.cpaleop.documents.domain.entities.DocumentSort
+        documentSort: DocumentSort
     ): List<gr.cpaleop.documents.domain.entities.AnnouncementFolder> {
         return when (documentSort.type) {
-            gr.cpaleop.documents.domain.entities.DocumentSortType.DATE -> {
+            DocumentSortType.DATE -> {
                 if (documentSort.descending) {
                     announcementFolderList.sortedByDescending(lastModifiedSelector)
                 } else {
                     announcementFolderList.sortedBy(lastModifiedSelector)
                 }
             }
-            gr.cpaleop.documents.domain.entities.DocumentSortType.ALPHABETICAL -> {
+            DocumentSortType.ALPHABETICAL -> {
                 if (documentSort.descending) {
                     announcementFolderList.sortedByDescending(titleSelector)
                 } else {

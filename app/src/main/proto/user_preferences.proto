@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "gr.cpaleop.teithe_apps";
+option java_multiple_files = true;
+
+message UserPreferences {
+  string access_token = 1;
+  string refresh_token = 2;
+  int32 documentSortType = 3;
+  bool documentSortDescending = 4;
+  int32 documentPreview = 5;
+  int32 nightMode = 6;
+  string languageCode = 7;
+}

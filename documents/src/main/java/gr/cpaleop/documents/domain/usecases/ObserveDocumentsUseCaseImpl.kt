@@ -2,6 +2,8 @@ package gr.cpaleop.documents.domain.usecases
 
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,17 +62,17 @@ class ObserveDocumentsUseCaseImpl(
 
     private fun sortDocumentList(
         documentList: List<Document>,
-        documentSort: gr.cpaleop.documents.domain.entities.DocumentSort
+        documentSort: DocumentSort
     ): List<Document> {
         return when (documentSort.type) {
-            gr.cpaleop.documents.domain.entities.DocumentSortType.ALPHABETICAL -> {
+            DocumentSortType.ALPHABETICAL -> {
                 if (documentSort.descending) {
                     documentList.sortedByDescending(nameSelector)
                 } else {
                     documentList.sortedBy(nameSelector)
                 }
             }
-            gr.cpaleop.documents.domain.entities.DocumentSortType.DATE -> {
+            DocumentSortType.DATE -> {
                 if (documentSort.descending) {
                     documentList.sortedByDescending(
                         lastModifiedSelector

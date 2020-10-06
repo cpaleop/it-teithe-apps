@@ -27,3 +27,4 @@
 -keep class gr.cpaleop.announcement.data.model** { *; }
 -keep class gr.cpaleop.announcements.data.model** { *; }
 -keep class gr.cpaleop.categoryfilter.data.model** { *; }
+-keep class gr.cpaleop.teithe_apps.UserPreferences  { *; }

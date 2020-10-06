@@ -1,8 +1,8 @@
 package gr.cpaleop.documents.presentation.sort
 
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.R
-import gr.cpaleop.documents.domain.entities.DocumentSort
-import gr.cpaleop.documents.domain.entities.DocumentSortType
 
 class DocumentSortOptionMapper {
 

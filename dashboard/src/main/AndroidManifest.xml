@@ -18,10 +18,5 @@
             android:name=".presentation.DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Itteitheapps" />
-
-        <activity
-            android:name="gr.cpaleop.profile.presentation.settings.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Itteitheapps" />
     </application>
 </manifest>

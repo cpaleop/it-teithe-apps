@@ -36,15 +36,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         finishAffinity()
     }
 
-    override fun attachBaseContext(newBase: Context) {
+    /*override fun attachBaseContext(newBase: Context) {
         var language = preferencesRepository.getString(PreferencesRepository.LANGUAGE) ?: return
         if (language == "") {
             language = Locale.getDefault().language
-            preferencesRepository.putStringAsync(PreferencesRepository.LANGUAGE, language)
+            preferencesRepository.putString(PreferencesRepository.LANGUAGE, language)
         }
         val context = setLocale(newBase, language)
         super.attachBaseContext(context)
-    }
+    }*/
 
     private fun setLocale(newBase: Context, language: String): Context? {
         val locale =

@@ -51,7 +51,7 @@ val profileModule = module {
     }
     single<LogoutUseCase> { LogoutUseCaseImpl(get()) }
     single<UpdatePreferredThemeUseCase> { UpdatePreferredThemeUseCaseImpl(get()) }
-    single<GetPreferredThemeUseCase> { GetPreferredThemeUseCaseImpl(get()) }
+    single<ObservePreferredThemeUseCase> { ObservePreferredThemeUseCaseImpl(get()) }
     single<UpdatePersonalDetailsUseCase> { UpdatePersonalDetailsUseCaseImpl(get()) }
     single<UpdateSocialUseCase> { UpdateSocialUseCaseImpl(get()) }
     single<GetProfileUseCase> { GetProfileUseCaseImpl(get()) }

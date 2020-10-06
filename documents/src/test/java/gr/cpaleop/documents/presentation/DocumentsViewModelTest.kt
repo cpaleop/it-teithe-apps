@@ -6,6 +6,9 @@ import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
@@ -110,7 +113,7 @@ class DocumentsViewModelTest {
             emit(documentList)
         }
         coEvery { observeDocumentsUseCase(null) } returns documentListFlow
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
         viewModel.presentDocuments(null)
@@ -123,7 +126,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
         val emptyDocumentListFlow = flow<List<Document>> { emit(emptyList()) }
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         coEvery { observeDocumentsUseCase(null) } returns emptyDocumentListFlow
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
@@ -134,7 +137,7 @@ class DocumentsViewModelTest {
     @Test
     fun `presentDocuments catches exception when throws`() {
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
@@ -273,8 +276,8 @@ class DocumentsViewModelTest {
 
     @Test
     fun `togglePreview when type is FILE and becomes FOLDER is successful`() {
-        val expected = gr.cpaleop.documents.domain.entities.DocumentPreview.FOLDER
-        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FOLDER
+        val expected = DocumentPreview.FOLDER
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FOLDER
         viewModel.togglePreview()
         assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
@@ -282,8 +285,8 @@ class DocumentsViewModelTest {
 
     @Test
     fun `togglePreview when type is FOLDER and becomes FILE is successful`() {
-        val expected = gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
-        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns gr.cpaleop.documents.domain.entities.DocumentPreview.FILE
+        val expected = DocumentPreview.FILE
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
         viewModel.togglePreview()
         assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
@@ -299,15 +302,15 @@ class DocumentsViewModelTest {
 
         private val selectedDocumentSortOption =
             gr.cpaleop.documents.presentation.sort.DocumentSortOption(
-                type = gr.cpaleop.documents.domain.entities.DocumentSortType.DATE,
+                type = DocumentSortType.DATE,
                 imageResource = R.drawable.ic_arrow_down,
                 labelResource = R.string.documents_sort_date,
                 selected = true,
                 descending = true
             )
 
-        private val selectedDocumentSort = gr.cpaleop.documents.domain.entities.DocumentSort(
-            type = gr.cpaleop.documents.domain.entities.DocumentSortType.DATE,
+        private val selectedDocumentSort = DocumentSort(
+            type = DocumentSortType.DATE,
             selected = true,
             descending = true
         )

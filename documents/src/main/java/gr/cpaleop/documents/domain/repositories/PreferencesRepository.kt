@@ -1,11 +1,12 @@
 package gr.cpaleop.documents.domain.repositories
 
-import gr.cpaleop.documents.domain.entities.DocumentPreview
-import gr.cpaleop.documents.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.domain.entities.DocumentSort
+import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {
 
-    suspend fun getDocumentSort(): DocumentSort
+    fun getDocumentSortFlow(): Flow<DocumentSort>
 
     suspend fun updateDocumentSort(documentSort: DocumentSort)
 

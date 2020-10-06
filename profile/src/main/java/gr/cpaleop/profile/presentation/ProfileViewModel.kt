@@ -12,8 +12,8 @@ import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.ThemeMapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -28,7 +28,7 @@ class ProfileViewModel(
     private val updatePersonalDetailsUseCase: UpdatePersonalDetailsUseCase,
     private val selectedSocialOptionMapper: SelectedSocialOptionMapper,
     private val optionDataMapper: OptionDataMapper,
-    private val getPreferredThemeUseCase: GetPreferredThemeUseCase,
+    private val observePreferredThemeUseCase: ObservePreferredThemeUseCase,
     private val updatePreferredThemeUseCase: UpdatePreferredThemeUseCase,
     private val themeMapper: ThemeMapper,
     private val logoutUseCase: LogoutUseCase
@@ -112,34 +112,35 @@ class ProfileViewModel(
     fun presentSettings() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _settings.value = withContext(defaultDispatcher) {
-                    listOf(
-                        Setting(
-                            type = SettingType.SECTION_TITLE,
-                            title = "Account"
-                        ),
-                        Setting(
-                            type = SettingType.CONTENT,
-                            iconRes = R.drawable.ic_key,
-                            title = "Change password"
-                        ),
-                        Setting(
-                            type = SettingType.CONTENT,
-                            iconRes = R.drawable.ic_logout,
-                            title = "Logout"
-                        ),
-                        Setting(
-                            type = SettingType.SECTION_TITLE,
-                            title = "Appearance"
-                        ),
-                        Setting(
-                            type = SettingType.CONTENT,
-                            iconRes = R.drawable.ic_theme,
-                            title = "Change theme",
-                            value = themeMapper(getPreferredThemeUseCase())
+                observePreferredThemeUseCase()
+                    .collect { theme ->
+                        _settings.value = listOf(
+                            Setting(
+                                type = SettingType.SECTION_TITLE,
+                                title = "Account"
+                            ),
+                            Setting(
+                                type = SettingType.CONTENT,
+                                iconRes = R.drawable.ic_key,
+                                title = "Change password"
+                            ),
+                            Setting(
+                                type = SettingType.CONTENT,
+                                iconRes = R.drawable.ic_logout,
+                                title = "Logout"
+                            ),
+                            Setting(
+                                type = SettingType.SECTION_TITLE,
+                                title = "Appearance"
+                            ),
+                            Setting(
+                                type = SettingType.CONTENT,
+                                iconRes = R.drawable.ic_theme,
+                                title = "Change theme",
+                                value = themeMapper(theme)
+                            )
                         )
-                    )
-                }
+                    }
             } catch (t: Throwable) {
                 Timber.e(t)
             }
@@ -149,7 +150,8 @@ class ProfileViewModel(
     fun presentPreferredTheme() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _preferredTheme.value = getPreferredThemeUseCase()
+                observePreferredThemeUseCase()
+                    .collect(_preferredTheme::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
             }

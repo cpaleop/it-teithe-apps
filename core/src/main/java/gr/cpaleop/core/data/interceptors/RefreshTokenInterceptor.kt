@@ -1,12 +1,10 @@
 package gr.cpaleop.core.data.interceptors
 
-import com.google.gson.Gson
 import gr.cpaleop.core.domain.entities.Token
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
-import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.ACCESS_TOKEN
-import gr.cpaleop.core.domain.repositories.PreferencesRepository.Companion.REFRESH_TOKEN
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -15,8 +13,7 @@ import okhttp3.Response
 @Suppress("BlockingMethodInNonBlockingContext")
 class RefreshTokenInterceptor(
     private val preferencesRepository: PreferencesRepository,
-    private val authenticationRepository: AuthenticationRepository,
-    private val gson: Gson
+    private val authenticationRepository: AuthenticationRepository
 ) : Interceptor {
 
     private var isRefreshing: Boolean = false
@@ -49,9 +46,7 @@ class RefreshTokenInterceptor(
         isRefreshing = true
         val newToken =
             authenticationRepository.refreshToken(
-                preferencesRepository.getString(
-                    REFRESH_TOKEN
-                )
+                preferencesRepository.getTokenFlow().first().refreshToken
             )
         saveToken(newToken)
         isRefreshing = false
@@ -77,8 +72,7 @@ class RefreshTokenInterceptor(
     }
 
     private suspend fun saveToken(newToken: Token) {
-        preferencesRepository.putString(ACCESS_TOKEN, newToken.accessToken)
-        preferencesRepository.putString(REFRESH_TOKEN, newToken.refreshToken)
+        preferencesRepository.updateToken(newToken)
     }
 
     companion object {

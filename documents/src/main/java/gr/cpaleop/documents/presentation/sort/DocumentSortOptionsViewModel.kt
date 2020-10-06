@@ -8,7 +8,7 @@ import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.documents.domain.entities.DocumentSort
+import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.documents.domain.usecases.GetDocumentSortOptionsUseCase
 import gr.cpaleop.documents.domain.usecases.ObserveDocumentSortUseCase
 import kotlinx.coroutines.CoroutineDispatcher
