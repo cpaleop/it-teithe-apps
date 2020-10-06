@@ -6,6 +6,7 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
 import gr.cpaleop.documents.domain.usecases.*
@@ -42,7 +43,8 @@ class DocumentsViewModel(
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
     private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
-    private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
+    private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase,
+    private val filterChannel: FilterChannel
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -55,27 +57,7 @@ class DocumentsViewModel(
     val document: LiveData<Document> = _document.toSingleEvent()
 
     private val _documentPreview = MutableLiveData<Int>()
-    val documentPreview: MediatorLiveData<Int> by lazy {
-        MediatorLiveData<Int>().apply {
-            addSource(_documentPreview) {
-                this.value = it
-                search = when (it) {
-                    DocumentPreview.FILE -> this@DocumentsViewModel::searchDocuments
-                    DocumentPreview.FOLDER -> this@DocumentsViewModel::searchAnnouncementFolders
-                    else -> { _ -> }
-                }
-            }
-        }
-    }
-
-    /**
-     * The actual call in order to search content.
-     *
-     * Note: This is empty until a [DocumentPreview] has been set at [_documentPreview].
-     * After a [DocumentPreview] has been set then the corresponding function will be set
-     * via [documentPreview] MediatorLiveData, this will be either [searchDocuments] or [searchAnnouncementFolders]
-     */
-    private var search: (String) -> Unit = { }
+    val documentPreview: LiveData<Int> = _documentPreview
 
     private val _documentAnnouncementFolders = MutableLiveData<List<AnnouncementFolder>>()
     val documentAnnouncementFolders: LiveData<List<AnnouncementFolder>> =
@@ -87,11 +69,11 @@ class DocumentsViewModel(
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
-                this.value = it.isEmpty()
+                this.value = it.isEmpty() && _documentPreview.value == DocumentPreview.FILE
             }
 
             addSource(documentAnnouncementFolders) {
-                this.value = it.isEmpty()
+                this.value = it.isEmpty() && _documentPreview.value == DocumentPreview.FOLDER
             }
         }.toSingleMediatorEvent()
     }
@@ -152,19 +134,7 @@ class DocumentsViewModel(
 
     fun filter(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            search(query)
-        }
-    }
-
-    private fun searchDocuments(query: String) {
-        viewModelScope.launch(mainDispatcher) {
-            observeDocumentsUseCase.filter(query)
-        }
-    }
-
-    private fun searchAnnouncementFolders(query: String) {
-        viewModelScope.launch(mainDispatcher) {
-            observeDocumentsAnnouncementFoldersUseCase.filter(query)
+            filterChannel.value = query
         }
     }
 

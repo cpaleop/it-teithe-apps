@@ -15,8 +15,8 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import gr.cpaleop.teithe_apps.R as appR
 
-@ExperimentalCoroutinesApi
 @FlowPreview
+@ExperimentalCoroutinesApi
 class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>() {
 
     private val viewModel: AnnouncementViewModel by viewModel()

@@ -6,6 +6,4 @@ import kotlinx.coroutines.flow.Flow
 interface ObserveDocumentsAnnouncementFoldersUseCase {
 
     suspend operator fun invoke(): Flow<List<AnnouncementFolder>>
-
-    suspend fun filter(filterQuery: String)
 }

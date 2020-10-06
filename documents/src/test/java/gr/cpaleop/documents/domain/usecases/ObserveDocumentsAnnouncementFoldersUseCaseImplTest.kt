@@ -5,9 +5,12 @@ import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
+import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,6 +38,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     @MockK
     private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
+    @MockK
+    private lateinit var filterChannel: FilterChannel
+
     private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCaseImpl
 
     @Before
@@ -44,7 +50,8 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             ObserveDocumentsAnnouncementFoldersUseCaseImpl(
                 testDefaultCoroutineDispatcher,
                 deviceStorageRepository,
-                observeDocumentSortUseCase
+                observeDocumentSortUseCase,
+                filterChannel
             )
     }
 
@@ -57,6 +64,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         val result = kotlin.runCatching {
             coEvery { observeDocumentSortUseCase() } returns SORT_TYPE_UNKNOWN_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+            every { filterChannel.asFlow() } returns filterEmptyFlow
             observeDocumentsAnnouncementFoldersUseCase().first()
         }
         assertThat(result.isFailure).isEqualTo(true)
@@ -70,6 +78,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersDateDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+            every { filterChannel.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -79,6 +88,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         val expected = announcementFoldersDateAscending
         coEvery { observeDocumentSortUseCase() } returns SORT_DATE_ASCENDING_FLOW
         coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+        every { filterChannel.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsAnnouncementFoldersUseCase().first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -89,6 +99,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersNameDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+            every { filterChannel.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -99,6 +110,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersNameAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
+            every { filterChannel.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -107,10 +119,15 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `filter when not empty and sort is ALPHABETICAL ASCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
+            val givenFilterQueryFlow = flow {
+                emit(givenFilterQuery)
+            }
             val expected = announcementFoldersFilteredTitleAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            every { filterChannel.value = givenFilterQuery } returns Unit
+            every { filterChannel.asFlow() } returns givenFilterQueryFlow
+            filterChannel.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -120,10 +137,15 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `filter when not empty and sort is ALPHABETICAL DESCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
+            val givenFilterQueryFlow = flow {
+                emit(givenFilterQuery)
+            }
             val expected = announcementFoldersFilteredTitleAscending.reversed()
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            every { filterChannel.value = givenFilterQuery } returns Unit
+            every { filterChannel.asFlow() } returns givenFilterQueryFlow
+            filterChannel.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -132,10 +154,15 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `filter when not empty and sort is DATE ASCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
+            val givenFilterQueryFlow = flow {
+                emit(givenFilterQuery)
+            }
             val expected = announcementFoldersFilteredDateAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            every { filterChannel.value = givenFilterQuery } returns Unit
+            every { filterChannel.asFlow() } returns givenFilterQueryFlow
+            filterChannel.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -145,10 +172,15 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `filter when not empty and sort is DATE DESCENDING returns correct items`() =
         runBlocking {
             val givenFilterQuery = "nameb"
+            val givenFilterQueryFlow = flow {
+                emit(givenFilterQuery)
+            }
             val expected = announcementFoldersFilteredDateAscending.reversed()
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            every { filterChannel.value = givenFilterQuery } returns Unit
+            every { filterChannel.asFlow() } returns givenFilterQueryFlow
+            filterChannel.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -157,10 +189,15 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     fun `filter when empty and sort is DATE DESCENDING returns original items`() =
         runBlocking {
             val givenFilterQuery = ""
+            val givenFilterQueryFlow = flow {
+                emit(givenFilterQuery)
+            }
             val expected = announcementFoldersDateDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            observeDocumentsAnnouncementFoldersUseCase.filter(givenFilterQuery)
+            every { filterChannel.value = givenFilterQuery } returns Unit
+            every { filterChannel.asFlow() } returns givenFilterQueryFlow
+            filterChannel.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -218,47 +255,47 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         }
 
         private val announcementFolders = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
@@ -266,12 +303,12 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         )
 
         private val announcementFoldersFilteredTitleAscending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
@@ -279,44 +316,48 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         )
 
         private val announcementFoldersFilteredDateAscending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
             )
         )
 
+        private val filterEmptyFlow = flow {
+            emit("")
+        }
+
         private val announcementFoldersFlow = flow {
             emit(announcementFolders)
         }
 
         private val announcementFoldersDateAscending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
@@ -324,27 +365,27 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         )
 
         private val announcementFoldersDateDescending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
@@ -352,27 +393,27 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         )
 
         private val announcementFoldersNameAscending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
@@ -380,27 +421,27 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         )
 
         private val announcementFoldersNameDescending = listOf(
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id4",
                 title = "named",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id3",
                 title = "namec",
                 lastModified = 3L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id5",
                 title = "namebAnother",
                 lastModified = 4L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id1",
                 title = "nameb",
                 lastModified = 1L
             ),
-            gr.cpaleop.documents.domain.entities.AnnouncementFolder(
+            AnnouncementFolder(
                 id = "id2",
                 title = "namea",
                 lastModified = 2L

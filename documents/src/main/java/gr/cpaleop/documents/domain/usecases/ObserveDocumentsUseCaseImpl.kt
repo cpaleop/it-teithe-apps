@@ -4,26 +4,22 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
+import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class ObserveDocumentsUseCaseImpl(
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
     private val deviceStorageRepository: DeviceStorageRepository,
-    private val observeDocumentSortUseCase: ObserveDocumentSortUseCase
+    private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
+    private val filterChannel: FilterChannel
 ) : ObserveDocumentsUseCase {
-
-    private val filterChannel = ConflatedBroadcastChannel("")
 
     private val nameSelector: (Document) -> String = { document ->
         document.name
@@ -40,15 +36,10 @@ class ObserveDocumentsUseCaseImpl(
                 else -> deviceStorageRepository.getDocumentsByAnnouncementId(announcementId)
             }
 
-            val filterFlow = filterChannel.asFlow()
             return@withContext documentsFlow
-                .combine(filterFlow, ::filterDocumentList)
+                .combine(filterChannel.asFlow(), ::filterDocumentList)
                 .combine(observeDocumentSortUseCase(), ::sortDocumentList)
         }
-
-    override suspend fun filter(filterQuery: String) {
-        filterChannel.send(filterQuery)
-    }
 
     private fun filterDocumentList(
         documentList: List<Document>,

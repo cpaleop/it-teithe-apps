@@ -10,6 +10,8 @@ import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.R
+import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.usecases.*
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
 import gr.cpaleop.documents.presentation.options.DocumentDetails
@@ -48,47 +50,50 @@ class DocumentsViewModelTest {
     val testDefaultCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private lateinit var observeDocumentsUseCase: gr.cpaleop.documents.domain.usecases.ObserveDocumentsUseCase
+    private lateinit var observeDocumentsUseCase: ObserveDocumentsUseCase
 
     @MockK
     private lateinit var fileDocumentMapper: FileDocumentMapper
 
     @MockK
-    private lateinit var getDocumentOptionsUseCase: gr.cpaleop.documents.domain.usecases.GetDocumentOptionsUseCase
+    private lateinit var getDocumentOptionsUseCase: GetDocumentOptionsUseCase
 
     @MockK
     private lateinit var documentOptionMapper: DocumentOptionMapper
 
     @MockK
-    private lateinit var getDocumentUseCase: gr.cpaleop.documents.domain.usecases.GetDocumentUseCase
+    private lateinit var getDocumentUseCase: GetDocumentUseCase
 
     @MockK
-    private lateinit var deleteDocumentUseCase: gr.cpaleop.documents.domain.usecases.DeleteDocumentUseCase
+    private lateinit var deleteDocumentUseCase: DeleteDocumentUseCase
 
     @MockK
-    private lateinit var renameDocumentUseCase: gr.cpaleop.documents.domain.usecases.RenameDocumentUseCase
+    private lateinit var renameDocumentUseCase: RenameDocumentUseCase
 
     @MockK
     private lateinit var documentSortOptionMapper: gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 
     @MockK
-    private lateinit var observeDocumentsAnnouncementFoldersUseCase: gr.cpaleop.documents.domain.usecases.ObserveDocumentsAnnouncementFoldersUseCase
+    private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase
 
     @MockK
-    private lateinit var observeDocumentSortUseCase: gr.cpaleop.documents.domain.usecases.ObserveDocumentSortUseCase
+    private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     @MockK
-    private lateinit var getDocumentPreviewPreferenceUseCase: gr.cpaleop.documents.domain.usecases.GetDocumentPreviewPreferenceUseCase
+    private lateinit var getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase
 
     @MockK
-    private lateinit var toggleDocumentPreviewPreferenceUseCase: gr.cpaleop.documents.domain.usecases.ToggleDocumentPreviewPreferenceUseCase
+    private lateinit var toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
 
-    private lateinit var viewModel: gr.cpaleop.documents.presentation.DocumentsViewModel
+    @MockK
+    private lateinit var filterChannel: FilterChannel
+
+    private lateinit var viewModel: DocumentsViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
-        viewModel = gr.cpaleop.documents.presentation.DocumentsViewModel(
+        viewModel = DocumentsViewModel(
             testMainCoroutineDispatcher,
             testDefaultCoroutineDispatcher,
             observeDocumentsUseCase,
@@ -102,7 +107,8 @@ class DocumentsViewModelTest {
             observeDocumentSortUseCase,
             observeDocumentsAnnouncementFoldersUseCase,
             getDocumentPreviewPreferenceUseCase,
-            toggleDocumentPreviewPreferenceUseCase
+            toggleDocumentPreviewPreferenceUseCase,
+            filterChannel
         )
     }
 

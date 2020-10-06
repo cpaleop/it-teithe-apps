@@ -6,6 +6,7 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.documents.data.AnnouncementsRepositoryImpl
 import gr.cpaleop.documents.data.DeviceStorageRepositoryImpl
 import gr.cpaleop.documents.data.PreferencesRepositoryImpl
+import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
@@ -16,18 +17,17 @@ import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 val documentsModule = module {
     viewModel {
         DocumentsViewModel(
             get(named<MainDispatcher>()),
             get(named<DefaultDispatcher>()),
+            get(),
             get(),
             get(),
             get(),
@@ -60,9 +60,11 @@ val documentsModule = module {
         ObserveDocumentsAnnouncementFoldersUseCaseImpl(
             get(named<DefaultDispatcher>()),
             get(),
+            get(),
             get()
         )
     }
+    single { FilterChannel() }
     single<ObserveDocumentSortUseCase> { ObserveDocumentSortUseCaseImpl(get()) }
     single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
     single<RenameDocumentUseCase> { RenameDocumentUseCaseImpl(get()) }
@@ -72,6 +74,7 @@ val documentsModule = module {
     single<ObserveDocumentsUseCase> {
         ObserveDocumentsUseCaseImpl(
             get(named<IODispatcher>()),
+            get(),
             get(),
             get()
         )

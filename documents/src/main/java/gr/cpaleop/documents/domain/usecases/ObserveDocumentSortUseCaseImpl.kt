@@ -3,10 +3,8 @@ package gr.cpaleop.documents.domain.usecases
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class ObserveDocumentSortUseCaseImpl(private val preferencesRepository: PreferencesRepository) :
     ObserveDocumentSortUseCase {
