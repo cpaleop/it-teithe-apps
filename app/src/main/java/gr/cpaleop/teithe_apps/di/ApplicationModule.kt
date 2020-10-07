@@ -19,6 +19,7 @@ import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -94,6 +95,9 @@ private fun provideOkHttpClient(
     tokenInterceptor: TokenInterceptor,
     refreshTokenInterceptor: RefreshTokenInterceptor
 ): OkHttpClient {
+    val dispatcher = Dispatcher()
+    dispatcher.maxRequests = 1
+
     val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(connectionInterceptor)
         .addInterceptor(refreshTokenInterceptor)
@@ -101,6 +105,7 @@ private fun provideOkHttpClient(
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(15, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)
+        .dispatcher(dispatcher)
 
     if (BuildConfig.DEBUG) {
         okHttpClient.addInterceptor(httpLoggingInterceptor)
