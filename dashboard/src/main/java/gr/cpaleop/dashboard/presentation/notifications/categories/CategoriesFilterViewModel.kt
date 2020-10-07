@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -44,6 +44,7 @@ class CategoriesFilterViewModel(
                 _categories.value = getCategoriesUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
 
             } finally {
                 _loading.value = false
@@ -87,6 +88,7 @@ class CategoriesFilterViewModel(
                     updateRegisteredCategoriesUseCase(registeredCategories, nonRegisteredCategories)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
 
             } finally {
                 _loading.value = false

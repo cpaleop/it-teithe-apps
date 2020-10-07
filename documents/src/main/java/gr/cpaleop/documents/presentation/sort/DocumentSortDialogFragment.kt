@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
-import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.documents.databinding.DialogFragmentSortDocumentsBinding
+import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel

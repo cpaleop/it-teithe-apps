@@ -8,9 +8,9 @@ import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,6 +80,7 @@ class NotificationsViewModel(
                     getNotificationsUseCase().mapAsync(notificationPresentationMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }
@@ -92,6 +93,7 @@ class NotificationsViewModel(
                 _readNotifications.value = readAllNotificationsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }

@@ -9,8 +9,8 @@ import gr.cpaleop.announcements.domain.usecases.ObserveAnnouncementsUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -39,6 +39,7 @@ class AnnouncementsViewModel(
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -49,6 +50,7 @@ class AnnouncementsViewModel(
                 filterAnnouncementsUseCase(filterQuery)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }

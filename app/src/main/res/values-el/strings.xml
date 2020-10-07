@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">it-teithe-apps</string>
     <string name="title_authentication">authentication</string>
@@ -11,6 +12,6 @@
     <string name="title_announcements">Announcements</string>
     <string name="title_public_announcements">PublicAnnouncements</string>
 
-    <string name="error_generic">Something went wrong. Please try again.</string>
-    <string name="error_no_internet_connection">No internet connection.</string>
+    <string name="error_generic">Κάτι πήγε στραβά. Προσπαθήστε ξανά.</string>
+    <string name="error_no_internet_connection">Δεν υπάρχει σύνδεση στο διαδίκτυο.</string>
 </resources>

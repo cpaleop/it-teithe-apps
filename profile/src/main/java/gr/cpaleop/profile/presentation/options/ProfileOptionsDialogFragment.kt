@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.profile.databinding.DialogFragmentProfileOptionsBinding
 import gr.cpaleop.profile.presentation.ProfileViewModel
+import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ProfileOptionsDialogFragment : BaseBottomSheetDialog<DialogFragmentProfileOptionsBinding>() {

@@ -10,8 +10,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.core.domain.entities.Category
-import gr.cpaleop.core.presentation.BaseBottomSheetDialog
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
+import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFilterDialogFragment :

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcements.domain.usecases.GetCachedCategoriesUseCase
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.core.presentation.BaseViewModel
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -29,6 +29,7 @@ class CategoryFilterViewModel(
                     getCachedCategoriesUseCase().mapAsyncSuspended(categoryFilterMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }

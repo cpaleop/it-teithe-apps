@@ -8,8 +8,8 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -46,6 +46,7 @@ class CategoryFilterViewModel(
                 .asLiveData(mainDispatcher)
         } catch (t: Throwable) {
             Timber.e(t)
+            handleNoConnectionException(t)
             MutableLiveData()
         }
     }
@@ -64,6 +65,7 @@ class CategoryFilterViewModel(
                 _categoryName.value = getCategoryNameUseCase(categoryId)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -75,6 +77,7 @@ class CategoryFilterViewModel(
                 observeAnnouncementsByCategoryUseCase.refresh(categoryId)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }

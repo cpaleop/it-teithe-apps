@@ -17,7 +17,7 @@ import gr.cpaleop.announcements.databinding.FragmentAnnouncementsBinding
 import gr.cpaleop.announcements.di.announcementsModule
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.BaseApiFragment
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.launch
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules

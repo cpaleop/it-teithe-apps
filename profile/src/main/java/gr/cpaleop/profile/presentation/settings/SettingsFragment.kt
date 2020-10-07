@@ -8,10 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import gr.cpaleop.core.presentation.BaseFragment
 import gr.cpaleop.profile.databinding.FragmentSettingsBinding
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfileViewModel
+import gr.cpaleop.teithe_apps.presentation.base.BaseFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

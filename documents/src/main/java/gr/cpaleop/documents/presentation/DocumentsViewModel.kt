@@ -9,7 +9,6 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
@@ -22,6 +21,7 @@ import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
 import gr.cpaleop.documents.presentation.options.DocumentShareOptionData
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -130,6 +130,7 @@ class DocumentsViewModel(
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }
@@ -148,6 +149,7 @@ class DocumentsViewModel(
                 _document.value = getDocumentUseCase(uri)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -159,6 +161,7 @@ class DocumentsViewModel(
                     getDocumentOptionsUseCase().mapAsync(documentOptionMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -201,6 +204,7 @@ class DocumentsViewModel(
                 _refresh.value = deleteDocumentUseCase(documentUri)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -211,6 +215,7 @@ class DocumentsViewModel(
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -224,6 +229,7 @@ class DocumentsViewModel(
                     .collect(_documentSortOptionSelected::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -235,6 +241,7 @@ class DocumentsViewModel(
                 _refresh.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }

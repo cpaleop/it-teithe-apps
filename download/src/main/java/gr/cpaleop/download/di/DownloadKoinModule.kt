@@ -19,8 +19,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-@ExperimentalCoroutinesApi
 @FlowPreview
+@ExperimentalCoroutinesApi
 val downloadModule = module {
     single<DownloadNotificationManager> { DownloadNotificationManagerImpl(get()) }
     single<DownloadFilesUseCase> { DownloadFilesUseCaseImpl(get(), get(), get(), get()) }

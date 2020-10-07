@@ -1,4 +1,4 @@
-package gr.cpaleop.core.presentation
+package gr.cpaleop.teithe_apps.presentation.base
 
 import android.os.Bundle
 import androidx.annotation.CallSuper

@@ -8,9 +8,9 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.documents.domain.usecases.GetDocumentSortOptionsUseCase
 import gr.cpaleop.documents.domain.usecases.ObserveDocumentSortUseCase
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,6 +42,7 @@ class DocumentSortOptionsViewModel(
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -53,6 +54,7 @@ class DocumentSortOptionsViewModel(
                 _dismissDialog.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }

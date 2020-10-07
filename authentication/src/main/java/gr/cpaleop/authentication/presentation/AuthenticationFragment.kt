@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.authentication.databinding.FragmentAuthenticationBinding
-import gr.cpaleop.core.presentation.BaseApiFragment
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 
 class AuthenticationFragment :
     BaseApiFragment<FragmentAuthenticationBinding, AuthenticationViewModel>(AuthenticationViewModel::class) {

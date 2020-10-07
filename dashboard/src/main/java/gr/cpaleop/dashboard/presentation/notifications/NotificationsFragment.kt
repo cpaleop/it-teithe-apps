@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.common.extensions.hideKeyboard
-import gr.cpaleop.core.presentation.BaseApiFragment
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import gr.cpaleop.teithe_apps.R as appR
 
 class NotificationsFragment :

@@ -6,8 +6,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import gr.cpaleop.announcement.databinding.ActivityAnnouncementBinding
 import gr.cpaleop.announcement.di.announcementModule
-import gr.cpaleop.core.presentation.BaseApiActivity
 import gr.cpaleop.download.presentation.DownloadFileWorker
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.core.context.loadKoinModules

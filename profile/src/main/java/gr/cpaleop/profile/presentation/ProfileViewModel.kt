@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.core.presentation.BaseViewModel
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.*
@@ -15,6 +14,7 @@ import gr.cpaleop.profile.presentation.options.*
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.ThemeMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -92,6 +92,7 @@ class ProfileViewModel(
                 _profile.value = profilePresentationMapper(getProfileUseCase())
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }
@@ -147,6 +148,7 @@ class ProfileViewModel(
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -158,6 +160,7 @@ class ProfileViewModel(
                     .collect(_preferredTheme::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -169,6 +172,7 @@ class ProfileViewModel(
                 _updatedTheme.value = theme
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -179,6 +183,7 @@ class ProfileViewModel(
                 _logoutSuccess.value = logoutUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -210,6 +215,7 @@ class ProfileViewModel(
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             }
         }
     }
@@ -225,6 +231,7 @@ class ProfileViewModel(
                     profilePresentationMapper(updatePersonalDetailsUseCase(personalType, value))
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }
@@ -238,6 +245,7 @@ class ProfileViewModel(
                 _profile.value = profilePresentationMapper(updateSocialUseCase(social, value))
             } catch (t: Throwable) {
                 Timber.e(t)
+                handleNoConnectionException(t)
             } finally {
                 _loading.value = false
             }

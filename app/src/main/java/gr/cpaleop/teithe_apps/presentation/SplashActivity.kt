@@ -5,9 +5,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
-import gr.cpaleop.core.presentation.BaseActivity
 import gr.cpaleop.teithe_apps.databinding.ActivitySplashBinding
 import gr.cpaleop.teithe_apps.di.splashModule
+import gr.cpaleop.teithe_apps.presentation.base.BaseActivity
 import org.koin.android.ext.android.inject
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
