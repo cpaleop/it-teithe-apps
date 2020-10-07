@@ -9,7 +9,7 @@ class SettingsTitleHolder(private val binding: ItemSettingsSectionBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Setting) {
-        binding.settingsSectionTitleTextView.text = item.title
+        binding.settingsSectionTitleTextView.setText(item.titleRes)
     }
 
     companion object {

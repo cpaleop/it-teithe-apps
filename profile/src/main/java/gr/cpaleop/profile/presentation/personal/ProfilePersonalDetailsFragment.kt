@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.profile.databinding.FragmentProfilePersonalBinding
+import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfilePersonalDetails
 import gr.cpaleop.profile.presentation.ProfileViewModel
@@ -49,8 +50,9 @@ class ProfilePersonalDetailsFragment : BaseFragment<FragmentProfilePersonalBindi
         profilePersonalAdapter?.submitList(personalList)
     }
 
-    private fun navigateToProfileOptionsDialogFragment(title: String) {
-        val directions = ProfileFragmentDirections.profileToProfileOptionsDialog("personal", title)
+    private fun navigateToProfileOptionsDialogFragment(title: String, personalType: Personal) {
+        val directions =
+            ProfileFragmentDirections.profileToProfilePersonalOptionsDialog(title, personalType)
         navController.navigate(directions)
     }
 }

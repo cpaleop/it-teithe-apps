@@ -17,6 +17,10 @@ class PreferencesRepositoryImpl(
         preferencesRepository.getLanguageFlow().first()
     }
 
+    override suspend fun updatePreferredLanguage(languageCode: String) = withContext(ioDispatcher) {
+        preferencesRepository.updateLanguage(languageCode)
+    }
+
     override fun getPreferredThemeFlow(): Flow<Int> {
         return preferencesRepository.getNightModeFlow()
     }

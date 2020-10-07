@@ -7,19 +7,18 @@ import gr.cpaleop.profile.databinding.ItemProfileOptionBinding
 
 class ProfileOptionHolder(
     private val binding: ItemProfileOptionBinding,
-    private val clickListener: (String) -> Unit
-) :
-    RecyclerView.ViewHolder(binding.root) {
+    private val clickListener: (Int) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: ProfileOption) {
-        binding.root.setOnClickListener { clickListener(item.name) }
+        binding.root.setOnClickListener { clickListener(item.labelRes) }
         binding.profileOptionImageView.setImageResource(item.iconResource)
-        binding.profileOptionLabel.text = item.name
+        binding.profileOptionLabel.setText(item.labelRes)
     }
 
     companion object {
 
-        fun create(parent: ViewGroup, clickListener: (String) -> Unit): ProfileOptionHolder {
+        fun create(parent: ViewGroup, clickListener: (Int) -> Unit): ProfileOptionHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemProfileOptionBinding.inflate(layoutInflater, parent, false)
             return ProfileOptionHolder(binding, clickListener)

@@ -1,13 +1,16 @@
 package gr.cpaleop.profile.presentation.settings
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
 data class Setting(
     val type: SettingType,
     @DrawableRes
     val iconRes: Int? = null,
-    val title: String,
-    val value: String? = null
+    @StringRes
+    val titleRes: Int,
+    @StringRes
+    val valueRes: Int? = null
 )
 
 enum class SettingType {

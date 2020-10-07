@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class SettingsAdapter(private val onClickListener: (String) -> Unit) :
+class SettingsAdapter(private val onClickListener: (Int) -> Unit) :
     ListAdapter<Setting, RecyclerView.ViewHolder>(DIFF_UTIL_SETTING) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -37,7 +37,7 @@ class SettingsAdapter(private val onClickListener: (String) -> Unit) :
         private val DIFF_UTIL_SETTING = object : DiffUtil.ItemCallback<Setting>() {
 
             override fun areItemsTheSame(oldItem: Setting, newItem: Setting): Boolean {
-                return oldItem.title == newItem.title
+                return oldItem.titleRes == newItem.titleRes
             }
 
             override fun areContentsTheSame(oldItem: Setting, newItem: Setting): Boolean {

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentSettingsBinding
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfileViewModel
@@ -53,11 +55,17 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         }
     }
 
-    private fun handleOption(title: String) {
+    private fun handleOption(@StringRes title: Int) {
         when (title) {
-            "Change theme" -> navigateToSelectThemeDialog()
-            "Logout" -> viewModel.logout()
+            R.string.profile_settings_change_theme -> navigateToSelectThemeDialog()
+            R.string.profile_settings_change_language -> navigateToSelectLanguageDialog()
+            R.string.profile_settings_logout -> viewModel.logout()
         }
+    }
+
+    private fun navigateToSelectLanguageDialog() {
+        val directions = ProfileFragmentDirections.profileToSelectLanguageDialog()
+        navController.navigate(directions)
     }
 
     private fun navigateToSelectThemeDialog() {

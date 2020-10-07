@@ -1,6 +1,7 @@
 package gr.cpaleop.profile.presentation
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Social
 
@@ -17,7 +18,8 @@ data class ProfilePresentation(
 
 data class ProfilePersonalDetails(
     val type: Personal,
-    val label: String,
+    @StringRes
+    val label: Int,
     val value: String
 )
 
@@ -25,6 +27,7 @@ data class ProfileSocialDetails(
     val socialType: Social,
     @DrawableRes
     val socialLogoResource: Int,
-    val label: String,
+    @StringRes
+    val labelRes: Int,
     val value: String
 )

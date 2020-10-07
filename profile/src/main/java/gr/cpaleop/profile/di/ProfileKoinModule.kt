@@ -16,8 +16,9 @@ import gr.cpaleop.profile.presentation.ProfileViewModel
 import gr.cpaleop.profile.presentation.options.OptionDataMapper
 import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapper
 import gr.cpaleop.profile.presentation.options.SelectedSocialOptionMapperImpl
+import gr.cpaleop.profile.presentation.personal.PersonalOptionDataMapper
 import gr.cpaleop.profile.presentation.settings.LanguageMapper
-import gr.cpaleop.profile.presentation.settings.ThemeMapper
+import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -38,20 +39,23 @@ val profileModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
             get()
         )
     }
-    single { LanguageMapper(get()) }
+    single { PersonalOptionDataMapper() }
+    single { LanguageMapper() }
     single { ThemeMapper() }
     single { OptionDataMapper() }
     single { ProfileMapper(get()) }
     single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
     single<ProfilePresentationMapper> {
         ProfilePresentationMapperImpl(
-            get(),
             get(named<DefaultDispatcher>())
         )
     }
+    single<UpdatePreferredLanguageUseCase> { UpdatePreferredLanguageUseCaseImpl(get()) }
     single<GetPreferredLanguageUseCase> { GetPreferredLanguageUseCaseImpl(get()) }
     single<LogoutUseCase> { LogoutUseCaseImpl(get()) }
     single<UpdatePreferredThemeUseCase> { UpdatePreferredThemeUseCaseImpl(get()) }

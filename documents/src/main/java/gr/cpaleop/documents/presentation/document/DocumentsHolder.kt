@@ -15,7 +15,10 @@ class DocumentsHolder(
         binding.root.setOnClickListener { onClickListener(item.absolutePath) }
         binding.documentMoreImageView.setOnClickListener { moreClickListener(item.uri) }
         binding.documentTitleTextView.text = item.name
-        binding.documentLastModifiedTextView.text = item.lastModifiedDate
+        binding.documentLastModifiedTextView.text = binding.root.context.getString(
+            item.lastModifiedDate.labelRes,
+            item.lastModifiedDate.dateHumanReadable
+        )
         binding.documentPreview.setImageResource(item.previewDrawable)
     }
 

@@ -7,7 +7,7 @@ class SelectedSocialOptionMapperImpl : SelectedSocialOptionMapper {
     override fun invoke(profileSocialDetails: ProfileSocialDetails): SelectedSocialOption {
         return SelectedSocialOption(
             profileSocialDetails.socialType,
-            profileSocialDetails.label,
+            profileSocialDetails.labelRes,
             profileSocialDetails.value
         )
     }

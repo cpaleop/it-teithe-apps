@@ -14,6 +14,14 @@
     <string name="profile_theme_light">Ελαφρύ</string>
     <string name="profile_theme_dark">Σκούρο</string>
     <string name="profile_theme_system">Του συστήματος</string>
+    <string name="profile_language_title">Επιλέξτε γλώσσα</string>
+    <string name="profile_language_english">Αγγλικά (US)</string>
+    <string name="profile_language_greek">Ελληνικά</string>
+
+    <!-- Details Titles -->
+    <string name="profile_details_personal">Πληροφορίες</string>
+    <string name="profile_details_socials">Κοινωνικά δίκτυα</string>
+    <string name="profile_details_settings">Ρυθμίσεις</string>
 
     <!-- Personal details -->
     <string name="profile_personal_name">Εμφανιζόμενο όνομα</string>
@@ -25,6 +33,16 @@
     <string name="profile_socials_title">Κοινωνικά Δίκτυα</string>
 
     <!-- Settings -->
+    <string name="profile_settings_account_title">Λογαριασμός</string>
+    <string name="profile_settings_change_password">Αλλαγή κωδικού</string>
+    <string name="profile_settings_logout">Αποσύνδεση</string>
+    <string name="profile_settings_appearance_title">Εμφάνιση</string>
+    <string name="profile_settings_change_theme">Αλλαγή θέματος</string>
+    <string name="profile_settings_change_language">Αλλαγή γλώσσας</string>
     <string name="profile_settings_language_english">Αγγλικά (US)</string>
     <string name="profile_settings_language_greek">Ελληνικά</string>
+
+    <!-- Options -->
+    <string name="profile_option_copy">Αντιγραφή</string>
+    <string name="profile_option_edit">Επεξεργασία</string>
 </resources>

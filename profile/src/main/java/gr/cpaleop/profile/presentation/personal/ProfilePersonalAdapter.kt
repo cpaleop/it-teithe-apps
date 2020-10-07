@@ -3,9 +3,10 @@ package gr.cpaleop.profile.presentation.personal
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.presentation.ProfilePersonalDetails
 
-class ProfilePersonalAdapter(private val onClickListener: (String) -> Unit) :
+class ProfilePersonalAdapter(private val onClickListener: (String, Personal) -> Unit) :
     ListAdapter<ProfilePersonalDetails, ProfilePersonalHolder>(DIFF_UTIL_PERSONAL_DETAILS) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfilePersonalHolder {

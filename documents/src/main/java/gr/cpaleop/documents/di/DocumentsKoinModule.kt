@@ -53,7 +53,7 @@ val documentsModule = module {
     }
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
-    single { FileDocumentMapper(get(), get(named<DefaultDispatcher>()), get()) }
+    single { FileDocumentMapper(get(named<DefaultDispatcher>()), get()) }
     single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
     single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
     single<ObserveDocumentsAnnouncementFoldersUseCase> {

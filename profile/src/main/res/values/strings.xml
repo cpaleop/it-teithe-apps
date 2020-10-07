@@ -14,6 +14,14 @@
     <string name="profile_theme_light">Light</string>
     <string name="profile_theme_dark">Dark</string>
     <string name="profile_theme_system">Follow system</string>
+    <string name="profile_language_title">Select language</string>
+    <string name="profile_language_english">English (US)</string>
+    <string name="profile_language_greek">Greek</string>
+
+    <!-- Details Titles -->
+    <string name="profile_details_personal">Details</string>
+    <string name="profile_details_socials">Socials</string>
+    <string name="profile_details_settings">Settings</string>
 
     <!-- Personal details -->
     <string name="profile_personal_name">Display name</string>
@@ -30,6 +38,16 @@
     <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
 
     <!-- Settings -->
+    <string name="profile_settings_account_title">Account</string>
+    <string name="profile_settings_change_password">Change password</string>
+    <string name="profile_settings_logout">Logout</string>
+    <string name="profile_settings_appearance_title">Appearance</string>
+    <string name="profile_settings_change_theme">Change theme</string>
+    <string name="profile_settings_change_language">Change language</string>
     <string name="profile_settings_language_english">English (US)</string>
     <string name="profile_settings_language_greek">Greek</string>
+
+    <!-- Options -->
+    <string name="profile_option_copy">Copy</string>
+    <string name="profile_option_edit">Edit</string>
 </resources>

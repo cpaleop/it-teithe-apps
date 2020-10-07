@@ -3,9 +3,10 @@ package gr.cpaleop.profile.presentation.socials
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.presentation.ProfileSocialDetails
 
-class ProfileSocialsAdapter(private val moreClickListener: (String) -> Unit) :
+class ProfileSocialsAdapter(private val moreClickListener: (String, Social) -> Unit) :
     ListAdapter<ProfileSocialDetails, ProfileSocialHolder>(PROFILE_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileSocialHolder {

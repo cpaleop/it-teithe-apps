@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.profile.databinding.FragmentProfileSocialsBinding
+import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfileSocialDetails
 import gr.cpaleop.profile.presentation.ProfileViewModel
@@ -46,8 +47,9 @@ class ProfileSocialsFragment : BaseFragment<FragmentProfileSocialsBinding>() {
         profileSocialsAdapter?.submitList(socialList)
     }
 
-    private fun navigateToProfileOptionsDialogFragment(title: String) {
-        val directions = ProfileFragmentDirections.profileToProfileOptionsDialog("social", title)
+    private fun navigateToProfileOptionsDialogFragment(title: String, socialType: Social) {
+        val directions =
+            ProfileFragmentDirections.profileToProfileSocialOptionsDialog(title, socialType)
         navController.navigate(directions)
     }
 }

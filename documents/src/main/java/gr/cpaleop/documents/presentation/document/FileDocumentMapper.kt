@@ -1,6 +1,5 @@
 package gr.cpaleop.documents.presentation.document
 
-import android.content.Context
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Document
@@ -11,7 +10,6 @@ import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
 class FileDocumentMapper(
-    private val applicationContext: Context,
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
     private val dateFormatter: DateFormatter
@@ -42,7 +40,7 @@ class FileDocumentMapper(
                 name = document.name,
                 size = document.size,
                 previewDrawable = type,
-                lastModifiedDate = applicationContext.getString(
+                lastModifiedDate = LastModified(
                     R.string.documents_modified,
                     lastModifiedHumanReadableFormat
                 )

@@ -7,14 +7,14 @@ class OptionDataMapper {
 
     operator fun invoke(profileSocialDetails: ProfileSocialDetails): OptionData {
         return OptionData(
-            title = profileSocialDetails.label,
+            titleRes = profileSocialDetails.labelRes,
             value = profileSocialDetails.value
         )
     }
 
     operator fun invoke(profilePersonalDetails: ProfilePersonalDetails): OptionData {
         return OptionData(
-            title = profilePersonalDetails.label,
+            titleRes = profilePersonalDetails.label,
             value = profilePersonalDetails.value
         )
     }

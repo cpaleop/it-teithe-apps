@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
-class ProfileOptionsAdapter(private val clickListener: (String) -> Unit) :
+class ProfileOptionsAdapter(private val clickListener: (Int) -> Unit) :
     ListAdapter<ProfileOption, ProfileOptionHolder>(DIFF_UTIL_PROFILE_OPTION) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileOptionHolder {
@@ -20,7 +20,7 @@ class ProfileOptionsAdapter(private val clickListener: (String) -> Unit) :
         private val DIFF_UTIL_PROFILE_OPTION = object : DiffUtil.ItemCallback<ProfileOption>() {
 
             override fun areItemsTheSame(oldItem: ProfileOption, newItem: ProfileOption): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.labelRes == newItem.labelRes
             }
 
             override fun areContentsTheSame(

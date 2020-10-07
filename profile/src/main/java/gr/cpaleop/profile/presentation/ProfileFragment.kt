@@ -21,6 +21,7 @@ import gr.cpaleop.profile.databinding.FragmentProfileBinding
 import gr.cpaleop.profile.di.profileModule
 import gr.cpaleop.profile.presentation.options.OptionData
 import gr.cpaleop.profile.presentation.options.SelectedSocialOption
+import gr.cpaleop.profile.presentation.personal.PersonalOptionData
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -68,7 +69,7 @@ class ProfileFragment :
         binding.profileViewPager.adapter = profileStateAdapter
 
         TabLayoutMediator(binding.profileTabLayout, binding.profileViewPager) { tab, position ->
-            tab.text = ProfileStateAdapter.titles[position]
+            tab.setText(ProfileStateAdapter.titles[position])
         }.attach()
 
         binding.profileSwipeRefreshLayout.setOnRefreshListener {
@@ -112,7 +113,8 @@ class ProfileFragment :
     private fun copyToClipboard(optionData: OptionData) {
         val clipboard =
             activity?.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(optionData.title, optionData.value)
+        val clip =
+            ClipData.newPlainText(requireContext().getString(optionData.titleRes), optionData.value)
         clipboard.setPrimaryClip(clip)
         showSnackbarMessage(SnackbarMessage(R.string.profile_toast_clipboard))
     }
@@ -120,7 +122,10 @@ class ProfileFragment :
     private fun editSocial(selectedSocialOption: SelectedSocialOption) {
         MaterialDialog(requireContext())
             .lifecycleOwner(viewLifecycleOwner)
-            .title(R.string.profile_social_edit, selectedSocialOption.title)
+            .title(
+                R.string.profile_social_edit,
+                requireContext().getString(selectedSocialOption.titleRes)
+            )
             .cancelOnTouchOutside(true)
             .positiveButton(R.string.profile_social_edit_submit)
             .input(prefill = selectedSocialOption.value) { materialDialog, input ->
@@ -133,14 +138,17 @@ class ProfileFragment :
             .show()
     }
 
-    private fun editPersonal(optionData: OptionData) {
+    private fun editPersonal(personalOptionData: PersonalOptionData) {
         MaterialDialog(requireContext())
             .lifecycleOwner(viewLifecycleOwner)
-            .title(R.string.profile_social_edit, optionData.title)
+            .title(
+                R.string.profile_social_edit,
+                requireContext().getString(personalOptionData.label)
+            )
             .cancelOnTouchOutside(true)
             .positiveButton(R.string.profile_social_edit_submit)
-            .input(prefill = optionData.value) { materialDialog, input ->
-                viewModel.updatePersonal(optionData.title, input.toString())
+            .input(prefill = personalOptionData.value) { materialDialog, input ->
+                viewModel.updatePersonal(personalOptionData.type, input.toString())
                 materialDialog.dismiss()
             }
             .negativeButton(R.string.profile_social_edit_cancel) {

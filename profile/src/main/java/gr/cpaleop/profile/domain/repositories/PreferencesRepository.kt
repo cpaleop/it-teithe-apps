@@ -8,6 +8,8 @@ interface PreferencesRepository {
     @LanguageCode
     suspend fun getPreferredLanguage(): String
 
+    suspend fun updatePreferredLanguage(@LanguageCode languageCode: String)
+
     fun getPreferredThemeFlow(): Flow<Int>
 
     suspend fun updatePreferredTheme(theme: Int)

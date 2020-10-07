@@ -1,6 +1,5 @@
 package gr.cpaleop.profile.presentation
 
-import android.content.Context
 import gr.cpaleop.common.extensions.orEmpty
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.profile.R
@@ -10,43 +9,40 @@ import gr.cpaleop.profile.domain.entities.Social
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class ProfilePresentationMapperImpl(
-    private val applicationContext: Context,
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher
-) : ProfilePresentationMapper {
+class ProfilePresentationMapperImpl(@DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher) :
+    ProfilePresentationMapper {
 
     override suspend operator fun invoke(profile: Profile): ProfilePresentation =
         withContext(defaultDispatcher) {
             val socialsList = listOf(
                 ProfileSocialDetails(
                     socialType = Social.FACEBOOK,
-                    label = applicationContext.getString(R.string.profile_socials_facebook_title),
+                    labelRes = R.string.profile_socials_facebook_title,
                     socialLogoResource = R.drawable.ic_facebook,
                     value = profile.socialMedia.facebook.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.GITHUB,
-                    label = applicationContext.getString(R.string.profile_socials_github_title),
+                    labelRes = R.string.profile_socials_github_title,
                     socialLogoResource = R.drawable.ic_github,
                     value = profile.socialMedia.github.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.TWITTER,
-                    label = applicationContext.getString(R.string.profile_socials_twitter_title),
+                    labelRes = R.string.profile_socials_twitter_title,
                     socialLogoResource = R.drawable.ic_twitter,
                     value = profile.socialMedia.twitter.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.LINKEDIN,
-                    label = applicationContext.getString(R.string.profile_socials_linkedin_title),
+                    labelRes = R.string.profile_socials_linkedin_title,
                     socialLogoResource = R.drawable.ic_linkedin,
                     value = profile.socialMedia.linkedIn.orEmpty("-")
                 ),
                 ProfileSocialDetails(
                     socialType = Social.GOOGLEPLUS,
                     socialLogoResource = R.drawable.ic_google_plus,
-                    label = applicationContext.getString(R.string.profile_socials_googleplus_title),
+                    labelRes = R.string.profile_socials_googleplus_title,
                     value = profile.socialMedia.googlePlus.orEmpty("-")
                 )
             )
@@ -54,22 +50,22 @@ class ProfilePresentationMapperImpl(
             val personalDetails = listOf(
                 ProfilePersonalDetails(
                     type = Personal.DISPLAY_NAME,
-                    label = applicationContext.getString(R.string.profile_personal_name),
+                    label = R.string.profile_personal_name,
                     value = profile.academicDetails.displayName
                 ),
                 ProfilePersonalDetails(
                     type = Personal.TELEPHONE_NUMBER,
-                    label = applicationContext.getString(R.string.profile_personal_telephone),
+                    label = R.string.profile_personal_telephone,
                     value = profile.personalDetails.telephoneNumber
                 ),
                 ProfilePersonalDetails(
                     type = Personal.MAIL,
-                    label = applicationContext.getString(R.string.profile_personal_mail),
+                    label = R.string.profile_personal_mail,
                     value = profile.personalDetails.email
                 ),
                 ProfilePersonalDetails(
                     type = Personal.DESCRIPTION,
-                    label = applicationContext.getString(R.string.profile_personal_description),
+                    label = R.string.profile_personal_description,
                     value = profile.personalDetails.description
                 )
             )

@@ -1,4 +1,4 @@
-package gr.cpaleop.profile.presentation.settings
+package gr.cpaleop.profile.presentation.settings.theme
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -57,7 +57,7 @@ class SelectThemeBottomSheetDialogFragment :
     }
 
     private fun setCheckedChangeListener() {
-        binding.selectThemeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.selectThemeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val theme = when (checkedId) {
                 R.id.selectThemeLightRadioButton -> AppCompatDelegate.MODE_NIGHT_NO
                 R.id.selectThemeDarkRadioButton -> AppCompatDelegate.MODE_NIGHT_YES

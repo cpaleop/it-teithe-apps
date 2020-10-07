@@ -11,12 +11,20 @@
         tools:layout="@layout/fragment_profile">
 
         <action
-            android:id="@+id/profileToProfileOptionsDialog"
-            app:destination="@id/profileOptionsDialog" />
+            android:id="@+id/profileToProfilePersonalOptionsDialog"
+            app:destination="@id/profilePersonalOptionsDialog" />
+
+        <action
+            android:id="@+id/profileToProfileSocialOptionsDialog"
+            app:destination="@id/profileSocialOptionsDialog" />
 
         <action
             android:id="@+id/profileToSelectThemeDialog"
             app:destination="@id/profileSelectThemeDialog" />
+
+        <action
+            android:id="@+id/profileToSelectLanguageDialog"
+            app:destination="@id/profileSelectLanguageDialog" />
 
         <action
             android:id="@+id/profileToSplash"
@@ -25,24 +33,47 @@
 
     <dialog
         android:id="@+id/profileSelectThemeDialog"
-        android:name="gr.cpaleop.profile.presentation.settings.SelectThemeBottomSheetDialogFragment"
+        android:name="gr.cpaleop.profile.presentation.settings.theme.SelectThemeBottomSheetDialogFragment"
         android:label="SelectThemeBottomSheetDialogFragment"
         tools:layout="@layout/dialog_fragment_select_theme" />
 
     <dialog
-        android:id="@+id/profileOptionsDialog"
-        android:name="gr.cpaleop.profile.presentation.options.ProfileOptionsDialogFragment"
-        android:label="ProfileOptionsDialogFragment"
+        android:id="@+id/profileSelectLanguageDialog"
+        android:name="gr.cpaleop.profile.presentation.settings.language.SelectLanguageBottomSheetDialogFragment"
+        android:label="SelectLanguageBottomSheetDialogFragment"
+        tools:layout="@layout/dialog_fragment_select_language" />
+
+    <dialog
+        android:id="@+id/profilePersonalOptionsDialog"
+        android:name="gr.cpaleop.profile.presentation.options.ProfilePersonalOptionsDialogFragment"
+        android:label="ProfilePersonalOptionsDialogFragment"
         tools:layout="@layout/dialog_fragment_profile_options">
 
         <argument
-            android:name="type"
+            android:name="title"
             app:argType="string"
             app:nullable="false" />
 
         <argument
-            android:name="profileValue"
+            android:name="type"
+            app:argType="gr.cpaleop.profile.domain.entities.Personal"
+            app:nullable="false" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/profileSocialOptionsDialog"
+        android:name="gr.cpaleop.profile.presentation.options.ProfileSocialOptionsDialogFragment"
+        android:label="ProfileSocialOptionsDialogFragment"
+        tools:layout="@layout/dialog_fragment_profile_options">
+
+        <argument
+            android:name="title"
             app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="type"
+            app:argType="gr.cpaleop.profile.domain.entities.Social"
             app:nullable="false" />
     </dialog>
 

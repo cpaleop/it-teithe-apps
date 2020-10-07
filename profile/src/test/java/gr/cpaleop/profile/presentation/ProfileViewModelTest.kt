@@ -11,7 +11,7 @@ import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
-import gr.cpaleop.profile.presentation.settings.ThemeMapper
+import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -135,7 +135,7 @@ class ProfileViewModelTest {
         coEvery {
             selectedSocialOptionMapper(
                 ProfileSocialDetails(
-                    label = "Facebook",
+                    labelRes = "Facebook",
                     socialLogoResource = R.drawable.ic_facebook,
                     value = "facebook",
                     socialType = Social.FACEBOOK
@@ -163,7 +163,7 @@ class ProfileViewModelTest {
         coEvery {
             optionDataMapper(
                 ProfileSocialDetails(
-                    label = "Facebook",
+                    labelRes = "Facebook",
                     socialLogoResource = R.drawable.ic_facebook,
                     value = "facebook",
                     socialType = Social.FACEBOOK
@@ -405,81 +405,81 @@ class ProfileViewModelTest {
         private val settingsListSystemTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Account"
+                titleRes = "Account"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                title = "Change password"
+                titleRes = "Change password"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                title = "Logout"
+                titleRes = "Logout"
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Appearance"
+                titleRes = "Appearance"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                title = "Change theme",
-                value = "Follow system"
+                titleRes = "Change theme",
+                valueRes = "Follow system"
             )
         )
 
         private val settingsListLightTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Account"
+                titleRes = "Account"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                title = "Change password"
+                titleRes = "Change password"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                title = "Logout"
+                titleRes = "Logout"
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Appearance"
+                titleRes = "Appearance"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                title = "Change theme",
-                value = "Light"
+                titleRes = "Change theme",
+                valueRes = "Light"
             )
         )
 
         private val settingsListDarkTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Account"
+                titleRes = "Account"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                title = "Change password"
+                titleRes = "Change password"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                title = "Logout"
+                titleRes = "Logout"
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                title = "Appearance"
+                titleRes = "Appearance"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                title = "Change theme",
-                value = "Dark"
+                titleRes = "Change theme",
+                valueRes = "Dark"
             )
         )
 
@@ -523,31 +523,31 @@ class ProfileViewModelTest {
                 socialType = Social.GOOGLEPLUS,
                 value = "google_plus",
                 socialLogoResource = R.drawable.ic_google_plus,
-                label = "Google+"
+                labelRes = "Google+"
             ),
             ProfileSocialDetails(
                 socialType = Social.FACEBOOK,
                 value = "facebook",
                 socialLogoResource = R.drawable.ic_facebook,
-                label = "Facebook"
+                labelRes = "Facebook"
             ),
             ProfileSocialDetails(
                 socialType = Social.TWITTER,
                 value = "twitter",
                 socialLogoResource = R.drawable.ic_twitter,
-                label = "Twitter"
+                labelRes = "Twitter"
             ),
             ProfileSocialDetails(
                 socialType = Social.LINKEDIN,
                 value = "linkedIn",
                 socialLogoResource = R.drawable.ic_linkedin,
-                label = "LinkedIn"
+                labelRes = "LinkedIn"
             ),
             ProfileSocialDetails(
                 socialType = Social.GITHUB,
                 value = "github",
                 socialLogoResource = R.drawable.ic_github,
-                label = "Github"
+                labelRes = "Github"
             )
         )
 

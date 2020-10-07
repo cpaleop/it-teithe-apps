@@ -1,19 +1,24 @@
 package gr.cpaleop.profile.presentation
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.profile.R
+import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.personal.PersonalOptionData
+import gr.cpaleop.profile.presentation.personal.PersonalOptionDataMapper
 import gr.cpaleop.profile.presentation.settings.LanguageMapper
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
-import gr.cpaleop.profile.presentation.settings.ThemeMapper
+import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
@@ -30,11 +35,13 @@ class ProfileViewModel(
     private val updatePersonalDetailsUseCase: UpdatePersonalDetailsUseCase,
     private val selectedSocialOptionMapper: SelectedSocialOptionMapper,
     private val optionDataMapper: OptionDataMapper,
+    private val personalOptionDataMapper: PersonalOptionDataMapper,
     private val observePreferredThemeUseCase: ObservePreferredThemeUseCase,
     private val updatePreferredThemeUseCase: UpdatePreferredThemeUseCase,
     private val themeMapper: ThemeMapper,
     private val logoutUseCase: LogoutUseCase,
     private val getPreferredLanguageUseCase: GetPreferredLanguageUseCase,
+    private val updatePreferredLanguageUseCase: UpdatePreferredLanguageUseCase,
     private val languageMapper: LanguageMapper
 ) : BaseViewModel() {
 
@@ -82,8 +89,14 @@ class ProfileViewModel(
     private val _choiceEditSocial = MutableLiveData<SelectedSocialOption>()
     val choiceEditSocial: LiveData<SelectedSocialOption> = _choiceEditSocial.toSingleEvent()
 
-    private val _choiceEditPersonal = MutableLiveData<OptionData>()
-    val choiceEditPersonal: LiveData<OptionData> = _choiceEditPersonal.toSingleEvent()
+    private val _choiceEditPersonal = MutableLiveData<PersonalOptionData>()
+    val choiceEditPersonal: LiveData<PersonalOptionData> = _choiceEditPersonal.toSingleEvent()
+
+    private val _selectedLanguage = MutableLiveData<@LanguageCode String>()
+    val selectedLanguage: LiveData<String> = _selectedLanguage.toSingleEvent()
+
+    private val _updatedLanguage = MutableLiveData<Unit>()
+    val updatedLanguage: LiveData<Unit> = _updatedLanguage.toSingleEvent()
 
     fun presentProfile() {
         viewModelScope.launch(mainDispatcher) {
@@ -103,11 +116,11 @@ class ProfileViewModel(
         viewModelScope.launch(mainDispatcher) {
             _socialOptions.value = listOf(
                 ProfileOption(
-                    "Copy",
+                    R.string.profile_option_copy,
                     R.drawable.ic_copy
                 ),
                 ProfileOption(
-                    "Edit",
+                    R.string.profile_option_edit,
                     appR.drawable.ic_edit
                 )
             )
@@ -119,42 +132,42 @@ class ProfileViewModel(
             try {
                 observePreferredThemeUseCase()
                     .collect { theme ->
+                        val selectedLanguage = languageMapper(getPreferredLanguageUseCase())
                         _settings.value = listOf(
                             Setting(
                                 type = SettingType.SECTION_TITLE,
-                                title = "Account"
+                                titleRes = R.string.profile_settings_account_title
                             ),
                             Setting(
                                 type = SettingType.CONTENT,
                                 iconRes = R.drawable.ic_key,
-                                title = "Change password"
+                                titleRes = R.string.profile_settings_change_password
                             ),
                             Setting(
                                 type = SettingType.CONTENT,
                                 iconRes = R.drawable.ic_logout,
-                                title = "Logout"
+                                titleRes = R.string.profile_settings_logout
                             ),
                             Setting(
                                 type = SettingType.SECTION_TITLE,
-                                title = "Appearance"
+                                titleRes = R.string.profile_settings_appearance_title
                             ),
                             Setting(
                                 type = SettingType.CONTENT,
                                 iconRes = R.drawable.ic_theme,
-                                title = "Change theme",
-                                value = themeMapper(theme)
+                                titleRes = R.string.profile_settings_change_theme,
+                                valueRes = themeMapper(theme)
                             ),
                             Setting(
                                 type = SettingType.CONTENT,
                                 iconRes = R.drawable.ic_language,
-                                title = "Change language",
-                                value = languageMapper(getPreferredLanguageUseCase())
+                                titleRes = R.string.profile_settings_change_language,
+                                valueRes = selectedLanguage
                             )
                         )
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }
@@ -166,7 +179,27 @@ class ProfileViewModel(
                     .collect(_preferredTheme::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+            }
+        }
+    }
+
+    fun presentPreferredLanguage() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _selectedLanguage.value = getPreferredLanguageUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
                 handleNoConnectionException(t)
+            }
+        }
+    }
+
+    fun updatePreferredLanguage(@LanguageCode language: String) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _updatedLanguage.value = updatePreferredLanguageUseCase(language)
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }
@@ -178,7 +211,6 @@ class ProfileViewModel(
                 _updatedTheme.value = theme
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }
@@ -189,52 +221,48 @@ class ProfileViewModel(
                 _logoutSuccess.value = logoutUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }
 
-    fun handleOptionChoiceSocial(choice: String, value: String) {
+    fun handleOptionChoiceSocial(@StringRes choice: Int, type: Social) {
         viewModelScope.launch(mainDispatcher) {
             val selectedProfileSocialDetails =
-                _profile.value?.social?.find { it.label == value } ?: return@launch
+                _profile.value?.social?.find { it.socialType == type } ?: return@launch
 
             when (choice) {
-                "Copy" -> _choiceCopyToClipboard.value =
+                R.string.profile_option_copy -> _choiceCopyToClipboard.value =
                     optionDataMapper(selectedProfileSocialDetails)
-                "Edit" -> _choiceEditSocial.value =
+                R.string.profile_option_edit -> _choiceEditSocial.value =
                     selectedSocialOptionMapper(selectedProfileSocialDetails)
             }
         }
     }
 
-    fun handleOptionChoicePersonal(choice: String, value: String) {
+    fun handleOptionChoicePersonal(@StringRes choice: Int, type: Personal) {
         viewModelScope.launch(mainDispatcher) {
             try {
                 val selectedPersonalDetails =
-                    _profile.value?.personalDetails?.find { it.label == value } ?: return@launch
+                    _profile.value?.personalDetails?.find { it.type == type } ?: return@launch
 
-                val optionData = optionDataMapper(selectedPersonalDetails)
                 when (choice) {
-                    "Copy" -> _choiceCopyToClipboard.value = optionData
-                    "Edit" -> _choiceEditPersonal.value = optionData
+                    R.string.profile_option_copy -> _choiceCopyToClipboard.value =
+                        optionDataMapper(selectedPersonalDetails)
+                    R.string.profile_option_edit -> _choiceEditPersonal.value =
+                        personalOptionDataMapper(selectedPersonalDetails)
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }
 
-    fun updatePersonal(personalLabel: String, value: String) {
+    fun updatePersonal(type: Personal, value: String) {
         viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                val personalType =
-                    profile.value?.personalDetails?.find { it.label == personalLabel }?.type
-                        ?: return@launch
                 _profile.value =
-                    profilePresentationMapper(updatePersonalDetailsUseCase(personalType, value))
+                    profilePresentationMapper(updatePersonalDetailsUseCase(type, value))
             } catch (t: Throwable) {
                 Timber.e(t)
                 handleNoConnectionException(t)
