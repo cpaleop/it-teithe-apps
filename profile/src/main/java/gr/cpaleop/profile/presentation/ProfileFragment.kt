@@ -66,7 +66,10 @@ class ProfileFragment :
 
     private fun setupViews() {
         profileStateAdapter = ProfileStateAdapter(this)
-        binding.profileViewPager.adapter = profileStateAdapter
+        binding.profileViewPager.run {
+            adapter = profileStateAdapter
+            offscreenPageLimit = 2
+        }
 
         TabLayoutMediator(binding.profileTabLayout, binding.profileViewPager) { tab, position ->
             tab.setText(ProfileStateAdapter.titles[position])
