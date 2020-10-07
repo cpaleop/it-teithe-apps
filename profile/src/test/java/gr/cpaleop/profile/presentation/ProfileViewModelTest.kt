@@ -5,10 +5,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.*
 import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.personal.PersonalOptionData
+import gr.cpaleop.profile.presentation.personal.PersonalOptionDataMapper
+import gr.cpaleop.profile.presentation.settings.LanguageMapper
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
@@ -50,6 +54,9 @@ class ProfileViewModelTest {
     private lateinit var selectedSocialOptionMapper: SelectedSocialOptionMapper
 
     @MockK
+    private lateinit var personalOptionDataMapper: PersonalOptionDataMapper
+
+    @MockK
     private lateinit var optionDataMapper: OptionDataMapper
 
     @MockK
@@ -64,6 +71,15 @@ class ProfileViewModelTest {
     @MockK
     private lateinit var logoutUseCase: LogoutUseCase
 
+    @MockK
+    private lateinit var getPreferredLanguageUseCase: GetPreferredLanguageUseCase
+
+    @MockK
+    private lateinit var updatePreferredLanguageUseCase: UpdatePreferredLanguageUseCase
+
+    @MockK
+    private lateinit var languageMapper: LanguageMapper
+
     private lateinit var viewModel: ProfileViewModel
 
     @Before
@@ -77,10 +93,14 @@ class ProfileViewModelTest {
             updatePersonalDetailsUseCase,
             selectedSocialOptionMapper,
             optionDataMapper,
+            personalOptionDataMapper,
             observePreferredThemeUseCase,
             updatePreferredThemeUseCase,
             themeMapper,
-            logoutUseCase
+            logoutUseCase,
+            getPreferredLanguageUseCase,
+            updatePreferredLanguageUseCase,
+            languageMapper
         )
     }
 
@@ -107,11 +127,11 @@ class ProfileViewModelTest {
     fun `presentSocialOptions success`() {
         val expected = listOf(
             ProfileOption(
-                "Copy",
+                R.string.profile_option_copy,
                 R.drawable.ic_copy
             ),
             ProfileOption(
-                "Edit",
+                R.string.profile_option_edit,
                 appR.drawable.ic_edit
             )
         )
@@ -121,12 +141,12 @@ class ProfileViewModelTest {
 
     @Test
     fun `handleOptionChoiceSocial correct values when option is edit`() = runBlocking {
-        val givenChoice = "Edit"
-        val givenValue = "Facebook"
+        val givenChoiceRes = R.string.profile_option_edit
+        val givenSocialType = Social.FACEBOOK
         val expectedProfile = profilePresentation
         val expected = SelectedSocialOption(
             Social.FACEBOOK,
-            "Facebook",
+            R.string.profile_socials_facebook_title,
             "facebook"
         )
 
@@ -135,7 +155,7 @@ class ProfileViewModelTest {
         coEvery {
             selectedSocialOptionMapper(
                 ProfileSocialDetails(
-                    labelRes = "Facebook",
+                    labelRes = R.string.profile_socials_facebook_title,
                     socialLogoResource = R.drawable.ic_facebook,
                     value = "facebook",
                     socialType = Social.FACEBOOK
@@ -144,17 +164,17 @@ class ProfileViewModelTest {
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoiceSocial(givenChoice, givenValue)
+        viewModel.handleOptionChoiceSocial(givenChoiceRes, givenSocialType)
         assertThat(LiveDataTest.getValue(viewModel.choiceEditSocial)).isEqualTo(expected)
     }
 
     @Test
     fun `handleOptionChoiceSocial correct values when option is copy`() = runBlocking {
-        val givenChoice = "Copy"
-        val givenValue = "Facebook"
+        val givenChoiceRes = R.string.profile_option_copy
+        val givenSocialType = Social.FACEBOOK
         val expectedProfile = profilePresentation
         val expected = OptionData(
-            "Facebook",
+            R.string.profile_socials_facebook_title,
             "facebook"
         )
 
@@ -163,7 +183,7 @@ class ProfileViewModelTest {
         coEvery {
             optionDataMapper(
                 ProfileSocialDetails(
-                    labelRes = "Facebook",
+                    labelRes = R.string.profile_socials_facebook_title,
                     socialLogoResource = R.drawable.ic_facebook,
                     value = "facebook",
                     socialType = Social.FACEBOOK
@@ -172,7 +192,7 @@ class ProfileViewModelTest {
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoiceSocial(givenChoice, givenValue)
+        viewModel.handleOptionChoiceSocial(givenChoiceRes, givenSocialType)
         assertThat(LiveDataTest.getValue(viewModel.choiceCopyToClipboard)).isEqualTo(expected)
     }
 
@@ -205,7 +225,9 @@ class ProfileViewModelTest {
             emit(givenTheme)
         }
         every { observePreferredThemeUseCase() } returns givenThemeFlow
-        every { themeMapper(givenTheme) } returns "Dark"
+        coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
+        every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
+        every { themeMapper(givenTheme) } returns R.string.profile_theme_dark
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
@@ -218,7 +240,9 @@ class ProfileViewModelTest {
             emit(givenTheme)
         }
         every { observePreferredThemeUseCase() } returns givenThemeFlow
-        every { themeMapper(givenTheme) } returns "Light"
+        coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
+        every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
+        every { themeMapper(givenTheme) } returns R.string.profile_theme_light
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
@@ -231,7 +255,24 @@ class ProfileViewModelTest {
             emit(givenTheme)
         }
         every { observePreferredThemeUseCase() } returns givenThemeFlow
-        every { themeMapper(givenTheme) } returns "Follow system"
+        coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
+        every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
+        every { themeMapper(givenTheme) } returns R.string.profile_theme_system
+        viewModel.presentSettings()
+        assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentSettings success when preferred language is Greek`() {
+        val expected = settingsListDarkThemeGreekLanguage
+        val givenTheme = AppCompatDelegate.MODE_NIGHT_YES
+        val givenThemeFlow = flow {
+            emit(givenTheme)
+        }
+        every { observePreferredThemeUseCase() } returns givenThemeFlow
+        coEvery { getPreferredLanguageUseCase() } returns LanguageCode.GREEK
+        every { languageMapper(LanguageCode.GREEK) } returns R.string.profile_language_greek
+        every { themeMapper(givenTheme) } returns R.string.profile_theme_dark
         viewModel.presentSettings()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
@@ -324,62 +365,63 @@ class ProfileViewModelTest {
 
     @Test
     fun `updatePersonal success`() {
-        val givenPersonalLabel = "label"
+        val givenPersonalType = Personal.MAIL
         val givenPersonalValue = "value"
         val expected = profilePresentation
         coEvery { getProfileUseCase() } returns profile
         coEvery { profilePresentationMapper(profile) } returns profilePresentation
         viewModel.presentProfile()
-        viewModel.updatePersonal(givenPersonalLabel, givenPersonalValue)
+        viewModel.updatePersonal(givenPersonalType, givenPersonalValue)
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     @Test
     fun `updatePersonal catches exception when throws`() {
-        val givenPersonalLabel = "label"
+        val givenPersonalType = Personal.MAIL
         val givenPersonalValue = "value"
         coEvery { getProfileUseCase() } throws Throwable()
         coEvery { profilePresentationMapper(profile) } returns profilePresentation
         viewModel.presentProfile()
-        viewModel.updatePersonal(givenPersonalLabel, givenPersonalValue)
+        viewModel.updatePersonal(givenPersonalType, givenPersonalValue)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     @Test
     fun `handleOptionChoicePersonal success when choice is edit`() = runBlocking {
-        val givenChoice = "Edit"
-        val givenValue = "Mail"
+        val givenChoice = R.string.profile_option_edit
+        val givenPersonalType = Personal.MAIL
         val expectedProfile = profilePresentation
-        val expected = OptionData(
-            "Mail",
-            "email@domain.com"
+        val expected = PersonalOptionData(
+            type = Personal.MAIL,
+            labelRes = R.string.profile_personal_mail,
+            value = "email@domain.com"
         )
 
         coEvery { getProfileUseCase() } returns profile
         coEvery { profilePresentationMapper(profile) } returns profilePresentation
         coEvery {
-            optionDataMapper(
+            personalOptionDataMapper(
                 ProfilePersonalDetails(
                     type = Personal.MAIL,
-                    label = "Mail",
+                    label = R.string.profile_personal_mail,
                     value = "email@domain.com"
                 )
             )
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoicePersonal(givenChoice, givenValue)
+        viewModel.handleOptionChoicePersonal(givenChoice, givenPersonalType)
         assertThat(LiveDataTest.getValue(viewModel.choiceEditPersonal)).isEqualTo(expected)
     }
 
     @Test
     fun `handleOptionChoicePersonal success when choice is copy`() = runBlocking {
-        val givenChoice = "Copy"
-        val givenValue = "Mail"
+        val givenChoiceRes = R.string.profile_option_copy
+        val givenPersonalType = Personal.MAIL
         val expectedProfile = profilePresentation
         val expected = OptionData(
-            "Mail",
+            R.string.profile_personal_mail,
             "email@domain.com"
         )
 
@@ -389,15 +431,64 @@ class ProfileViewModelTest {
             optionDataMapper(
                 ProfilePersonalDetails(
                     type = Personal.MAIL,
-                    label = "Mail",
+                    label = R.string.profile_personal_mail,
                     value = "email@domain.com"
                 )
             )
         } returns expected
         viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.profile)).isEqualTo(expectedProfile)
-        viewModel.handleOptionChoicePersonal(givenChoice, givenValue)
+        viewModel.handleOptionChoicePersonal(givenChoiceRes, givenPersonalType)
         assertThat(LiveDataTest.getValue(viewModel.choiceCopyToClipboard)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredLanguage presents Greek when preferred language is Greek`() = runBlocking {
+        val expected = "el"
+        coEvery { getPreferredLanguageUseCase() } returns LanguageCode.GREEK
+        viewModel.presentPreferredLanguage()
+        assertThat(LiveDataTest.getValue(viewModel.selectedLanguage)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `presentPreferredLanguage presents English (US) when preferred language is English (US)`() =
+        runBlocking {
+            val expected = "en"
+            coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
+            viewModel.presentPreferredLanguage()
+            assertThat(LiveDataTest.getValue(viewModel.selectedLanguage)).isEqualTo(expected)
+        }
+
+    @Test
+    fun `presentPreferredLanguage catches exception when throws`() = runBlocking {
+        coEvery { getPreferredLanguageUseCase() } throws Throwable()
+        viewModel.presentPreferredLanguage()
+    }
+
+    @Test
+    fun `updatePreferredLanguage presents Greek when preferred language is Greek`() = runBlocking {
+        val givenLanguage = "el"
+        val expected = Unit
+        coEvery { updatePreferredLanguageUseCase(givenLanguage) } returns Unit
+        viewModel.updatePreferredLanguage(givenLanguage)
+        assertThat(LiveDataTest.getValue(viewModel.updatedLanguage)).isEqualTo(expected)
+    }
+
+    @Test
+    fun `updatePreferredLanguage presents English (US) when preferred language is English (US)`() =
+        runBlocking {
+            val givenLanguage = "en"
+            val expected = Unit
+            coEvery { updatePreferredLanguageUseCase(givenLanguage) } returns Unit
+            viewModel.updatePreferredLanguage(givenLanguage)
+            assertThat(LiveDataTest.getValue(viewModel.updatedLanguage)).isEqualTo(expected)
+        }
+
+    @Test
+    fun `updatePreferredLanguage catches exception when throws`() = runBlocking {
+        val givenLanguage = "en"
+        coEvery { updatePreferredLanguageUseCase(givenLanguage) } throws Throwable()
+        viewModel.updatePreferredLanguage(givenLanguage)
     }
 
     companion object {
@@ -405,81 +496,132 @@ class ProfileViewModelTest {
         private val settingsListSystemTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Account"
+                titleRes = R.string.profile_settings_account_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = "Change password"
+                titleRes = R.string.profile_settings_change_password
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                titleRes = "Logout"
+                titleRes = R.string.profile_settings_logout
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Appearance"
+                titleRes = R.string.profile_settings_appearance_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                titleRes = "Change theme",
-                valueRes = "Follow system"
+                titleRes = R.string.profile_settings_change_theme,
+                valueRes = R.string.profile_theme_system
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_language,
+                titleRes = R.string.profile_settings_change_language,
+                valueRes = R.string.profile_language_english
             )
         )
 
         private val settingsListLightTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Account"
+                titleRes = R.string.profile_settings_account_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = "Change password"
+                titleRes = R.string.profile_settings_change_password
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                titleRes = "Logout"
+                titleRes = R.string.profile_settings_logout
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Appearance"
+                titleRes = R.string.profile_settings_appearance_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                titleRes = "Change theme",
-                valueRes = "Light"
+                titleRes = R.string.profile_settings_change_theme,
+                valueRes = R.string.profile_theme_light
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_language,
+                titleRes = R.string.profile_settings_change_language,
+                valueRes = R.string.profile_language_english
             )
         )
 
         private val settingsListDarkTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Account"
+                titleRes = R.string.profile_settings_account_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = "Change password"
+                titleRes = R.string.profile_settings_change_password
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
-                titleRes = "Logout"
+                titleRes = R.string.profile_settings_logout
             ),
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = "Appearance"
+                titleRes = R.string.profile_settings_appearance_title
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_theme,
-                titleRes = "Change theme",
-                valueRes = "Dark"
+                titleRes = R.string.profile_settings_change_theme,
+                valueRes = R.string.profile_theme_dark
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_language,
+                titleRes = R.string.profile_settings_change_language,
+                valueRes = R.string.profile_language_english
+            )
+        )
+
+        private val settingsListDarkThemeGreekLanguage = listOf(
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                titleRes = R.string.profile_settings_account_title
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_key,
+                titleRes = R.string.profile_settings_change_password
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_logout,
+                titleRes = R.string.profile_settings_logout
+            ),
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                titleRes = R.string.profile_settings_appearance_title
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_theme,
+                titleRes = R.string.profile_settings_change_theme,
+                valueRes = R.string.profile_theme_dark
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_language,
+                titleRes = R.string.profile_settings_change_language,
+                valueRes = R.string.profile_language_greek
             )
         )
 
@@ -523,31 +665,31 @@ class ProfileViewModelTest {
                 socialType = Social.GOOGLEPLUS,
                 value = "google_plus",
                 socialLogoResource = R.drawable.ic_google_plus,
-                labelRes = "Google+"
+                labelRes = R.string.profile_socials_googleplus_title
             ),
             ProfileSocialDetails(
                 socialType = Social.FACEBOOK,
                 value = "facebook",
                 socialLogoResource = R.drawable.ic_facebook,
-                labelRes = "Facebook"
+                labelRes = R.string.profile_socials_facebook_title
             ),
             ProfileSocialDetails(
                 socialType = Social.TWITTER,
                 value = "twitter",
                 socialLogoResource = R.drawable.ic_twitter,
-                labelRes = "Twitter"
+                labelRes = R.string.profile_socials_twitter_title
             ),
             ProfileSocialDetails(
                 socialType = Social.LINKEDIN,
                 value = "linkedIn",
                 socialLogoResource = R.drawable.ic_linkedin,
-                labelRes = "LinkedIn"
+                labelRes = R.string.profile_socials_linkedin_title
             ),
             ProfileSocialDetails(
                 socialType = Social.GITHUB,
                 value = "github",
                 socialLogoResource = R.drawable.ic_github,
-                labelRes = "Github"
+                labelRes = R.string.profile_socials_github_title
             )
         )
 
@@ -562,22 +704,22 @@ class ProfileViewModelTest {
             personalDetails = listOf(
                 ProfilePersonalDetails(
                     type = Personal.DISPLAY_NAME,
-                    label = "Name",
+                    label = R.string.profile_personal_name,
                     value = profile.academicDetails.displayName
                 ),
                 ProfilePersonalDetails(
                     type = Personal.TELEPHONE_NUMBER,
-                    label = "Telephone number",
+                    label = R.string.profile_personal_telephone,
                     value = profile.personalDetails.telephoneNumber
                 ),
                 ProfilePersonalDetails(
                     type = Personal.MAIL,
-                    label = "Mail",
+                    label = R.string.profile_personal_mail,
                     value = profile.personalDetails.email
                 ),
                 ProfilePersonalDetails(
                     type = Personal.DESCRIPTION,
-                    label = "Description",
+                    label = R.string.profile_personal_description,
                     value = profile.personalDetails.description
                 )
             )

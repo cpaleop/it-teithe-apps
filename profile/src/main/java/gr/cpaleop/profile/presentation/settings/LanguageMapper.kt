@@ -9,8 +9,8 @@ class LanguageMapper {
     @StringRes
     operator fun invoke(@LanguageCode languageCode: String): Int {
         return when (languageCode) {
-            LanguageCode.GREEK -> R.string.profile_settings_language_greek
-            LanguageCode.ENGLISH -> R.string.profile_settings_language_english
+            LanguageCode.GREEK -> R.string.profile_language_greek
+            LanguageCode.ENGLISH -> R.string.profile_language_english
             else -> throw IllegalArgumentException("No language code found with value $languageCode")
         }
     }

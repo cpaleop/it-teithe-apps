@@ -6,6 +6,6 @@ import gr.cpaleop.profile.domain.entities.Personal
 data class PersonalOptionData(
     val type: Personal,
     @StringRes
-    val label: Int,
+    val labelRes: Int,
     val value: String
 )

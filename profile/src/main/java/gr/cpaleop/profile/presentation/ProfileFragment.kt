@@ -143,7 +143,7 @@ class ProfileFragment :
             .lifecycleOwner(viewLifecycleOwner)
             .title(
                 R.string.profile_social_edit,
-                requireContext().getString(personalOptionData.label)
+                requireContext().getString(personalOptionData.labelRes)
             )
             .cancelOnTouchOutside(true)
             .positiveButton(R.string.profile_social_edit_submit)

@@ -39,8 +39,6 @@
     <string name="profile_settings_appearance_title">Εμφάνιση</string>
     <string name="profile_settings_change_theme">Αλλαγή θέματος</string>
     <string name="profile_settings_change_language">Αλλαγή γλώσσας</string>
-    <string name="profile_settings_language_english">Αγγλικά (US)</string>
-    <string name="profile_settings_language_greek">Ελληνικά</string>
 
     <!-- Options -->
     <string name="profile_option_copy">Αντιγραφή</string>

@@ -7,7 +7,7 @@ class PersonalOptionDataMapper {
     operator fun invoke(profilePersonalDetails: ProfilePersonalDetails): PersonalOptionData {
         return PersonalOptionData(
             type = profilePersonalDetails.type,
-            label = profilePersonalDetails.label,
+            labelRes = profilePersonalDetails.label,
             value = profilePersonalDetails.value
         )
     }
