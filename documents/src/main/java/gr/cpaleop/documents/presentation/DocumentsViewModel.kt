@@ -26,6 +26,7 @@ import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -53,6 +54,9 @@ class DocumentsViewModel(
     private val filterChannel: FilterChannel
 ) : BaseViewModel() {
 
+    private var documentsJob: Job? = null
+    private var announcementFoldersJob: Job? = null
+
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
@@ -75,11 +79,11 @@ class DocumentsViewModel(
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
-                this.value = it.isEmpty() && _documentPreview.value == DocumentPreview.FILE
+                this.value = it.isEmpty()
             }
 
             addSource(documentAnnouncementFolders) {
-                this.value = it.isEmpty() && _documentPreview.value == DocumentPreview.FOLDER
+                this.value = it.isEmpty()
             }
         }.toSingleMediatorEvent()
     }
@@ -115,19 +119,25 @@ class DocumentsViewModel(
                 }
                 when (documentPreview) {
                     DocumentPreview.FILE -> {
-                        observeDocumentsUseCase(announcementId)
-                            .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
-                            .flowOn(defaultDispatcher)
-                            .onStart { _loading.value = true }
-                            .onEach { _loading.value = false }
-                            .collect(_documents::setValue)
+                        announcementFoldersJob?.cancel()
+                        documentsJob = launch(mainDispatcher) {
+                            observeDocumentsUseCase(announcementId)
+                                .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
+                                .flowOn(defaultDispatcher)
+                                .onStart { _loading.value = true }
+                                .onEach { _loading.value = false }
+                                .collect(_documents::setValue)
+                        }
                     }
                     DocumentPreview.FOLDER -> {
-                        observeDocumentsAnnouncementFoldersUseCase()
-                            .flowOn(defaultDispatcher)
-                            .onStart { _loading.value = true }
-                            .onEach { _loading.value = false }
-                            .collect(_documentAnnouncementFolders::setValue)
+                        documentsJob?.cancel()
+                        announcementFoldersJob = launch(mainDispatcher) {
+                            observeDocumentsAnnouncementFoldersUseCase()
+                                .flowOn(defaultDispatcher)
+                                .onStart { _loading.value = true }
+                                .onEach { _loading.value = false }
+                                .collect(_documentAnnouncementFolders::setValue)
+                        }
                     }
                 }
             } catch (t: Throwable) {
