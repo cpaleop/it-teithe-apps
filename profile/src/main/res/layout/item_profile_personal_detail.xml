@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/profileDetailLabelTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/googlesans_medium"
+        android:fontFamily="@font/googlesans_regular"
         android:gravity="center_vertical"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
@@ -27,10 +27,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/googlesans_medium"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/colorOnPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/profileDetailLabelTextView"
+        app:layout_constraintStart_toStartOf="@id/profileDetailLabelTextView"
         app:layout_constraintTop_toBottomOf="@id/profileDetailLabelTextView"
         tools:text="Chris" />
 
