@@ -21,4 +21,6 @@
     <string name="documents_sort_alphabetical">Alphabetical</string>
     <string name="documents_edit_submit">OK</string>
     <string name="documents_edit_cancel">Cancel</string>
+    <string name="documents_delete_success_message">Το έγγραφο διαγράφτηκε</string>
+    <string name="documents_rename_success_message">Το έγγραφο μετονομάστηκε σε: %1$s</string>
 </resources>

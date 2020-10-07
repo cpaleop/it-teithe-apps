@@ -21,4 +21,6 @@
     <string name="documents_sort_alphabetical">Alphabetical</string>
     <string name="documents_edit_submit">OK</string>
     <string name="documents_edit_cancel">Cancel</string>
+    <string name="documents_delete_success_message">Document deleted</string>
+    <string name="documents_rename_success_message">Document renamed to: %1$s</string>
 </resources>

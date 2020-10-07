@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import coil.api.load
@@ -16,6 +15,7 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.hideKeyboard
+import gr.cpaleop.core.presentation.SnackbarMessage
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentProfileBinding
 import gr.cpaleop.profile.di.profileModule
@@ -114,11 +114,7 @@ class ProfileFragment :
             activity?.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(optionData.title, optionData.value)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(
-            activity?.applicationContext,
-            getString(R.string.profile_toast_clipboard),
-            Toast.LENGTH_SHORT
-        ).show()
+        showSnackbarMessage(SnackbarMessage(R.string.profile_toast_clipboard))
     }
 
     private fun editSocial(selectedSocialOption: SelectedSocialOption) {

@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 
 abstract class BaseApiFragment<VB : ViewBinding, VM : BaseViewModel>(viewModelClass: KClass<VM>) :
-    gr.cpaleop.teithe_apps.presentation.base.BaseFragment<VB>() {
+    BaseFragment<VB>() {
 
     protected val viewModel: VM by sharedViewModel<VM>(viewModelClass)
 
@@ -22,10 +22,14 @@ abstract class BaseApiFragment<VB : ViewBinding, VM : BaseViewModel>(viewModelCl
     }
 
     private fun observeError() {
-        viewModel.message.observe(viewLifecycleOwner, Observer(::showSnackbar))
+        viewModel.message.observe(viewLifecycleOwner, Observer(::showSnackbarMessage))
     }
 
-    private fun showSnackbar(snackbarMessage: SnackbarMessage) {
-        Snackbar.make(binding.root, snackbarMessage.resource, Snackbar.LENGTH_LONG).show()
+    protected fun showSnackbarMessage(snackbarMessage: SnackbarMessage) {
+        Snackbar.make(
+            binding.root,
+            getString(snackbarMessage.resource, *snackbarMessage.arguments),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }

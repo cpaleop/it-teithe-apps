@@ -113,7 +113,6 @@ class AnnouncementsFragment :
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
-        /*val directions = AnnouncementsFragmentDirections.announcementsToAnnouncement(announcementId)*/
         val bundle = Bundle().apply {
             putString("announcementId", announcementId)
         }

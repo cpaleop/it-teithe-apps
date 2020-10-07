@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
+import gr.cpaleop.core.presentation.SnackbarMessage
+import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
@@ -86,6 +88,7 @@ class CategoriesFilterViewModel(
                         ?: return@launch
                 _dismissDialog.value =
                     updateRegisteredCategoriesUseCase(registeredCategories, nonRegisteredCategories)
+                _message.value = SnackbarMessage(R.string.categories_updated_successfully)
             } catch (t: Throwable) {
                 Timber.e(t)
                 handleNoConnectionException(t)

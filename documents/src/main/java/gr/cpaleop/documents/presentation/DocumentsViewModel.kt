@@ -9,6 +9,8 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.presentation.SnackbarMessage
+import gr.cpaleop.documents.R
 import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
@@ -202,6 +204,7 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = deleteDocumentUseCase(documentUri)
+                _message.value = SnackbarMessage(R.string.documents_delete_success_message)
             } catch (t: Throwable) {
                 Timber.e(t)
                 handleNoConnectionException(t)
@@ -213,6 +216,7 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
+                _message.value = SnackbarMessage(R.string.documents_rename_success_message, newName)
             } catch (t: Throwable) {
                 Timber.e(t)
                 handleNoConnectionException(t)

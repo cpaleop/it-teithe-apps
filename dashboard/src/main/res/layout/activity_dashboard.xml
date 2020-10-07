@@ -4,15 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/dashboardFragmentHost"
-        android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/dashboardBottomNavigationView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/dashboard_graph" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/dashboardFragmentHost"
+            android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/dashboard_graph" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dashboardBottomNavigationView"
@@ -20,9 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemIconTint="@color/selector_bottom_nav_icon"
-        app:itemTextAppearanceActive="@font/googlesans_regular"
-        app:itemTextAppearanceInactive="@font/googlesans_regular"
-        app:itemTextColor="@color/white"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/dashboard_menu" />
