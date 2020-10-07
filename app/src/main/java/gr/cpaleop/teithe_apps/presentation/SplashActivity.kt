@@ -1,9 +1,9 @@
 package gr.cpaleop.teithe_apps.presentation
 
 import android.os.Bundle
+import gr.cpaleop.core.presentation.base.BaseActivity
 import gr.cpaleop.teithe_apps.databinding.ActivitySplashBinding
 import gr.cpaleop.teithe_apps.di.splashModule
-import gr.cpaleop.teithe_apps.presentation.base.BaseActivity
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 

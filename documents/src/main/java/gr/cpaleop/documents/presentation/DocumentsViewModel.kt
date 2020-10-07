@@ -10,6 +10,7 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.SnackbarMessage
+import gr.cpaleop.core.presentation.base.BaseViewModel
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
@@ -23,7 +24,6 @@ import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
 import gr.cpaleop.documents.presentation.options.DocumentShareOptionData
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
-import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*

@@ -2,7 +2,6 @@ package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
 import androidx.room.Room
-import com.google.gson.Gson
 import gr.cpaleop.core.connection.Connection
 import gr.cpaleop.core.connection.InternetConnection
 import gr.cpaleop.core.connection.MobileConnection
@@ -42,7 +41,7 @@ val coreModule = module {
     single { provideAppDatabase(get()) }
     single { provideAnnouncementsApi(get()) }
     single { provideCategoriesApi(get()) }
-    single { provideRefreshTokenInterceptor(get(), get(), get()) }
+    single { provideRefreshTokenInterceptor(get(), get()) }
     single { provideTokenInterceptor(get()) }
     single { provideConnectionInterceptor(get(named<Internet>())) }
     single { provideHttpLoggingInterceptor() }
@@ -75,8 +74,7 @@ private fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi {
 
 private fun provideRefreshTokenInterceptor(
     preferencesRepository: PreferencesRepository,
-    authenticationRepository: AuthenticationRepository,
-    gson: Gson
+    authenticationRepository: AuthenticationRepository
 ): RefreshTokenInterceptor {
     return RefreshTokenInterceptor(preferencesRepository, authenticationRepository)
 }

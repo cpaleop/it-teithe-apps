@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.LanguageCode
+import gr.cpaleop.core.presentation.base.BaseViewModel
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Social
@@ -19,7 +20,6 @@ import gr.cpaleop.profile.presentation.settings.LanguageMapper
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
-import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

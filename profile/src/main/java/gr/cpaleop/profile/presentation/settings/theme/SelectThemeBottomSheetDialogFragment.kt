@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import gr.cpaleop.core.presentation.base.BaseBottomSheetDialog
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.DialogFragmentSelectThemeBinding
 import gr.cpaleop.profile.presentation.ProfileViewModel
-import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

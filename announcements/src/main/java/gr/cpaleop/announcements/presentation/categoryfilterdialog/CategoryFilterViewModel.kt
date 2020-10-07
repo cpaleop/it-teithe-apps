@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcements.domain.usecases.GetCachedCategoriesUseCase
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

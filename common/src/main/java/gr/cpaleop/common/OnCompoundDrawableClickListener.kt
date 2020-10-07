@@ -44,7 +44,7 @@ class OnCompoundDrawableClickListener(
                 else -> false
             }
 
-            if (compoundDrawable != null && touchedRequestedDrawable) {
+            if (touchedRequestedDrawable) {
                 return compoundDrawableCallback()
             }
             return false

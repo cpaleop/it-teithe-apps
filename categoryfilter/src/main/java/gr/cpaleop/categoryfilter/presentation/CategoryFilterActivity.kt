@@ -3,7 +3,7 @@ package gr.cpaleop.categoryfilter.presentation
 import android.os.Bundle
 import gr.cpaleop.categoryfilter.databinding.ActivityCategoryFilterBinding
 import gr.cpaleop.categoryfilter.di.categoryFilterModule
-import gr.cpaleop.teithe_apps.presentation.base.BaseActivity
+import gr.cpaleop.core.presentation.base.BaseActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel

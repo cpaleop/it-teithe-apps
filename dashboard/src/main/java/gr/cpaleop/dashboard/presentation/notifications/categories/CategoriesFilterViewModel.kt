@@ -8,10 +8,10 @@ import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.SnackbarMessage
+import gr.cpaleop.core.presentation.base.BaseViewModel
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
-import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

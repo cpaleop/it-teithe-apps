@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.presentation.base.BaseApiFragment
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
@@ -28,7 +29,6 @@ import gr.cpaleop.documents.presentation.document.DocumentsAdapter
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.teithe_apps.di.Authority
-import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject

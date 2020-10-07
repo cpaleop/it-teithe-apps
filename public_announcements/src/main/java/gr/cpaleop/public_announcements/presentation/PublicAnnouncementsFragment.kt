@@ -12,11 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.base.BaseApiFragment
 import gr.cpaleop.public_announcements.R
 import gr.cpaleop.public_announcements.databinding.FragmentPublicAnnouncementsBinding
 import gr.cpaleop.public_announcements.di.PublicAnnouncementsScope
 import gr.cpaleop.public_announcements.di.publicAnnouncementsModule
-import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch

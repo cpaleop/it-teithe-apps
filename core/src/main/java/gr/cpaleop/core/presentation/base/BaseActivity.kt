@@ -1,4 +1,4 @@
-package gr.cpaleop.teithe_apps.presentation.base
+package gr.cpaleop.core.presentation.base
 
 import android.content.Context
 import android.content.res.Configuration

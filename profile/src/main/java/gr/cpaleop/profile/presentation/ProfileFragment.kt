@@ -16,13 +16,13 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.SnackbarMessage
+import gr.cpaleop.core.presentation.base.BaseApiFragment
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentProfileBinding
 import gr.cpaleop.profile.di.profileModule
 import gr.cpaleop.profile.presentation.options.OptionData
 import gr.cpaleop.profile.presentation.options.SelectedSocialOption
 import gr.cpaleop.profile.presentation.personal.PersonalOptionData
-import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 

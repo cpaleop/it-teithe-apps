@@ -14,6 +14,7 @@ import gr.cpaleop.documents.domain.FilterChannel
 import gr.cpaleop.documents.domain.usecases.*
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
+import gr.cpaleop.documents.presentation.document.LastModified
 import gr.cpaleop.documents.presentation.options.DocumentDetails
 import gr.cpaleop.documents.presentation.options.DocumentOption
 import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
@@ -380,7 +381,7 @@ class DocumentsViewModelTest {
                 name = "name",
                 size = 10000L,
                 absolutePath = "absolute_path/name",
-                lastModifiedDate = "last_modified_date",
+                lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),
                 previewDrawable = R.drawable.ic_pdf
             ),
             FileDocument(
@@ -388,7 +389,7 @@ class DocumentsViewModelTest {
                 name = "name1",
                 size = 10000L,
                 absolutePath = "absolute_path/name1",
-                lastModifiedDate = "last_modified_date",
+                lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),
                 previewDrawable = R.drawable.ic_docx
             )
         )
