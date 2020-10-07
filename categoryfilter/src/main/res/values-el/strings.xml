@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="category_filter_announcements_empty">Δεν βρέθηκαν ανακοινώσεις</string>
+    <string name="category_filter_has_attachments">Συνημμένα</string>
+</resources>

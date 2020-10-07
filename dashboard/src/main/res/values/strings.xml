@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="announcements_bottom_navigation_menu_title">Announcements</string>
-    <string name="profile_bottom_navigation_menu_title">Profile</string>
-    <string name="notifications_bottom_navigation_menu_title">Notifications</string>
-    <string name="saved_files_bottom_navigation_menu_title">Documents</string>
+    <string name="announcements_bottom_navigation_menu_title" translatable="false">Announcements</string>
+    <string name="profile_bottom_navigation_menu_title" translatable="false">Profile</string>
+    <string name="notifications_bottom_navigation_menu_title" translatable="false">Notifications</string>
+    <string name="saved_files_bottom_navigation_menu_title" translatable="false">Documents</string>
 
     <!-- Notifications -->
     <string name="notifications_empty">No available notifications</string>

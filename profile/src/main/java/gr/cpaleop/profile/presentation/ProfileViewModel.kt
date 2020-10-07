@@ -5,12 +5,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.*
 import gr.cpaleop.profile.presentation.options.*
+import gr.cpaleop.profile.presentation.settings.LanguageMapper
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.ThemeMapper
@@ -24,8 +24,6 @@ import gr.cpaleop.teithe_apps.R as appR
 class ProfileViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher,
     private val getProfileUseCase: GetProfileUseCase,
     private val profilePresentationMapper: ProfilePresentationMapper,
     private val updateSocialUseCase: UpdateSocialUseCase,
@@ -35,7 +33,9 @@ class ProfileViewModel(
     private val observePreferredThemeUseCase: ObservePreferredThemeUseCase,
     private val updatePreferredThemeUseCase: UpdatePreferredThemeUseCase,
     private val themeMapper: ThemeMapper,
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val getPreferredLanguageUseCase: GetPreferredLanguageUseCase,
+    private val languageMapper: LanguageMapper
 ) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -143,6 +143,12 @@ class ProfileViewModel(
                                 iconRes = R.drawable.ic_theme,
                                 title = "Change theme",
                                 value = themeMapper(theme)
+                            ),
+                            Setting(
+                                type = SettingType.CONTENT,
+                                iconRes = R.drawable.ic_language,
+                                title = "Change language",
+                                value = languageMapper(getPreferredLanguageUseCase())
                             )
                         )
                     }

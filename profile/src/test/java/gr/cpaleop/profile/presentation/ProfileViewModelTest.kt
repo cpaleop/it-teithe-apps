@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
-import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.*
@@ -34,9 +33,6 @@ class ProfileViewModelTest {
 
     @MainDispatcher
     private val testMainCoroutineDispatcher = TestCoroutineDispatcher()
-
-    @DefaultDispatcher
-    private val testDefaultCoroutineDispatcher = TestCoroutineDispatcher()
 
     @MockK
     private lateinit var getProfileUseCase: GetProfileUseCase
@@ -75,7 +71,6 @@ class ProfileViewModelTest {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = ProfileViewModel(
             testMainCoroutineDispatcher,
-            testDefaultCoroutineDispatcher,
             getProfileUseCase,
             profilePresentationMapper,
             updateSocialUseCase,

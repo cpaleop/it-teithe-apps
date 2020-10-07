@@ -13,7 +13,7 @@ class PreferencesRepositoryImpl(
     private val preferencesRepository: gr.cpaleop.core.domain.repositories.PreferencesRepository
 ) : PreferencesRepository {
 
-    override suspend fun getPreferredLanguage(): String? = withContext(ioDispatcher) {
+    override suspend fun getPreferredLanguage(): String = withContext(ioDispatcher) {
         preferencesRepository.getLanguageFlow().first()
     }
 

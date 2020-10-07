@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="download_notification_title">Λήψη περιεχομένου</string>
+    <string name="download_notification_text">%1$d από %2$d</string>
+    <string name="download_notification_error">Υπήρξε κάποιο πρόβλημα</string>
+    <string name="download_notification_success_title">Έγινε λήψη %1$d αντικειμένων</string>
+    <string name="download_notification_success_tap_to_navigate">Πατήστε για να δείτε τα αρχεία</string>
+    <string name="download_notification_success_size">Μέγεθος, %1$s</string>
+    <string name="download_notification_success_items">%1$d ακόμα αρχεία</string>
+    <string name="download_notification_cancel">Ακύρωση</string>
+    <string name="download_downloading">Γίνεται λήψη</string>
+    <string name="download_notification_filename">Δεν είναι δυνατή η λήψη του %1$s</string>
+    <string name="download_notification_no_space">Δεν υπάρχει αρκετός χώρος στη συσκευή</string>
+    <string name="download_notification_retry">Ξαναπροσπαθήστε</string>
+</resources>

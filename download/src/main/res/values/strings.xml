@@ -6,13 +6,10 @@
     <string name="download_notification_error">There was a problem</string>
     <string name="download_notification_success_title">Downloaded %1$d items</string>
     <string name="download_notification_success_tap_to_navigate">Tap to view files</string>
-    <string name="download_notification_success_summary">Downloaded %1$s</string>
     <string name="download_notification_success_size">Size, %1$s</string>
     <string name="download_notification_success_items">%1$d more items</string>
     <string name="download_notification_cancel">Cancel</string>
     <string name="download_downloading">Downloading</string>
-    <string name="download_decrypting">Decrypting</string>
-    <string name="download_verifying">Verifying</string>
     <string name="download_notification_filename">Cannot download %1$s</string>
     <string name="download_notification_no_space">Device does not have enough space</string>
     <string name="download_notification_retry">Retry</string>

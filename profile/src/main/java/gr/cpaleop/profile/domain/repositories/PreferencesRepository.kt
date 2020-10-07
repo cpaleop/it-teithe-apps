@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface PreferencesRepository {
 
     @LanguageCode
-    suspend fun getPreferredLanguage(): String?
+    suspend fun getPreferredLanguage(): String
 
     fun getPreferredThemeFlow(): Flow<Int>
 

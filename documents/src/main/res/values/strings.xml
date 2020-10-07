@@ -14,7 +14,6 @@
     <string name="documents_option_rename">Rename</string>
     <string name="documents_option_delete">Delete</string>
     <string name="documents_option_share">Share</string>
-    <string name="documents_option_info">Info</string>
     <string name="documents_share_file_send_to">Send to</string>
     <string name="documents_sort_title">Sort files by</string>
     <string name="documents_sort_date">Date</string>

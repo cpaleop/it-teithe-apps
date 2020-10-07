@@ -3,38 +3,28 @@
 
     <string name="profile_am">am:</string>
     <string name="profile_email">email:</string>
-    <string name="profile_username">username:</string>
-    <string name="profile_semester">semester:</string>
-    <string name="profile_registered_year">registered year:</string>
-    <string name="profile_social_edit">Edit %1$s</string>
-    <string name="profile_social_edit_submit">OK</string>
-    <string name="profile_social_edit_cancel">Cancel</string>
-    <string name="profile_toast_clipboard">Copied!</string>
-    <string name="profile_theme_title">Select theme</string>
-    <string name="profile_theme_light">Light</string>
-    <string name="profile_theme_dark">Dark</string>
-    <string name="profile_theme_system">Follow system</string>
+    <string name="profile_username">όνομα χρήστη:</string>
+    <string name="profile_semester">εξάμηνο:</string>
+    <string name="profile_registered_year">καταχωρισμένο έτος:</string>
+    <string name="profile_social_edit">Επεξεργασία %1$s</string>
+    <string name="profile_social_edit_submit">ΟΚ</string>
+    <string name="profile_social_edit_cancel">Άκυρο</string>
+    <string name="profile_toast_clipboard">Αντιγράφθηκε!</string>
+    <string name="profile_theme_title">Επιλέξτε θέμα</string>
+    <string name="profile_theme_light">Ελαφρύ</string>
+    <string name="profile_theme_dark">Σκούρο</string>
+    <string name="profile_theme_system">Του συστήματος</string>
 
     <!-- Personal details -->
-    <string name="profile_personal_name">Display name</string>
-    <string name="profile_personal_telephone">Telephone number</string>
+    <string name="profile_personal_name">Εμφανιζόμενο όνομα</string>
+    <string name="profile_personal_telephone">Τηλεφωνικός αριθμός</string>
     <string name="profile_personal_mail">Mail</string>
-    <string name="profile_personal_description">Description</string>
-
-    <!-- Academic details -->
-    <string name="profile_academic_details_title">Academic details</string>
-    <string name="profile_academic_username_title">Username</string>
-    <string name="profile_academic_type_title">Type</string>
-    <string name="profile_academic_am_title">AM</string>
-    <string name="profile_academic_displayName_title">Display name</string>
-    <string name="profile_academic_registeredYear_title">Registered year</string>
-    <string name="profile_academic_currentSemester_title">Current semester</string>
+    <string name="profile_personal_description">Περιγραφή</string>
 
     <!-- Social -->
-    <string name="profile_socials_title">Socials</string>
-    <string name="profile_socials_googleplus_title" translatable="false">Google+</string>
-    <string name="profile_socials_facebook_title" translatable="false">Facebook</string>
-    <string name="profile_socials_github_title" translatable="false">Github</string>
-    <string name="profile_socials_twitter_title" translatable="false">Twitter</string>
-    <string name="profile_socials_linkedin_title" translatable="false">LinkedIn</string>
+    <string name="profile_socials_title">Κοινωνικά Δίκτυα</string>
+
+    <!-- Settings -->
+    <string name="profile_settings_language_english">Αγγλικά (US)</string>
+    <string name="profile_settings_language_greek">Ελληνικά</string>
 </resources>
