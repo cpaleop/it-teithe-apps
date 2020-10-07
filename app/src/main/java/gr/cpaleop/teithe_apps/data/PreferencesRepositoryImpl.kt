@@ -141,4 +141,11 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
             else documentPreview
         }
     }
+
+    override suspend fun clear() {
+        dataStore.updateData {
+            it.toBuilder().clear()
+                .build()
+        }
+    }
 }

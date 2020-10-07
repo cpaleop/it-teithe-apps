@@ -27,6 +27,8 @@ interface PreferencesRepository {
 
     fun getDocumentPreviewFlow(): Flow<Int>
 
+    suspend fun clear()
+
     companion object {
 
         const val PREFERENCES_FILE_KEY = "gr.cpaleop.itteitheapps.preferences"

@@ -5,6 +5,6 @@ annotation class DocumentPreview {
 
     companion object {
         const val FILE = -1
-        const val FOLDER = 0
+        const val FOLDER = 1
     }
 }

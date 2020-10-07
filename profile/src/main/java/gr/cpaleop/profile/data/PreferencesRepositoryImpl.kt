@@ -26,6 +26,6 @@ class PreferencesRepositoryImpl(
     }
 
     override suspend fun clearUserData() = withContext(ioDispatcher) {
-        /*preferencesRepository.clear()*/
+        preferencesRepository.clear()
     }
 }
