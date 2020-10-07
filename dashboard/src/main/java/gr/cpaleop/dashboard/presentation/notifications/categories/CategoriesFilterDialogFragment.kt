@@ -11,13 +11,16 @@ import com.google.android.flexbox.JustifyContent
 import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
+import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFilterDialogFragment :
     BaseBottomSheetDialog<DialogFragmentCategoriesFilterBinding>() {
 
     private val viewModel: CategoriesFilterViewModel by viewModel()
+    private val notificationsViewModel: NotificationsViewModel by sharedViewModel()
     private var categoryFilterAdapter: CategoryFilterAdapter? = null
 
     override fun inflateViewBinding(
@@ -56,6 +59,8 @@ class CategoriesFilterDialogFragment :
     private fun observeViewModel() {
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::updateLoader))
+            dismissDialog.observe(viewLifecycleOwner, { dismissAllowingStateLoss() })
+            message.observe(viewLifecycleOwner, Observer(notificationsViewModel::showMessage))
             categories.observe(viewLifecycleOwner, Observer(::updateCategories))
             resetButtonControl.observe(viewLifecycleOwner, Observer(::updateResetButton))
         }

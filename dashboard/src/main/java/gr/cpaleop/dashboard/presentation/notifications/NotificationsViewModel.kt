@@ -8,6 +8,7 @@ import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.SnackbarMessage
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
@@ -70,6 +71,10 @@ class NotificationsViewModel(
                 this.value = it.isEmpty()
             }
         }
+    }
+
+    fun showMessage(snackbarMessage: SnackbarMessage) {
+        _message.value = snackbarMessage
     }
 
     fun presentNotifications() {
