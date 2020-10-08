@@ -4,7 +4,7 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +18,7 @@ class ObserveDocumentsUseCaseImpl(
     private val defaultDispatcher: CoroutineDispatcher,
     private val deviceStorageRepository: DeviceStorageRepository,
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
-    private val filterChannel: FilterChannel
+    private val filterStream: FilterStream
 ) : ObserveDocumentsUseCase {
 
     private val nameSelector: (Document) -> String = { document ->
@@ -37,7 +37,7 @@ class ObserveDocumentsUseCaseImpl(
             }
 
             return@withContext documentsFlow
-                .combine(filterChannel.asFlow(), ::filterDocumentList)
+                .combine(filterStream.asFlow(), ::filterDocumentList)
                 .combine(observeDocumentSortUseCase(), ::sortDocumentList)
         }
 

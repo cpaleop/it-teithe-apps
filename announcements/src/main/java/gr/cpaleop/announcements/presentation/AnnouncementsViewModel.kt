@@ -9,8 +9,11 @@ import gr.cpaleop.announcements.domain.usecases.ObserveAnnouncementsUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.teithe_apps.R
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -37,9 +40,12 @@ class AnnouncementsViewModel(
                     .collect {
                         _announcements.value = it.mapSync(announcementPresentationMapper::invoke)
                     }
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }
@@ -50,7 +56,6 @@ class AnnouncementsViewModel(
                 filterAnnouncementsUseCase(filterQuery)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }

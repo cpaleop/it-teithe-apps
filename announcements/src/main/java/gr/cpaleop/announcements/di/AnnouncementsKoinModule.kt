@@ -6,8 +6,8 @@ import gr.cpaleop.announcements.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.announcements.domain.repositories.CategoriesRepository
 import gr.cpaleop.announcements.domain.usecases.*
 import gr.cpaleop.announcements.presentation.AnnouncementsViewModel
+import gr.cpaleop.announcements.presentation.categoryfilterdialog.AnnouncementCategoryFilterViewModel
 import gr.cpaleop.announcements.presentation.categoryfilterdialog.CategoryFilterMapper
-import gr.cpaleop.announcements.presentation.categoryfilterdialog.CategoryFilterViewModel
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -23,7 +23,7 @@ val announcementsModule = module {
             get()
         )
     }
-    viewModel { CategoryFilterViewModel(get(), get()) }
+    viewModel { AnnouncementCategoryFilterViewModel(get(), get()) }
     single { CategoryFilterMapper() }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }

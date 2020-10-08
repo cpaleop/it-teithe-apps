@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import gr.cpaleop.core.presentation.base.BaseFragment
 import gr.cpaleop.profile.databinding.FragmentProfilePersonalBinding
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfilePersonalDetails
 import gr.cpaleop.profile.presentation.ProfileViewModel
+import gr.cpaleop.teithe_apps.presentation.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ProfilePersonalDetailsFragment : BaseFragment<FragmentProfilePersonalBinding>() {

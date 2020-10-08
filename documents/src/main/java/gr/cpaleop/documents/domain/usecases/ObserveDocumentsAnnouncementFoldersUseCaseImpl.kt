@@ -3,7 +3,7 @@ package gr.cpaleop.documents.domain.usecases
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +17,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
     private val defaultDispatcher: CoroutineDispatcher,
     private val deviceStorageRepository: DeviceStorageRepository,
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
-    private val filterChannel: FilterChannel
+    private val filterStream: FilterStream
 ) : ObserveDocumentsAnnouncementFoldersUseCase {
 
     private val titleSelector: (gr.cpaleop.documents.domain.entities.AnnouncementFolder) -> String =
@@ -41,7 +41,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
 
             return@withContext announcementFoldersFlow
                 .combine(observeDocumentSortUseCase(), ::sortAnnouncementFolderList)
-                .combine(filterChannel.asFlow(), ::filterAnnouncementFolderList)
+                .combine(filterStream.asFlow(), ::filterAnnouncementFolderList)
         }
 
     private fun filterAnnouncementFolderList(

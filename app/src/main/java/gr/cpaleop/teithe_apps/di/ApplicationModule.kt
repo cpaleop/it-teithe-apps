@@ -4,9 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
-import gr.cpaleop.core.data.interceptors.ConnectionInterceptor
-import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
-import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.remote.AuthenticationApi
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.IODispatcher
@@ -14,6 +11,9 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.Authentication
 import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
+import gr.cpaleop.network.interceptors.ConnectionInterceptor
+import gr.cpaleop.network.interceptors.RefreshTokenInterceptor
+import gr.cpaleop.network.interceptors.TokenInterceptor
 import gr.cpaleop.teithe_apps.BuildConfig
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper

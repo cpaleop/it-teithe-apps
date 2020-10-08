@@ -8,8 +8,11 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.teithe_apps.R
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -44,10 +47,14 @@ class CategoryFilterViewModel(
                 .map { it.mapAsync { announcement -> announcementPresentationMapper(announcement) } }
                 .flowOn(defaultDispatcher)
                 .asLiveData(mainDispatcher)
+        } catch (t: NoConnectionException) {
+            Timber.e(t)
+            _message.value = Message(R.string.error_no_internet_connection)
+            return@lazy MutableLiveData()
         } catch (t: Throwable) {
             Timber.e(t)
-            handleNoConnectionException(t)
-            MutableLiveData()
+            _message.value = Message(R.string.error_generic)
+            return@lazy MutableLiveData()
         }
     }
 
@@ -63,9 +70,12 @@ class CategoryFilterViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _categoryName.value = getCategoryNameUseCase(categoryId)
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }
@@ -75,9 +85,12 @@ class CategoryFilterViewModel(
             try {
                 _loading.value = true
                 observeAnnouncementsByCategoryUseCase.refresh(categoryId)
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -86,7 +99,12 @@ class CategoryFilterViewModel(
 
     fun filterAnnouncements(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            observeAnnouncementsByCategoryUseCase.filter(query)
+            try {
+                observeAnnouncementsByCategoryUseCase.filter(query)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_generic)
+            }
         }
     }
 }

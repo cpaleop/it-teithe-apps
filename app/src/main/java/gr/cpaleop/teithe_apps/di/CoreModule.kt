@@ -2,16 +2,6 @@ package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
 import androidx.room.Room
-import gr.cpaleop.core.connection.Connection
-import gr.cpaleop.core.connection.InternetConnection
-import gr.cpaleop.core.connection.MobileConnection
-import gr.cpaleop.core.connection.WifiConnection
-import gr.cpaleop.core.connection.types.Internet
-import gr.cpaleop.core.connection.types.Mobile
-import gr.cpaleop.core.connection.types.Wifi
-import gr.cpaleop.core.data.interceptors.ConnectionInterceptor
-import gr.cpaleop.core.data.interceptors.RefreshTokenInterceptor
-import gr.cpaleop.core.data.interceptors.TokenInterceptor
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.mappers.TokenMapper
@@ -25,6 +15,16 @@ import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapperImpl
+import gr.cpaleop.network.connection.Connection
+import gr.cpaleop.network.connection.InternetConnection
+import gr.cpaleop.network.connection.MobileConnection
+import gr.cpaleop.network.connection.WifiConnection
+import gr.cpaleop.network.connection.types.Internet
+import gr.cpaleop.network.connection.types.Mobile
+import gr.cpaleop.network.connection.types.Wifi
+import gr.cpaleop.network.interceptors.ConnectionInterceptor
+import gr.cpaleop.network.interceptors.RefreshTokenInterceptor
+import gr.cpaleop.network.interceptors.TokenInterceptor
 import gr.cpaleop.teithe_apps.data.PreferencesRepositoryImpl
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named

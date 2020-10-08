@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.interceptors
+package gr.cpaleop.network.interceptors
 
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository

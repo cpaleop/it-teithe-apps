@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import gr.cpaleop.authentication.databinding.ActivityAuthenticationBinding
 import gr.cpaleop.authentication.di.authenticationModule
-import gr.cpaleop.core.presentation.base.BaseActivity
+import gr.cpaleop.teithe_apps.presentation.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules

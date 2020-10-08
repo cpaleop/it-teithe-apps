@@ -13,7 +13,7 @@ import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
-import gr.cpaleop.core.presentation.base.BaseApiFragment
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 

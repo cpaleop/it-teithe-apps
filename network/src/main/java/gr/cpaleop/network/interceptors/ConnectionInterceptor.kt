@@ -1,8 +1,8 @@
-package gr.cpaleop.core.data.interceptors
+package gr.cpaleop.network.interceptors
 
-import gr.cpaleop.core.connection.Connection
-import gr.cpaleop.core.connection.NoConnectionException
-import gr.cpaleop.core.connection.types.Internet
+import gr.cpaleop.network.connection.Connection
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.network.connection.types.Internet
 import okhttp3.Interceptor
 import okhttp3.Response
 

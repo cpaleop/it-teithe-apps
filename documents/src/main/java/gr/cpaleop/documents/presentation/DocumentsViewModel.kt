@@ -9,10 +9,9 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
-import gr.cpaleop.core.presentation.SnackbarMessage
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
 import gr.cpaleop.documents.domain.usecases.*
@@ -24,6 +23,7 @@ import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
 import gr.cpaleop.documents.presentation.options.DocumentShareOptionData
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -51,7 +51,7 @@ class DocumentsViewModel(
     private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase,
-    private val filterChannel: FilterChannel
+    private val filterStream: FilterStream
 ) : BaseViewModel() {
 
     private var documentsJob: Job? = null
@@ -142,7 +142,7 @@ class DocumentsViewModel(
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -151,7 +151,12 @@ class DocumentsViewModel(
 
     fun filter(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            filterChannel.value = query
+            try {
+                filterStream.value = query
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+            }
         }
     }
 
@@ -161,7 +166,7 @@ class DocumentsViewModel(
                 _document.value = getDocumentUseCase(uri)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
@@ -173,39 +178,44 @@ class DocumentsViewModel(
                     getDocumentOptionsUseCase().mapAsync(documentOptionMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
 
     fun handleDocumentOptionChoice(optionType: DocumentOptionType) {
         viewModelScope.launch(mainDispatcher) {
-            val document = _document.value ?: return@launch
-            when (optionType) {
-                DocumentOptionType.ANNOUNCEMENT -> {
-                    _optionNavigateAnnouncement.value = document.announcementId
-                }
-                DocumentOptionType.RENAME -> {
-                    _optionRename.value = DocumentDetails(
-                        uri = document.uri,
-                        name = document.name
-                    )
-                }
-                DocumentOptionType.DELETE -> {
-                    _optionDelete.value = DocumentDetails(
-                        uri = document.uri,
-                        name = document.name
-                    )
-                }
-                DocumentOptionType.SHARE -> {
-                    val uri = document.uri
-                    val fileMimeType = File(URI(uri)).getMimeType()
-                    _optionShare.value = DocumentShareOptionData(
-                        uri = uri,
-                        mimeType = fileMimeType
+            try {
+                val document = _document.value ?: return@launch
+                when (optionType) {
+                    DocumentOptionType.ANNOUNCEMENT -> {
+                        _optionNavigateAnnouncement.value = document.announcementId
+                    }
+                    DocumentOptionType.RENAME -> {
+                        _optionRename.value = DocumentDetails(
+                            uri = document.uri,
+                            name = document.name
+                        )
+                    }
+                    DocumentOptionType.DELETE -> {
+                        _optionDelete.value = DocumentDetails(
+                            uri = document.uri,
+                            name = document.name
+                        )
+                    }
+                    DocumentOptionType.SHARE -> {
+                        val uri = document.uri
+                        val fileMimeType = File(URI(uri)).getMimeType()
+                        _optionShare.value = DocumentShareOptionData(
+                            uri = uri,
+                            mimeType = fileMimeType
 
-                    )
+                        )
+                    }
                 }
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
@@ -214,10 +224,10 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = deleteDocumentUseCase(documentUri)
-                _message.value = SnackbarMessage(R.string.documents_delete_success_message)
+                _message.value = Message(R.string.documents_delete_success_message)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
@@ -226,10 +236,10 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
-                _message.value = SnackbarMessage(R.string.documents_rename_success_message, newName)
+                _message.value = Message(R.string.documents_rename_success_message, newName)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
@@ -243,7 +253,7 @@ class DocumentsViewModel(
                     .collect(_documentSortOptionSelected::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }
@@ -255,7 +265,7 @@ class DocumentsViewModel(
                 _refresh.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
             }
         }
     }

@@ -6,11 +6,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import gr.cpaleop.core.presentation.base.BaseActivity
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.ActivityDashboardBinding
 import gr.cpaleop.dashboard.di.dashboardModule
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
+import gr.cpaleop.teithe_apps.presentation.base.BaseActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules

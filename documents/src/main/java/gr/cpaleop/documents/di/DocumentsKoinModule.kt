@@ -6,7 +6,7 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.documents.data.AnnouncementsRepositoryImpl
 import gr.cpaleop.documents.data.DeviceStorageRepositoryImpl
 import gr.cpaleop.documents.data.PreferencesRepositoryImpl
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
@@ -64,7 +64,7 @@ val documentsModule = module {
             get()
         )
     }
-    single { FilterChannel() }
+    single { FilterStream() }
     single<ObserveDocumentSortUseCase> { ObserveDocumentSortUseCaseImpl(get()) }
     single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
     single<RenameDocumentUseCase> { RenameDocumentUseCaseImpl(get()) }

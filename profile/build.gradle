@@ -11,7 +11,8 @@ apply from: '../jvm_test_dependencies.gradle'
 apply from: '../instrumentation_test_dependencies.gradle'
 
 dependencies {
-    implementation project(":app")
-    implementation project(":core")
-    implementation project(":common")
+    implementation project(':app')
+    implementation project(':core')
+    implementation project(':common')
+    implementation project(':network')
 }

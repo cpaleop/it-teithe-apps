@@ -8,7 +8,8 @@ import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.LanguageCode
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
+import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Social
@@ -20,6 +21,7 @@ import gr.cpaleop.profile.presentation.settings.LanguageMapper
 import gr.cpaleop.profile.presentation.settings.Setting
 import gr.cpaleop.profile.presentation.settings.SettingType
 import gr.cpaleop.profile.presentation.settings.theme.ThemeMapper
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -103,9 +105,12 @@ class ProfileViewModel(
             try {
                 _loading.value = true
                 _profile.value = profilePresentationMapper(getProfileUseCase())
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -114,16 +119,21 @@ class ProfileViewModel(
 
     fun presentSocialOptions() {
         viewModelScope.launch(mainDispatcher) {
-            _socialOptions.value = listOf(
-                ProfileOption(
-                    R.string.profile_option_copy,
-                    R.drawable.ic_copy
-                ),
-                ProfileOption(
-                    R.string.profile_option_edit,
-                    appR.drawable.ic_edit
+            try {
+                _socialOptions.value = listOf(
+                    ProfileOption(
+                        R.string.profile_option_copy,
+                        R.drawable.ic_copy
+                    ),
+                    ProfileOption(
+                        R.string.profile_option_edit,
+                        appR.drawable.ic_edit
+                    )
                 )
-            )
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
+            }
         }
     }
 
@@ -168,6 +178,7 @@ class ProfileViewModel(
                     }
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -179,6 +190,7 @@ class ProfileViewModel(
                     .collect(_preferredTheme::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -189,7 +201,7 @@ class ProfileViewModel(
                 _selectedLanguage.value = getPreferredLanguageUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -200,6 +212,7 @@ class ProfileViewModel(
                 _updatedLanguage.value = updatePreferredLanguageUseCase(language)
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -211,6 +224,7 @@ class ProfileViewModel(
                 _updatedTheme.value = theme
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -221,20 +235,26 @@ class ProfileViewModel(
                 _logoutSuccess.value = logoutUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
 
     fun handleOptionChoiceSocial(@StringRes choice: Int, type: Social) {
         viewModelScope.launch(mainDispatcher) {
-            val selectedProfileSocialDetails =
-                _profile.value?.social?.find { it.socialType == type } ?: return@launch
+            try {
+                val selectedProfileSocialDetails =
+                    _profile.value?.social?.find { it.socialType == type } ?: return@launch
 
-            when (choice) {
-                R.string.profile_option_copy -> _choiceCopyToClipboard.value =
-                    optionDataMapper(selectedProfileSocialDetails)
-                R.string.profile_option_edit -> _choiceEditSocial.value =
-                    selectedSocialOptionMapper(selectedProfileSocialDetails)
+                when (choice) {
+                    R.string.profile_option_copy -> _choiceCopyToClipboard.value =
+                        optionDataMapper(selectedProfileSocialDetails)
+                    R.string.profile_option_edit -> _choiceEditSocial.value =
+                        selectedSocialOptionMapper(selectedProfileSocialDetails)
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -263,9 +283,12 @@ class ProfileViewModel(
                 _loading.value = true
                 _profile.value =
                     profilePresentationMapper(updatePersonalDetailsUseCase(type, value))
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -277,9 +300,12 @@ class ProfileViewModel(
             try {
                 _loading.value = true
                 _profile.value = profilePresentationMapper(updateSocialUseCase(social, value))
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
             }

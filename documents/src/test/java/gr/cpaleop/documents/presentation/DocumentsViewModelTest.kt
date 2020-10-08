@@ -10,7 +10,7 @@ import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.R
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.usecases.*
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
@@ -87,7 +87,7 @@ class DocumentsViewModelTest {
     private lateinit var toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
 
     @MockK
-    private lateinit var filterChannel: FilterChannel
+    private lateinit var filterStream: FilterStream
 
     private lateinit var viewModel: DocumentsViewModel
 
@@ -109,7 +109,7 @@ class DocumentsViewModelTest {
             observeDocumentsAnnouncementFoldersUseCase,
             getDocumentPreviewPreferenceUseCase,
             toggleDocumentPreviewPreferenceUseCase,
-            filterChannel
+            filterStream
         )
     }
 

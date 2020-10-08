@@ -1,7 +1,7 @@
-package gr.cpaleop.core.connection
+package gr.cpaleop.network.connection
 
-import gr.cpaleop.core.connection.types.Mobile
-import gr.cpaleop.core.connection.types.Wifi
+import gr.cpaleop.network.connection.types.Mobile
+import gr.cpaleop.network.connection.types.Wifi
 
 /**
  * Concrete implementation of [Connection]. It defines an Internet connection, either from

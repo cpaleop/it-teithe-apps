@@ -5,8 +5,7 @@ plugins {
 }
 
 apply from: '../shared_dependencies.gradle'
-apply from: '../jvm_test_dependencies.gradle'
 
 dependencies {
-    implementation project(":common")
+    implementation project(':common')
 }

@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
-import gr.cpaleop.documents.domain.FilterChannel
+import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import io.mockk.MockKAnnotations
@@ -39,7 +39,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
     private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     @MockK
-    private lateinit var filterChannel: FilterChannel
+    private lateinit var filterStream: FilterStream
 
     private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCaseImpl
 
@@ -51,7 +51,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
                 testDefaultCoroutineDispatcher,
                 deviceStorageRepository,
                 observeDocumentSortUseCase,
-                filterChannel
+                filterStream
             )
     }
 
@@ -64,7 +64,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         val result = kotlin.runCatching {
             coEvery { observeDocumentSortUseCase() } returns SORT_TYPE_UNKNOWN_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.asFlow() } returns filterEmptyFlow
+            every { filterStream.asFlow() } returns filterEmptyFlow
             observeDocumentsAnnouncementFoldersUseCase().first()
         }
         assertThat(result.isFailure).isEqualTo(true)
@@ -78,7 +78,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersDateDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.asFlow() } returns filterEmptyFlow
+            every { filterStream.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -88,7 +88,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
         val expected = announcementFoldersDateAscending
         coEvery { observeDocumentSortUseCase() } returns SORT_DATE_ASCENDING_FLOW
         coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-        every { filterChannel.asFlow() } returns filterEmptyFlow
+        every { filterStream.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsAnnouncementFoldersUseCase().first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -99,7 +99,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersNameDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.asFlow() } returns filterEmptyFlow
+            every { filterStream.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -110,7 +110,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersNameAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.asFlow() } returns filterEmptyFlow
+            every { filterStream.asFlow() } returns filterEmptyFlow
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -125,9 +125,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersFilteredTitleAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.value = givenFilterQuery } returns Unit
-            every { filterChannel.asFlow() } returns givenFilterQueryFlow
-            filterChannel.value = givenFilterQuery
+            every { filterStream.value = givenFilterQuery } returns Unit
+            every { filterStream.asFlow() } returns givenFilterQueryFlow
+            filterStream.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -143,9 +143,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersFilteredTitleAscending.reversed()
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.value = givenFilterQuery } returns Unit
-            every { filterChannel.asFlow() } returns givenFilterQueryFlow
-            filterChannel.value = givenFilterQuery
+            every { filterStream.value = givenFilterQuery } returns Unit
+            every { filterStream.asFlow() } returns givenFilterQueryFlow
+            filterStream.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -160,9 +160,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersFilteredDateAscending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_ASCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.value = givenFilterQuery } returns Unit
-            every { filterChannel.asFlow() } returns givenFilterQueryFlow
-            filterChannel.value = givenFilterQuery
+            every { filterStream.value = givenFilterQuery } returns Unit
+            every { filterStream.asFlow() } returns givenFilterQueryFlow
+            filterStream.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -178,9 +178,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersFilteredDateAscending.reversed()
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.value = givenFilterQuery } returns Unit
-            every { filterChannel.asFlow() } returns givenFilterQueryFlow
-            filterChannel.value = givenFilterQuery
+            every { filterStream.value = givenFilterQuery } returns Unit
+            every { filterStream.asFlow() } returns givenFilterQueryFlow
+            filterStream.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }
@@ -195,9 +195,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImplTest {
             val expected = announcementFoldersDateDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getAnnouncementFoldersFlow() } returns announcementFoldersFlow
-            every { filterChannel.value = givenFilterQuery } returns Unit
-            every { filterChannel.asFlow() } returns givenFilterQueryFlow
-            filterChannel.value = givenFilterQuery
+            every { filterStream.value = givenFilterQuery } returns Unit
+            every { filterStream.asFlow() } returns givenFilterQueryFlow
+            filterStream.value = givenFilterQuery
             val actual = observeDocumentsAnnouncementFoldersUseCase().first()
             assertThat(actual).isEqualTo(expected)
         }

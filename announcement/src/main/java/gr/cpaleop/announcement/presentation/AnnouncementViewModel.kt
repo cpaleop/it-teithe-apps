@@ -8,7 +8,10 @@ import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.teithe_apps.R
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -30,11 +33,19 @@ class AnnouncementViewModel(
         MediatorLiveData<Boolean>().apply {
             addSource(announcement) { announcementDetails ->
                 viewModelScope.launch(mainDispatcher) {
-                    observeDownloadNotifierUseCase(announcementDetails.id)
-                        .flowOn(mainDispatcher)
-                        .collect {
-                            this@apply.value = it
-                        }
+                    try {
+                        observeDownloadNotifierUseCase(announcementDetails.id)
+                            .flowOn(mainDispatcher)
+                            .collect {
+                                this@apply.value = it
+                            }
+                    } catch (t: NoConnectionException) {
+                        Timber.e(t)
+                        _message.value = Message(R.string.error_no_internet_connection)
+                    } catch (t: Throwable) {
+                        Timber.e(t)
+                        _message.value = Message(R.string.error_generic)
+                    }
                 }
             }
         }
@@ -47,9 +58,12 @@ class AnnouncementViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _announcement.value = announcementDetailsMapper(getAnnouncementUseCase(id))
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }
@@ -60,9 +74,12 @@ class AnnouncementViewModel(
                 val mAnnouncement = getAnnouncementUseCase(id)
                 _attachmentFileId.value =
                     AnnouncementDocument(mAnnouncement.id, mAnnouncement.attachments)
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }

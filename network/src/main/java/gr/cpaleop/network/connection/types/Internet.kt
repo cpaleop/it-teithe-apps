@@ -1,4 +1,4 @@
-package gr.cpaleop.core.connection.types
+package gr.cpaleop.network.connection.types
 
 @Retention(AnnotationRetention.SOURCE)
 annotation class Internet

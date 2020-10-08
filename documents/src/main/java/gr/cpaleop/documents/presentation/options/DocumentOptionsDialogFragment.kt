@@ -13,9 +13,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import gr.cpaleop.core.domain.entities.Document
-import gr.cpaleop.core.presentation.base.BaseBottomSheetDialog
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.DialogFragmentDocumentOptionsBinding
+import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import gr.cpaleop.core.presentation.base.BaseApiFragment
 import gr.cpaleop.teithe_apps.databinding.FragmentSplashBinding
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 
 class SplashFragment :
     BaseApiFragment<FragmentSplashBinding, SplashViewModel>(SplashViewModel::class) {

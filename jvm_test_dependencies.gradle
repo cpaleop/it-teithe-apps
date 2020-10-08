@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":common-test")
+    implementation project(':common-test')
     // JVM test
     testImplementation "junit:junit:4.13"
     testImplementation "io.mockk:mockk:1.9.3"

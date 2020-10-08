@@ -8,10 +8,12 @@ import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
-import gr.cpaleop.core.presentation.SnackbarMessage
-import gr.cpaleop.core.presentation.base.BaseViewModel
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.teithe_apps.R
+import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -73,8 +75,8 @@ class NotificationsViewModel(
         }
     }
 
-    fun showMessage(snackbarMessage: SnackbarMessage) {
-        _message.value = snackbarMessage
+    fun showMessage(message: Message) {
+        _message.value = message
     }
 
     fun presentNotifications() {
@@ -83,9 +85,12 @@ class NotificationsViewModel(
                 _loading.value = true
                 _notifications.value =
                     getNotificationsUseCase().mapAsync(notificationPresentationMapper::invoke)
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
+                _message.value = Message(R.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -96,9 +101,11 @@ class NotificationsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _readNotifications.value = readAllNotificationsUseCase()
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                handleNoConnectionException(t)
             }
         }
     }
