@@ -17,8 +17,8 @@ android {
         applicationId "gr.cpaleop.teithe_apps"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1003
-        versionName "1.0.03"
+        versionCode 1004
+        versionName "1.0.04"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
