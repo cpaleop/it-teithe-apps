@@ -5,10 +5,12 @@ import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.entities.NotificationRelatedAnnouncement
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
+import gr.cpaleop.network.connection.NoConnectionException
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -19,6 +21,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class NotificationsViewModelTest {
@@ -83,15 +86,43 @@ class NotificationsViewModelTest {
     }
 
     @Test
+    fun `presentNotifications catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { getNotificationsUseCase() } throws Throwable()
+        viewModel.presentNotifications()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `presentNotifications catches exception and has message when no internet connection`() {
+        val expectedMessage = Message(appR.string.error_no_internet_connection)
+        coEvery { getNotificationsUseCase() } throws NoConnectionException()
+        viewModel.presentNotifications()
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
     fun `readAllNotifications success`() {
         coEvery { readAllNotificationsUseCase() } returns Unit
         viewModel.readAllNotifications()
     }
 
     @Test
-    fun `readAllNotifications catches exception when throws`() {
+    fun `readAllNotifications catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { readAllNotificationsUseCase() } throws Throwable()
         viewModel.readAllNotifications()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `readAllNotifications catches exception and has message when no internet connection`() {
+        val expectedMessage = Message(appR.string.error_no_internet_connection)
+        coEvery { readAllNotificationsUseCase() } throws NoConnectionException()
+        viewModel.readAllNotifications()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -128,6 +159,14 @@ class NotificationsViewModelTest {
             expectedList
         )
         assertThat(LiveDataTest.getValue(viewModel.notificationsFilterEmpty)).isEqualTo(true)
+    }
+
+    @Test
+    fun `showMessage correct value`() = runBlocking {
+        val givenMessage = Message(appR.string.error_generic)
+        val expected = Message(appR.string.error_generic)
+        viewModel.showMessage(givenMessage)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expected)
     }
 
     companion object {

@@ -56,6 +56,7 @@ class AnnouncementsViewModel(
                 filterAnnouncementsUseCase(filterQuery)
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }

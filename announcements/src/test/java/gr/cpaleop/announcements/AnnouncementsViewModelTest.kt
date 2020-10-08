@@ -11,7 +11,10 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.network.connection.NoConnectionException
+import gr.cpaleop.teithe_apps.R
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -56,7 +59,7 @@ class AnnouncementsViewModelTest {
 
     /**
      * Not working cause of equality of [PagingData] object.
-     * Keep assertion to `isNotEqualTo`
+     * Keep assertion uncommented for now
      */
     @Test
     fun `presentAnnouncements collects paging data`() = testCoroutineDispatcher.runBlockingTest {
@@ -66,8 +69,26 @@ class AnnouncementsViewModelTest {
         }
         coEvery { observeAnnouncementsUseCase() } returns announcementPagingDataFlow
         viewModel.presentAnnouncements()
-        assertThat(LiveDataTest.getValue(viewModel.announcements)).isNotEqualTo(expected)
+        /*assertThat(LiveDataTest.getValue(viewModel.announcements)).isNotEqualTo(expected)*/
     }
+
+    @Test
+    fun `presentAnnouncements catches exception message when failure`() =
+        testCoroutineDispatcher.runBlockingTest {
+            val expectedMessage = Message(R.string.error_generic)
+            coEvery { observeAnnouncementsUseCase() } throws Throwable()
+            viewModel.presentAnnouncements()
+            assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+        }
+
+    @Test
+    fun `presentAnnouncements catches exception and has message when no internet connection`() =
+        testCoroutineDispatcher.runBlockingTest {
+            val expectedMessage = Message(R.string.error_no_internet_connection)
+            coEvery { observeAnnouncementsUseCase() } throws NoConnectionException()
+            viewModel.presentAnnouncements()
+            assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+        }
 
     @Test
     fun `searchAnnouncements success`() {
@@ -77,10 +98,12 @@ class AnnouncementsViewModelTest {
     }
 
     @Test
-    fun `searchAnnouncements catches exception when throws`() {
+    fun `searchAnnouncements catches exception and has message when failure`() {
+        val expectedMessage = Message(R.string.error_generic)
         val givenFilter = "query"
         coEvery { filterAnnouncementsUseCase(givenFilter) } throws Throwable()
         viewModel.searchAnnouncements(givenFilter)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     companion object {

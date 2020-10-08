@@ -4,19 +4,17 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.teithe_apps.domain.usecases.AuthenticatedUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class SplashViewModelTest {
@@ -25,7 +23,7 @@ class SplashViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @DefaultDispatcher
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testMainDispatcher = TestCoroutineDispatcher()
 
     @MockK
     private lateinit var authenticatedUseCase: AuthenticatedUseCase
@@ -35,14 +33,7 @@ class SplashViewModelTest {
     @Before
     fun setupViewModel() {
         MockKAnnotations.init(this, relaxUnitFun = false)
-        viewModel = SplashViewModel(testDispatcher, authenticatedUseCase)
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
+        viewModel = SplashViewModel(testMainDispatcher, authenticatedUseCase)
     }
 
     @Test
@@ -62,8 +53,10 @@ class SplashViewModelTest {
     }
 
     @Test
-    fun `checkUserAuthentication catches exception when throws`() {
+    fun `checkUserAuthentication catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { authenticatedUseCase() } throws Throwable()
         viewModel.checkUserAuthentication()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 }

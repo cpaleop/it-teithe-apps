@@ -2,8 +2,8 @@ package gr.cpaleop.core.presentation
 
 import androidx.annotation.StringRes
 
-class Message(
+data class Message(
     @StringRes
     val resource: Int,
-    vararg var arguments: Any
+    var arguments: List<Any> = emptyList()
 )

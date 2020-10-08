@@ -12,12 +12,12 @@ import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import gr.cpaleop.network.connection.NoConnectionException
-import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import gr.cpaleop.teithe_apps.R as appR
 
 class NotificationsViewModel(
     @MainDispatcher
@@ -87,10 +87,10 @@ class NotificationsViewModel(
                     getNotificationsUseCase().mapAsync(notificationPresentationMapper::invoke)
             } catch (t: NoConnectionException) {
                 Timber.e(t)
-                _message.value = Message(R.string.error_no_internet_connection)
+                _message.value = Message(appR.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -103,9 +103,10 @@ class NotificationsViewModel(
                 _readNotifications.value = readAllNotificationsUseCase()
             } catch (t: NoConnectionException) {
                 Timber.e(t)
-                _message.value = Message(R.string.error_no_internet_connection)
+                _message.value = Message(appR.string.error_no_internet_connection)
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }

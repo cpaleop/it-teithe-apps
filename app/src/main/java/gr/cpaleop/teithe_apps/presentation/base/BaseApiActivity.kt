@@ -28,6 +28,10 @@ abstract class BaseApiActivity<VB : ViewBinding, VM : BaseViewModel>(viewModelCl
     }
 
     private fun showSnackbarMessage(message: Message) {
-        Snackbar.make(binding.root, message.resource, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            binding.root,
+            getString(message.resource, message.arguments),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }

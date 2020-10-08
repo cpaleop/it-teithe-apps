@@ -119,21 +119,16 @@ class ProfileViewModel(
 
     fun presentSocialOptions() {
         viewModelScope.launch(mainDispatcher) {
-            try {
-                _socialOptions.value = listOf(
-                    ProfileOption(
-                        R.string.profile_option_copy,
-                        R.drawable.ic_copy
-                    ),
-                    ProfileOption(
-                        R.string.profile_option_edit,
-                        appR.drawable.ic_edit
-                    )
+            _socialOptions.value = listOf(
+                ProfileOption(
+                    R.string.profile_option_copy,
+                    R.drawable.ic_copy
+                ),
+                ProfileOption(
+                    R.string.profile_option_edit,
+                    appR.drawable.ic_edit
                 )
-            } catch (t: Throwable) {
-                Timber.e(t)
-                _message.value = Message(appR.string.error_generic)
-            }
+            )
         }
     }
 
@@ -195,6 +190,18 @@ class ProfileViewModel(
         }
     }
 
+    fun updatePreferredTheme(theme: Int) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                updatePreferredThemeUseCase(theme)
+                _updatedTheme.value = theme
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
+            }
+        }
+    }
+
     fun presentPreferredLanguage() {
         viewModelScope.launch(mainDispatcher) {
             try {
@@ -210,18 +217,6 @@ class ProfileViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _updatedLanguage.value = updatePreferredLanguageUseCase(language)
-            } catch (t: Throwable) {
-                Timber.e(t)
-                _message.value = Message(appR.string.error_generic)
-            }
-        }
-    }
-
-    fun updatePreferredTheme(theme: Int) {
-        viewModelScope.launch(mainDispatcher) {
-            try {
-                updatePreferredThemeUseCase(theme)
-                _updatedTheme.value = theme
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

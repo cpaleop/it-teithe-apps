@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.net.URI
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class DocumentsViewModel(
@@ -118,31 +119,49 @@ class DocumentsViewModel(
                     documentPreview = it
                 }
                 when (documentPreview) {
-                    DocumentPreview.FILE -> {
-                        announcementFoldersJob?.cancel()
-                        documentsJob = launch(mainDispatcher) {
-                            observeDocumentsUseCase(announcementId)
-                                .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
-                                .flowOn(defaultDispatcher)
-                                .onStart { _loading.value = true }
-                                .onEach { _loading.value = false }
-                                .collect(_documents::setValue)
-                        }
-                    }
-                    DocumentPreview.FOLDER -> {
-                        documentsJob?.cancel()
-                        announcementFoldersJob = launch(mainDispatcher) {
-                            observeDocumentsAnnouncementFoldersUseCase()
-                                .flowOn(defaultDispatcher)
-                                .onStart { _loading.value = true }
-                                .onEach { _loading.value = false }
-                                .collect(_documentAnnouncementFolders::setValue)
-                        }
-                    }
+                    DocumentPreview.FILE -> observeDocuments(announcementId)
+                    DocumentPreview.FOLDER -> observeAnnouncementFolders()
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    private fun observeDocuments(announcementId: String?) {
+        announcementFoldersJob?.cancel()
+        documentsJob = viewModelScope.launch(mainDispatcher) {
+            try {
+                observeDocumentsUseCase(announcementId)
+                    .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
+                    .flowOn(defaultDispatcher)
+                    .onStart { _loading.value = true }
+                    .onEach { _loading.value = false }
+                    .collect(_documents::setValue)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    private fun observeAnnouncementFolders() {
+        documentsJob?.cancel()
+        announcementFoldersJob = viewModelScope.launch(mainDispatcher) {
+            try {
+                observeDocumentsAnnouncementFoldersUseCase()
+                    .flowOn(defaultDispatcher)
+                    .onStart { _loading.value = true }
+                    .onEach { _loading.value = false }
+                    .collect(_documentAnnouncementFolders::setValue)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
             }
@@ -155,7 +174,7 @@ class DocumentsViewModel(
                 filterStream.value = query
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -166,7 +185,7 @@ class DocumentsViewModel(
                 _document.value = getDocumentUseCase(uri)
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -178,7 +197,7 @@ class DocumentsViewModel(
                     getDocumentOptionsUseCase().mapAsync(documentOptionMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -215,7 +234,7 @@ class DocumentsViewModel(
                 }
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -227,7 +246,7 @@ class DocumentsViewModel(
                 _message.value = Message(R.string.documents_delete_success_message)
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -236,10 +255,10 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
-                _message.value = Message(R.string.documents_rename_success_message, newName)
+                _message.value = Message(R.string.documents_rename_success_message, listOf(newName))
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -253,7 +272,7 @@ class DocumentsViewModel(
                     .collect(_documentSortOptionSelected::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -265,7 +284,7 @@ class DocumentsViewModel(
                 _refresh.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)
-                _message.value = Message(gr.cpaleop.teithe_apps.R.string.error_generic)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }

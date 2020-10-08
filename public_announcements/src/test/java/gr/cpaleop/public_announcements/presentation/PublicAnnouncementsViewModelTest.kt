@@ -7,7 +7,9 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncementsUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -19,6 +21,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class PublicAnnouncementsViewModelTest {
@@ -74,11 +77,23 @@ class PublicAnnouncementsViewModelTest {
     }
 
     @Test
-    fun `presentAnnouncements when failure catches exception`() = runBlocking {
+    fun `presentAnnouncements catches exception and has message when failure`() = runBlocking {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { observePublicAnnouncementsUseCase() } throws Throwable()
         viewModel.presentAnnouncements()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
+
+    @Test
+    fun `presentAnnouncements catches exception and has message when no internet connection`() =
+        runBlocking {
+            val expectedMessage = Message(appR.string.error_no_internet_connection)
+            coEvery { observePublicAnnouncementsUseCase() } throws NoConnectionException()
+            viewModel.presentAnnouncements()
+            assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+            assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+        }
 
     companion object {
 

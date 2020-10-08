@@ -7,7 +7,10 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
+import gr.cpaleop.documents.domain.usecases.GetDocumentSortOptionsUseCase
+import gr.cpaleop.documents.domain.usecases.ObserveDocumentSortUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -17,6 +20,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @ExperimentalCoroutinesApi
 class DocumentSortOptionsViewModelTest {
@@ -31,13 +35,13 @@ class DocumentSortOptionsViewModelTest {
     private val defaultDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private lateinit var getDocumentSortOptionsUseCase: gr.cpaleop.documents.domain.usecases.GetDocumentSortOptionsUseCase
+    private lateinit var getDocumentSortOptionsUseCase: GetDocumentSortOptionsUseCase
 
     @MockK
     private lateinit var documentSortOptionMapper: DocumentSortOptionMapper
 
     @MockK
-    private lateinit var observeDocumentSortUseCase: gr.cpaleop.documents.domain.usecases.ObserveDocumentSortUseCase
+    private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     private lateinit var viewModel: DocumentSortOptionsViewModel
 
@@ -65,8 +69,10 @@ class DocumentSortOptionsViewModelTest {
 
     @Test
     fun `presentDocumentSortOptions catches exception`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { getDocumentSortOptionsUseCase() } throws Throwable()
         viewModel.presentDocumentSortOptions()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -83,6 +89,7 @@ class DocumentSortOptionsViewModelTest {
 
     @Test
     fun `updateSort catches exception`() {
+        val expectedMessage = Message(appR.string.error_generic)
         val documentSort = DocumentSort(
             type = DocumentSortType.ALPHABETICAL,
             selected = true,
@@ -90,6 +97,7 @@ class DocumentSortOptionsViewModelTest {
         )
         coEvery { observeDocumentSortUseCase.update(documentSort) } throws Throwable()
         viewModel.updateSort(documentSort)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     //TODO: Move to DocumentSortOptionsViewModelTest
@@ -108,7 +116,7 @@ class DocumentSortOptionsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentSortOptions catches exception when throws`() {
+    fun `presentDocumentSortOptions catches exception when failure`() {
         coEvery { getDocumentSortOptionsUseCase() } throws Throwable()
         viewModel.presentDocumentSortOptions()
     }
@@ -128,7 +136,7 @@ class DocumentSortOptionsViewModelTest {
     }
 
     @Test
-    fun `updateSort catches exception when throws`() {
+    fun `updateSort catches exception when failure`() {
         val givenType = DocumentSortType.DATE
         val givenDescending = true
         val givenSelected = true

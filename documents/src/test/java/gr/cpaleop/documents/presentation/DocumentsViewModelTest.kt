@@ -9,6 +9,7 @@ import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.usecases.*
@@ -142,11 +143,23 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocuments catches exception when throws`() {
+    fun `presentDocuments catches exception and has message when failure while observing documents`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `presentDocuments catches exception and has message when failure while observing announcement folders`() {
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws Throwable()
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
+        viewModel.presentDocuments(null)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -159,10 +172,12 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentDetails catches exception when throws`() {
+    fun `presentDocumentDetails catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         val givenUri = "uri"
         coEvery { getDocumentUseCase(givenUri) } throws Throwable()
         viewModel.presentDocumentDetails(givenUri)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -178,9 +193,11 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentOptions catches exception when throws`() {
+    fun `presentDocumentOptions catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { getDocumentOptionsUseCase() } throws Throwable()
         viewModel.presentDocumentOptions()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     /**
@@ -233,18 +250,22 @@ class DocumentsViewModelTest {
 
     @Test
     fun `deleteDocument success`() {
+        val expectedMessage = Message(R.string.documents_delete_success_message)
         val givenUri = "uri"
         val expected = Unit
         coEvery { deleteDocumentUseCase(givenUri) } returns Unit
         viewModel.deleteDocument(givenUri)
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
-    fun `deleteDocument catches exception when throws`() {
+    fun `deleteDocument catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         val givenUri = "uri"
         coEvery { deleteDocumentUseCase(givenUri) } throws Throwable()
         viewModel.deleteDocument(givenUri)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -255,14 +276,22 @@ class DocumentsViewModelTest {
         coEvery { renameDocumentUseCase(givenUri, givenNewName) } returns Unit
         viewModel.renameDocument(givenUri, givenNewName)
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(expected)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(
+            Message(
+                R.string.documents_rename_success_message,
+                listOf(givenNewName)
+            )
+        )
     }
 
     @Test
-    fun `renameDocument catches exception when throws`() {
+    fun `renameDocument catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         val givenUri = "uri"
         val givenNewName = "newName"
         coEvery { renameDocumentUseCase(givenUri, givenNewName) } throws Throwable()
         viewModel.renameDocument(givenUri, givenNewName)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -276,9 +305,11 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `presentDocumentSortSelected catches exception when throws`() {
+    fun `presentDocumentSortSelected catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentSortUseCase() } throws Throwable()
         viewModel.presentDocumentSortSelected()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -300,9 +331,11 @@ class DocumentsViewModelTest {
     }
 
     @Test
-    fun `togglePreview catches exception`() {
+    fun `togglePreview catches exception and has message when failure`() {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { toggleDocumentPreviewPreferenceUseCase() } throws Throwable()
         viewModel.togglePreview()
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     companion object {
