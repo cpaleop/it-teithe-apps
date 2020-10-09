@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.10"
-    ext.nav_version = '2.3.0-alpha06'
+    ext.nav_version = '2.3.0'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha02'
+        classpath 'com.android.tools.build:gradle:4.2.0-alpha13'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${nav_version}"
         classpath 'com.google.gms:google-services:4.3.4'
@@ -105,6 +105,10 @@ subprojects {
 
                 testOptions {
                     unitTests.returnDefaultValues = true
+                }
+
+                lintOptions {
+                    checkReleaseBuilds false
                 }
             }
         }
