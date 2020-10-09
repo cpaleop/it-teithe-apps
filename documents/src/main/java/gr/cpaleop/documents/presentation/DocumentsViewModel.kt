@@ -25,7 +25,9 @@ import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.io.File
 import java.net.URI
@@ -54,9 +56,6 @@ class DocumentsViewModel(
 
     private var documentsJob: Job? = null
     private var announcementFoldersJob: Job? = null
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading.toSingleEvent()
 
     private val _refresh = MutableLiveData<Unit>()
     val refresh: LiveData<Unit> = _refresh.toSingleEvent()
@@ -122,8 +121,6 @@ class DocumentsViewModel(
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
-            } finally {
-                _loading.value = false
             }
         }
     }
@@ -135,16 +132,12 @@ class DocumentsViewModel(
                 observeDocumentsUseCase(announcementId)
                     .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
                     .flowOn(defaultDispatcher)
-                    .onStart { _loading.value = true }
-                    .onEach { _loading.value = false }
                     .collect(_documents::setValue)
             } catch (t: CancellationException) {
                 Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
-            } finally {
-                _loading.value = false
             }
         }
     }
@@ -155,16 +148,12 @@ class DocumentsViewModel(
             try {
                 observeDocumentsAnnouncementFoldersUseCase()
                     .flowOn(defaultDispatcher)
-                    .onStart { _loading.value = true }
-                    .onEach { _loading.value = false }
                     .collect(_documentAnnouncementFolders::setValue)
             } catch (t: CancellationException) {
                 Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
-            } finally {
-                _loading.value = false
             }
         }
     }

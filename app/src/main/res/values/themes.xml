@@ -103,6 +103,7 @@
     </style>
 
     <style name="CustomBadge" parent="@style/Widget.MaterialComponents.Badge">
+        <item name="fontFamily">@font/googlesans_regular</item>
         <item name="backgroundColor">@color/colorAccent</item>
         <item name="android:background">@drawable/shape_top_round_primary_variant</item>
     </style>

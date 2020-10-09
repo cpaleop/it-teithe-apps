@@ -91,10 +91,6 @@ class DocumentsFragment :
         announcementFolderAdapter = AnnouncementFolderAdapter(::navigateToDocumentsFragment)
         documentsAdapter = DocumentsAdapter(::openFile, ::navigateToFileOptionsDialog)
 
-        binding.documentsSwipeRefreshLayout.setOnRefreshListener {
-            refreshViewState()
-        }
-
         binding.filesSortingTextView.setOnClickListener {
             navigateToFileSortOptionsDialog()
         }
@@ -125,7 +121,6 @@ class DocumentsFragment :
 
     private fun observeViewModel() {
         viewModel.run {
-            loading.observe(viewLifecycleOwner, Observer(::updateLoader))
             refresh.observe(viewLifecycleOwner, { refreshViewState() })
             documentPreview.observe(viewLifecycleOwner, Observer(::updatePreviewPreference))
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
@@ -211,7 +206,6 @@ class DocumentsFragment :
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
         binding.documentsEmptyTextView.run {
             text = requireContext().getString(R.string.documents_empty)
-            isVisible = documentsEmpty && !binding.documentsSwipeRefreshLayout.isRefreshing
         }
     }
 
@@ -227,9 +221,5 @@ class DocumentsFragment :
                 null
             )
         }
-    }
-
-    private fun updateLoader(shouldLoad: Boolean) {
-        binding.documentsSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 }

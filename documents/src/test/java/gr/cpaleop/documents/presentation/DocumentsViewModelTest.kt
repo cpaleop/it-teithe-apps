@@ -128,7 +128,6 @@ class DocumentsViewModelTest {
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     @Test
@@ -140,7 +139,6 @@ class DocumentsViewModelTest {
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(true)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
     }
 
     @Test
@@ -149,7 +147,6 @@ class DocumentsViewModelTest {
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -159,7 +156,6 @@ class DocumentsViewModelTest {
         coEvery { observeDocumentsUseCase(null) } throws CancellationException()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -169,7 +165,6 @@ class DocumentsViewModelTest {
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws Throwable()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
         viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -179,7 +174,6 @@ class DocumentsViewModelTest {
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws CancellationException()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
         viewModel.presentDocuments(null)
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 

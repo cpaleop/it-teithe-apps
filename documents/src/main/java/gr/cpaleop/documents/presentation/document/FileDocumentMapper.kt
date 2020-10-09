@@ -22,12 +22,14 @@ class FileDocumentMapper(
 
             val type = when {
                 document.type.contains("pdf") -> R.drawable.ic_pdf
-                document.type.contains("png") -> R.drawable.ic_image
                 document.type.contains("folder") -> appR.drawable.ic_folder
                 document.type.contains("doc") -> R.drawable.ic_docx
                 document.type.contains("rar") -> R.drawable.ic_rar
                 document.type.contains("zip") -> R.drawable.ic_zip
                 document.type.contains("ppt") -> R.drawable.ic_powerpoint
+                document.type.contains("jpg") ||
+                        document.type.contains("jpeg") ||
+                        document.type.contains("png") -> R.drawable.ic_image
                 else -> {
                     Timber.e("Unknown document file type: ${document.type}")
                     R.drawable.ic_document
