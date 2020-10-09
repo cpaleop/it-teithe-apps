@@ -14,15 +14,11 @@ import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class CategoryFilterViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,

@@ -23,6 +23,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -153,9 +154,29 @@ class DocumentsViewModelTest {
     }
 
     @Test
+    fun `presentDocuments catches cancellation exception and has no message when failure while observing documents`() {
+        val expectedMessage = null
+        coEvery { observeDocumentsUseCase(null) } throws CancellationException()
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        viewModel.presentDocuments(null)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
     fun `presentDocuments catches exception and has message when failure while observing announcement folders`() {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws Throwable()
+        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
+        viewModel.presentDocuments(null)
+        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `presentDocuments catches cancellation exception and has no message when failure while observing announcement folders`() {
+        val expectedMessage = null
+        coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws CancellationException()
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)

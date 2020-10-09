@@ -18,13 +18,11 @@ import gr.cpaleop.public_announcements.di.PublicAnnouncementsScope
 import gr.cpaleop.public_announcements.di.publicAnnouncementsModule
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class PublicAnnouncementsFragment :
     BaseApiFragment<FragmentPublicAnnouncementsBinding, PublicAnnouncementsViewModel>(

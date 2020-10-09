@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import gr.cpaleop.announcements.R
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
-@ExperimentalPagingApi
 class AnnouncementsFragment :
     BaseApiFragment<FragmentAnnouncementsBinding, AnnouncementsViewModel>(AnnouncementsViewModel::class) {
 

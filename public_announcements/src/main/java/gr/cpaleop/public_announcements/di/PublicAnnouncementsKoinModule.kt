@@ -9,13 +9,11 @@ import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncement
 import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncementsUseCaseImpl
 import gr.cpaleop.public_announcements.presentation.PublicAnnouncementsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
-@FlowPreview
 val publicAnnouncementsModule = module {
     viewModel {
         PublicAnnouncementsViewModel(

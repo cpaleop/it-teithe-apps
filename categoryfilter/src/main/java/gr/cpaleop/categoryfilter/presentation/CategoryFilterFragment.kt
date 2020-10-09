@@ -14,11 +14,7 @@ import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class CategoryFilterFragment :
     BaseApiFragment<FragmentCategoryFilterBinding, CategoryFilterViewModel>(CategoryFilterViewModel::class) {
 

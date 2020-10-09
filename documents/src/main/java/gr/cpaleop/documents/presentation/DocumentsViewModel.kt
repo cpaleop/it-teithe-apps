@@ -24,11 +24,8 @@ import gr.cpaleop.documents.presentation.options.DocumentShareOptionData
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.net.URI
@@ -141,6 +138,8 @@ class DocumentsViewModel(
                     .onStart { _loading.value = true }
                     .onEach { _loading.value = false }
                     .collect(_documents::setValue)
+            } catch (t: CancellationException) {
+                Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
@@ -159,6 +158,8 @@ class DocumentsViewModel(
                     .onStart { _loading.value = true }
                     .onEach { _loading.value = false }
                     .collect(_documentAnnouncementFolders::setValue)
+            } catch (t: CancellationException) {
+                Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

@@ -23,13 +23,9 @@ import gr.cpaleop.profile.presentation.options.OptionData
 import gr.cpaleop.profile.presentation.options.SelectedSocialOption
 import gr.cpaleop.profile.presentation.personal.PersonalOptionData
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class ProfileFragment :
     BaseApiFragment<FragmentProfileBinding, ProfileViewModel>(ProfileViewModel::class) {
 
