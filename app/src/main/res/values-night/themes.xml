@@ -14,6 +14,7 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="badgeStyle">@style/CustomBadge</item>
+        <item name="android:windowActivityTransitions">true</item>
 
         <!-- Material Dialogs -->
         <item name="md_corner_radius">8dp</item>
@@ -27,6 +28,13 @@
 
         <!-- Bottom sheet dialog -->
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
+    </style>
+
+    <style name="Theme.Itteitheapps.Inverted" parent="Theme.Itteitheapps">
+        <item name="colorPrimary">@color/colorPrimaryVariant</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/colorPrimaryVariant</item>
     </style>
 
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">

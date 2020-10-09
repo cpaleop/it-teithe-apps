@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.transition.platform.MaterialElevationScale
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import gr.cpaleop.common.extensions.setLifecycleOwner
+import gr.cpaleop.teithe_apps.R as appR
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -24,5 +27,22 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     ): View? {
         _binding = inflateViewBinding(inflater, container).setLifecycleOwner(viewLifecycleOwner)
         return binding.root
+    }
+
+    @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(appR.integer.animation_duration).toLong()
+        }
+        returnTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(appR.integer.animation_duration).toLong()
+        }
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(appR.integer.animation_duration).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(appR.integer.animation_duration).toLong()
+        }
+        super.onCreate(savedInstanceState)
     }
 }

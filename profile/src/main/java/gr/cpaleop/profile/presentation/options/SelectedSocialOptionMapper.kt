@@ -4,5 +4,5 @@ import gr.cpaleop.profile.presentation.ProfileSocialDetails
 
 interface SelectedSocialOptionMapper {
 
-    operator fun invoke(profileSocialDetails: ProfileSocialDetails): SelectedSocialOption
+    suspend operator fun invoke(profileSocialDetails: ProfileSocialDetails): SelectedSocialOption
 }

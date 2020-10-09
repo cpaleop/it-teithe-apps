@@ -105,8 +105,10 @@ class AnnouncementsFragment :
     }
 
     private fun updateAnnouncements(announcements: PagingData<AnnouncementPresentation>) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            announcementAdapter?.submitData(announcements)
+        binding.announcementsRecyclerView.post {
+            viewLifecycleOwner.lifecycleScope.launch {
+                announcementAdapter?.submitData(announcements)
+            }
         }
     }
 

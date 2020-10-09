@@ -10,17 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:transitionGroup="true"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionGroup="true"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:transitionGroup="true">
 
                 <gr.cpaleop.teithe_apps.views.SearchEditText
                     android:id="@+id/notificationsSearchTextView"
@@ -37,6 +40,7 @@
                     android:padding="12dp"
                     android:textColor="@color/colorOnPrimary"
                     android:textSize="16sp"
+                    android:transitionGroup="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -49,17 +53,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:transitionGroup="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/notificationsSwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:transitionGroup="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/notificationsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:transitionGroup="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_notification" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -72,6 +79,7 @@
             android:text="@string/notifications_empty"
             android:textColor="@color/colorOnPrimary"
             android:textSize="14sp"
+            android:transitionGroup="true"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +96,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_add"
+        android:transitionGroup="true"
         app:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end"

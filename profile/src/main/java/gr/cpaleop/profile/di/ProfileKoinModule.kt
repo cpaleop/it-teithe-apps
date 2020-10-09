@@ -28,6 +28,7 @@ val profileModule = module {
     viewModel {
         ProfileViewModel(
             get(named<MainDispatcher>()),
+            get(named<DefaultDispatcher>()),
             get(),
             get(),
             get(),
@@ -44,12 +45,12 @@ val profileModule = module {
             get()
         )
     }
-    single { PersonalOptionDataMapper() }
+    single { PersonalOptionDataMapper(get(named<DefaultDispatcher>())) }
     single { LanguageMapper() }
     single { ThemeMapper() }
-    single { OptionDataMapper() }
+    single { OptionDataMapper(get(named<DefaultDispatcher>())) }
     single { ProfileMapper(get()) }
-    single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl() }
+    single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl(get(named<DefaultDispatcher>())) }
     single<ProfilePresentationMapper> {
         ProfilePresentationMapperImpl(
             get(named<DefaultDispatcher>())

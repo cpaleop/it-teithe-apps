@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.core.presentation.Message
@@ -25,12 +26,15 @@ import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
 class ProfileViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getProfileUseCase: GetProfileUseCase,
     private val profilePresentationMapper: ProfilePresentationMapper,
     private val updateSocialUseCase: UpdateSocialUseCase,
@@ -119,16 +123,18 @@ class ProfileViewModel(
 
     fun presentSocialOptions() {
         viewModelScope.launch(mainDispatcher) {
-            _socialOptions.value = listOf(
-                ProfileOption(
-                    R.string.profile_option_copy,
-                    R.drawable.ic_copy
-                ),
-                ProfileOption(
-                    R.string.profile_option_edit,
-                    appR.drawable.ic_edit
+            _socialOptions.value = withContext(defaultDispatcher) {
+                listOf(
+                    ProfileOption(
+                        R.string.profile_option_copy,
+                        R.drawable.ic_copy
+                    ),
+                    ProfileOption(
+                        R.string.profile_option_edit,
+                        appR.drawable.ic_edit
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -138,38 +144,40 @@ class ProfileViewModel(
                 observePreferredThemeUseCase()
                     .collect { theme ->
                         val selectedLanguage = languageMapper(getPreferredLanguageUseCase())
-                        _settings.value = listOf(
-                            Setting(
-                                type = SettingType.SECTION_TITLE,
-                                titleRes = R.string.profile_settings_account_title
-                            ),
-                            Setting(
-                                type = SettingType.CONTENT,
-                                iconRes = R.drawable.ic_key,
-                                titleRes = R.string.profile_settings_change_password
-                            ),
-                            Setting(
-                                type = SettingType.CONTENT,
-                                iconRes = R.drawable.ic_logout,
-                                titleRes = R.string.profile_settings_logout
-                            ),
-                            Setting(
-                                type = SettingType.SECTION_TITLE,
-                                titleRes = R.string.profile_settings_appearance_title
-                            ),
-                            Setting(
-                                type = SettingType.CONTENT,
-                                iconRes = R.drawable.ic_theme,
-                                titleRes = R.string.profile_settings_change_theme,
-                                valueRes = themeMapper(theme)
-                            ),
-                            Setting(
-                                type = SettingType.CONTENT,
-                                iconRes = R.drawable.ic_language,
-                                titleRes = R.string.profile_settings_change_language,
-                                valueRes = selectedLanguage
+                        _settings.value = withContext(defaultDispatcher) {
+                            listOf(
+                                Setting(
+                                    type = SettingType.SECTION_TITLE,
+                                    titleRes = R.string.profile_settings_account_title
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_key,
+                                    titleRes = R.string.profile_settings_change_password
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_logout,
+                                    titleRes = R.string.profile_settings_logout
+                                ),
+                                Setting(
+                                    type = SettingType.SECTION_TITLE,
+                                    titleRes = R.string.profile_settings_appearance_title
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_theme,
+                                    titleRes = R.string.profile_settings_change_theme,
+                                    valueRes = themeMapper(theme)
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_language,
+                                    titleRes = R.string.profile_settings_change_language,
+                                    valueRes = selectedLanguage
+                                )
                             )
-                        )
+                        }
                     }
             } catch (t: Throwable) {
                 Timber.e(t)

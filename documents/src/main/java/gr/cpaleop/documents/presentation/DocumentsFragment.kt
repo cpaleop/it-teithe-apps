@@ -1,6 +1,7 @@
 package gr.cpaleop.documents.presentation
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +13,13 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.platform.MaterialArcMotion
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.DocumentPreview
@@ -34,6 +38,7 @@ import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import java.io.File
+import gr.cpaleop.teithe_apps.R as appR
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -52,6 +57,20 @@ class DocumentsFragment :
         Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
         Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
     )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (announcementId != null) {
+            sharedElementEnterTransition = MaterialContainerTransform().apply {
+                duration = resources.getInteger(appR.integer.animation_duration).toLong()
+                scrimColor = Color.TRANSPARENT
+                containerColor = Color.TRANSPARENT
+                fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+                isElevationShadowEnabled = false
+                this.pathMotion = MaterialArcMotion()
+            }
+        }
+    }
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -75,6 +94,10 @@ class DocumentsFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (announcementId != null) {
+            binding.documentsRecyclerView.transitionName =
+                "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
+        }
         super.onViewCreated(view, savedInstanceState)
         binding.root.hideKeyboard()
         setupViews()
@@ -153,9 +176,14 @@ class DocumentsFragment :
         context?.startActivity(chooserIntent)
     }
 
-    private fun navigateToDocumentsFragment(announcementId: String) {
-        val directions = DocumentsFragmentDirections.documentsToDocuments(announcementId)
-        navController.navigate(directions)
+    private fun navigateToDocumentsFragment(view: View, announcementId: String) {
+        view.transitionName = "shared_element_container$announcementId"
+        val extras =
+            FragmentNavigatorExtras(view to "$SHARED_ELEMENT_CONTAINER_NAME$announcementId")
+        val bundle = Bundle().apply {
+            putString("announcementId", announcementId)
+        }
+        navController.navigate(R.id.documentsToDocuments, bundle, null, extras)
     }
 
     private fun navigateToFileOptionsDialog(fileUri: String) {
@@ -192,21 +220,23 @@ class DocumentsFragment :
     }
 
     private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolder>) {
-        announcementFolderAdapter?.submitList(announcementFolders) {
-            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
+        binding.documentsRecyclerView.post {
+            announcementFolderAdapter?.submitList(announcementFolders) {
+                binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
+            }
         }
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
-        documentsAdapter?.submitList(documents) {
-            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
+        binding.documentsRecyclerView.post {
+            documentsAdapter?.submitList(documents) {
+                binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
+            }
         }
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
-        binding.documentsEmptyTextView.run {
-            text = requireContext().getString(R.string.documents_empty)
-        }
+        binding.documentsEmptyTextView.isVisible = documentsEmpty
     }
 
     private fun updateSortView(documentSortOption: DocumentSortOption) {
@@ -221,5 +251,10 @@ class DocumentsFragment :
                 null
             )
         }
+    }
+
+    companion object {
+
+        private const val SHARED_ELEMENT_CONTAINER_NAME = "shared_element_container"
     }
 }

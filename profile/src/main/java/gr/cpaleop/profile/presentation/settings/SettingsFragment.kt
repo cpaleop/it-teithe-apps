@@ -42,6 +42,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         binding.profileSettingsRecyclerView.adapter = settingsAdapter
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = null
+        returnTransition = null
+        exitTransition = null
+        reenterTransition = null
+    }
+
     private fun observeViewModel() {
         viewModel.run {
             settings.observe(viewLifecycleOwner, Observer(::updateSettings))
@@ -50,8 +58,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     }
 
     private fun updateSettings(settingsList: List<Setting>) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            settingsAdapter?.submitList(settingsList)
+        viewLifecycleOwner.lifecycleScope.launch(/*Dispatchers.Default*/) {
+            binding.profileSettingsRecyclerView.post {
+                settingsAdapter?.submitList(settingsList)
+            }
         }
     }
 

@@ -1,11 +1,12 @@
 package gr.cpaleop.documents.presentation.announcement_folder
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 
-class AnnouncementFolderAdapter(private val onClickListener: (String) -> Unit) :
+class AnnouncementFolderAdapter(private val onClickListener: (View, String) -> Unit) :
     ListAdapter<AnnouncementFolder, AnnouncementFolderHolder>(
         DIFF_UTIL_ANNOUNCEMENT_FOLDER
     ) {
