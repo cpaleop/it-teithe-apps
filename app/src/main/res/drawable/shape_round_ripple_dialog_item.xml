@@ -2,11 +2,19 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/colorAccent">
 
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <!-- This color is needed to be set - doesn't affect anything -->
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+
     <item>
         <shape android:shape="rectangle">
 
             <corners android:radius="24dp" />
-            <solid android:color="@color/dialoFragmentBackground" />
+            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
 </ripple>

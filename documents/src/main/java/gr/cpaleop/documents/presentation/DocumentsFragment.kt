@@ -38,7 +38,6 @@ import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import java.io.File
-import gr.cpaleop.teithe_apps.R as appR
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -61,8 +60,12 @@ class DocumentsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (announcementId != null) {
+            enterTransition = null
+            exitTransition = null
+            reenterTransition = null
+            returnTransition = null
             sharedElementEnterTransition = MaterialContainerTransform().apply {
-                duration = resources.getInteger(appR.integer.animation_duration).toLong()
+                duration = 250
                 scrimColor = Color.TRANSPARENT
                 containerColor = Color.TRANSPARENT
                 fadeMode = MaterialContainerTransform.FADE_MODE_OUT
@@ -95,8 +98,7 @@ class DocumentsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (announcementId != null) {
-            binding.documentsRecyclerView.transitionName =
-                "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
+            binding.root.transitionName = "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
         }
         super.onViewCreated(view, savedInstanceState)
         binding.root.hideKeyboard()

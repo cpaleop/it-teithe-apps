@@ -7,7 +7,6 @@ import gr.cpaleop.documents.R
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import gr.cpaleop.teithe_apps.R as appR
 
 class FileDocumentMapper(
     @DefaultDispatcher
@@ -21,18 +20,18 @@ class FileDocumentMapper(
                 dateFormatter.fileFormat(document.lastModified, "dd-MM-yy HH:mm")
 
             val type = when {
-                document.type.contains("pdf") -> R.drawable.ic_pdf
-                document.type.contains("folder") -> appR.drawable.ic_folder
-                document.type.contains("doc") -> R.drawable.ic_docx
-                document.type.contains("rar") -> R.drawable.ic_rar
-                document.type.contains("zip") -> R.drawable.ic_zip
-                document.type.contains("ppt") -> R.drawable.ic_powerpoint
+                document.type.contains("pdf") -> R.drawable.layer_pdf
+                document.type.contains("folder") -> R.drawable.layer_folder
+                document.type.contains("doc") -> R.drawable.layer_docx
+                document.type.contains("rar") -> R.drawable.layer_rar
+                document.type.contains("zip") -> R.drawable.layer_zip
+                document.type.contains("ppt") -> R.drawable.layer_ppt
                 document.type.contains("jpg") ||
                         document.type.contains("jpeg") ||
-                        document.type.contains("png") -> R.drawable.ic_image
+                        document.type.contains("png") -> R.drawable.layer_image
                 else -> {
                     Timber.e("Unknown document file type: ${document.type}")
-                    R.drawable.ic_document
+                    R.drawable.layer_document
                 }
             }
 
