@@ -6,9 +6,9 @@
         android:gravity="fill" />
 
     <item
-        android:bottom="18dp"
+        android:bottom="14dp"
         android:drawable="@drawable/ic_pdf"
-        android:left="18dp"
-        android:right="18dp"
-        android:top="18dp" />
+        android:left="14dp"
+        android:right="14dp"
+        android:top="14dp" />
 </layer-list>

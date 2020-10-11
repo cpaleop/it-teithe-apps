@@ -23,13 +23,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionGroup="true">
+                android:transitionGroup="true"
+                android:layout_marginTop="6dp">
 
                 <gr.cpaleop.teithe_apps.views.SearchEditText
                     android:id="@+id/notificationsSearchTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_margin="4dp"
                     android:background="@drawable/shape_round_edges_primary_variant_ripple"
                     android:fontFamily="@font/googlesans_regular"
                     android:gravity="center"
@@ -38,9 +39,10 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:padding="12dp"
-                    android:textColor="@color/colorOnPrimary"
+                    android:textColor="@color/colorOnPrimary_87"
                     android:textSize="16sp"
                     android:transitionGroup="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -97,7 +99,7 @@
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_add"
         android:transitionGroup="true"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="?attr/colorAccent"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end"
         app:tint="@color/white" />

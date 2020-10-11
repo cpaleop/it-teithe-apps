@@ -12,15 +12,16 @@ class CategoryFilterHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Category) {
-        binding.categoryFilterName.isCloseIconVisible = item.isRegistered
-        binding.categoryFilterName.isChecked = item.isRegistered
-        binding.categoryFilterName.text = item.name
-
-        binding.categoryFilterName.setOnClickListener {
-            onClickListener(item.id, !item.isRegistered)
-        }
-        binding.categoryFilterName.setOnCloseIconClickListener {
-            onClickListener(item.id, false)
+        binding.categoryFilterName.run {
+            binding.categoryFilterName.isCloseIconVisible = item.isRegistered
+            binding.categoryFilterName.isChecked = item.isRegistered
+            binding.categoryFilterName.text = item.name
+            setOnClickListener {
+                onClickListener(item.id, !item.isRegistered)
+            }
+            setOnCloseIconClickListener {
+                onClickListener(item.id, false)
+            }
         }
     }
 

@@ -2,16 +2,16 @@
     <!-- Base application theme. -->
     <style name="Theme.Itteitheapps" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorControlNormal">@color/colorControlNormal</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/black</item>-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="badgeStyle">@style/CustomBadge</item>
         <item name="android:windowActivityTransitions">true</item>
@@ -22,7 +22,7 @@
         <item name="md_font_body">@font/googlesans_regular</item>
         <item name="md_font_button">@font/googlesans_medium</item>
         <item name="md_color_button_text">@color/colorAccent</item>
-        <item name="md_ripple_color">@color/colorAccentContrast</item>
+        <item name="md_ripple_color">@color/colorAccent</item>
         <item name="md_divider_color">@color/colorAccent</item>
         <item name="md_line_spacing_body">0</item>
 
@@ -30,23 +30,11 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
     </style>
 
-    <style name="Theme.Itteitheapps.Inverted" parent="Theme.Itteitheapps">
-        <item name="colorPrimary">@color/colorPrimaryVariant</item>
-        <item name="colorPrimaryVariant">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-        <item name="android:windowBackground">@color/colorPrimaryVariant</item>
-    </style>
-
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
-        <item name="android:background">@drawable/shape_round_white_opaque</item>
-        <item name="android:layout_marginStart">24dp</item>
-        <item name="android:layout_marginTop">24dp</item>
-        <item name="android:layout_marginEnd">24dp</item>
-        <item name="android:layout_marginBottom">12dp</item>
         <item name="android:padding">16dp</item>
         <item name="android:fontFamily">@font/googlesans_medium</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary_87</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lines">3</item>
         <item name="android:maxLines">3</item>
@@ -62,8 +50,8 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorOnPrimary_87</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- BottomSheet Dialog-->

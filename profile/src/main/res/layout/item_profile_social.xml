@@ -42,7 +42,7 @@
         android:gravity="start"
         android:maxLines="1"
         android:padding="8dp"
-        android:textColor="@color/colorOnPrimary"
+        android:textColor="@color/colorOnPrimary_87"
         app:layout_constraintBottom_toBottomOf="@id/profileSocialLogoImageView"
         app:layout_constraintEnd_toStartOf="@id/profileSocialMoreImageView"
         app:layout_constraintStart_toEndOf="@id/profileSocialLogoImageView"

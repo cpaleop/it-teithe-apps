@@ -20,13 +20,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:transitionGroup="true"
+                android:layout_marginTop="6dp">
 
                 <gr.cpaleop.teithe_apps.views.SearchEditText
                     android:id="@+id/categoryAnnouncementsSearchTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_margin="4dp"
                     android:background="@drawable/shape_round_edges_primary_variant_ripple"
                     android:ellipsize="end"
                     android:fontFamily="@font/googlesans_regular"
@@ -35,8 +37,9 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:padding="12dp"
-                    android:textColor="@color/colorOnPrimary"
+                    android:textColor="@color/colorOnPrimary_87"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

@@ -10,17 +10,18 @@
         android:id="@+id/documentsSearchTextViewParent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="6dp"
         android:transitionGroup="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.92">
+        app:layout_constraintWidth_percent="0.935">
 
         <gr.cpaleop.teithe_apps.views.SearchEditText
             android:id="@+id/documentsSearchTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:background="@drawable/shape_round_edges_primary_variant_ripple"
             android:fontFamily="@font/googlesans_regular"
             android:gravity="center"
@@ -30,7 +31,7 @@
             android:lines="1"
             android:maxLines="1"
             android:padding="12dp"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="@color/colorOnPrimary_87"
             android:textSize="16sp"
             android:transitionGroup="true" />
     </FrameLayout>
@@ -40,16 +41,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/documents_sort_date"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorControl"
         android:visibility="invisible"
-        app:drawableTint="@color/colorAccent"
+        app:drawableTint="@color/colorControl"
         app:layout_constraintBottom_toTopOf="@id/documentsRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/documentsSearchTextViewParent"
@@ -72,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/filesSortingTextView"
         app:srcCompat="@drawable/ic_view_list"
-        app:tint="@color/colorAccent"
+        app:tint="@color/colorControl"
         tools:drawableEndCompat="@drawable/ic_arrow_down"
         tools:visibility="visible" />
 
@@ -80,7 +81,6 @@
         android:id="@+id/documentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="4dp"
         android:transitionGroup="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

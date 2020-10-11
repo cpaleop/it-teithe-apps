@@ -13,7 +13,7 @@
         android:fontFamily="@font/googlesans_regular"
         android:text="@string/announcements_error_message"
         android:textAlignment="center"
-        android:textColor="?android:textColorPrimary"
+        android:textColor="@color/colorOnPrimary_87"
         android:textSize="14sp" />
 
     <ProgressBar

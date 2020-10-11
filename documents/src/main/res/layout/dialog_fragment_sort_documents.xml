@@ -13,7 +13,7 @@
         android:fontFamily="@font/googlesans_medium"
         android:padding="20dp"
         android:text="@string/documents_sort_title"
-        android:textColor="@color/colorAccent"
+        android:textColor="?attr/colorAccent"
         android:textSize="16sp" />
 
     <View
@@ -30,5 +30,5 @@
         android:layout_below="@id/separator"
         android:layout_marginTop="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_document_option" />
+        tools:listitem="@layout/item_option_sort" />
 </RelativeLayout>

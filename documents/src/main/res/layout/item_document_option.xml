@@ -30,7 +30,7 @@
         android:fontFamily="@font/googlesans_medium"
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
-        android:textColor="@color/colorOnPrimary"
+        android:textColor="@color/colorOnPrimary_87"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/document_option_image_view"
         app:layout_constraintTop_toTopOf="parent"

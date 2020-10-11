@@ -34,6 +34,8 @@ class SearchEditText @JvmOverloads constructor(
     private var rightDrawableListener: () -> Boolean = { false }
 
     init {
+        this.elevation = 4f
+
         this.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
