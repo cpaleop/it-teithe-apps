@@ -10,6 +10,7 @@ data class ProfilePresentation(
     val am: String,
     val username: String,
     val displayName: String,
+    val initials: String,
     val semester: String,
     val registeredYear: String,
     val social: List<ProfileSocialDetails>,

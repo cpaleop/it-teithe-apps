@@ -70,11 +70,23 @@ class ProfilePresentationMapperImpl(@DefaultDispatcher private val defaultDispat
                 )
             )
 
+            val nameInitial =
+                if (profile.personalDetails.givenName.isNotEmpty() && profile.personalDetails.givenName.isNotBlank())
+                    profile.personalDetails.givenName[0]
+                else ""
+
+            val lastNameInitial =
+                if (profile.personalDetails.lastName.isNotEmpty() && profile.personalDetails.lastName.isNotBlank())
+                    profile.personalDetails.lastName[0]
+                else ""
+
+            val initials = "$nameInitial$lastNameInitial"
             return@withContext ProfilePresentation(
                 profilePhotoUrl = profile.personalDetails.profileImageUrl,
                 am = profile.academicDetails.am,
                 username = profile.academicDetails.username,
                 displayName = profile.personalDetails.givenName + " " + profile.personalDetails.lastName,
+                initials = initials,
                 semester = profile.academicDetails.currentSemester,
                 registeredYear = profile.academicDetails.registeredYear,
                 social = socialsList,

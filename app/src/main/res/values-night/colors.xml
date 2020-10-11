@@ -28,4 +28,5 @@
     <color name="dialoFragmentBackground">#1C3E4D</color>
     <color name="dialoFragmentBackgroundVariant">#172830</color>
     <color name="colorControlNormal">#80868B</color>
+    <color name="green">#5E715C</color>
 </resources>

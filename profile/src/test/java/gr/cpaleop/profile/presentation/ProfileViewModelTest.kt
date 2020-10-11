@@ -774,6 +774,7 @@ class ProfileViewModelTest {
             username = "username",
             registeredYear = "2014",
             displayName = "display_name",
+            initials = "dn",
             semester = "12",
             social = profileSocialDetails,
             am = "am",

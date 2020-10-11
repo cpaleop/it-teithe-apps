@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import coil.api.load
-import coil.transform.CircleCropTransformation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
@@ -91,17 +90,12 @@ class ProfileFragment :
     }
 
     private fun updateProfileDetails(profilePresentation: ProfilePresentation) {
-        binding.profilePictureImageView.load(profilePresentation.profilePhotoUrl) {
-            placeholder(R.drawable.ic_person_placeholder)
-            error(R.drawable.ic_person_placeholder)
-            crossfade(true)
-            transformations(CircleCropTransformation())
-        }
         binding.profileAmTextView.visibility = View.VISIBLE
         binding.profileUsernameTextView.visibility = View.VISIBLE
         binding.profileSemesterTextView.visibility = View.VISIBLE
         binding.profileRegisteredYearTextView.visibility = View.VISIBLE
 
+        binding.profilePictureTextView.text = profilePresentation.initials
         binding.profileAmValueTextView.text = profilePresentation.am
         binding.profileUsernameValueTextView.text = profilePresentation.username
         binding.profileDisplayNameTextView.text = profilePresentation.displayName
@@ -110,6 +104,7 @@ class ProfileFragment :
     }
 
     private fun updateLoader(shouldLoad: Boolean) {
+        binding.profilePictureProgressBar.isVisible = shouldLoad
         binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 

@@ -25,19 +25,36 @@
                 app:layout_collapseMode="pin"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/profilePictureImageView"
+                <TextView
+                    android:id="@+id/profilePictureTextView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_margin="14dp"
-                    android:contentDescription="@string/empty"
+                    android:background="@drawable/shape_oval_green"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:gravity="center"
+                    android:textColor="@color/colorOnPrimary_87"
+                    android:textSize="28sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@id/profileDisplayNameTextView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.25"
-                    app:srcCompat="@drawable/ic_person_placeholder" />
+                    tools:text="CP" />
+
+                <ProgressBar
+                    android:id="@+id/profilePictureProgressBar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:indeterminateTint="@color/colorControl"
+                    app:layout_constraintBottom_toBottomOf="@id/profilePictureTextView"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="@id/profilePictureTextView"
+                    app:layout_constraintHeight_percent="0.25"
+                    app:layout_constraintStart_toStartOf="@id/profilePictureTextView"
+                    app:layout_constraintTop_toTopOf="@id/profilePictureTextView"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/profileDisplayNameTextView"
@@ -49,7 +66,7 @@
                     android:padding="8dp"
                     android:textColor="@color/colorOnPrimary_87"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.5"
                     tools:text="Chris Paleopanos" />
@@ -65,7 +82,7 @@
                     android:textColor="@color/colorOnPrimary_38"
                     android:textSize="14sp"
                     android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
                     app:layout_constraintTop_toBottomOf="@id/profileDisplayNameTextView"
                     app:layout_constraintWidth_percent="0.5" />
 
@@ -95,7 +112,7 @@
                     android:textColor="@color/colorOnPrimary_38"
                     android:textSize="14sp"
                     android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
                     app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
                     app:layout_constraintWidth_percent="0.5" />
 
@@ -125,7 +142,7 @@
                     android:textColor="@color/colorOnPrimary_38"
                     android:textSize="14sp"
                     android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
                     app:layout_constraintTop_toBottomOf="@id/profileUsernameTextView"
                     app:layout_constraintWidth_percent="0.5" />
 
@@ -157,7 +174,7 @@
                     android:textSize="14sp"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureImageView"
+                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
                     app:layout_constraintTop_toBottomOf="@id/profileSemesterTextView"
                     app:layout_constraintWidth_percent="0.5" />
 
