@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.transition.platform.MaterialElevationScale
-import com.google.android.material.transition.platform.MaterialFadeThrough
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import gr.cpaleop.common.extensions.setLifecycleOwner
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -31,16 +30,16 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        enterTransition = MaterialFadeThrough().apply {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
             duration = resources.getInteger(appR.integer.animation_duration).toLong()
         }
-        returnTransition = MaterialElevationScale(true).apply {
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
             duration = resources.getInteger(appR.integer.animation_duration).toLong()
         }
-        exitTransition = MaterialElevationScale(false).apply {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
             duration = resources.getInteger(appR.integer.animation_duration).toLong()
         }
-        reenterTransition = MaterialElevationScale(true).apply {
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
             duration = resources.getInteger(appR.integer.animation_duration).toLong()
         }
         super.onCreate(savedInstanceState)

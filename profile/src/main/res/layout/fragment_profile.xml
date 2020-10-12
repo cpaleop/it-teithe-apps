@@ -1,225 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/profileSwipeRefreshLayout"
+    <TextView
+        android:id="@+id/profilePictureTextView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_margin="14dp"
+        android:background="@drawable/shape_oval_green"
+        android:elevation="3dp"
+        android:fontFamily="@font/googlesans_regular"
+        android:gravity="center"
+        android:textColor="@color/colorOnPrimary_87"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@id/profileCardLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profileCardLayout"
+        tools:text="CP" />
+
+    <ProgressBar
+        android:id="@+id/profilePictureProgressBar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:elevation="3dp"
+        android:indeterminateTint="@color/colorControl"
+        app:layout_constraintBottom_toBottomOf="@id/profilePictureTextView"
+        app:layout_constraintEnd_toEndOf="@id/profilePictureTextView"
+        app:layout_constraintStart_toStartOf="@id/profilePictureTextView"
+        app:layout_constraintTop_toTopOf="@id/profilePictureTextView"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/profileImageMiddleGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/profilePictureTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profilePictureTextView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileCardLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/shape_round_ripple"
+        android:elevation="2dp"
+        android:padding="16dp"
+        android:transitionGroup="true"
+        app:layout_collapseMode="pin"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profileCardCenterVerticalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/profileCardLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:background="@drawable/shape_round_ripple"
-                android:padding="8dp"
-                android:transitionGroup="true"
-                app:layout_collapseMode="pin"
-                app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/profileDisplayNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="42dp"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="8dp"
+            android:textColor="@color/colorOnPrimary_87"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Chris Paleopanos" />
 
-                <TextView
-                    android:id="@+id/profilePictureTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_margin="14dp"
-                    android:background="@drawable/shape_oval_green"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:gravity="center"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="28sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/profileDisplayNameTextView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25"
-                    tools:text="CP" />
+        <TextView
+            android:id="@+id/profileAmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="4dp"
+            android:text="@string/profile_am"
+            android:textColor="@color/colorOnPrimary_38"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@id/profileAmValueTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileDisplayNameTextView"
+            app:layout_constraintWidth_percent="0.5" />
 
-                <ProgressBar
-                    android:id="@+id/profilePictureProgressBar"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:indeterminateTint="@color/colorControl"
-                    app:layout_constraintBottom_toBottomOf="@id/profilePictureTextView"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintHeight_percent="0.25"
-                    app:layout_constraintStart_toStartOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toTopOf="@id/profilePictureTextView"
-                    tools:visibility="visible" />
+        <TextView
+            android:id="@+id/profileAmValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_regular"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/colorOnPrimary_60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileAmTextView"
+            app:layout_constraintStart_toEndOf="@id/profileAmTextView"
+            app:layout_constraintTop_toTopOf="@id/profileAmTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="144169" />
 
-                <TextView
-                    android:id="@+id/profileDisplayNameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/googlesans_medium"
-                    android:padding="8dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="Chris Paleopanos" />
+        <TextView
+            android:id="@+id/profileUsernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="4dp"
+            android:text="@string/profile_username"
+            android:textColor="@color/colorOnPrimary_38"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@id/profileUsernameValueTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/profileCardCenterVerticalGuideline"
+            app:layout_constraintTop_toTopOf="@id/profileAmTextView"
+            app:layout_constraintWidth_percent="0.5" />
 
-                <TextView
-                    android:id="@+id/profileAmTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="4dp"
-                    android:text="@string/profile_am"
-                    android:textColor="@color/colorOnPrimary_38"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toBottomOf="@id/profileDisplayNameTextView"
-                    app:layout_constraintWidth_percent="0.5" />
+        <TextView
+            android:id="@+id/profileUsernameValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_regular"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/colorOnPrimary_60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileUsernameTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/profileUsernameTextView"
+            app:layout_constraintTop_toTopOf="@id/profileUsernameTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="it144169" />
 
-                <TextView
-                    android:id="@+id/profileAmValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileAmTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileAmTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileAmTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="144169" />
+        <TextView
+            android:id="@+id/profileSemesterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="4dp"
+            android:text="@string/profile_semester"
+            android:textColor="@color/colorOnPrimary_38"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@id/profileSemesterValueTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
+            app:layout_constraintWidth_percent="0.5" />
 
-                <TextView
-                    android:id="@+id/profileUsernameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="4dp"
-                    android:text="@string/profile_username"
-                    android:textColor="@color/colorOnPrimary_38"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toBottomOf="@id/profileAmTextView"
-                    app:layout_constraintWidth_percent="0.5" />
+        <TextView
+            android:id="@+id/profileSemesterValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_regular"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/colorOnPrimary_60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileSemesterTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/profileSemesterTextView"
+            app:layout_constraintTop_toTopOf="@id/profileSemesterTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="12" />
 
-                <TextView
-                    android:id="@+id/profileUsernameValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileUsernameTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileUsernameTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileUsernameTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="it144169" />
+        <TextView
+            android:id="@+id/profileRegisteredYearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_medium"
+            android:padding="4dp"
+            android:text="@string/profile_registered_year"
+            android:textColor="@color/colorOnPrimary_38"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/profileRegisteredYearValueTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/profileCardCenterVerticalGuideline"
+            app:layout_constraintTop_toTopOf="@id/profileSemesterTextView"
+            app:layout_constraintWidth_percent="0.5" />
 
-                <TextView
-                    android:id="@+id/profileSemesterTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="4dp"
-                    android:text="@string/profile_semester"
-                    android:textColor="@color/colorOnPrimary_38"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toBottomOf="@id/profileUsernameTextView"
-                    app:layout_constraintWidth_percent="0.5" />
+        <TextView
+            android:id="@+id/profileRegisteredYearValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/googlesans_regular"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/colorOnPrimary_60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintTop_toTopOf="@id/profileRegisteredYearTextView"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="2014" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/profileSemesterValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileSemesterTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileSemesterTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileSemesterTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="12" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/profileTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="14dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/profileViewPager"
+        app:layout_constraintEnd_toEndOf="@id/profileViewPager"
+        app:layout_constraintStart_toStartOf="@id/profileViewPager"
+        app:layout_constraintTop_toBottomOf="@id/profileCardLayout"
+        app:tabIndicator="@drawable/shape_tab_indicator"
+        app:tabIndicatorColor="?attr/colorAccent"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabPaddingTop="6dp"
+        app:tabSelectedTextColor="?attr/colorAccent"
+        app:tabTextAppearance="@style/Theme.Itteitheapps.TabLayout.TextAppearance" />
 
-                <TextView
-                    android:id="@+id/profileRegisteredYearTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:padding="4dp"
-                    android:text="@string/profile_registered_year"
-                    android:textColor="@color/colorOnPrimary_38"
-                    android:textSize="14sp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/profilePictureTextView"
-                    app:layout_constraintTop_toBottomOf="@id/profileSemesterTextView"
-                    app:layout_constraintWidth_percent="0.5" />
-
-                <TextView
-                    android:id="@+id/profileRegisteredYearValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/googlesans_regular"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintStart_toEndOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintTop_toTopOf="@id/profileRegisteredYearTextView"
-                    app:layout_constraintWidth_percent="0.5"
-                    tools:text="2014" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/profileTabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                app:layout_constraintBottom_toTopOf="@id/profileViewPager"
-                app:layout_constraintTop_toBottomOf="@id/profileCardLayout"
-                app:tabIndicator="@drawable/shape_tab_indicator"
-                app:tabIndicatorColor="@color/colorControl"
-                app:tabIndicatorFullWidth="false"
-                app:tabIndicatorHeight="3dp"
-                app:tabPaddingTop="6dp"
-                app:tabSelectedTextColor="@color/colorControl"
-                app:tabTextAppearance="@style/Theme.Itteitheapps.TabLayout.TextAppearance" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/profileViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/shape_round_primary_variant"
-                android:transitionGroup="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileTabLayout" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</FrameLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/profileViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/shape_round_primary_variant"
+        android:elevation="2dp"
+        android:transitionGroup="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileTabLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

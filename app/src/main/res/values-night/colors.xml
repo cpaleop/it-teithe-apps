@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="colorBackground">#121212</color>
-    <color name="colorBackground_16">#282E31</color>
-    <color name="colorBackground_12">#1A1D1E</color>
-    <color name="colorSurface">#26829cab</color>
-    <color name="colorPrimary">#829cab</color>
+    <color name="colorBackground">#121415</color>
+    <!-- Produced: Background and Brand color -->
+    <color name="colorBackground_16">#14191F</color>
+    <!-- Produced: Background and Brand color -->
+    <color name="colorBackground_12">#13171B</color>
+    <color name="colorSurface">#264783AE</color>
+    <color name="colorPrimary">#4783AE</color>
     <color name="colorPrimaryVariant">#283E4A</color>
-    <color name="colorPrimary_5">#0D829cab</color>
-    <color name="colorPrimary_12">#1F829cab</color>
-    <color name="colorPrimary_15">#26829cab</color>
+    <color name="colorPrimary_5">#131416</color>
+    <color name="colorPrimary_12">#13171B</color>
+    <color name="colorPrimary_15">#14181E</color>
+    <color name="colorPrimary_18">#141A20</color>
+    <color name="colorPrimary_45">#99A7B8</color>
+    <color name="colorPrimary_80">#1B3451</color>
     <color name="colorOnPrimary_87">#DEFFFFFF</color>
     <color name="colorOnPrimary_60">#99FFFFFF</color>
     <color name="colorOnPrimary_38">#61FFFFFF</color>
     <color name="colorOnPrimary">#FBFBFC</color>
     <color name="colorOnPrimaryVariant">#BFC1C9</color>
     <color name="colorControl">#8AB4F8</color>
-    <color name="colorAccent">#829cab</color>
+    <color name="colorAccent">#4783AE</color>
     <color name="colorAccentOpaque">#4D8AB4F8</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
@@ -25,8 +30,7 @@
     <color name="red_300">#E57373</color>
     <color name="white_opaque">#08FFFFFF</color>
     <color name="white_opaque_more">#92000000</color>
-    <color name="dialoFragmentBackground">#1C3E4D</color>
-    <color name="dialoFragmentBackgroundVariant">#172830</color>
+    <color name="dialoFragmentBackground">#13171B</color>
     <color name="colorControlNormal">#80868B</color>
     <color name="green">#5E715C</color>
 </resources>

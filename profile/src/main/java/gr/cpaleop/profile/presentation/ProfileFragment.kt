@@ -73,10 +73,6 @@ class ProfileFragment :
         TabLayoutMediator(binding.profileTabLayout, binding.profileViewPager) { tab, position ->
             tab.setText(ProfileStateAdapter.titles[position])
         }.attach()
-
-        binding.profileSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.presentProfile()
-        }
     }
 
     private fun observeViewModel() {
@@ -105,7 +101,6 @@ class ProfileFragment :
 
     private fun updateLoader(shouldLoad: Boolean) {
         binding.profilePictureProgressBar.isVisible = shouldLoad
-        binding.profileSwipeRefreshLayout.isRefreshing = shouldLoad
     }
 
     private fun copyToClipboard(optionData: OptionData) {

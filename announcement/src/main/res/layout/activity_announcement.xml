@@ -40,7 +40,7 @@
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/empty"
-        android:indeterminateTint="?attr/colorAccent"
+        android:indeterminateTint="@color/colorControl"
         android:padding="8dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/announcementDownloadAttachmentButton"
@@ -98,7 +98,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:textColor="@color/colorOnPrimary_60"
-            android:textColorLink="?attr/colorAccent"
+            android:textColorLink="@color/colorControl"
             android:textIsSelectable="true"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content api.it.teithe.gr" />
     </ScrollView>

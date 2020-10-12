@@ -5,7 +5,7 @@
     <string name="profile_email">email:</string>
     <string name="profile_username">όνομα χρήστη:</string>
     <string name="profile_semester">εξάμηνο:</string>
-    <string name="profile_registered_year">καταχωρισμένο έτος:</string>
+    <string name="profile_registered_year">κατ/μένο έτος:</string>
     <string name="profile_social_edit">Επεξεργασία %1$s</string>
     <string name="profile_social_edit_submit">ΟΚ</string>
     <string name="profile_social_edit_cancel">Άκυρο</string>

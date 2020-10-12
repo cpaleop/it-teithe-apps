@@ -50,7 +50,7 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/colorOnPrimary_87</item>
+        <item name="android:textColor">@color/colorOnPrimary_60</item>
         <item name="android:textSize">12sp</item>
     </style>
 

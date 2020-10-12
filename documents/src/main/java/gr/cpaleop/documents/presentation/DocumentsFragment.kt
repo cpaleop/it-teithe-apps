@@ -60,12 +60,14 @@ class DocumentsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (announcementId != null) {
-            enterTransition = null
+            /*enterTransition = null
             exitTransition = null
             reenterTransition = null
-            returnTransition = null
+            returnTransition = null*/
+            postponeEnterTransition()
             sharedElementEnterTransition = MaterialContainerTransform().apply {
-                duration = 250
+                duration = resources.getInteger(gr.cpaleop.teithe_apps.R.integer.animation_duration)
+                    .toLong()
                 scrimColor = Color.TRANSPARENT
                 containerColor = Color.TRANSPARENT
                 fadeMode = MaterialContainerTransform.FADE_MODE_OUT
@@ -98,7 +100,9 @@ class DocumentsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (announcementId != null) {
-            binding.root.transitionName = "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
+            binding.documentsRecyclerView.transitionName =
+                "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
+            startPostponedEnterTransition()
         }
         super.onViewCreated(view, savedInstanceState)
         binding.root.hideKeyboard()
