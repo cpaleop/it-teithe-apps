@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:background="@drawable/shape_round_edges_primary_variant_ripple"
-                    android:fontFamily="@font/googlesans_regular"
+                    android:fontFamily="@font/proximanova_regular"
                     android:gravity="center"
                     android:hint="@string/announcements_search"
                     android:imeOptions="actionGo"
