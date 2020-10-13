@@ -17,8 +17,16 @@ class SettingsHolder(
             item.iconRes?.let(settingIconImageView::setImageResource)
             settingTitleTextView.setText(item.titleRes)
             settingValueTextView.run {
-                isVisible = item.valueRes != null
-                item.valueRes?.let(this::setText)
+                isVisible = item.valueRes != null || item.argument != null
+
+                if (item.valueRes != null) {
+                    this.text = binding.root.context.getString(
+                        item.valueRes,
+                        item.argument
+                    )
+                } else {
+                    this.text = ""
+                }
             }
         }
     }

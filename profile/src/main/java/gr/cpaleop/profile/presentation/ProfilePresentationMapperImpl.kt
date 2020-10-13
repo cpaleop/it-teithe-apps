@@ -2,6 +2,7 @@ package gr.cpaleop.profile.presentation
 
 import gr.cpaleop.common.extensions.orEmpty
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.profile.R
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Profile
@@ -9,7 +10,11 @@ import gr.cpaleop.profile.domain.entities.Social
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class ProfilePresentationMapperImpl(@DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher) :
+class ProfilePresentationMapperImpl(
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
+    private val dateFormatter: DateFormatter
+) :
     ProfilePresentationMapper {
 
     override suspend operator fun invoke(profile: Profile): ProfilePresentation =
@@ -81,6 +86,13 @@ class ProfilePresentationMapperImpl(@DefaultDispatcher private val defaultDispat
                 else ""
 
             val initials = "$nameInitial$lastNameInitial"
+
+            val passwordChangeTimeReadable =
+                dateFormatter(
+                    profile.passwordLastChangedTime,
+                    DateFormatter.ANNOUNCEMENT_DATE_FORMAT
+                )
+
             return@withContext ProfilePresentation(
                 profilePhotoUrl = profile.personalDetails.profileImageUrl,
                 am = profile.academicDetails.am,
@@ -90,7 +102,8 @@ class ProfilePresentationMapperImpl(@DefaultDispatcher private val defaultDispat
                 semester = profile.academicDetails.currentSemester,
                 registeredYear = profile.academicDetails.registeredYear,
                 social = socialsList,
-                personalDetails = personalDetails
+                personalDetails = personalDetails,
+                passwordChangeTime = passwordChangeTimeReadable
             )
         }
 }

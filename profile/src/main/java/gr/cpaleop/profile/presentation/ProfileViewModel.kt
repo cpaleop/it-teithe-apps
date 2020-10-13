@@ -73,8 +73,13 @@ class ProfileViewModel(
         }
     }
 
-    private val _settings = MutableLiveData<List<Setting>>()
-    val settings: LiveData<List<Setting>> = _settings.toSingleEvent()
+    val settings: MediatorLiveData<List<Setting>> by lazy {
+        MediatorLiveData<List<Setting>>().apply {
+            addSource(_profile) { profilePresentation ->
+                presentSettings(this, profilePresentation)
+            }
+        }
+    }
 
     private val _preferredTheme = MutableLiveData<Int>()
     val preferredTheme: LiveData<Int> = _preferredTheme.toSingleEvent()
@@ -138,28 +143,17 @@ class ProfileViewModel(
         }
     }
 
-    fun presentSettings() {
+    private fun presentSettings(
+        liveData: MediatorLiveData<List<Setting>>,
+        profilePresentation: ProfilePresentation
+    ) {
         viewModelScope.launch(mainDispatcher) {
             try {
                 observePreferredThemeUseCase()
                     .collect { theme ->
                         val selectedLanguage = languageMapper(getPreferredLanguageUseCase())
-                        _settings.value = withContext(defaultDispatcher) {
+                        liveData.value = withContext(defaultDispatcher) {
                             listOf(
-                                Setting(
-                                    type = SettingType.SECTION_TITLE,
-                                    titleRes = R.string.profile_settings_account_title
-                                ),
-                                Setting(
-                                    type = SettingType.CONTENT,
-                                    iconRes = R.drawable.ic_key,
-                                    titleRes = R.string.profile_settings_change_password
-                                ),
-                                Setting(
-                                    type = SettingType.CONTENT,
-                                    iconRes = R.drawable.ic_logout,
-                                    titleRes = R.string.profile_settings_logout
-                                ),
                                 Setting(
                                     type = SettingType.SECTION_TITLE,
                                     titleRes = R.string.profile_settings_appearance_title
@@ -175,6 +169,22 @@ class ProfileViewModel(
                                     iconRes = R.drawable.ic_language,
                                     titleRes = R.string.profile_settings_change_language,
                                     valueRes = selectedLanguage
+                                ),
+                                Setting(
+                                    type = SettingType.SECTION_TITLE,
+                                    titleRes = R.string.profile_settings_account_title
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_key,
+                                    titleRes = R.string.profile_settings_change_password,
+                                    valueRes = R.string.profile_settings_password_expiration,
+                                    argument = profilePresentation.passwordChangeTime
+                                ),
+                                Setting(
+                                    type = SettingType.CONTENT,
+                                    iconRes = R.drawable.ic_logout,
+                                    titleRes = R.string.profile_settings_logout
                                 )
                             )
                         }

@@ -49,11 +49,12 @@ val profileModule = module {
     single { LanguageMapper() }
     single { ThemeMapper() }
     single { OptionDataMapper(get(named<DefaultDispatcher>())) }
-    single { ProfileMapper(get()) }
+    single { ProfileMapper(get(), get()) }
     single<SelectedSocialOptionMapper> { SelectedSocialOptionMapperImpl(get(named<DefaultDispatcher>())) }
     single<ProfilePresentationMapper> {
         ProfilePresentationMapperImpl(
-            get(named<DefaultDispatcher>())
+            get(named<DefaultDispatcher>()),
+            get()
         )
     }
     single<UpdatePreferredLanguageUseCase> { UpdatePreferredLanguageUseCaseImpl(get()) }

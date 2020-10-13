@@ -35,6 +35,7 @@
     <!-- Settings -->
     <string name="profile_settings_account_title">Λογαριασμός</string>
     <string name="profile_settings_change_password">Αλλαγή κωδικού</string>
+    <string name="profile_settings_password_expiration">Λήγει στις: %1$s</string>
     <string name="profile_settings_logout">Αποσύνδεση</string>
     <string name="profile_settings_appearance_title">Εμφάνιση</string>
     <string name="profile_settings_change_theme">Αλλαγή θέματος</string>

@@ -168,7 +168,9 @@ class ProfileViewModelTest {
         coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
         every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
         every { themeMapper(givenTheme) } returns R.string.profile_theme_dark
-        viewModel.presentSettings()
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
 
@@ -183,7 +185,9 @@ class ProfileViewModelTest {
         coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
         every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
         every { themeMapper(givenTheme) } returns R.string.profile_theme_light
-        viewModel.presentSettings()
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
 
@@ -198,7 +202,9 @@ class ProfileViewModelTest {
         coEvery { getPreferredLanguageUseCase() } returns LanguageCode.ENGLISH
         every { languageMapper(LanguageCode.ENGLISH) } returns R.string.profile_language_english
         every { themeMapper(givenTheme) } returns R.string.profile_theme_system
-        viewModel.presentSettings()
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
 
@@ -213,7 +219,9 @@ class ProfileViewModelTest {
         coEvery { getPreferredLanguageUseCase() } returns LanguageCode.GREEK
         every { languageMapper(LanguageCode.GREEK) } returns R.string.profile_language_greek
         every { themeMapper(givenTheme) } returns R.string.profile_theme_dark
-        viewModel.presentSettings()
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
         assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(expected)
     }
 
@@ -221,7 +229,10 @@ class ProfileViewModelTest {
     fun `presentSettings catches exception and has message when failure`() {
         val expectedMessage = Message(appR.string.error_generic)
         every { observePreferredThemeUseCase() } throws Throwable()
-        viewModel.presentSettings()
+        coEvery { getProfileUseCase() } returns profile
+        coEvery { profilePresentationMapper(profile) } returns profilePresentation
+        viewModel.presentProfile()
+        assertThat(LiveDataTest.getValue(viewModel.settings)).isEqualTo(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -572,20 +583,6 @@ class ProfileViewModelTest {
         private val settingsListSystemTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
-                titleRes = R.string.profile_settings_account_title
-            ),
-            Setting(
-                type = SettingType.CONTENT,
-                iconRes = R.drawable.ic_key,
-                titleRes = R.string.profile_settings_change_password
-            ),
-            Setting(
-                type = SettingType.CONTENT,
-                iconRes = R.drawable.ic_logout,
-                titleRes = R.string.profile_settings_logout
-            ),
-            Setting(
-                type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_appearance_title
             ),
             Setting(
@@ -599,10 +596,7 @@ class ProfileViewModelTest {
                 iconRes = R.drawable.ic_language,
                 titleRes = R.string.profile_settings_change_language,
                 valueRes = R.string.profile_language_english
-            )
-        )
-
-        private val settingsListLightTheme = listOf(
+            ),
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_account_title
@@ -610,13 +604,18 @@ class ProfileViewModelTest {
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = R.string.profile_settings_change_password
+                titleRes = R.string.profile_settings_change_password,
+                valueRes = R.string.profile_settings_password_expiration,
+                argument = "10/13/2020"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
                 titleRes = R.string.profile_settings_logout
-            ),
+            )
+        )
+
+        private val settingsListLightTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_appearance_title
@@ -632,10 +631,7 @@ class ProfileViewModelTest {
                 iconRes = R.drawable.ic_language,
                 titleRes = R.string.profile_settings_change_language,
                 valueRes = R.string.profile_language_english
-            )
-        )
-
-        private val settingsListDarkTheme = listOf(
+            ),
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_account_title
@@ -643,13 +639,18 @@ class ProfileViewModelTest {
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = R.string.profile_settings_change_password
+                titleRes = R.string.profile_settings_change_password,
+                valueRes = R.string.profile_settings_password_expiration,
+                argument = "10/13/2020"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
                 titleRes = R.string.profile_settings_logout
-            ),
+            )
+        )
+
+        private val settingsListDarkTheme = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_appearance_title
@@ -665,10 +666,7 @@ class ProfileViewModelTest {
                 iconRes = R.drawable.ic_language,
                 titleRes = R.string.profile_settings_change_language,
                 valueRes = R.string.profile_language_english
-            )
-        )
-
-        private val settingsListDarkThemeGreekLanguage = listOf(
+            ),
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_account_title
@@ -676,13 +674,18 @@ class ProfileViewModelTest {
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_key,
-                titleRes = R.string.profile_settings_change_password
+                titleRes = R.string.profile_settings_change_password,
+                valueRes = R.string.profile_settings_password_expiration,
+                argument = "10/13/2020"
             ),
             Setting(
                 type = SettingType.CONTENT,
                 iconRes = R.drawable.ic_logout,
                 titleRes = R.string.profile_settings_logout
-            ),
+            )
+        )
+
+        private val settingsListDarkThemeGreekLanguage = listOf(
             Setting(
                 type = SettingType.SECTION_TITLE,
                 titleRes = R.string.profile_settings_appearance_title
@@ -698,6 +701,22 @@ class ProfileViewModelTest {
                 iconRes = R.drawable.ic_language,
                 titleRes = R.string.profile_settings_change_language,
                 valueRes = R.string.profile_language_greek
+            ),
+            Setting(
+                type = SettingType.SECTION_TITLE,
+                titleRes = R.string.profile_settings_account_title
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_key,
+                titleRes = R.string.profile_settings_change_password,
+                valueRes = R.string.profile_settings_password_expiration,
+                argument = "10/13/2020"
+            ),
+            Setting(
+                type = SettingType.CONTENT,
+                iconRes = R.drawable.ic_logout,
+                titleRes = R.string.profile_settings_logout
             )
         )
 
@@ -733,7 +752,8 @@ class ProfileViewModelTest {
         private val profile = Profile(
             academicDetails = profileAcademicDetails,
             personalDetails = profilePersonalDetails,
-            socialMedia = profileSocialMedia
+            socialMedia = profileSocialMedia,
+            passwordLastChangedTime = 1602623934L
         )
 
         private val profileSocialDetails = listOf(
@@ -774,6 +794,7 @@ class ProfileViewModelTest {
             username = "username",
             registeredYear = "2014",
             displayName = "display_name",
+            passwordChangeTime = "10/13/2020",
             initials = "dn",
             semester = "12",
             social = profileSocialDetails,

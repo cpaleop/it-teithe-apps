@@ -3,6 +3,7 @@ package gr.cpaleop.core.domain
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class DateFormatterImpl : DateFormatter {
 
     /**
@@ -45,7 +46,7 @@ class DateFormatterImpl : DateFormatter {
      */
     override fun invoke(isoFormattedTimeStamp: String, targetFormat: String): String {
         val formatter = SimpleDateFormat(
-            FORMAT_ISO_8601,
+            DateFormatter.FORMAT_ISO_8601,
             Locale.getDefault()
         )
         val date = formatter.parse(isoFormattedTimeStamp)
@@ -61,7 +62,7 @@ class DateFormatterImpl : DateFormatter {
 
     override fun invoke(isoFormattedTimeStamp: String): Long {
         val formatter = SimpleDateFormat(
-            FORMAT_ISO_8601,
+            DateFormatter.FORMAT_ISO_8601,
             Locale.getDefault()
         )
         val date = formatter.parse(isoFormattedTimeStamp)
@@ -77,8 +78,9 @@ class DateFormatterImpl : DateFormatter {
         ).format(calendar.timeInMillis)
     }
 
-    companion object {
-
-        private const val FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    override fun getLocalTimestampFromUtc(time: String): Long {
+        val sdf = SimpleDateFormat(DateFormatter.LDAP_DATE_FORMAT, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("GMT")
+        return (sdf.parse(time)?.time ?: 0L) / 1000
     }
 }

@@ -9,6 +9,7 @@ data class ProfilePresentation(
     val profilePhotoUrl: String?,
     val am: String,
     val username: String,
+    val passwordChangeTime: String,
     val displayName: String,
     val initials: String,
     val semester: String,

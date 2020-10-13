@@ -9,8 +9,8 @@ data class Setting(
     val iconRes: Int? = null,
     @StringRes
     val titleRes: Int,
-    @StringRes
-    val valueRes: Int? = null
+    val valueRes: Int? = null,
+    val argument: String? = null
 )
 
 enum class SettingType {

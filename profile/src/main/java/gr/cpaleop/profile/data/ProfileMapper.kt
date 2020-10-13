@@ -1,6 +1,7 @@
 package gr.cpaleop.profile.data
 
 import gr.cpaleop.common.extensions.orEmpty
+import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.profile.data.model.remote.RemoteProfile
 import gr.cpaleop.profile.domain.entities.AcademicDetails
@@ -9,7 +10,10 @@ import gr.cpaleop.profile.domain.entities.Profile
 import gr.cpaleop.profile.domain.entities.SocialMedia
 import gr.cpaleop.profile.domain.repositories.PreferencesRepository
 
-class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
+class ProfileMapper(
+    private val preferencesRepository: PreferencesRepository,
+    private val dateFormatter: DateFormatter
+) {
 
     suspend operator fun invoke(remoteProfile: RemoteProfile): Profile {
         @LanguageCode
@@ -60,9 +64,14 @@ class ProfileMapper(private val preferencesRepository: PreferencesRepository) {
             registeredYear = remoteProfile.regyear.orEmpty()
         )
 
+        val passwordTime = dateFormatter.getLocalTimestampFromUtc(
+            remoteProfile.pwdChangedTime ?: ""
+        )
+
         return Profile(
             personalDetails = personalDetails,
             academicDetails = academidDetails,
+            passwordLastChangedTime = passwordTime,
             socialMedia = SocialMedia(
                 github = remoteProfile.socialMedia?.github.orEmpty(),
                 facebook = remoteProfile.socialMedia?.facebook.orEmpty(),

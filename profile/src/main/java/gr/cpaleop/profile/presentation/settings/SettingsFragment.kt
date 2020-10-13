@@ -34,7 +34,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        viewModel.presentSettings()
     }
 
     private fun setupViews() {

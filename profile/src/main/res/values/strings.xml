@@ -40,6 +40,7 @@
     <!-- Settings -->
     <string name="profile_settings_account_title">Account</string>
     <string name="profile_settings_change_password">Change password</string>
+    <string name="profile_settings_password_expiration">Expires at: %1$s</string>
     <string name="profile_settings_logout">Logout</string>
     <string name="profile_settings_appearance_title">Appearance</string>
     <string name="profile_settings_change_theme">Change theme</string>

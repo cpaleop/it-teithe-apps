@@ -3,7 +3,8 @@ package gr.cpaleop.profile.domain.entities
 data class Profile(
     val personalDetails: PersonalDetails,
     val academicDetails: AcademicDetails,
-    val socialMedia: SocialMedia
+    val socialMedia: SocialMedia,
+    val passwordLastChangedTime: Long
 )
 
 data class AcademicDetails(
