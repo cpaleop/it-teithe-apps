@@ -8,8 +8,8 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="14dp"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/shape_round_ripple_primary_12"
-    android:elevation="1dp">
+    android:background="@drawable/shape_round_ripple"
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/documentPreview"

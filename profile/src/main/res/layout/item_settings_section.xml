@@ -13,6 +13,6 @@
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center_vertical"
         android:padding="8dp"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?attr/colorSecondary"
         tools:text="Appearance" />
 </FrameLayout>

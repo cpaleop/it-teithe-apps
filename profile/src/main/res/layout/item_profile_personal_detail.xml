@@ -14,7 +14,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center_vertical"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?attr/colorSecondary"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

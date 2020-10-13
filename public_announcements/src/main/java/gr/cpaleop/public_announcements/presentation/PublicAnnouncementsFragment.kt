@@ -108,11 +108,7 @@ class PublicAnnouncementsFragment :
     }
 
     private fun updateAnnouncements(announcementList: List<AnnouncementPresentation>) {
-        lifecycleScope.launch {
-            announcementPresentationAdapter?.submitList(announcementList) {
-                binding.publicAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
-            }
-        }
+        announcementPresentationAdapter?.submitList(announcementList)
     }
 
     private fun updateEmptyView(shouldShow: Boolean) {

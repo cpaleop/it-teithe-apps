@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
-    android:layout_marginTop="12dp"
     android:layout_marginEnd="12dp"
-    android:background="@drawable/shape_round_ripple"
-    android:elevation="2dp">
+    android:layout_marginBottom="18dp"
+    android:background="@drawable/shape_round_ripple">
 
     <TextView
         android:id="@+id/announcementTitle"
@@ -37,8 +36,8 @@
         android:id="@+id/announcementPublisher"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"
@@ -59,7 +58,7 @@
         android:id="@+id/announcementDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="14dp"
         android:ellipsize="end"
         android:fontFamily="@font/googlesans_regular"
         android:gravity="center"

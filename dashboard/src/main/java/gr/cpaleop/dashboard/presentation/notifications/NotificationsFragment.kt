@@ -76,9 +76,7 @@ class NotificationsFragment :
     }
 
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
-        notificationAdapter?.submitList(notifications) {
-            binding.notificationsRecyclerView.layoutManager?.scrollToPosition(0)
-        }
+        notificationAdapter?.submitList(notifications)
     }
 
     private fun showNotificationsEmpty(notificationsEmpty: Boolean) {

@@ -82,9 +82,7 @@ class CategoryFilterFragment :
     }
 
     private fun updateAnnouncements(announcements: List<AnnouncementPresentation>) {
-        announcementsAdapter?.submitList(announcements) {
-            binding.categoryAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
-        }
+        announcementsAdapter?.submitList(announcements)
     }
 
     private fun updateEmptyView(isEmpty: Boolean) {

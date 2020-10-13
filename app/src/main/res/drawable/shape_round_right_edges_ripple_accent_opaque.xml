@@ -11,7 +11,7 @@
                 android:radius="24dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="24dp" />
-            <solid android:color="@color/colorAccentOpaque" />
+            <solid android:color="@color/pink_200_40op" />
         </shape>
     </item>
 </ripple>
