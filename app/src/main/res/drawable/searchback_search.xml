@@ -9,7 +9,7 @@
         android:name="line"
         android:pathData="M5.705,5.705 L18.295,18.295"
         android:strokeWidth="2"
-        android:strokeColor="@color/colorOnPrimary"
+        android:strokeColor="?attr/colorOnPrimary"
         android:trimPathStart="0.45"
         android:trimPathEnd="1" />
 
@@ -17,7 +17,7 @@
         android:name="circle1"
         android:pathData="M5.705,5.705 A 4 4 0 1 1 12,12 L5.705,18.295"
         android:strokeWidth="2"
-        android:strokeColor="@color/colorOnPrimary"
+        android:strokeColor="?attr/colorOnPrimary"
         android:trimPathStart="0"
         android:trimPathEnd="0.6" />
 
@@ -25,7 +25,7 @@
         android:name="circle2"
         android:pathData="M18.295,5.705 L12,12 A 4 4 0 1 1 5.705,5.705"
         android:strokeWidth="2"
-        android:strokeColor="@color/colorOnPrimary"
+        android:strokeColor="?attr/colorOnPrimary"
         android:trimPathStart="0.4"
         android:trimPathEnd="1" />
 </vector>

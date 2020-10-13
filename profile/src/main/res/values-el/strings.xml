@@ -35,11 +35,16 @@
     <!-- Settings -->
     <string name="profile_settings_account_title">Λογαριασμός</string>
     <string name="profile_settings_change_password">Αλλαγή κωδικού</string>
-    <string name="profile_settings_password_expiration">Λήγει στις: %1$s</string>
+    <string name="profile_settings_password_expiration">Τελευταία αλλαγή: %1$s</string>
     <string name="profile_settings_logout">Αποσύνδεση</string>
     <string name="profile_settings_appearance_title">Εμφάνιση</string>
     <string name="profile_settings_change_theme">Αλλαγή θέματος</string>
     <string name="profile_settings_change_language">Αλλαγή γλώσσας</string>
+    <string name="profile_settings_change_password_submit">Submit</string>
+    <string name="profile_settings_change_password_invalid">Λάθος κωδικός</string>
+    <string name="profile_settings_change_password_old_hint">Παλιός κωδικός</string>
+    <string name="profile_settings_change_password_new_hint">Καινουρίος κωδικός</string>
+    <string name="profile_settings_change_password_success">Ο κωδικός άλλαξε επιτυχώς</string>
 
     <!-- Options -->
     <string name="profile_option_copy">Αντιγραφή</string>

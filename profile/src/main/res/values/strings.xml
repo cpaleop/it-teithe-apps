@@ -40,11 +40,16 @@
     <!-- Settings -->
     <string name="profile_settings_account_title">Account</string>
     <string name="profile_settings_change_password">Change password</string>
-    <string name="profile_settings_password_expiration">Expires at: %1$s</string>
+    <string name="profile_settings_password_expiration">Last changed: %1$s</string>
     <string name="profile_settings_logout">Logout</string>
     <string name="profile_settings_appearance_title">Appearance</string>
     <string name="profile_settings_change_theme">Change theme</string>
     <string name="profile_settings_change_language">Change language</string>
+    <string name="profile_settings_change_password_invalid">Invalid password</string>
+    <string name="profile_settings_change_password_submit">Submit</string>
+    <string name="profile_settings_change_password_old_hint">Old password</string>
+    <string name="profile_settings_change_password_new_hint">New password</string>
+    <string name="profile_settings_change_password_success">Password changed successfully</string>
 
     <!-- Options -->
     <string name="profile_option_copy">Copy</string>

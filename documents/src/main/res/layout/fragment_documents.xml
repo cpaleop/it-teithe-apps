@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/proximanova_medium"
         android:text="@string/documents_empty"
-        android:textColor="@color/colorOnPrimary"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

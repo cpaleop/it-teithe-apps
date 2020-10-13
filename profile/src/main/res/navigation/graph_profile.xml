@@ -27,6 +27,10 @@
             app:destination="@id/profileSelectLanguageDialog" />
 
         <action
+            android:id="@+id/profileToChangePasswordDialog"
+            app:destination="@id/profileChangePasswordDialog" />
+
+        <action
             android:id="@+id/profileToSplash"
             app:destination="@id/splashActivity" />
     </fragment>
@@ -42,6 +46,12 @@
         android:name="gr.cpaleop.profile.presentation.settings.language.SelectLanguageBottomSheetDialogFragment"
         android:label="SelectLanguageBottomSheetDialogFragment"
         tools:layout="@layout/dialog_fragment_select_language" />
+
+    <dialog
+        android:id="@+id/profileChangePasswordDialog"
+        android:name="gr.cpaleop.profile.presentation.settings.change_password.ChangePasswordDialogFragment"
+        android:label="ChangePasswordDialogFragment"
+        tools:layout="@layout/dialog_fragment_change_password" />
 
     <dialog
         android:id="@+id/profilePersonalOptionsDialog"

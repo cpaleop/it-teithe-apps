@@ -11,10 +11,10 @@
     <color name="colorPrimary_12">#FFFFFF</color>
     <color name="colorPrimary_15">#FFFFFF</color>
     <color name="colorPrimary_18">#FFFFFF</color>
+    <color name="colorOnPrimary">#DE000000</color>
     <color name="colorOnPrimary_87">#DE000000</color>
     <color name="colorOnPrimary_60">#99000000</color>
     <color name="colorOnPrimary_38">#61000000</color>
-    <color name="colorOnPrimary">#050505</color>
     <color name="colorOnPrimaryVariant">#41434E</color>
     <color name="pink_200">#D81B60</color>
     <color name="pink_200_70op">#B3D81B60</color>

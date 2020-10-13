@@ -69,6 +69,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             R.string.profile_settings_change_theme -> navigateToSelectThemeDialog()
             R.string.profile_settings_change_language -> navigateToSelectLanguageDialog()
             R.string.profile_settings_logout -> viewModel.logout()
+            R.string.profile_settings_change_password -> navigateToChangePasswordDialog()
         }
     }
 
@@ -84,6 +85,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private fun navigateToSplash() {
         val directions = ProfileFragmentDirections.profileToSplash()
+        navController.navigate(directions)
+    }
+
+    private fun navigateToChangePasswordDialog() {
+        val directions = ProfileFragmentDirections.profileToChangePasswordDialog()
         navController.navigate(directions)
     }
 }

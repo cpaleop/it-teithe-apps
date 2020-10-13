@@ -3,6 +3,7 @@
     <style name="Theme.Itteitheapps" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_87</item>
         <!--<item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>-->
         <item name="colorControlHighlight">@color/pink_200_80op</item>
         <item name="colorSecondary">@color/pink_200</item>
@@ -34,8 +35,8 @@
 
     <style name="Theme.TextAppearanceSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorOnPrimary_87</item>
-        <item name="android:fontFamily">@font/proximanova_medium</item>
-        <item name="fontFamily">@font/proximanova_medium</item>
+        <item name="android:fontFamily">@font/proximanova_bold</item>
+        <item name="fontFamily">@font/proximanova_bold</item>
     </style>
 
     <style name="Theme.TextAppearanceBody2" parent="TextAppearance.MaterialComponents.Body2">

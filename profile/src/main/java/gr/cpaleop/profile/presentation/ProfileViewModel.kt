@@ -12,6 +12,7 @@ import gr.cpaleop.core.domain.behavior.LanguageCode
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.profile.R
+import gr.cpaleop.profile.domain.entities.InvalidPasswordException
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.domain.usecases.*
@@ -48,7 +49,8 @@ class ProfileViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val getPreferredLanguageUseCase: GetPreferredLanguageUseCase,
     private val updatePreferredLanguageUseCase: UpdatePreferredLanguageUseCase,
-    private val languageMapper: LanguageMapper
+    private val languageMapper: LanguageMapper,
+    private val changePasswordUseCase: ChangePasswordUseCase
 ) : BaseViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -108,6 +110,12 @@ class ProfileViewModel(
 
     private val _updatedLanguage = MutableLiveData<Unit>()
     val updatedLanguage: LiveData<Unit> = _updatedLanguage.toSingleEvent()
+
+    private val _invalidPassword = MutableLiveData<Boolean>()
+    val invalidPassword: LiveData<Boolean> = _invalidPassword.toSingleEvent()
+
+    private val _changePasswordSuccess = MutableLiveData<Unit>()
+    val changePasswordSuccess: LiveData<Unit> = _changePasswordSuccess.toSingleEvent()
 
     fun presentProfile() {
         viewModelScope.launch(mainDispatcher) {
@@ -321,6 +329,24 @@ class ProfileViewModel(
                 _message.value = Message(appR.string.error_generic)
             } finally {
                 _loading.value = false
+            }
+        }
+    }
+
+    fun changePassword(oldPassword: String, newPassword: String) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _loading.value = true
+                changePasswordUseCase(oldPassword, newPassword)
+                _loading.value = false
+                _invalidPassword.value = false
+                _changePasswordSuccess.value = Unit
+                _message.value = Message(R.string.profile_settings_change_password_success)
+            } catch (t: InvalidPasswordException) {
+                _invalidPassword.value = true
+                Timber.e(t)
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }

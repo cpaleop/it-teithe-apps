@@ -40,4 +40,9 @@ class ProfileRepositoryImpl(
                 Personal.TELEPHONE_NUMBER -> profileApi.updateProfile(telephoneNumber = value)
             }
         }
+
+    override suspend fun changePassword(oldPassword: String, newPassword: String) =
+        withContext(ioDispatcher) {
+            profileApi.updatePassword(oldPassword, newPassword)
+        }
 }

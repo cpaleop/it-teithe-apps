@@ -11,4 +11,6 @@ interface ProfileRepository {
     suspend fun updateSocial(social: Social, value: String)
 
     suspend fun updatePersonal(type: Personal, value: String)
+
+    suspend fun changePassword(oldPassword: String, newPassword: String)
 }

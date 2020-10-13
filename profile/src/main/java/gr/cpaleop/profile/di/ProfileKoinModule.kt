@@ -7,6 +7,8 @@ import gr.cpaleop.profile.data.PreferencesRepositoryImpl
 import gr.cpaleop.profile.data.ProfileMapper
 import gr.cpaleop.profile.data.ProfileRepositoryImpl
 import gr.cpaleop.profile.data.remote.ProfileApi
+import gr.cpaleop.profile.domain.PasswordValidator
+import gr.cpaleop.profile.domain.PasswordValidatorImpl
 import gr.cpaleop.profile.domain.repositories.PreferencesRepository
 import gr.cpaleop.profile.domain.repositories.ProfileRepository
 import gr.cpaleop.profile.domain.usecases.*
@@ -42,6 +44,7 @@ val profileModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }
@@ -57,6 +60,8 @@ val profileModule = module {
             get()
         )
     }
+    single<PasswordValidator> { PasswordValidatorImpl() }
+    single<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(get(), get()) }
     single<UpdatePreferredLanguageUseCase> { UpdatePreferredLanguageUseCaseImpl(get()) }
     single<GetPreferredLanguageUseCase> { GetPreferredLanguageUseCaseImpl(get()) }
     single<LogoutUseCase> { LogoutUseCaseImpl(get()) }
