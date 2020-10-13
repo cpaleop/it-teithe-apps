@@ -88,7 +88,7 @@
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_filter"
         android:transitionGroup="true"
-        app:backgroundTint="?attr/colorAccent"
+        app:backgroundTint="?attr/colorPrimary"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end"
         app:tint="@color/white" />
