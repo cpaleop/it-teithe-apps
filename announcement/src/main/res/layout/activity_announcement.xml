@@ -94,6 +94,7 @@
             android:autoLink="all"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:textColor="@color/colorOnPrimary_87"
             android:textColorLink="?attr/colorSecondary"
             android:textIsSelectable="true"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content api.it.teithe.gr" />
