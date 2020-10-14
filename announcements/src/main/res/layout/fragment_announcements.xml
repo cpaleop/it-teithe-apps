@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@null"
-                        android:fontFamily="@font/proximanova_regular"
+                        android:fontFamily="@font/commissioner_regular"
                         android:gravity="center"
                         android:hint="@string/announcements_search"
                         android:imeOptions="actionGo"

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/proximanova_regular"
+        android:fontFamily="@font/commissioner_regular"
         android:gravity="center_vertical"
         android:padding="8dp"
         android:textColor="?attr/colorSecondary"

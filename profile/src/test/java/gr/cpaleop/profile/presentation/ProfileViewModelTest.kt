@@ -86,6 +86,9 @@ class ProfileViewModelTest {
     @MockK
     private lateinit var languageMapper: LanguageMapper
 
+    @MockK
+    private lateinit var changePasswordUseCase: ChangePasswordUseCase
+
     private lateinit var viewModel: ProfileViewModel
 
     @Before
@@ -107,7 +110,8 @@ class ProfileViewModelTest {
             logoutUseCase,
             getPreferredLanguageUseCase,
             updatePreferredLanguageUseCase,
-            languageMapper
+            languageMapper,
+            changePasswordUseCase
         )
     }
 

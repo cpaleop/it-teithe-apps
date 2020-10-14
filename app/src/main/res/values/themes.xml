@@ -23,9 +23,9 @@
 
         <!-- Material Dialogs -->
         <item name="md_corner_radius">8dp</item>
-        <item name="md_font_title">@font/proximanova_medium</item>
-        <item name="md_font_body">@font/proximanova_regular</item>
-        <item name="md_font_button">@font/proximanova_medium</item>
+        <item name="md_font_title">@font/commissioner_medium</item>
+        <item name="md_font_body">@font/commissioner_regular</item>
+        <item name="md_font_button">@font/commissioner_medium</item>
         <item name="md_color_button_text">?attr/colorPrimary</item>
         <item name="md_ripple_color">?attr/colorPrimary</item>
         <item name="md_divider_color">?attr/colorPrimary</item>
@@ -37,14 +37,14 @@
 
     <style name="Theme.TextAppearanceSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorOnPrimary_87</item>
-        <item name="android:fontFamily">@font/proximanova_bold</item>
-        <item name="fontFamily">@font/proximanova_bold</item>
+        <item name="android:fontFamily">@font/commissioner_bold</item>
+        <item name="fontFamily">@font/commissioner_bold</item>
     </style>
 
     <style name="Theme.TextAppearanceBody2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/colorOnPrimary_60</item>
-        <item name="android:fontFamily">@font/proximanova_regular</item>
-        <item name="fontFamily">@font/proximanova_regular</item>
+        <item name="android:fontFamily">@font/commissioner_regular</item>
+        <item name="fontFamily">@font/commissioner_regular</item>
     </style>
 
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
@@ -68,7 +68,7 @@
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
         <item name="android:layout_margin">4dp</item>
-        <item name="android:fontFamily">@font/proximanova_regular</item>
+        <item name="android:fontFamily">@font/commissioner_regular</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:textSize">12sp</item>
@@ -101,17 +101,17 @@
         <item name="chipIconVisible">false</item>
         <item name="android:ellipsize">middle</item>
         <item name="android:singleLine">true</item>
-        <item name="android:fontFamily">@font/proximanova_regular</item>
+        <item name="android:fontFamily">@font/commissioner_regular</item>
         <item name="android:textAppearance">@style/Theme.Itteitheapps.Chip.TextAppearance</item>
     </style>
 
     <style name="Theme.Itteitheapps.Chip.TextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@font/proximanova_regular</item>
+        <item name="android:fontFamily">@font/commissioner_regular</item>
     </style>
 
     <style name="Theme.Itteitheapps.BottomNavigationView">
-        <item name="fontFamily">@font/proximanova_regular</item>
+        <item name="fontFamily">@font/commissioner_regular</item>
         <item name="backgroundColor">?attr/colorSecondary</item>
         <item name="android:background">@drawable/shape_top_round_primary_variant</item>
     </style>
@@ -132,14 +132,14 @@
     </style>
 
     <style name="HintText" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/proximanova_medium</item>
+        <item name="android:fontFamily">@font/commissioner_medium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:textColorHint">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.Itteitheapps.TabLayout.TextAppearance" parent="Widget.MaterialComponents.TabLayout">
-        <item name="android:fontFamily">@font/proximanova_medium</item>
+        <item name="android:fontFamily">@font/commissioner_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
