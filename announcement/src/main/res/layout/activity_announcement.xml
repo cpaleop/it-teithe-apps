@@ -60,7 +60,7 @@
         app:layout_constraintEnd_toStartOf="@id/announcementDownloadAttachmentButton"
         app:layout_constraintStart_toEndOf="@id/announcementBackButton"
         app:layout_constraintTop_toTopOf="@id/announcementBackButton"
-        tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLEANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
+        tools:text="ANNOUNCEMENTTITLEANNOUNCEMENTTITLEANNOUNCEMENTTITLEANNOUNCEMENTTITLE" />
 
     <TextView
         android:id="@+id/announcementCategory"

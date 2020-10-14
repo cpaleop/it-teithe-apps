@@ -48,7 +48,7 @@
     </style>
 
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">22dp</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">3</item>
         <item name="android:maxLines">3</item>
