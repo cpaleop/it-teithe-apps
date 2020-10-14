@@ -1,5 +1,8 @@
 package gr.cpaleop.profile.presentation.socials
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,19 +11,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import gr.cpaleop.core.presentation.Message
+import gr.cpaleop.profile.R
 import gr.cpaleop.profile.databinding.FragmentProfileSocialsBinding
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.presentation.ProfileFragmentDirections
 import gr.cpaleop.profile.presentation.ProfileSocialDetails
 import gr.cpaleop.profile.presentation.ProfileViewModel
-import gr.cpaleop.teithe_apps.presentation.base.BaseFragment
+import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
 
-class ProfileSocialsFragment : BaseFragment<FragmentProfileSocialsBinding>() {
+class ProfileSocialsFragment :
+    BaseApiFragment<FragmentProfileSocialsBinding, ProfileViewModel>(ProfileViewModel::class) {
 
-    private val viewModel: ProfileViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var profileSocialsAdapter: ProfileSocialsAdapter? = null
 
@@ -46,7 +51,8 @@ class ProfileSocialsFragment : BaseFragment<FragmentProfileSocialsBinding>() {
     }
 
     private fun setupViews() {
-        profileSocialsAdapter = ProfileSocialsAdapter(::navigateToProfileOptionsDialogFragment)
+        profileSocialsAdapter =
+            ProfileSocialsAdapter(::openSocial, ::navigateToProfileOptionsDialogFragment)
         binding.profileRecyclerView.adapter = profileSocialsAdapter
     }
 
@@ -59,6 +65,18 @@ class ProfileSocialsFragment : BaseFragment<FragmentProfileSocialsBinding>() {
             binding.profileRecyclerView.post {
                 profileSocialsAdapter?.submitList(socialList)
             }
+        }
+    }
+
+    private fun openSocial(socialUrl: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(socialUrl)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        } catch (t: ActivityNotFoundException) {
+            Timber.e(t)
+            showSnackbarMessage(Message(R.string.profile_socials_navigate_error))
         }
     }
 

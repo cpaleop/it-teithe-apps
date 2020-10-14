@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/documentsSearchTextViewParent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:transitionGroup="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,8 +23,7 @@
             android:id="@+id/documentsSearchTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/shape_round_edges_primary_variant_ripple"
+            android:background="@null"
             android:fontFamily="@font/proximanova_regular"
             android:gravity="center"
             android:hint="@string/documents_search"
@@ -34,7 +35,7 @@
             android:textColor="@color/colorOnPrimary_87"
             android:textSize="16sp"
             android:transitionGroup="true" />
-    </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/filesSortingTextView"

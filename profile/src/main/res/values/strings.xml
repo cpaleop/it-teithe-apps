@@ -31,6 +31,7 @@
 
     <!-- Social -->
     <string name="profile_socials_title">Socials</string>
+    <string name="profile_socials_navigate_error">No application to handle this url</string>
     <string name="profile_socials_googleplus_title" translatable="false">Google+</string>
     <string name="profile_socials_facebook_title" translatable="false">Facebook</string>
     <string name="profile_socials_github_title" translatable="false">Github</string>

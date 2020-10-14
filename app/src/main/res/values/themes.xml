@@ -4,17 +4,19 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary_87</item>
-        <!--<item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>-->
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorControlHighlight">@color/pink_200_80op</item>
         <item name="colorSecondary">@color/pink_200</item>
+        <item name="colorSecondaryVariant">@color/pink_200_dark</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="android:colorBackground">@color/white_50</item>
         <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="badgeStyle">@style/Theme.BottomNavigationView</item>
+        <!--<item name="badgeStyle">@style/Theme.Itteitheapps.BottomNavigationView</item>-->
         <item name="android:windowActivityTransitions">true</item>
         <item name="textAppearanceSubtitle1">@style/Theme.TextAppearanceSubtitle1</item>
         <item name="textAppearanceBody2">@style/Theme.TextAppearanceBody2</item>
@@ -80,7 +82,6 @@
     </style>
 
     <style name="BottomSheet_Rounded" parent="Widget.MaterialComponents.BottomSheet">
-        <item name="backgroundTint">@color/dialoFragmentBackground</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceBottomSheetDialog_Rounded</item>
     </style>
 
@@ -109,7 +110,7 @@
         <item name="android:fontFamily">@font/proximanova_regular</item>
     </style>
 
-    <style name="Theme.BottomNavigationView" parent="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface">
+    <style name="Theme.Itteitheapps.BottomNavigationView">
         <item name="fontFamily">@font/proximanova_regular</item>
         <item name="backgroundColor">?attr/colorSecondary</item>
         <item name="android:background">@drawable/shape_top_round_primary_variant</item>

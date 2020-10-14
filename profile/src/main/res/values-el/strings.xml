@@ -31,6 +31,7 @@
 
     <!-- Social -->
     <string name="profile_socials_title">Κοινωνικά Δίκτυα</string>
+    <string name="profile_socials_navigate_error">Δεν υπάρχει εφαρμογή για το url</string>
 
     <!-- Settings -->
     <string name="profile_settings_account_title">Λογαριασμός</string>

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackground">#121415</color>
+    <color name="colorBackground">#131416</color>
     <!-- Produced: Background and Brand color -->
     <color name="colorBackground_12">#13171B</color>
     <!-- Produced: Background and Brand color -->
     <color name="colorBackground_18">#1C262E</color>
-    <color name="colorSurface">#223441</color>
+    <!-- Produced:
+    background: #121212
+    colorPrimary: 8% opacity-->
+    <color name="colorSurface">#131518</color>
     <color name="colorPrimary">#4783AE</color>
-    <color name="colorPrimaryVariant">#283E4A</color>
+    <color name="colorPrimaryVariant">#7ab2e0</color>
     <color name="colorPrimary_12">#13171B</color>
     <color name="colorPrimary_15">#14181E</color>
     <color name="colorPrimary_18">#141A20</color>
@@ -17,6 +20,7 @@
     <color name="colorOnPrimary_38">#61FFFFFF</color>
     <color name="colorOnPrimaryVariant">#BFC1C9</color>
     <color name="pink_200">#EC407A</color>
+    <color name="pink_200_dark">#ff77a9</color>
     <color name="pink_200_70op">#B3D81B60</color>
     <color name="pink_200_80op">#F279A2</color>
     <color name="pink_200_40op">#66D81B60</color>
@@ -25,4 +29,6 @@
     <color name="dialoFragmentBackground">#1A2329</color>
     <color name="colorControlNormal">#80868B</color>
     <color name="green">#5E715C</color>
+    <color name="white_50">#ffffff</color>
+    <color name="black_900">#000000</color>
 </resources>

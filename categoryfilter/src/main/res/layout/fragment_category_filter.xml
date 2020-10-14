@@ -21,30 +21,37 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionGroup="true"
-                android:layout_marginTop="6dp">
+                android:layout_marginTop="6dp"
+                android:transitionGroup="true">
 
-                <gr.cpaleop.teithe_apps.views.SearchEditText
-                    android:id="@+id/categoryAnnouncementsSearchTextView"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:background="@drawable/shape_round_edges_primary_variant_ripple"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/proximanova_regular"
-                    android:gravity="center"
-                    android:imeOptions="actionGo"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:padding="12dp"
-                    android:textColor="@color/colorOnPrimary_87"
-                    android:textSize="16sp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.92"
-                    tools:hint="Search in 5ο Εξάμηνο" />
+                    app:layout_constraintWidth_percent="0.92">
+
+                    <gr.cpaleop.teithe_apps.views.SearchEditText
+                        android:id="@+id/categoryAnnouncementsSearchTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:gravity="center"
+                        android:imeOptions="actionGo"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="12dp"
+                        android:textColor="@color/colorOnPrimary_87"
+                        android:textSize="16sp"
+                        android:transitionGroup="true"
+                        tools:hint="Search in 5ο Εξάμηνο" />
+                </com.google.android.material.card.MaterialCardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

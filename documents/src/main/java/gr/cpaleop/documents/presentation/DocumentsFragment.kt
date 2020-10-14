@@ -1,5 +1,6 @@
 package gr.cpaleop.documents.presentation
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -23,6 +24,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import gr.cpaleop.common.extensions.getMimeType
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.DocumentPreview
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
@@ -37,6 +39,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
+import timber.log.Timber
 import java.io.File
 
 @FlowPreview
@@ -60,10 +63,10 @@ class DocumentsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (announcementId != null) {
-            /*enterTransition = null
+            enterTransition = null
             exitTransition = null
             reenterTransition = null
-            returnTransition = null*/
+            returnTransition = null
             postponeEnterTransition()
             sharedElementEnterTransition = MaterialContainerTransform().apply {
                 duration = resources.getInteger(gr.cpaleop.teithe_apps.R.integer.animation_duration)
@@ -168,18 +171,23 @@ class DocumentsFragment :
     }
 
     private fun openFile(fileAbsolutePath: String) {
-        val file = File(fileAbsolutePath)
-        val uri = FileProvider.getUriForFile(requireContext(), authority, file)
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, file.getMimeType())
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
+        try {
+            val file = File(fileAbsolutePath)
+            val uri = FileProvider.getUriForFile(requireContext(), authority, file)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, file.getMimeType())
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
 
-        val chooserIntent =
-            Intent.createChooser(intent, context?.getString(R.string.documents_choose_file))
-        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(chooserIntent)
+            val chooserIntent =
+                Intent.createChooser(intent, context?.getString(R.string.documents_choose_file))
+            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context?.startActivity(chooserIntent)
+        } catch (t: ActivityNotFoundException) {
+            Timber.e(t)
+            showSnackbarMessage(Message(R.string.documents_file_navigation_error))
+        }
     }
 
     private fun navigateToDocumentsFragment(view: View, announcementId: String) {

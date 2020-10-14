@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.presentation.ProfileSocialDetails
 
-class ProfileSocialsAdapter(private val moreClickListener: (String, Social) -> Unit) :
+class ProfileSocialsAdapter(
+    private val clickListener: (String) -> Unit,
+    private val moreClickListener: (String, Social) -> Unit
+) :
     ListAdapter<ProfileSocialDetails, ProfileSocialHolder>(PROFILE_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileSocialHolder {
-        return ProfileSocialHolder.create(parent, moreClickListener)
+        return ProfileSocialHolder.create(parent, clickListener, moreClickListener)
     }
 
     override fun onBindViewHolder(holder: ProfileSocialHolder, position: Int) {

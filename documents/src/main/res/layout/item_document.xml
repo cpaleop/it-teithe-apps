@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,66 +8,71 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="14dp"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/shape_round_ripple"
-    android:padding="2dp">
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0.2dp">
 
-    <ImageView
-        android:id="@+id/documentPreview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/empty"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/layer_pdf" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/documentTitleTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/proximanova_medium"
-        android:gravity="center_vertical"
-        android:lines="2"
-        android:maxLines="2"
-        android:padding="4dp"
-        android:textColor="@color/colorOnPrimary_87"
-        app:layout_constraintBottom_toTopOf="@id/documentLastModifiedTextView"
-        app:layout_constraintEnd_toStartOf="@id/documentMoreImageView"
-        app:layout_constraintStart_toEndOf="@id/documentPreview"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TEST" />
+        <ImageView
+            android:id="@+id/documentPreview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/empty"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHeight_percent="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/layer_pdf" />
 
-    <TextView
-        android:id="@+id/documentLastModifiedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"
-        android:fontFamily="@font/proximanova_regular"
-        android:padding="2dp"
-        android:textColor="@color/colorOnPrimary_60"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/documentPreview"
-        app:layout_constraintTop_toBottomOf="@id/documentTitleTextView"
-        tools:text="Modified: 20-02-2020" />
+        <TextView
+            android:id="@+id/documentTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/proximanova_medium"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:maxLines="2"
+            android:padding="4dp"
+            android:textColor="@color/colorOnPrimary_87"
+            app:layout_constraintBottom_toTopOf="@id/documentLastModifiedTextView"
+            app:layout_constraintEnd_toStartOf="@id/documentMoreImageView"
+            app:layout_constraintStart_toEndOf="@id/documentPreview"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TEST" />
 
-    <ImageView
-        android:id="@+id/documentMoreImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/empty"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/documentLastModifiedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:padding="2dp"
+            android:textColor="@color/colorOnPrimary_60"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/documentPreview"
+            app:layout_constraintTop_toBottomOf="@id/documentTitleTextView"
+            tools:text="Modified: 20-02-2020" />
+
+        <ImageView
+            android:id="@+id/documentMoreImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/empty"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_more" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

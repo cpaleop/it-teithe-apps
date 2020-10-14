@@ -9,10 +9,12 @@ import gr.cpaleop.profile.presentation.ProfileSocialDetails
 
 class ProfileSocialHolder(
     private val binding: ItemProfileSocialBinding,
+    private val clickListener: (String) -> Unit,
     private val moreClickListener: (String, Social) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: ProfileSocialDetails) {
+        binding.root.setOnClickListener { clickListener(item.value) }
         binding.profileSocialMoreImageView.setOnClickListener {
             moreClickListener(
                 binding.root.context.getString(item.labelRes),
@@ -31,11 +33,12 @@ class ProfileSocialHolder(
 
         fun create(
             parent: ViewGroup,
+            clickListener: (String) -> Unit,
             moreClickListener: (String, Social) -> Unit
         ): ProfileSocialHolder {
             val inflater = LayoutInflater.from(parent.context)
             val binding = ItemProfileSocialBinding.inflate(inflater, parent, false)
-            return ProfileSocialHolder(binding, moreClickListener)
+            return ProfileSocialHolder(binding, clickListener, moreClickListener)
         }
     }
 }
