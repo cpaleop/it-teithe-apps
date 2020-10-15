@@ -36,6 +36,7 @@ class ObserveDocumentsUseCaseImpl(
                 else -> deviceStorageRepository.getDocumentsByAnnouncementId(announcementId)
             }
 
+            filterStream.value = ""
             return@withContext documentsFlow
                 .combine(filterStream, ::filterDocumentList)
                 .combine(observeDocumentSortUseCase(), ::sortDocumentList)

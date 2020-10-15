@@ -220,6 +220,7 @@ class DocumentsViewModel(
 
     private fun observeDocuments(announcementId: String?) {
         announcementFoldersJob?.cancel()
+        documentsJob?.cancel()
         documentsJob = viewModelScope.launch(mainDispatcher) {
             try {
                 observeDocumentsUseCase(announcementId)
@@ -236,6 +237,7 @@ class DocumentsViewModel(
     }
 
     private fun observeAnnouncementFolders() {
+        announcementFoldersJob?.cancel()
         documentsJob?.cancel()
         announcementFoldersJob = viewModelScope.launch(mainDispatcher) {
             try {

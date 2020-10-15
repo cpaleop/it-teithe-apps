@@ -136,6 +136,7 @@ class DocumentsFragment :
             )
 
         binding.filesSortingTextView.setOnClickListener {
+            closeSelectionMode()
             navigateToFileSortOptionsDialog()
         }
 
@@ -148,7 +149,7 @@ class DocumentsFragment :
 
         binding.documentsSearchTextView.run {
             enableLeftDrawable(announcementId != null)
-            setText(viewModel.getFilterValue())
+            /*setText(viewModel.getFilterValue())*/
             doOnTextChanged { text, _, _, _ ->
                 viewModel.filter(text.toString())
             }
@@ -312,6 +313,7 @@ class DocumentsFragment :
     }
 
     private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
+        binding.documentsSearchTextView.setText("")
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
                 setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
