@@ -41,7 +41,7 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
 
             return@withContext announcementFoldersFlow
                 .combine(observeDocumentSortUseCase(), ::sortAnnouncementFolderList)
-                .combine(filterStream.asFlow(), ::filterAnnouncementFolderList)
+                .combine(filterStream, ::filterAnnouncementFolderList)
         }
 
     private fun filterAnnouncementFolderList(

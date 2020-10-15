@@ -44,7 +44,7 @@ class DocumentsViewModel(
     private val getDocumentOptionsUseCase: GetDocumentOptionsUseCase,
     private val documentOptionMapper: DocumentOptionMapper,
     private val getDocumentUseCase: GetDocumentUseCase,
-    private val deleteDocumentUseCase: DeleteDocumentUseCase,
+    private val deleteDocumentsUseCase: DeleteDocumentsUseCase,
     private val renameDocumentUseCase: RenameDocumentUseCase,
     private val documentSortOptionMapper: DocumentSortOptionMapper,
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
@@ -76,11 +76,31 @@ class DocumentsViewModel(
     val documentsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(documents) {
-                this.value = it.isEmpty()
+                if (_documentPreview.value == DocumentPreview.FILE) {
+                    this.value = it.isEmpty()
+                }
             }
 
             addSource(documentAnnouncementFolders) {
-                this.value = it.isEmpty()
+                if (_documentPreview.value == DocumentPreview.FOLDER) {
+                    this.value = it.isEmpty()
+                }
+            }
+        }.toSingleMediatorEvent()
+    }
+
+    val documentsSelectedCounter: MediatorLiveData<Int> by lazy {
+        MediatorLiveData<Int>().apply {
+            addSource(documents) { documentList ->
+                this.value = documentList.count { it.isSelected }
+            }
+        }.toSingleMediatorEvent()
+    }
+
+    val documentsAnySelected: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(documents) { documentList ->
+                this.value = documentList.any { it.isSelected }
             }
         }.toSingleMediatorEvent()
     }
@@ -106,6 +126,79 @@ class DocumentsViewModel(
     private val _documentSortOptionSelected = MutableLiveData<DocumentSortOption>()
     val documentSortOptionSelected: LiveData<DocumentSortOption> =
         _documentSortOptionSelected.toSingleEvent()
+
+    private val _dismissOptionDialog = MutableLiveData<Unit>()
+    val dismissOptionDialog: LiveData<Unit> = _dismissOptionDialog.toSingleEvent()
+
+    fun getFilterValue(): String = filterStream.value
+
+    fun updateSelection(documentUri: String) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _documents.value = withContext(defaultDispatcher) {
+                    val currentList = _documents.value ?: emptyList()
+                    currentList.map { fileDocument ->
+                        if (fileDocument.uri == documentUri) fileDocument.copy(isSelected = !fileDocument.isSelected)
+                        else fileDocument
+                    }
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun selectAll() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _documents.value = withContext(defaultDispatcher) {
+                    val currentList = _documents.value ?: emptyList()
+                    currentList.map { it.copy(isSelected = true) }
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun clearSelections() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _documents.value = withContext(defaultDispatcher) {
+                    val currentList = _documents.value ?: emptyList()
+                    currentList.map {
+                        it.copy(isSelected = false)
+                    }
+                }
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun promptDeleteSelected() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                val selectedDocumentsUriList = withContext(defaultDispatcher) {
+                    val currentList = _documents.value ?: emptyList()
+                    currentList
+                        .filter { it.isSelected }
+                        .map { it.name to it.uri }
+                }
+                val name = if (selectedDocumentsUriList.size > 1) {
+                    selectedDocumentsUriList.size.toString()
+                } else {
+                    selectedDocumentsUriList.first().first
+                }
+                _optionDelete.value = DocumentDetails(
+                    uriList = selectedDocumentsUriList.map { it.second },
+                    name = name
+                )
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
 
     fun presentDocuments(announcementId: String?) {
         viewModelScope.launch(mainDispatcher) {
@@ -202,13 +295,13 @@ class DocumentsViewModel(
                     }
                     DocumentOptionType.RENAME -> {
                         _optionRename.value = DocumentDetails(
-                            uri = document.uri,
+                            uriList = listOf(document.uri),
                             name = document.name
                         )
                     }
                     DocumentOptionType.DELETE -> {
                         _optionDelete.value = DocumentDetails(
-                            uri = document.uri,
+                            uriList = listOf(document.uri),
                             name = document.name
                         )
                     }
@@ -229,11 +322,17 @@ class DocumentsViewModel(
         }
     }
 
-    fun deleteDocument(documentUri: String) {
+    fun deleteDocuments(documentUriList: List<String>) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _refresh.value = deleteDocumentUseCase(documentUri)
-                _message.value = Message(R.string.documents_delete_success_message)
+                _refresh.value = deleteDocumentsUseCase(documentUriList)
+                _dismissOptionDialog.value = Unit
+                _message.value =
+                    if (documentUriList.size > 1) Message(
+                        R.string.documents_delete_mutliple_success_message,
+                        documentUriList.size
+                    )
+                    else Message(R.string.documents_delete_success_message)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
@@ -245,7 +344,7 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _refresh.value = renameDocumentUseCase(documentUri, newName)
-                _message.value = Message(R.string.documents_rename_success_message, listOf(newName))
+                _message.value = Message(R.string.documents_rename_success_message, newName)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

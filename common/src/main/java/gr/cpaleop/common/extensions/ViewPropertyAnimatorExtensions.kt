@@ -25,3 +25,26 @@ fun ViewPropertyAnimator.setEndListener(listener: (Animator?) -> Unit): ViewProp
     })
     return this
 }
+
+fun ViewPropertyAnimator.setStartListener(listener: (Animator?) -> Unit): ViewPropertyAnimator {
+
+    this.setListener(object : Animator.AnimatorListener {
+
+        override fun onAnimationRepeat(animation: Animator?) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animator?) {
+
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+
+        }
+
+        override fun onAnimationStart(animation: Animator?) {
+            listener(animation)
+        }
+    })
+    return this
+}

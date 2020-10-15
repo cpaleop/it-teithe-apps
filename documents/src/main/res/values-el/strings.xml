@@ -6,8 +6,9 @@
     <string name="documents_modified">Τελευταία τροποποίηση: %1$s</string>
     <string name="documents_empty">Δεν βρέθηκαν έγγραφα</string>
     <string name="documents_choose_file">Άνοιγμα αρχείου με</string>
-    <string name="documents_delete_dialog_title">%1$s</string>
-    <string name="documents_delete_dialog_body">Είστε σίγουρος πως θέλετε να διαγράψετε αυτό το αρχείο;</string>
+    <string name="documents_delete_dialog_title">Διαγραφή %1$s</string>
+    <string name="documents_delete_multiple_dialog_title">Διαγραφή %1$s εγγράφων</string>
+    <string name="documents_delete_dialog_body">Είστε σίγουρος;</string>
     <string name="documents_delete_dialog_confirm">Επιβεβαίωση</string>
     <string name="documents_rename_dialog_title">Μετονομασία</string>
     <string name="documents_option_announcement">Πήγαινε στην ανακοίνωση</string>
@@ -20,7 +21,15 @@
     <string name="documents_sort_alphabetical">Αλφαβητικά</string>
     <string name="documents_edit_submit">ΟΚ</string>
     <string name="documents_edit_cancel">Άκυρο</string>
+    <string name="documents_delete_mutliple_success_message">%1$s έγγραφα διαγράφτηκαν</string>
     <string name="documents_delete_success_message">Το έγγραφο διαγράφτηκε</string>
     <string name="documents_rename_success_message">Το έγγραφο μετονομάστηκε σε: %1$s</string>
     <string name="documents_file_navigation_error">Δεν υπάρχει εφαρμογή που να ανοίγει αυτό το αρχείο</string>
+
+    <!-- Action Mode -->
+    <string name="documents_action_title">Επιλέξτε έγγραφα</string>
+    <string name="documents_action_title_selected">%1$d items</string>
+    <string name="documents_action_select_all">Επιλογή όλων</string>
+    <string name="documents_action_delete">Διαγραφή</string>
+    <string name="documents_action_cancel">Ακύρωση</string>
 </resources>

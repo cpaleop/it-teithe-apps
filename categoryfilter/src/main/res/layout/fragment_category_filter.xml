@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/commissioner_medium"
             android:text="@string/category_filter_announcements_empty"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,6 @@
 package gr.cpaleop.documents.presentation.options
 
 data class DocumentDetails(
-    val uri: String,
+    val uriList: List<String>,
     val name: String
 )

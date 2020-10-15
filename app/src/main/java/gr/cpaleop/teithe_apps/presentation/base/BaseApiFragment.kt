@@ -30,7 +30,7 @@ abstract class BaseApiFragment<VB : ViewBinding, VM : BaseViewModel>(viewModelCl
     protected fun showSnackbarMessage(message: Message) {
         Snackbar.make(
             binding.root,
-            getString(message.resource, message.arguments),
+            getString(message.resource, *message.arguments),
             Snackbar.LENGTH_LONG
         ).show()
     }

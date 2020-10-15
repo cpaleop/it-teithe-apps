@@ -5,12 +5,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
 class DocumentsAdapter(
-    private val onClickListener: (String) -> Unit,
+    private val onLongClickListener: (String) -> Unit,
+    private val onClickListener: (String, String) -> Unit,
     private val moreClickListener: (String) -> Unit
 ) : ListAdapter<FileDocument, DocumentsHolder>(FILES_DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsHolder {
-        return DocumentsHolder.create(parent, onClickListener, moreClickListener)
+        return DocumentsHolder.create(
+            parent,
+            onLongClickListener,
+            onClickListener,
+            moreClickListener
+        )
     }
 
     override fun onBindViewHolder(holder: DocumentsHolder, position: Int) {

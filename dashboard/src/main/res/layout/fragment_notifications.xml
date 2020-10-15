@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/commissioner_medium"
             android:text="@string/notifications_empty"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="14sp"
             android:transitionGroup="true"
             android:visibility="gone"

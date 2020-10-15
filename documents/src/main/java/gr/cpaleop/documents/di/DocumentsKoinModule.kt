@@ -68,7 +68,7 @@ val documentsModule = module {
     single<ObserveDocumentSortUseCase> { ObserveDocumentSortUseCaseImpl(get()) }
     single<GetDocumentSortOptionsUseCase> { GetDocumentSortOptionsUseCaseImpl(get()) }
     single<RenameDocumentUseCase> { RenameDocumentUseCaseImpl(get()) }
-    single<DeleteDocumentUseCase> { DeleteDocumentUseCaseImpl(get()) }
+    single<DeleteDocumentsUseCase> { DeleteDocumentsUseCaseImpl(get()) }
     single<GetDocumentUseCase> { GetDocumentUseCaseImpl(get()) }
     single<GetDocumentOptionsUseCase> { GetDocumentOptionsUseCaseImpl() }
     single<ObserveDocumentsUseCase> {

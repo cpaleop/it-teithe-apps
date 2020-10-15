@@ -37,7 +37,7 @@ class ObserveDocumentsUseCaseImpl(
             }
 
             return@withContext documentsFlow
-                .combine(filterStream.asFlow(), ::filterDocumentList)
+                .combine(filterStream, ::filterDocumentList)
                 .combine(observeDocumentSortUseCase(), ::sortDocumentList)
         }
 

@@ -68,7 +68,7 @@ class DocumentsViewModelTest {
     private lateinit var getDocumentUseCase: GetDocumentUseCase
 
     @MockK
-    private lateinit var deleteDocumentUseCase: DeleteDocumentUseCase
+    private lateinit var deleteDocumentsUseCase: DeleteDocumentsUseCase
 
     @MockK
     private lateinit var renameDocumentUseCase: RenameDocumentUseCase
@@ -104,7 +104,7 @@ class DocumentsViewModelTest {
             getDocumentOptionsUseCase,
             documentOptionMapper,
             getDocumentUseCase,
-            deleteDocumentUseCase,
+            deleteDocumentsUseCase,
             renameDocumentUseCase,
             documentSortOptionMapper,
             observeDocumentSortUseCase,
@@ -242,7 +242,7 @@ class DocumentsViewModelTest {
         viewModel.presentDocumentDetails(givenUri)
         assertThat(LiveDataTest.getValue(viewModel.document)).isEqualTo(document)
 
-        val expected = DocumentDetails(uri = document.uri, name = document.name)
+        val expected = DocumentDetails(uriList = listOf(document.uri), name = document.name)
         viewModel.handleDocumentOptionChoice(gr.cpaleop.documents.domain.entities.DocumentOptionType.RENAME)
         assertThat(LiveDataTest.getValue(viewModel.optionRename)).isEqualTo(expected)
     }
@@ -258,7 +258,7 @@ class DocumentsViewModelTest {
         viewModel.presentDocumentDetails(givenUri)
         assertThat(LiveDataTest.getValue(viewModel.document)).isEqualTo(document)
 
-        val expected = DocumentDetails(uri = document.uri, name = document.name)
+        val expected = DocumentDetails(uriList = listOf(document.uri), name = document.name)
         viewModel.handleDocumentOptionChoice(gr.cpaleop.documents.domain.entities.DocumentOptionType.DELETE)
         assertThat(LiveDataTest.getValue(viewModel.optionDelete)).isEqualTo(expected)
     }
@@ -268,8 +268,8 @@ class DocumentsViewModelTest {
         val expectedMessage = Message(R.string.documents_delete_success_message)
         val givenUri = "uri"
         val expected = Unit
-        coEvery { deleteDocumentUseCase(givenUri) } returns Unit
-        viewModel.deleteDocument(givenUri)
+        coEvery { deleteDocumentsUseCase(listOf(givenUri)) } returns Unit
+        viewModel.deleteDocuments(listOf(givenUri))
         assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -278,8 +278,8 @@ class DocumentsViewModelTest {
     fun `deleteDocument catches exception and has message when failure`() {
         val expectedMessage = Message(appR.string.error_generic)
         val givenUri = "uri"
-        coEvery { deleteDocumentUseCase(givenUri) } throws Throwable()
-        viewModel.deleteDocument(givenUri)
+        coEvery { deleteDocumentsUseCase(listOf(givenUri)) } throws Throwable()
+        viewModel.deleteDocuments(listOf(givenUri))
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -294,7 +294,7 @@ class DocumentsViewModelTest {
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(
             Message(
                 R.string.documents_rename_success_message,
-                listOf(givenNewName)
+                givenNewName
             )
         )
     }

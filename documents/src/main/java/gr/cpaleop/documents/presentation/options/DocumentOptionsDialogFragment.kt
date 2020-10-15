@@ -58,10 +58,10 @@ class DocumentOptionsDialogFragment :
                 viewLifecycleOwner,
                 Observer(::navigateToAnnouncement)
             )
-            optionDelete.observe(
+            /*optionDelete.observe(
                 viewLifecycleOwner,
                 Observer(::showDeleteConfirmationDialog)
-            )
+            )*/
             optionRename.observe(
                 viewLifecycleOwner,
                 Observer(::showRenameDialog)
@@ -70,6 +70,7 @@ class DocumentOptionsDialogFragment :
                 viewLifecycleOwner,
                 Observer(::shareFile)
             )
+            dismissOptionDialog.observe(viewLifecycleOwner, { dismissAllowingStateLoss() })
         }
     }
 
@@ -90,24 +91,6 @@ class DocumentOptionsDialogFragment :
         navController.navigate(directions)
     }
 
-    private fun showDeleteConfirmationDialog(documentDeleteDetails: DocumentDetails) {
-        MaterialDialog(requireContext())
-            .lifecycleOwner(viewLifecycleOwner)
-            .cancelOnTouchOutside(true)
-            .title(R.string.documents_delete_dialog_title, documentDeleteDetails.name)
-            .positiveButton(R.string.documents_edit_submit)
-            .message(R.string.documents_delete_dialog_body)
-            .positiveButton(R.string.documents_delete_dialog_confirm) { materialDialog ->
-                viewModel.deleteDocument(documentDeleteDetails.uri)
-                this@DocumentOptionsDialogFragment.dismiss()
-                materialDialog.dismiss()
-            }
-            .negativeButton(R.string.documents_edit_cancel) {
-                it.cancel()
-            }
-            .show()
-    }
-
     private fun showRenameDialog(documentRenameDetails: DocumentDetails) {
         MaterialDialog(requireContext())
             .lifecycleOwner(viewLifecycleOwner)
@@ -115,7 +98,7 @@ class DocumentOptionsDialogFragment :
             .title(R.string.documents_rename_dialog_title)
             .positiveButton(R.string.documents_edit_submit)
             .input(prefill = documentRenameDetails.name) { materialDialog, input ->
-                viewModel.renameDocument(documentRenameDetails.uri, input.toString())
+                viewModel.renameDocument(documentRenameDetails.uriList.first(), input.toString())
                 this@DocumentOptionsDialogFragment.dismiss()
                 materialDialog.dismiss()
             }

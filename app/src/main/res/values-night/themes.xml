@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary_87</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnBackground">@color/colorOnPrimary_87</item>
         <item name="colorControlHighlight">@color/pink_200_80op</item>
         <item name="colorSecondary">@color/pink_200</item>
         <item name="colorSecondaryVariant">@color/pink_200_dark</item>
@@ -12,6 +13,8 @@
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="actionModeStyle">@style/Theme.Itteitheapps.ActionModeStyle</item>
+        <item name="android:actionModeStyle">@style/Theme.Itteitheapps.ActionModeStyle</item>
         <item name="android:colorBackground">@color/black_900</item>
         <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:windowBackground">@color/colorBackground</item>
@@ -33,6 +36,14 @@
 
         <!-- Bottom sheet dialog -->
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
+    </style>
+
+    <style name="Theme.Itteitheapps.ActionModeStyle" parent="Theme.Itteitheapps">
+        <item name="background">@color/colorPrimary</item>
+        <item name="actionModeBackground">@color/colorPrimary</item>
+        <item name="android:actionModeBackground">?attr/colorPrimary</item>
+        <item name="android:actionMenuTextColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.TextAppearanceSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">

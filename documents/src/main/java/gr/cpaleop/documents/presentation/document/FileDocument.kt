@@ -10,7 +10,8 @@ data class FileDocument(
     val size: Long,
     @DrawableRes
     val previewDrawable: Int,
-    val lastModifiedDate: LastModified
+    val lastModifiedDate: LastModified,
+    val isSelected: Boolean = false
 )
 
 data class LastModified(
