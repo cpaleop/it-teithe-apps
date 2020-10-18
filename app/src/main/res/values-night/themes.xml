@@ -38,6 +38,10 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
     </style>
 
+    <style name="Theme.Itteitheapps.CardActivity" parent="Theme.Itteitheapps">
+        <item name="android:statusBarColor">@color/colorBackgroundCard</item>
+    </style>
+
     <style name="Theme.Itteitheapps.ActionModeStyle" parent="Theme.Itteitheapps">
         <item name="background">@color/colorPrimary</item>
         <item name="actionModeBackground">@color/colorPrimary</item>
@@ -59,9 +63,13 @@
     </style>
 
     <style name="Theme.AnnouncementTitle" parent="Theme.Itteitheapps">
-        <item name="android:padding">22dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">3</item>
+        <item name="android:lineSpacingExtra">3dp</item>
         <item name="android:maxLines">3</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAppearance">@style/Theme.TextAppearanceSubtitle1</item>
@@ -69,11 +77,12 @@
 
     <style name="Theme.AnnouncementBody" parent="Theme.Itteitheapps">
         <item name="android:ellipsize">end</item>
+        <item name="android:lineSpacingExtra">4dp</item>
         <item name="android:textAppearance">@style/Theme.TextAppearanceBody2</item>
     </style>
 
     <style name="Theme.FilterStyle" parent="Theme.Itteitheapps">
-        <item name="android:background">@drawable/shape_filter_white_opaque</item>
+        <item name="android:background">@drawable/shape_filter_enabled</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingTop">6dp</item>
@@ -81,7 +90,7 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:fontFamily">@font/commissioner_regular</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -102,23 +111,6 @@
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
-    </style>
-
-    <style name="Theme.Itteitheapps.Chip.Entry" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="enforceMaterialTheme">false</item>
-        <item name="enforceTextAppearance">false</item>
-        <item name="checkedIconVisible">false</item>
-        <item name="closeIconTint">?attr/colorOnSecondary</item>
-        <item name="chipIconVisible">false</item>
-        <item name="android:ellipsize">middle</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:fontFamily">@font/commissioner_regular</item>
-        <item name="android:textAppearance">@style/Theme.Itteitheapps.Chip.TextAppearance</item>
-    </style>
-
-    <style name="Theme.Itteitheapps.Chip.TextAppearance" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@font/commissioner_regular</item>
     </style>
 
     <style name="Theme.Itteitheapps.BottomNavigationView">

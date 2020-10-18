@@ -13,15 +13,15 @@ class CategoryFilterHolder(
 
     fun bind(item: Category) {
         binding.categoryFilterName.run {
-            binding.categoryFilterName.isCloseIconVisible = item.isRegistered
-            binding.categoryFilterName.isChecked = item.isRegistered
+            /*binding.categoryFilterName.isCloseIconVisible = item.isRegistered*/
+            binding.categoryFilterName.isSelected = item.isRegistered
             binding.categoryFilterName.text = item.name
             setOnClickListener {
                 onClickListener(item.id, !item.isRegistered)
             }
-            setOnCloseIconClickListener {
+            /*setOnCloseIconClickListener {
                 onClickListener(item.id, false)
-            }
+            }*/
         }
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorBackground">#131416</color>
+    <color name="colorBackgroundCard">#1F2023</color>
     <!-- Produced: Background and Brand color -->
     <color name="colorBackground_12">#13171B</color>
     <!-- Produced: Background and Brand color -->
@@ -10,6 +11,7 @@
     colorPrimary: 8% opacity-->
     <color name="colorSurface">#131518</color>
     <color name="colorPrimary">#4783AE</color>
+    <color name="colorPrimary_20_op">#334783AE</color>
     <color name="colorPrimaryVariant">#7ab2e0</color>
     <color name="colorPrimary_12">#13171B</color>
     <color name="colorPrimary_15">#14181E</color>
@@ -24,6 +26,7 @@
     <color name="pink_200_70op">#B3D81B60</color>
     <color name="pink_200_80op">#F279A2</color>
     <color name="pink_200_40op">#66D81B60</color>
+    <color name="pink_200_20op">#1AD81B60</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_300">#E57373</color>
     <color name="dialoFragmentBackground">#1A2329</color>
@@ -31,4 +34,5 @@
     <color name="green">#5E715C</color>
     <color name="white_50">#ffffff</color>
     <color name="black_900">#000000</color>
+    <color name="filter_stroke">@color/pink_200</color>
 </resources>

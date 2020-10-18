@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorBackground">#F3F4F5</color>
+    <color name="colorBackgroundCard">@color/white_50</color>
     <!-- Produced: Background and Brand color -->
     <color name="colorBackground_12">#E3E8EB</color>
     <!-- Produced: Background and Brand color -->
     <color name="colorBackground_18">#EDEFF2</color>
     <color name="colorSurface">@color/white_50</color>
     <color name="colorPrimary">#1D3C61</color>
+    <color name="colorPrimary_20_op">#331D3C61</color>
     <color name="colorPrimaryVariant">#4c668f</color>
     <color name="colorPrimary_12">#FFFFFF</color>
     <color name="colorPrimary_15">#FFFFFF</color>
@@ -21,6 +23,7 @@
     <color name="pink_200_70op">#B3D81B60</color>
     <color name="pink_200_80op">#E45F90</color>
     <color name="pink_200_40op">#66D81B60</color>
+    <color name="pink_200_20op">#1AD81B60</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_300">#E57373</color>
     <color name="dialoFragmentBackground">@color/colorBackground</color>
@@ -28,4 +31,5 @@
     <color name="green">#CFFFCC</color>
     <color name="white_50">#ffffff</color>
     <color name="black_900">#000000</color>
+    <color name="filter_stroke">@color/pink_200</color>
 </resources>
