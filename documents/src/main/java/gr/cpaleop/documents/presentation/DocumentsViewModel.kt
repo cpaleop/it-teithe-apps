@@ -192,7 +192,7 @@ class DocumentsViewModel(
                 }
                 _optionDelete.value = DocumentDetails(
                     uriList = selectedDocumentsUriList.map { it.second },
-                    name = name
+                    name = name.toString()
                 )
             } catch (t: Throwable) {
                 Timber.e(t)
@@ -224,7 +224,14 @@ class DocumentsViewModel(
         documentsJob = viewModelScope.launch(mainDispatcher) {
             try {
                 observeDocumentsUseCase(announcementId)
-                    .map { it.mapAsyncSuspended(fileDocumentMapper::invoke) }
+                    .map {
+                        it.mapAsyncSuspended { fileDocument ->
+                            fileDocumentMapper(
+                                fileDocument,
+                                filterStream.value
+                            )
+                        }/*(fileDocumentMapper::invoke)*/
+                    }
                     .flowOn(defaultDispatcher)
                     .collect(_documents::setValue)
             } catch (t: CancellationException) {

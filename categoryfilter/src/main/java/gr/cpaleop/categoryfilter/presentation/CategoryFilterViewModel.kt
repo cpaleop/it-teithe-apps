@@ -14,11 +14,13 @@ import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 class CategoryFilterViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
@@ -40,7 +42,14 @@ class CategoryFilterViewModel(
     val announcements: LiveData<List<AnnouncementPresentation>> by lazy {
         try {
             observeAnnouncementsByCategoryUseCase(categoryId)
-                .map { it.mapAsync { announcement -> announcementPresentationMapper(announcement) } }
+                .map {
+                    it.mapAsync { announcement ->
+                        announcementPresentationMapper(
+                            announcement,
+                            observeAnnouncementsByCategoryUseCase.filterStream.value
+                        )
+                    }
+                }
                 .flowOn(defaultDispatcher)
                 .asLiveData(mainDispatcher)
         } catch (t: NoConnectionException) {

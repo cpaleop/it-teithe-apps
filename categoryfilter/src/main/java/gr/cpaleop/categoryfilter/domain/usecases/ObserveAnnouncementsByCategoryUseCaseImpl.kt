@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.combine
 class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsRepository: AnnouncementsRepository) :
     ObserveAnnouncementsByCategoryUseCase {
 
-    @ExperimentalCoroutinesApi
-    private val _filterChannel = MutableStateFlow("")
-    private val filterChannel: StateFlow<String> = _filterChannel
+    private val _filterChannel: MutableStateFlow<String> = MutableStateFlow("")
+    override val filterStream: StateFlow<String>
+        get() = _filterChannel
 
     override fun invoke(categoryId: String): Flow<List<Announcement>> {
         return announcementsRepository.getCachedAnnouncementsByCategoryFlow(categoryId)
-            .combine(filterChannel) { announcements, filterQuery ->
+            .combine(filterStream) { announcements, filterQuery ->
                 if (filterQuery.isEmpty()) return@combine announcements
                 announcements.filter { announcement ->
                     announcement.title.contains(filterQuery, true) ||

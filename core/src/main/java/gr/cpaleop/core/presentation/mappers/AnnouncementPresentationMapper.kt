@@ -5,5 +5,8 @@ import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 interface AnnouncementPresentationMapper {
 
-    operator fun invoke(announcement: Announcement): AnnouncementPresentation
+    operator fun invoke(
+        announcement: Announcement,
+        filterQuery: String = ""
+    ): AnnouncementPresentation
 }

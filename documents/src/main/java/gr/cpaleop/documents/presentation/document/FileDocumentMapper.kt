@@ -1,5 +1,6 @@
 package gr.cpaleop.documents.presentation.document
 
+import gr.cpaleop.common.extensions.toResultSpannableString
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.entities.Document
@@ -14,7 +15,7 @@ class FileDocumentMapper(
     private val dateFormatter: DateFormatter
 ) {
 
-    suspend operator fun invoke(document: Document): FileDocument =
+    suspend operator fun invoke(document: Document, filterQuery: String): FileDocument =
         withContext(defaultDispatcher) {
             val lastModifiedHumanReadableFormat =
                 dateFormatter.fileFormat(document.lastModified, "dd-MM-yy HH:mm")
@@ -35,10 +36,11 @@ class FileDocumentMapper(
                 }
             }
 
+            val name = document.name.toResultSpannableString(filterQuery)
             FileDocument(
                 uri = document.uri,
                 absolutePath = document.absolutePath,
-                name = document.name,
+                name = name,
                 size = document.size,
                 previewDrawable = type,
                 lastModifiedDate = LastModified(
