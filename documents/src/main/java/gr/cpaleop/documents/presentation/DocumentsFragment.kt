@@ -347,7 +347,7 @@ class DocumentsFragment :
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
-        documentsAdapter?.submitList(documents, ::scrollToTop)
+        documentsAdapter?.submitList(documents)
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
