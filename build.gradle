@@ -38,8 +38,8 @@ subprojects {
                     targetSdkVersion 29
                     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                     vectorDrawables.useSupportLibrary = true
-                    versionCode 1005
-                    versionName "1.0.05"
+                    versionCode 1006
+                    versionName "1.0.06"
                 }
 
                 signingConfigs {

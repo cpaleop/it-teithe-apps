@@ -1,4 +1,3 @@
--Add support for Greek language
--Add error handling
--Logout is now functional
--Change password not yet functional
+-Add support to change password
+-Redesign with material guidelines
+-Highlight search results
