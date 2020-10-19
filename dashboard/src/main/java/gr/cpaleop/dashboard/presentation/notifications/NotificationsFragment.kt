@@ -14,8 +14,10 @@ import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
 import gr.cpaleop.dashboard.presentation.notifications.categories.CategoriesFilterDialogFragment
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import gr.cpaleop.teithe_apps.R as appR
 
+@ExperimentalCoroutinesApi
 class NotificationsFragment :
     BaseApiFragment<FragmentNotificationsBinding, NotificationsViewModel>(NotificationsViewModel::class) {
 
@@ -67,23 +69,21 @@ class NotificationsFragment :
         viewModel.run {
             loading.observe(viewLifecycleOwner, Observer(::toggleLoading))
             notifications.observe(viewLifecycleOwner, Observer(::updateNotifications))
-            notificationsEmpty.observe(viewLifecycleOwner, Observer(::showNotificationsEmpty))
-            notificationsFilterEmpty.observe(
+            notificationsEmpty.observe(
                 viewLifecycleOwner,
                 Observer(::showNotificationsNotFound)
             )
         }
     }
 
-    private fun updateNotifications(notifications: List<NotificationPresentation>) {
-        notificationAdapter?.submitList(notifications)
+    private fun scrollToTop() {
+        if (binding.notificationsSearchTextView.text.toString().isEmpty()) {
+            binding.notificationsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
     }
 
-    private fun showNotificationsEmpty(notificationsEmpty: Boolean) {
-        binding.notificationsEmptyTextView.run {
-            text = requireContext().getString(R.string.notifications_empty)
-            isVisible = notificationsEmpty
-        }
+    private fun updateNotifications(notifications: List<NotificationPresentation>) {
+        notificationAdapter?.submitList(notifications, ::scrollToTop)
     }
 
     private fun showNotificationsNotFound(notificationsNotFound: Boolean) {

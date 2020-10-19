@@ -12,9 +12,10 @@ import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.domain.FilterStream
-import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
 import gr.cpaleop.documents.domain.usecases.*
+import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderPresentation
+import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderPresentationMapper
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
 import gr.cpaleop.documents.presentation.options.DocumentDetails
@@ -49,6 +50,7 @@ class DocumentsViewModel(
     private val documentSortOptionMapper: DocumentSortOptionMapper,
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
     private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
+    private val announcementFolderPresentationMapper: AnnouncementFolderPresentationMapper,
     private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase,
     private val filterStream: FilterStream
@@ -66,8 +68,9 @@ class DocumentsViewModel(
     private val _documentPreview = MutableLiveData<Int>()
     val documentPreview: LiveData<Int> = _documentPreview
 
-    private val _documentAnnouncementFolders = MutableLiveData<List<AnnouncementFolder>>()
-    val documentAnnouncementFolders: LiveData<List<AnnouncementFolder>> =
+    private val _documentAnnouncementFolders =
+        MutableLiveData<List<AnnouncementFolderPresentation>>()
+    val documentAnnouncementFolders: LiveData<List<AnnouncementFolderPresentation>> =
         _documentAnnouncementFolders.toSingleEvent()
 
     private val _documents = MutableLiveData<List<FileDocument>>()
@@ -249,6 +252,14 @@ class DocumentsViewModel(
         announcementFoldersJob = viewModelScope.launch(mainDispatcher) {
             try {
                 observeDocumentsAnnouncementFoldersUseCase()
+                    .map { announcementFolderList ->
+                        announcementFolderList.mapAsync {
+                            announcementFolderPresentationMapper(
+                                it,
+                                filterStream.value
+                            )
+                        }
+                    }
                     .flowOn(defaultDispatcher)
                     .collect(_documentAnnouncementFolders::setValue)
             } catch (t: CancellationException) {

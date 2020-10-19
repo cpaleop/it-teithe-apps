@@ -1,5 +1,6 @@
 package gr.cpaleop.documents.presentation
 
+import android.text.SpannableString
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.common_test.LiveDataTest
@@ -12,13 +13,16 @@ import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.domain.FilterStream
+import gr.cpaleop.documents.domain.entities.DocumentOptionType
 import gr.cpaleop.documents.domain.usecases.*
+import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderPresentationMapper
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
 import gr.cpaleop.documents.presentation.document.LastModified
 import gr.cpaleop.documents.presentation.options.DocumentDetails
 import gr.cpaleop.documents.presentation.options.DocumentOption
 import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
+import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -39,7 +43,6 @@ import gr.cpaleop.teithe_apps.R as appR
  * Also, we do not test [DocumentsViewModel.filter] function cause it's logic its tight with [ObserveDocumentsUseCase] and [ObserveDocumentsAnnouncementFoldersUseCase].
  * Prefer to test usecases separately for this functionality
  */
-//TODO: Test Announcement folder preview
 @ExperimentalCoroutinesApi
 class DocumentsViewModelTest {
 
@@ -74,10 +77,13 @@ class DocumentsViewModelTest {
     private lateinit var renameDocumentUseCase: RenameDocumentUseCase
 
     @MockK
-    private lateinit var documentSortOptionMapper: gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
+    private lateinit var documentSortOptionMapper: DocumentSortOptionMapper
 
     @MockK
     private lateinit var observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase
+
+    @MockK
+    private lateinit var announcementFolderPresentationMapper: AnnouncementFolderPresentationMapper
 
     @MockK
     private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
@@ -109,6 +115,7 @@ class DocumentsViewModelTest {
             documentSortOptionMapper,
             observeDocumentSortUseCase,
             observeDocumentsAnnouncementFoldersUseCase,
+            announcementFolderPresentationMapper,
             getDocumentPreviewPreferenceUseCase,
             toggleDocumentPreviewPreferenceUseCase,
             filterStream
@@ -125,6 +132,7 @@ class DocumentsViewModelTest {
         coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
+        every { filterStream.value } returns ""
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.documentsEmpty)).isEqualTo(false)
@@ -227,7 +235,7 @@ class DocumentsViewModelTest {
         assertThat(LiveDataTest.getValue(viewModel.document)).isEqualTo(document)
 
         val expected = document.announcementId
-        viewModel.handleDocumentOptionChoice(gr.cpaleop.documents.domain.entities.DocumentOptionType.ANNOUNCEMENT)
+        viewModel.handleDocumentOptionChoice(DocumentOptionType.ANNOUNCEMENT)
         assertThat(LiveDataTest.getValue(viewModel.optionNavigateAnnouncement)).isEqualTo(expected)
     }
 
@@ -243,7 +251,7 @@ class DocumentsViewModelTest {
         assertThat(LiveDataTest.getValue(viewModel.document)).isEqualTo(document)
 
         val expected = DocumentDetails(uriList = listOf(document.uri), name = document.name)
-        viewModel.handleDocumentOptionChoice(gr.cpaleop.documents.domain.entities.DocumentOptionType.RENAME)
+        viewModel.handleDocumentOptionChoice(DocumentOptionType.RENAME)
         assertThat(LiveDataTest.getValue(viewModel.optionRename)).isEqualTo(expected)
     }
 
@@ -259,7 +267,7 @@ class DocumentsViewModelTest {
         assertThat(LiveDataTest.getValue(viewModel.document)).isEqualTo(document)
 
         val expected = DocumentDetails(uriList = listOf(document.uri), name = document.name)
-        viewModel.handleDocumentOptionChoice(gr.cpaleop.documents.domain.entities.DocumentOptionType.DELETE)
+        viewModel.handleDocumentOptionChoice(DocumentOptionType.DELETE)
         assertThat(LiveDataTest.getValue(viewModel.optionDelete)).isEqualTo(expected)
     }
 
@@ -372,32 +380,32 @@ class DocumentsViewModelTest {
 
         private val documentOptionList = listOf(
             DocumentOption(
-                type = gr.cpaleop.documents.domain.entities.DocumentOptionType.ANNOUNCEMENT,
+                type = DocumentOptionType.ANNOUNCEMENT,
                 name = R.string.documents_option_announcement,
                 iconResource = R.drawable.ic_link
             ),
             DocumentOption(
-                type = gr.cpaleop.documents.domain.entities.DocumentOptionType.RENAME,
+                type = DocumentOptionType.RENAME,
                 name = R.string.documents_option_rename,
                 iconResource = appR.drawable.ic_edit
             ),
             DocumentOption(
-                type = gr.cpaleop.documents.domain.entities.DocumentOptionType.DELETE,
+                type = DocumentOptionType.DELETE,
                 name = R.string.documents_option_delete,
                 iconResource = R.drawable.ic_delete
             ),
             DocumentOption(
-                type = gr.cpaleop.documents.domain.entities.DocumentOptionType.SHARE,
+                type = DocumentOptionType.SHARE,
                 name = R.string.documents_option_share,
                 iconResource = R.drawable.ic_share
             )
         )
 
         private val documentOptionTypeList = listOf(
-            gr.cpaleop.documents.domain.entities.DocumentOptionType.ANNOUNCEMENT,
-            gr.cpaleop.documents.domain.entities.DocumentOptionType.RENAME,
-            gr.cpaleop.documents.domain.entities.DocumentOptionType.DELETE,
-            gr.cpaleop.documents.domain.entities.DocumentOptionType.SHARE
+            DocumentOptionType.ANNOUNCEMENT,
+            DocumentOptionType.RENAME,
+            DocumentOptionType.DELETE,
+            DocumentOptionType.SHARE
         )
 
         private val documentList = listOf(
@@ -426,7 +434,7 @@ class DocumentsViewModelTest {
         private val fileDocumentList = listOf(
             FileDocument(
                 uri = "uri",
-                name = "name",
+                name = SpannableString("name"),
                 size = 10000L,
                 absolutePath = "absolute_path/name",
                 lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),
@@ -434,7 +442,7 @@ class DocumentsViewModelTest {
             ),
             FileDocument(
                 uri = "uri1",
-                name = "name1",
+                name = SpannableString("name1"),
                 size = 10000L,
                 absolutePath = "absolute_path/name1",
                 lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),

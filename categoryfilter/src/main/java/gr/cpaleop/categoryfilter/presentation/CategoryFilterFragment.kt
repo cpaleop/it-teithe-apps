@@ -14,7 +14,9 @@ import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class CategoryFilterFragment :
     BaseApiFragment<FragmentCategoryFilterBinding, CategoryFilterViewModel>(CategoryFilterViewModel::class) {
 
@@ -76,13 +78,19 @@ class CategoryFilterFragment :
         }
     }
 
+    private fun scrollToTop() {
+        if (binding.categoryAnnouncementsSearchTextView.text.toString().isEmpty()) {
+            binding.categoryAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+    }
+
     private fun updateCategoryName(categoryName: String) {
         binding.categoryAnnouncementsSearchTextView.hint =
             getString(R.string.category_filter_search_hint, categoryName)
     }
 
     private fun updateAnnouncements(announcements: List<AnnouncementPresentation>) {
-        announcementsAdapter?.submitList(announcements)
+        announcementsAdapter?.submitList(announcements, ::scrollToTop)
     }
 
     private fun updateEmptyView(isEmpty: Boolean) {

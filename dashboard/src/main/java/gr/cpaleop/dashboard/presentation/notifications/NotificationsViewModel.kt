@@ -9,25 +9,30 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.Message
-import gr.cpaleop.dashboard.domain.usecases.GetNotificationsUseCase
+import gr.cpaleop.dashboard.domain.usecases.ObserveNotificationsUseCase
 import gr.cpaleop.dashboard.domain.usecases.ReadAllNotificationsUseCase
 import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
+@ExperimentalCoroutinesApi
 class NotificationsViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher,
-    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val observeNotificationsUseCase: ObserveNotificationsUseCase,
     private val readAllNotificationsUseCase: ReadAllNotificationsUseCase,
     private val notificationPresentationMapper: NotificationPresentationMapper
 ) : BaseViewModel() {
+
+    private var observeNotificationsJob: Job? = null
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
@@ -61,14 +66,6 @@ class NotificationsViewModel(
 
     val notificationsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
-            addSource(_notifications) {
-                this.value = it.isEmpty()
-            }
-        }
-    }
-
-    val notificationsFilterEmpty: MediatorLiveData<Boolean> by lazy {
-        MediatorLiveData<Boolean>().apply {
             addSource(notifications) {
                 this.value = it.isEmpty()
             }
@@ -80,14 +77,26 @@ class NotificationsViewModel(
     }
 
     fun presentNotifications() {
-        viewModelScope.launch(mainDispatcher) {
+        observeNotificationsJob?.cancel()
+        observeNotificationsJob = viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
-                _notifications.value =
-                    getNotificationsUseCase().mapAsync(notificationPresentationMapper::invoke)
+                observeNotificationsUseCase()
+                    .map { notificationList ->
+                        notificationList.mapAsync {
+                            notificationPresentationMapper(
+                                it,
+                                observeNotificationsUseCase.filterStream.value
+                            )
+                        }
+                    }.flowOn(defaultDispatcher)
+                    .onEach { _loading.value = false }
+                    .collect(_notifications::setValue)
             } catch (t: NoConnectionException) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_no_internet_connection)
+            } catch (t: CancellationException) {
+                Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
@@ -113,12 +122,11 @@ class NotificationsViewModel(
 
     fun searchNotifications(query: String) {
         viewModelScope.launch(mainDispatcher) {
-            notifications.value = withContext(defaultDispatcher) {
-                _notifications.value?.filter {
-                    it.title.contains(query, true) ||
-                            it.category.contains(query, true) ||
-                            it.date.contains(query, true)
-                } ?: emptyList()
+            try {
+                observeNotificationsUseCase.filter(query)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }

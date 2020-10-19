@@ -39,7 +39,6 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
         withContext(defaultDispatcher) {
             val announcementFoldersFlow = deviceStorageRepository.getAnnouncementFoldersFlow()
 
-            filterStream.value = ""
             return@withContext announcementFoldersFlow
                 .combine(observeDocumentSortUseCase(), ::sortAnnouncementFolderList)
                 .combine(filterStream, ::filterAnnouncementFolderList)

@@ -10,7 +10,6 @@ import gr.cpaleop.documents.domain.FilterStream
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,17 +34,17 @@ class ObserveDocumentsUseCaseImplTest {
     @MockK
     private lateinit var deviceStorageRepository: DeviceStorageRepository
 
-    @MockK
-    private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
+    private lateinit var filterStream: FilterStream
 
     @MockK
-    private lateinit var filterStream: FilterStream
+    private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     private lateinit var observeDocumentsUseCase: ObserveDocumentsUseCaseImpl
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = false)
+        filterStream = FilterStream()
         observeDocumentsUseCase = ObserveDocumentsUseCaseImpl(
             testDefaultCoroutineDispatcher,
             deviceStorageRepository,
@@ -63,7 +62,6 @@ class ObserveDocumentsUseCaseImplTest {
         val result = kotlin.runCatching {
             coEvery { observeDocumentSortUseCase() } returns SORT_TYPE_UNKNOWN_FLOW
             coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-            every { filterStream.asFlow() } returns filterEmptyFlow
             observeDocumentsUseCase(null).first()
         }
         assertThat(result.isFailure).isEqualTo(true)
@@ -76,7 +74,6 @@ class ObserveDocumentsUseCaseImplTest {
         val expected = documentListDateAscending
         coEvery { observeDocumentSortUseCase() } returns SORT_DATE_ASCENDING_FLOW
         coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-        every { filterStream.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsUseCase(null).first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -86,7 +83,6 @@ class ObserveDocumentsUseCaseImplTest {
         val expected = documentListDateDescending
         coEvery { observeDocumentSortUseCase() } returns SORT_DATE_DESCENDING_FLOW
         coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-        every { filterStream.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsUseCase(null).first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -96,7 +92,6 @@ class ObserveDocumentsUseCaseImplTest {
         val expected = documentListNameAscending
         coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_ASCENDING_FLOW
         coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-        every { filterStream.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsUseCase(null).first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -106,7 +101,6 @@ class ObserveDocumentsUseCaseImplTest {
         val expected = documentListNameDescending
         coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
         coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-        every { filterStream.asFlow() } returns filterEmptyFlow
         val actual = observeDocumentsUseCase(null).first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -115,14 +109,9 @@ class ObserveDocumentsUseCaseImplTest {
     fun `filter when not empty and sort is ALPHABETICAL_DESCENDING returns correct items`() =
         runBlocking {
             val givenQuery = "name1"
-            val givenQueryFlow = flow {
-                emit(givenQuery)
-            }
             val expected = documentListFiltered
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-            every { filterStream.value = givenQuery } returns Unit
-            every { filterStream.asFlow() } returns givenQueryFlow
             filterStream.value = givenQuery
             val actual = observeDocumentsUseCase(null).first()
             assertThat(actual).isEqualTo(expected)
@@ -132,24 +121,15 @@ class ObserveDocumentsUseCaseImplTest {
     fun `filter when empty and sort is ALPHABETICAL_DESCENDING returns original items`() =
         runBlocking {
             val givenQuery = ""
-            val givenQueryFlow = flow {
-                emit(givenQuery)
-            }
             val expected = documentListNameDescending
             coEvery { observeDocumentSortUseCase() } returns SORT_ALPHABETICAL_DESCENDING_FLOW
             coEvery { deviceStorageRepository.getDocumentsFlow() } returns documentListFlow
-            every { filterStream.value = givenQuery } returns Unit
-            every { filterStream.asFlow() } returns givenQueryFlow
             filterStream.value = givenQuery
             val actual = observeDocumentsUseCase(null).first()
             assertThat(actual).isEqualTo(expected)
         }
 
     companion object {
-
-        private val filterEmptyFlow = flow {
-            emit("")
-        }
 
         private val documentListFlow = flow {
             emit(documentList)

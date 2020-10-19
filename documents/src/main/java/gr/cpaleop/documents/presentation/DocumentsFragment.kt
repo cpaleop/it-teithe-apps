@@ -32,8 +32,8 @@ import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
-import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderAdapter
+import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderPresentation
 import gr.cpaleop.documents.presentation.document.DocumentsAdapter
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.options.DocumentDetails
@@ -201,6 +201,12 @@ class DocumentsFragment :
         }
     }
 
+    private fun scrollToTop() {
+        if (binding.documentsSearchTextView.text.toString().isEmpty()) {
+            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+    }
+
     private fun updateDeleteImage(isAnySelected: Boolean) {
         binding.documentsActionModeDeleteAllImageView.run {
             isEnabled = isAnySelected
@@ -336,12 +342,12 @@ class DocumentsFragment :
         }
     }
 
-    private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolder>) {
-        announcementFolderAdapter?.submitList(announcementFolders)
+    private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolderPresentation>) {
+        announcementFolderAdapter?.submitList(announcementFolders, ::scrollToTop)
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
-        documentsAdapter?.submitList(documents)
+        documentsAdapter?.submitList(documents, ::scrollToTop)
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {

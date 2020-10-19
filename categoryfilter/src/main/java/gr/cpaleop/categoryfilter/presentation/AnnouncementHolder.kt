@@ -1,5 +1,6 @@
 package gr.cpaleop.categoryfilter.presentation
 
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -19,6 +20,18 @@ class AnnouncementHolder(
         binding.announcementDate.text = item.date
         binding.announcementPublisher.text = item.publisherName
         binding.announcementCategory.isVisible = item.hasAttachments
+    }
+
+    fun bindTitle(title: SpannableString) {
+        binding.announcementTitle.text = title
+    }
+
+    fun bindContent(content: SpannableString) {
+        binding.announcementContent.text = content
+    }
+
+    fun bindPublisherName(publisherName: SpannableString) {
+        binding.announcementPublisher.text = publisherName
     }
 
     companion object {

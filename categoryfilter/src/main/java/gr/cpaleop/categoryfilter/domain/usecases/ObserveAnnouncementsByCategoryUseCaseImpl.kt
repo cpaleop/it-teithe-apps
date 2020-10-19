@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.combine
 class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsRepository: AnnouncementsRepository) :
     ObserveAnnouncementsByCategoryUseCase {
 
-    private val _filterChannel: MutableStateFlow<String> = MutableStateFlow("")
+    private val _filterStream: MutableStateFlow<String> = MutableStateFlow("")
     override val filterStream: StateFlow<String>
-        get() = _filterChannel
+        get() = _filterStream
 
     override fun invoke(categoryId: String): Flow<List<Announcement>> {
         return announcementsRepository.getCachedAnnouncementsByCategoryFlow(categoryId)
@@ -33,6 +33,6 @@ class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsReposit
     }
 
     override fun filter(filterQuery: String) {
-        _filterChannel.value = filterQuery
+        _filterStream.value = filterQuery
     }
 }

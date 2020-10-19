@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation.notifications
 
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,14 @@ class NotificationHolder(
         binding.announcementDate.text = item.date
         binding.announcementCategory.text = item.category
         binding.announcementPublisher.text = item.publisherName
+    }
+
+    fun bindTitle(title: SpannableString) {
+        binding.announcementTitle.text = title
+    }
+
+    fun bindPublisherName(publisherName: SpannableString) {
+        binding.announcementPublisher.text = publisherName
     }
 
     companion object {

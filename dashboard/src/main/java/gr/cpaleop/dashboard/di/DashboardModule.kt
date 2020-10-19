@@ -37,7 +37,7 @@ val dashboardModule = module {
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
-    single<GetNotificationsUseCase> { GetNotificationsUseCaseImpl(get()) }
+    single<ObserveNotificationsUseCase> { ObserveNotificationsUseCaseImpl(get()) }
     single<CategoriesRepository> {
         CategoriesRepositoryImpl(
             get(),

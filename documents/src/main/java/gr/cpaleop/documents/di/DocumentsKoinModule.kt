@@ -12,6 +12,7 @@ import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
 import gr.cpaleop.documents.domain.usecases.*
 import gr.cpaleop.documents.presentation.DocumentsViewModel
+import gr.cpaleop.documents.presentation.announcement_folder.AnnouncementFolderPresentationMapper
 import gr.cpaleop.documents.presentation.document.FileDocumentMapper
 import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
@@ -39,6 +40,7 @@ val documentsModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }
@@ -53,6 +55,7 @@ val documentsModule = module {
     }
     single { DocumentSortOptionMapper() }
     single { DocumentOptionMapper() }
+    single { AnnouncementFolderPresentationMapper() }
     single { FileDocumentMapper(get(named<DefaultDispatcher>()), get()) }
     single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
     single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }

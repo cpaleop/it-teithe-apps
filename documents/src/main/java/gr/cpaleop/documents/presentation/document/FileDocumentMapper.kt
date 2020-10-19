@@ -15,7 +15,7 @@ class FileDocumentMapper(
     private val dateFormatter: DateFormatter
 ) {
 
-    suspend operator fun invoke(document: Document, filterQuery: String): FileDocument =
+    suspend operator fun invoke(document: Document, filterQuery: String = ""): FileDocument =
         withContext(defaultDispatcher) {
             val lastModifiedHumanReadableFormat =
                 dateFormatter.fileFormat(document.lastModified, "dd-MM-yy HH:mm")

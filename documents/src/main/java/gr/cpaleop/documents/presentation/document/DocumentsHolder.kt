@@ -1,6 +1,7 @@
 package gr.cpaleop.documents.presentation.document
 
 import android.graphics.Color
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -42,6 +43,10 @@ class DocumentsHolder(
             )
             documentPreview.setImageResource(item.previewDrawable)
         }
+    }
+
+    fun bindTitle(name: SpannableString) {
+        binding.documentTitleTextView.text = name
     }
 
     companion object {
