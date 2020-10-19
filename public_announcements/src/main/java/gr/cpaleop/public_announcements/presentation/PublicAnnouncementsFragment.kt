@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class PublicAnnouncementsFragment :
@@ -50,8 +51,12 @@ class PublicAnnouncementsFragment :
     }
 
     override fun onDestroyView() {
-        getKoin().getScopeOrNull(PublicAnnouncementsScope.ID)?.close()
-        unloadKoinModules(publicAnnouncementsModule)
+        try {
+            getKoin().getScopeOrNull(PublicAnnouncementsScope.ID)?.close()
+            unloadKoinModules(publicAnnouncementsModule)
+        } catch (t: Throwable) {
+            Timber.e(t)
+        }
         super.onDestroyView()
     }
 

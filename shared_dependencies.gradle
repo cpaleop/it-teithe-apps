@@ -76,4 +76,6 @@ dependencies {
     //Protobuf
     def protobuf_version = "3.11.1"
     implementation  "com.google.protobuf:protobuf-javalite:$protobuf_version"
+
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
 }

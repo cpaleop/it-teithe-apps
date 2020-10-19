@@ -68,8 +68,6 @@ class PublicAnnouncementsViewModel(
     }
 
     fun search(query: String) {
-        viewModelScope.launch(mainDispatcher) {
-            observePublicAnnouncementsUseCase.filter(query)
-        }
+        observePublicAnnouncementsUseCase.filter(query)
     }
 }

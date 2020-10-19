@@ -24,7 +24,7 @@ class ObservePublicAnnouncementsUseCaseImpl(private val announcementsRepository:
             }
     }
 
-    override suspend fun filter(filterQuery: String) {
+    override fun filter(filterQuery: String) {
         filterStateFlow.value = filterQuery
     }
 }
