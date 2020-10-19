@@ -1,5 +1,6 @@
 package gr.cpaleop.announcements
 
+import android.text.SpannableString
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
@@ -139,21 +140,21 @@ class AnnouncementsViewModelTest {
         private val announcementPresentationList = listOf(
             AnnouncementPresentation(
                 id = "id",
-                title = "title",
-                content = "text",
+                title = SpannableString("title"),
+                content = SpannableString("text"),
                 date = "date",
-                publisherName = "publisher_name",
+                publisherName = SpannableString("publisher_name"),
                 hasAttachments = false,
-                category = "category_name"
+                category = SpannableString("category_name")
             ),
             AnnouncementPresentation(
                 id = "id1",
-                title = "title1",
-                content = "text1",
+                title = SpannableString("title1"),
+                content = SpannableString("text1"),
                 date = "date1",
-                publisherName = "publisher_name1",
+                publisherName = SpannableString("publisher_name1"),
                 hasAttachments = false,
-                category = "category_name1"
+                category = SpannableString("category_name1")
             )
         )
         private val announcementPagingData = PagingData.from(announcementList)

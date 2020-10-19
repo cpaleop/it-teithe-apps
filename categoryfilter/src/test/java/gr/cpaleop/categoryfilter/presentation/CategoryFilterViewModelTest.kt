@@ -1,5 +1,6 @@
 package gr.cpaleop.categoryfilter.presentation
 
+import android.text.SpannableString
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
@@ -104,6 +105,7 @@ class CategoryFilterViewModelTest {
             coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow.flowOn(
                 testMainCoroutineDispatcher
             )
+            every { observeAnnouncementsByCategoryUseCase.filterStream.value } returns ""
             every { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
             every { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
 
@@ -140,21 +142,21 @@ class CategoryFilterViewModelTest {
         private val announcementPresentationList = listOf(
             AnnouncementPresentation(
                 id = "id",
-                title = "title",
-                content = "text",
+                title = SpannableString("title"),
+                content = SpannableString("text"),
                 date = "date",
-                publisherName = "publisher_name",
+                publisherName = SpannableString("publisher_name"),
                 hasAttachments = false,
-                category = "category_name"
+                category = SpannableString("category_name")
             ),
             AnnouncementPresentation(
                 id = "id1",
-                title = "title1",
-                content = "text1",
+                title = SpannableString("title1"),
+                content = SpannableString("text1"),
                 date = "date1",
-                publisherName = "publisher_name1",
+                publisherName = SpannableString("publisher_name1"),
                 hasAttachments = false,
-                category = "category_name1"
+                category = SpannableString("category_name1")
             )
         )
 
