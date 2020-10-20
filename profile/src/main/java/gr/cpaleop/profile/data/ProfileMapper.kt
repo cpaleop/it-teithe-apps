@@ -18,38 +18,29 @@ class ProfileMapper(
     suspend operator fun invoke(remoteProfile: RemoteProfile): Profile {
         @LanguageCode
         val preferredLanguage = preferencesRepository.getPreferredLanguage()
-
-        val description: String
-        val displayName: String
         val givenName: String
-        val surname: String
+        val lastName: String
 
         when (preferredLanguage) {
             LanguageCode.GREEK -> {
-                description = remoteProfile.descriptionEl.orEmpty()
-                displayName = remoteProfile.displayNameEl.orEmpty()
                 givenName = remoteProfile.givenNameEl.orEmpty()
-                surname = remoteProfile.snEl.orEmpty()
+                lastName = remoteProfile.snEl.orEmpty()
             }
             LanguageCode.ENGLISH -> {
-                description = remoteProfile.description.orEmpty()
-                displayName = remoteProfile.displayName.orEmpty()
                 givenName = remoteProfile.givenName.orEmpty()
-                surname = remoteProfile.sn.orEmpty()
+                lastName = remoteProfile.sn.orEmpty()
             }
             else -> {
-                description = ""
-                displayName = ""
                 givenName = ""
-                surname = ""
+                lastName = ""
             }
         }
 
         val personalDetails = PersonalDetails(
-            lastName = surname,
+            lastName = lastName,
             givenName = givenName,
             websiteUrl = remoteProfile.labeledURI.orEmpty(),
-            description = description,
+            description = remoteProfile.description.orEmpty(),
             profileImageUrl = remoteProfile.profilePhoto,
             telephoneNumber = remoteProfile.telephoneNumber.orEmpty(),
             email = remoteProfile.mail ?: remoteProfile.secondarymail.orEmpty(),
@@ -59,7 +50,7 @@ class ProfileMapper(
             am = remoteProfile.am.orEmpty(),
             type = remoteProfile.eduPersonAffiliation.orEmpty(),
             username = remoteProfile.username.orEmpty(),
-            displayName = displayName,
+            displayName = remoteProfile.displayName.orEmpty(),
             currentSemester = remoteProfile.sem.orEmpty(),
             registeredYear = remoteProfile.regyear.orEmpty()
         )

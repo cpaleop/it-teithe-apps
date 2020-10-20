@@ -23,10 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
-import gr.cpaleop.common.extensions.getMimeType
-import gr.cpaleop.common.extensions.hideKeyboard
-import gr.cpaleop.common.extensions.setEndListener
-import gr.cpaleop.common.extensions.setStartListener
+import gr.cpaleop.common.extensions.*
 import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.documents.R
@@ -149,7 +146,6 @@ class DocumentsFragment :
 
         binding.documentsSearchTextView.run {
             enableLeftDrawable(announcementId != null)
-            /*setText(viewModel.getFilterValue())*/
             doOnTextChanged { text, _, _, _ ->
                 viewModel.filter(text.toString())
             }
@@ -351,8 +347,8 @@ class DocumentsFragment :
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
-        binding.documentsEmptyImageView.isVisible = documentsEmpty
-        binding.documentsEmptyTextView.isVisible = documentsEmpty
+        binding.documentsEmptyImageView.animateVisibilty(documentsEmpty).start()
+        binding.documentsEmptyTextView.animateVisibilty(documentsEmpty).start()
     }
 
     private fun updateSortView(documentSortOption: DocumentSortOption) {

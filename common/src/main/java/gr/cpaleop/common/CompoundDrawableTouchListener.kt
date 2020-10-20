@@ -29,7 +29,7 @@ class CompoundDrawableTouchListener(
                 null
             }
             val leftCalc = if (leftCompoundDrawable != null) {
-                view.left + leftCompoundDrawable.bounds.width() + view.paddingLeft
+                view.left + leftCompoundDrawable.bounds.width() + view.paddingLeft + 50
             } else {
                 null
             }
@@ -38,9 +38,8 @@ class CompoundDrawableTouchListener(
             } else {
                 null
             }
-
             val topCalc = if (topCompoundDrawable != null) {
-                topCompoundDrawable.bounds.height() - view.paddingTop
+                view.top - topCompoundDrawable.bounds.height() - view.paddingTop
             } else {
                 null
             }

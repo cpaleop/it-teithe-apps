@@ -2,7 +2,6 @@
 <resources>
 
     <!-- Notifications -->
-    <string name="notifications_empty">Δεν υπάρχουν ειδοποιήσεις</string>
     <string name="notifications_not_found">Δεν βρέθηκαν ειδοποιήσεις</string>
     <string name="notifications_search">Αναζήτηση ειδοποιήσεων</string>
 

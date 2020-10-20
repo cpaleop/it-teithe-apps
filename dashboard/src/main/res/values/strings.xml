@@ -7,7 +7,6 @@
     <string name="saved_files_bottom_navigation_menu_title" translatable="false">Documents</string>
 
     <!-- Notifications -->
-    <string name="notifications_empty">No available notifications</string>
     <string name="notifications_not_found">No notifications found</string>
     <string name="notifications_search">Search notifications</string>
 

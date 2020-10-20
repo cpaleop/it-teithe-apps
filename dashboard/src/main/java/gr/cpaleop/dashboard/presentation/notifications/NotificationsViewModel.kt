@@ -40,7 +40,13 @@ class NotificationsViewModel(
     private val _readNotifications = MutableLiveData<Unit>()
 
     private val _notifications = MutableLiveData<List<NotificationPresentation>>()
-    val notifications: LiveData<List<NotificationPresentation>> = _notifications.toSingleEvent()
+    val notifications: MediatorLiveData<List<NotificationPresentation>> by lazy {
+        MediatorLiveData<List<NotificationPresentation>>().apply {
+            addSource(_notifications) {
+                this.value = it
+            }
+        }
+    }
 
     val notificationsCounter: MediatorLiveData<Int> by lazy {
         MediatorLiveData<Int>().apply {
@@ -84,10 +90,7 @@ class NotificationsViewModel(
                         }
                     }.flowOn(defaultDispatcher)
                     .onEach { _loading.value = false }
-                    .collect {
-                        Timber.e("SKATAAAAAA ${it.size}")
-                        _notifications.value = it
-                    }
+                    .collect(_notifications::setValue)
             } catch (t: NoConnectionException) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_no_internet_connection)

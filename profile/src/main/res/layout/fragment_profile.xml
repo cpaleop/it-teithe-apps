@@ -219,7 +219,6 @@
         android:id="@+id/profileTabLayout"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginTop="14dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@id/profileViewPagerCardLayout"
         app:layout_constraintEnd_toEndOf="@id/profileViewPagerCardLayout"
@@ -229,7 +228,6 @@
         app:tabIndicatorColor="?attr/colorPrimary"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="3dp"
-        app:tabPaddingTop="6dp"
         app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabTextAppearance="@style/Theme.Itteitheapps.TabLayout.TextAppearance" />
 
