@@ -333,15 +333,14 @@ class DocumentsFragment :
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
                 if (!isVisible) isVisible = true
-                val shouldAnimate = this.drawable != null
                 setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
                 when (val drawable = this.drawable) {
                     is AnimatedVectorDrawableCompat -> {
-                        if (!drawable.isRunning && shouldAnimate)
+                        if (!drawable.isRunning)
                             drawable.start()
                     }
                     is AnimatedVectorDrawable -> {
-                        if (!drawable.isRunning && shouldAnimate)
+                        if (!drawable.isRunning)
                             drawable.start()
                     }
                 }
@@ -367,12 +366,10 @@ class DocumentsFragment :
     }
 
     private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolderPresentation>) {
-        Timber.e("SUBMIT LIST FOLDERS")
         announcementFolderAdapter?.submitList(announcementFolders, ::scrollToTop)
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
-        Timber.e("SUBMIT LIST DOCUMENTS")
         documentsAdapter?.submitList(documents)
     }
 
