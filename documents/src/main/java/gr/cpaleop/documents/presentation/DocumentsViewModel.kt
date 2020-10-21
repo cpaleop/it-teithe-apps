@@ -63,7 +63,7 @@ class DocumentsViewModel(
     val document: LiveData<Document> = _document.toSingleEvent()
 
     private val _documentPreview = MutableLiveData<Int>()
-    val documentPreview: LiveData<Int> = _documentPreview
+    val documentPreview: LiveData<Int> = _documentPreview.toSingleEvent()
 
     private val _documentAnnouncementFolders =
         MutableLiveData<List<AnnouncementFolderPresentation>>()

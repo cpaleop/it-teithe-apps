@@ -4,12 +4,10 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -58,7 +56,7 @@ class DocumentsFragment :
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
-    private var documentSortDrawableMap: MutableMap<Boolean, Drawable?>? = null
+    private var documentSortDrawableMap: MutableMap<Boolean, AnimatedVectorDrawableCompat?>? = null
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var gridLayoutManager: GridLayoutManager
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
@@ -127,8 +125,18 @@ class DocumentsFragment :
         linearLayoutManager = LinearLayoutManager(requireContext())
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
         documentSortDrawableMap = mutableMapOf(
-            Pair(true, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down)),
-            Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
+            Pair(
+                true, AnimatedVectorDrawableCompat.create(
+                    requireContext(),
+                    R.drawable.sort_asc_to_desc_anim
+                )
+            ),
+            Pair(
+                false, AnimatedVectorDrawableCompat.create(
+                    requireContext(),
+                    R.drawable.sort_desc_to_asc_anin
+                )
+            )
         )
 
         announcementFolderAdapter = AnnouncementFolderAdapter(::navigateToDocumentsFragment)
@@ -359,10 +367,12 @@ class DocumentsFragment :
     }
 
     private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolderPresentation>) {
+        Timber.e("SUBMIT LIST FOLDERS")
         announcementFolderAdapter?.submitList(announcementFolders, ::scrollToTop)
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {
+        Timber.e("SUBMIT LIST DOCUMENTS")
         documentsAdapter?.submitList(documents)
     }
 
@@ -382,6 +392,7 @@ class DocumentsFragment :
                 drawable,
                 null
             )
+            (this.compoundDrawables[2] as AnimatedVectorDrawableCompat?)?.start()
         }
     }
 

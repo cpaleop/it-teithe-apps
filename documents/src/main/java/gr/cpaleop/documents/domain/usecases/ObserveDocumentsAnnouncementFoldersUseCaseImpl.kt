@@ -4,6 +4,7 @@ import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.domain.FilterStream
+import gr.cpaleop.documents.domain.entities.AnnouncementFolder
 import gr.cpaleop.documents.domain.repositories.DeviceStorageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,22 +21,22 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
     private val filterStream: FilterStream
 ) : ObserveDocumentsAnnouncementFoldersUseCase {
 
-    private val titleSelector: (gr.cpaleop.documents.domain.entities.AnnouncementFolder) -> String =
+    private val titleSelector: (AnnouncementFolder) -> String =
         { announcementFolder ->
             announcementFolder.title
         }
 
-    private val lastModifiedSelector: (gr.cpaleop.documents.domain.entities.AnnouncementFolder) -> Long =
+    private val lastModifiedSelector: (AnnouncementFolder) -> Long =
         { announcementFolder ->
             announcementFolder.lastModified
         }
 
-    private val distinctSelector: (gr.cpaleop.documents.domain.entities.AnnouncementFolder) -> String =
+    private val distinctSelector: (AnnouncementFolder) -> String =
         { announcementFolder ->
             announcementFolder.id
         }
 
-    override suspend fun invoke(): Flow<List<gr.cpaleop.documents.domain.entities.AnnouncementFolder>> =
+    override suspend fun invoke(): Flow<List<AnnouncementFolder>> =
         withContext(defaultDispatcher) {
             val announcementFoldersFlow = deviceStorageRepository.getAnnouncementFoldersFlow()
 
@@ -45,9 +46,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
         }
 
     private fun filterAnnouncementFolderList(
-        announcementFolderList: List<gr.cpaleop.documents.domain.entities.AnnouncementFolder>,
+        announcementFolderList: List<AnnouncementFolder>,
         query: String
-    ): List<gr.cpaleop.documents.domain.entities.AnnouncementFolder> {
+    ): List<AnnouncementFolder> {
         return announcementFolderList.filter { announcementFolder ->
             if (query.isEmpty()) return@filter true
             announcementFolder.title.contains(query, true)
@@ -55,9 +56,9 @@ class ObserveDocumentsAnnouncementFoldersUseCaseImpl(
     }
 
     private fun sortAnnouncementFolderList(
-        announcementFolderList: List<gr.cpaleop.documents.domain.entities.AnnouncementFolder>,
+        announcementFolderList: List<AnnouncementFolder>,
         documentSort: DocumentSort
-    ): List<gr.cpaleop.documents.domain.entities.AnnouncementFolder> {
+    ): List<AnnouncementFolder> {
         return when (documentSort.type) {
             DocumentSortType.DATE -> {
                 if (documentSort.descending) {

@@ -130,7 +130,7 @@ class DocumentsViewModelTest {
             emit(documentList)
         }
         coEvery { observeDocumentsUseCase(null) } returns documentListFlow
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns flow {
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns flow {
             emit(
                 DocumentPreview.FILE
             )
@@ -147,7 +147,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
         val emptyDocumentListFlow = flow<List<Document>> { emit(emptyList()) }
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         coEvery { observeDocumentsUseCase(null) } returns emptyDocumentListFlow
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
@@ -158,7 +158,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches exception and has message when failure while observing documents`() {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -167,7 +167,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches cancellation exception and has no message when failure while observing documents`() {
         val expectedMessage = null
         coEvery { observeDocumentsUseCase(null) } throws CancellationException()
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -176,7 +176,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches exception and has message when failure while observing announcement folders`() {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws Throwable()
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -185,7 +185,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches cancellation exception and has no message when failure while observing announcement folders`() {
         val expectedMessage = null
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws CancellationException()
-        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
