@@ -27,15 +27,20 @@ class TokenPreferencesMigration(private val userPreferences: DataStore<UserPrefe
     }
 
     override suspend fun migrate(currentData: TokenPreferences): TokenPreferences {
-        return currentData.toBuilder()
+        val new = currentData.toBuilder()
             .setAccessToken(userPreferences.data.first().accessToken)
             .setRefreshToken(userPreferences.data.first().refreshToken)
             .build()
+        return new
     }
 
     override suspend fun shouldMigrate(currentData: TokenPreferences): Boolean {
-        return (currentData.accessToken != userPreferences.data.first().accessToken) &&
-                (currentData.refreshToken != userPreferences.data.first().refreshToken)
+        val hasToken = currentData.accessToken.isNotEmpty()
+        val hasRefreshToken = currentData.refreshToken.isNotEmpty()
+        val hasPreviousToken = userPreferences.data.first().accessToken.isNotEmpty()
+        val hasPreviousRefreshToken = userPreferences.data.first().refreshToken.isNotEmpty()
+
+        return !hasToken && !hasRefreshToken && hasPreviousToken && hasPreviousRefreshToken
     }
 }
 
@@ -54,8 +59,7 @@ class SystemPreferencesMigration(private val userPreferences: DataStore<UserPref
     }
 
     override suspend fun shouldMigrate(currentData: SystemPreferences): Boolean {
-        return (currentData.nightMode != userPreferences.data.first().nightMode) &&
-                (currentData.languageCode != userPreferences.data.first().languageCode)
+        return (currentData.languageCode.isEmpty())
     }
 }
 
@@ -74,8 +78,7 @@ class DocumentSortPreferencesMigration(private val userPreferences: DataStore<Us
     }
 
     override suspend fun shouldMigrate(currentData: DocumentSortPreferences): Boolean {
-        return (currentData.documentSortDescending != userPreferences.data.first().documentSortDescending) &&
-                (currentData.documentSortType != userPreferences.data.first().documentSortType)
+        return false
     }
 }
 
@@ -93,7 +96,7 @@ class DocumentPreviewPreferencesMigration(private val userPreferences: DataStore
     }
 
     override suspend fun shouldMigrate(currentData: DocumentPreviewPreferences): Boolean {
-        return currentData.documentPreview != userPreferences.data.first().documentPreview
+        return false
     }
 }
 
