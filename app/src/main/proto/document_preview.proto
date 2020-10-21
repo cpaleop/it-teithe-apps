@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "gr.cpaleop.teithe_apps";
+option java_multiple_files = true;
+
+message DocumentPreviewPreferences {
+  int32 documentPreview = 1;
+}

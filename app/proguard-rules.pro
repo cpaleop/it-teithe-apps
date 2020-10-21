@@ -30,6 +30,10 @@
 -keep class gr.cpaleop.announcements.data.model** { *; }
 -keep class gr.cpaleop.categoryfilter.data.model** { *; }
 -keep class gr.cpaleop.teithe_apps.UserPreferences  { *; }
+-keep class gr.cpaleop.teithe_apps.TokenPreferences  { *; }
+-keep class gr.cpaleop.teithe_apps.DocumentPreviewPreferences  { *; }
+-keep class gr.cpaleop.teithe_apps.DocumentSortPreferences  { *; }
+-keep class gr.cpaleop.teithe_apps.SystemPreferences  { *; }
 -keep class com.google.android.material.tabs.** {*;}
 
 -keepnames class * extends android.os.Parcelable

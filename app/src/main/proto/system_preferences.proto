@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "gr.cpaleop.teithe_apps";
+option java_multiple_files = true;
+
+message SystemPreferences {
+  int32 nightMode = 6;
+  string languageCode = 7;
+}

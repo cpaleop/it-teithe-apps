@@ -31,6 +31,13 @@ interface PreferencesRepository {
 
     companion object {
 
+        const val TOKEN_PREFERENCES_FILE_KEY = "gr.cpaleop.itteitheapps.system-settings_preferences"
+        const val DOCUMENT_SORT_PREFERENCES_FILE_KEY =
+            "gr.cpaleop.itteitheapps.system-settings_preferences"
+        const val DOCUMENT_PREVIEW_PREFERENCES_FILE_KEY =
+            "gr.cpaleop.itteitheapps.system-settings_preferences"
+        const val SYSTEM_SETTINGS_PREFERENCES_FILE_KEY =
+            "gr.cpaleop.itteitheapps.system-settings_preferences"
         const val PREFERENCES_FILE_KEY = "gr.cpaleop.itteitheapps.preferences"
     }
 }

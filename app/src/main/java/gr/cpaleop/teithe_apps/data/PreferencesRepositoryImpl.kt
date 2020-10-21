@@ -2,6 +2,7 @@ package gr.cpaleop.teithe_apps.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.DataMigration
 import androidx.datastore.DataStore
 import androidx.datastore.createDataStore
 import gr.cpaleop.core.domain.behavior.LanguageCode
@@ -10,22 +11,130 @@ import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.core.domain.entities.Token
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
-import gr.cpaleop.teithe_apps.UserPreferences
-import gr.cpaleop.teithe_apps.data.serializers.UserPreferencesSerializer
+import gr.cpaleop.teithe_apps.*
+import gr.cpaleop.teithe_apps.data.serializers.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
+class TokenPreferencesMigration(private val userPreferences: DataStore<UserPreferences>) :
+    DataMigration<TokenPreferences> {
+
+    override suspend fun cleanUp() {
+        //Keep empty for now
+    }
+
+    override suspend fun migrate(currentData: TokenPreferences): TokenPreferences {
+        return currentData.toBuilder()
+            .setAccessToken(userPreferences.data.first().accessToken)
+            .setRefreshToken(userPreferences.data.first().refreshToken)
+            .build()
+    }
+
+    override suspend fun shouldMigrate(currentData: TokenPreferences): Boolean {
+        return (currentData.accessToken != userPreferences.data.first().accessToken) &&
+                (currentData.refreshToken != userPreferences.data.first().refreshToken)
+    }
+}
+
+class SystemPreferencesMigration(private val userPreferences: DataStore<UserPreferences>) :
+    DataMigration<SystemPreferences> {
+
+    override suspend fun cleanUp() {
+        //Keep empty for now
+    }
+
+    override suspend fun migrate(currentData: SystemPreferences): SystemPreferences {
+        return currentData.toBuilder()
+            .setLanguageCode(userPreferences.data.first().languageCode)
+            .setNightMode(userPreferences.data.first().nightMode)
+            .build()
+    }
+
+    override suspend fun shouldMigrate(currentData: SystemPreferences): Boolean {
+        return (currentData.nightMode != userPreferences.data.first().nightMode) &&
+                (currentData.languageCode != userPreferences.data.first().languageCode)
+    }
+}
+
+class DocumentSortPreferencesMigration(private val userPreferences: DataStore<UserPreferences>) :
+    DataMigration<DocumentSortPreferences> {
+
+    override suspend fun cleanUp() {
+        //Keep empty for now
+    }
+
+    override suspend fun migrate(currentData: DocumentSortPreferences): DocumentSortPreferences {
+        return currentData.toBuilder()
+            .setDocumentSortDescending(userPreferences.data.first().documentSortDescending)
+            .setDocumentSortType(userPreferences.data.first().documentSortType)
+            .build()
+    }
+
+    override suspend fun shouldMigrate(currentData: DocumentSortPreferences): Boolean {
+        return (currentData.documentSortDescending != userPreferences.data.first().documentSortDescending) &&
+                (currentData.documentSortType != userPreferences.data.first().documentSortType)
+    }
+}
+
+class DocumentPreviewPreferencesMigration(private val userPreferences: DataStore<UserPreferences>) :
+    DataMigration<DocumentPreviewPreferences> {
+
+    override suspend fun cleanUp() {
+        //Keep empty for now
+    }
+
+    override suspend fun migrate(currentData: DocumentPreviewPreferences): DocumentPreviewPreferences {
+        return currentData.toBuilder()
+            .setDocumentPreview(userPreferences.data.first().documentPreview)
+            .build()
+    }
+
+    override suspend fun shouldMigrate(currentData: DocumentPreviewPreferences): Boolean {
+        return currentData.documentPreview != userPreferences.data.first().documentPreview
+    }
+}
+
 class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesRepository {
 
-    private val dataStore: DataStore<UserPreferences> = applicationContext.createDataStore(
-        fileName = PreferencesRepository.PREFERENCES_FILE_KEY,
-        serializer = UserPreferencesSerializer
-    )
+    private val userPreferencesDataStore: DataStore<UserPreferences> =
+        applicationContext.createDataStore(
+            fileName = PreferencesRepository.PREFERENCES_FILE_KEY,
+            serializer = UserPreferencesSerializer
+        )
+
+    private val systemPreferencesDataStore: DataStore<SystemPreferences> =
+        applicationContext.createDataStore(
+            fileName = PreferencesRepository.SYSTEM_SETTINGS_PREFERENCES_FILE_KEY,
+            serializer = SystemPreferencesSerializer,
+            migrations = listOf(SystemPreferencesMigration(userPreferencesDataStore))
+        )
+
+    private val documentSortPreferencesDataStore: DataStore<DocumentSortPreferences> =
+        applicationContext.createDataStore(
+            fileName = PreferencesRepository.DOCUMENT_SORT_PREFERENCES_FILE_KEY,
+            serializer = DocumentSortPreferencesSerializer,
+            migrations = listOf(DocumentSortPreferencesMigration(userPreferencesDataStore))
+        )
+
+    private val documentPreviewPreferencesDataStore: DataStore<DocumentPreviewPreferences> =
+        applicationContext.createDataStore(
+            fileName = PreferencesRepository.DOCUMENT_PREVIEW_PREFERENCES_FILE_KEY,
+            serializer = DocumentPreviewPreferencesSerializer,
+            migrations = listOf(DocumentPreviewPreferencesMigration(userPreferencesDataStore))
+        )
+
+    private val tokenPreferencesDataStore: DataStore<TokenPreferences> =
+        applicationContext.createDataStore(
+            fileName = PreferencesRepository.TOKEN_PREFERENCES_FILE_KEY,
+            serializer = TokenPreferencesSerializer,
+            migrations = listOf(TokenPreferencesMigration(userPreferencesDataStore))
+        )
 
     override suspend fun updateToken(token: Token) {
-        dataStore.updateData {
+        tokenPreferencesDataStore.updateData {
             it.toBuilder()
                 .setAccessToken(token.accessToken)
                 .setRefreshToken(token.refreshToken)
@@ -34,9 +143,9 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override fun getTokenFlow(): Flow<Token> {
-        return dataStore.data.catch { exception ->
+        return tokenPreferencesDataStore.data.catch { exception ->
             if (exception is IOException) {
-                emit(UserPreferences.getDefaultInstance())
+                emit(TokenPreferences.getDefaultInstance())
             } else {
                 throw exception
             }
@@ -49,7 +158,7 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override suspend fun updateNightMode(nightMode: Int) {
-        dataStore.updateData {
+        systemPreferencesDataStore.updateData {
             it.toBuilder()
                 .setNightMode(nightMode)
                 .build()
@@ -57,9 +166,9 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override fun getNightModeFlow(): Flow<Int> {
-        return dataStore.data.catch { exception ->
+        return systemPreferencesDataStore.data.catch { exception ->
             if (exception is IOException) {
-                emit(UserPreferences.getDefaultInstance())
+                emit(SystemPreferences.getDefaultInstance())
             } else {
                 throw exception
             }
@@ -72,7 +181,7 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override suspend fun updateLanguage(languageCode: String) {
-        dataStore.updateData {
+        systemPreferencesDataStore.updateData {
             it.toBuilder()
                 .setLanguageCode(languageCode)
                 .build()
@@ -80,9 +189,9 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override fun getLanguageFlow(): Flow<String> {
-        return dataStore.data.catch { exception ->
+        return systemPreferencesDataStore.data.catch { exception ->
             if (exception is IOException) {
-                emit(UserPreferences.getDefaultInstance())
+                emit(SystemPreferences.getDefaultInstance())
             } else {
                 throw exception
             }
@@ -94,7 +203,7 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override suspend fun updateDocumentSort(documentSort: DocumentSort) {
-        dataStore.updateData {
+        documentSortPreferencesDataStore.updateData {
             it.toBuilder()
                 .setDocumentSortType(documentSort.type)
                 .setDocumentSortDescending(documentSort.descending)
@@ -103,9 +212,9 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override fun getDocumentSortFlow(): Flow<DocumentSort> {
-        return dataStore.data.catch { exception ->
+        return documentSortPreferencesDataStore.data.catch { exception ->
             if (exception is IOException) {
-                emit(UserPreferences.getDefaultInstance())
+                emit(DocumentSortPreferences.getDefaultInstance())
             } else {
                 throw exception
             }
@@ -121,7 +230,7 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override suspend fun updateDocumentPreview(documentPreview: Int) {
-        dataStore.updateData {
+        documentPreviewPreferencesDataStore.updateData {
             it.toBuilder()
                 .setDocumentPreview(documentPreview)
                 .build()
@@ -129,9 +238,9 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override fun getDocumentPreviewFlow(): Flow<Int> {
-        return dataStore.data.catch { exception ->
+        return documentPreviewPreferencesDataStore.data.catch { exception ->
             if (exception is IOException) {
-                emit(UserPreferences.getDefaultInstance())
+                emit(DocumentPreviewPreferences.getDefaultInstance())
             } else {
                 throw exception
             }
@@ -143,8 +252,32 @@ class PreferencesRepositoryImpl(applicationContext: Context) : PreferencesReposi
     }
 
     override suspend fun clear() {
-        dataStore.updateData {
-            it.toBuilder().clear()
+        tokenPreferencesDataStore.updateData {
+            it.toBuilder()
+                .clear()
+                .build()
+        }
+
+        systemPreferencesDataStore.updateData {
+            it.toBuilder()
+                .clear()
+                .build()
+        }
+
+        documentPreviewPreferencesDataStore.updateData {
+            it.toBuilder()
+                .clear()
+                .build()
+        }
+
+        documentSortPreferencesDataStore.updateData {
+            it.toBuilder()
+                .clear()
+                .build()
+        }
+        userPreferencesDataStore.updateData {
+            it.toBuilder()
+                .clear()
                 .build()
         }
     }

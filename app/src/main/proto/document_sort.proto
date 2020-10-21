@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "gr.cpaleop.teithe_apps";
+option java_multiple_files = true;
+
+message DocumentSortPreferences {
+  int32 documentSortType = 1;
+  bool documentSortDescending = 2;
+}
