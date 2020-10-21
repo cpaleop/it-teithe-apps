@@ -1,7 +1,6 @@
 package gr.cpaleop.announcements.data
 
 import androidx.paging.PagingSource
-import com.google.gson.Gson
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTitleFilter
 import gr.cpaleop.common.extensions.mapAsyncSuspended
@@ -10,6 +9,8 @@ import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class AnnouncementsPagingSource(
@@ -18,7 +19,7 @@ class AnnouncementsPagingSource(
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
     private val filterQuery: String?,
-    private val gson: Gson
+    private val json: Json
 ) : PagingSource<Int, Announcement>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Announcement> {
@@ -79,12 +80,12 @@ class AnnouncementsPagingSource(
     //API filter formation
     private fun parseTextFilter(filterQuery: String): String {
         val remoteAnnouncementTextFilter = RemoteAnnouncementTextFilter(filterQuery)
-        return gson.toJson(remoteAnnouncementTextFilter)
+        return json.encodeToString(remoteAnnouncementTextFilter)
     }
 
     private fun parseTitleFilter(filterQuery: String): String {
         val remoteAnnouncementTitleFilter = RemoteAnnouncementTitleFilter(filterQuery)
-        return gson.toJson(remoteAnnouncementTitleFilter)
+        return json.encodeToString(remoteAnnouncementTitleFilter)
     }
 
     companion object {

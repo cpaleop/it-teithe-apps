@@ -1,8 +1,10 @@
 package gr.cpaleop.categoryfilter.data.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteCategoryFilter(
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String
 )

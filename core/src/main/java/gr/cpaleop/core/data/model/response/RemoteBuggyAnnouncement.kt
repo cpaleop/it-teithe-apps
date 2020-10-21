@@ -1,11 +1,13 @@
 package gr.cpaleop.core.data.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteBuggyAnnouncement(
-    @SerializedName("_about")
+    @SerialName("_about")
     val about: RemoteBuggyAbout,
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String,
     val attachments: List<String>,
     val date: String,
@@ -16,7 +18,8 @@ data class RemoteBuggyAnnouncement(
     val titleEn: String
 )
 
+@Serializable
 data class RemoteBuggyAbout(
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String
 )

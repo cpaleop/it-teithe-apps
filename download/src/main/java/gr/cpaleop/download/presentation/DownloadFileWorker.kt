@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.work.*
 import gr.cpaleop.download.domain.DownloadProgressNotifier
 import gr.cpaleop.download.domain.usecases.DownloadFilesUseCase
+import gr.cpaleop.download.domain.usecases.DownloadResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @FlowPreview
@@ -26,18 +26,15 @@ class DownloadFileWorker(
     override suspend fun doWork(): Result = coroutineScope {
         val files = workerParameters.inputData.getStringArray(DATA_FILE_LIST)?.toList()
             ?: return@coroutineScope Result.failure()
-
         val announcementId = workerParameters.inputData.getString(DATA_ANNOUNCEMENT_ID)
             ?: return@coroutineScope Result.failure()
 
         setupNotification(files.size)
-        try {
-            observeProgress()
-            downloadFilesUseCase(announcementId, files)
-            Result.success()
-        } catch (t: Throwable) {
-            Timber.e(t)
-            Result.failure()
+        observeProgress()
+
+        when (downloadFilesUseCase(announcementId, files)) {
+            is DownloadResult.Success -> Result.success()
+            is DownloadResult.Error -> Result.failure()
         }
     }
 

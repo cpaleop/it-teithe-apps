@@ -1,8 +1,7 @@
 package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
 import gr.cpaleop.core.data.remote.AuthenticationApi
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
@@ -19,16 +18,20 @@ import gr.cpaleop.teithe_apps.data.RemoteAnnouncementConverterFactory
 import gr.cpaleop.teithe_apps.data.RemoteAnnouncementMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.builtins.ByteArraySerializer
+import kotlinx.serialization.json.Json
 import okhttp3.Dispatcher
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
+@ExperimentalSerializationApi
 val networkModule = module {
     single { RemoteAnnouncementMapper() }
     single { provideRetrofit(get(), get(), get()) }
@@ -40,7 +43,6 @@ val networkModule = module {
     }
     single { provideOkHttpClient(get(), get(), get(), get()) }
     single(named<Authentication>()) { provideAuthenticationOkHttpClient(get(), get(), get()) }
-    single { provideGson() }
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(
             get(),
@@ -53,6 +55,7 @@ val networkModule = module {
     single { provideAuthenticationApi(get(named<Authentication>())) }
     single(named<DownloadFolder>()) { provideDownloadFolder(get()) }
     single(named<Authority>()) { provideAuthority(get()) }
+    single { provideJson() }
 }
 
 @Authority
@@ -71,18 +74,18 @@ private fun provideAuthenticationApi(retrofit: Retrofit): AuthenticationApi {
 
 private fun provideRetrofit(
     okHttpClient: OkHttpClient,
-    gson: Gson,
-    remoteAnnouncementMapper: RemoteAnnouncementMapper
+    remoteAnnouncementMapper: RemoteAnnouncementMapper,
+    json: Json
 ): Retrofit {
-    val gsonConverterFactory = GsonConverterFactory.create(gson)
+    val contentType = "application/json".toMediaType()
     return Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(
             RemoteAnnouncementConverterFactory.create(
                 remoteAnnouncementMapper,
-                gson,
-                gsonConverterFactory
+                json.asConverterFactory(contentType),
+                json
             )
         )
         .build()
@@ -114,11 +117,13 @@ private fun provideOkHttpClient(
     return okHttpClient.build()
 }
 
-private fun provideAuthenticationRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+@ExperimentalSerializationApi
+private fun provideAuthenticationRetrofit(okHttpClient: OkHttpClient, json: Json): Retrofit {
+    val contentType = "application/json".toMediaType()
     return Retrofit.Builder()
         .baseUrl(BuildConfig.LOGIN_URL)
         .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(json.asConverterFactory(contentType))
         .build()
 }
 
@@ -141,9 +146,10 @@ private fun provideAuthenticationOkHttpClient(
     return okHttpClient.build()
 }
 
-private fun provideGson(): Gson {
-    return GsonBuilder()
-        .setPrettyPrinting()
-        .disableHtmlEscaping()
-        .create()
+private fun provideJson(): Json {
+    ByteArraySerializer()
+
+    return Json {
+        ignoreUnknownKeys = true
+    }
 }

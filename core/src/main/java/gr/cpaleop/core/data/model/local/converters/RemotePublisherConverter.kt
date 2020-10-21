@@ -1,20 +1,26 @@
 package gr.cpaleop.core.data.model.local.converters
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
 import gr.cpaleop.core.data.model.response.RemotePublisher
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class RemotePublisherConverter {
 
-    private val gson: Gson by lazy { Gson() }
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     @TypeConverter
     fun jsonToObject(data: String?): RemotePublisher? {
-        return gson.fromJson(data, RemotePublisher::class.java)
+        if (data == null) return null
+        return json.decodeFromString<RemotePublisher>(data)
     }
 
     @TypeConverter
     fun objectToJson(remotePublisher: RemotePublisher?): String? {
-        return gson.toJson(remotePublisher)
+        if (remotePublisher == null) return null
+        return json.encodeToString(remotePublisher)
     }
 }

@@ -18,17 +18,23 @@ class DownloadFilesUseCaseImpl(
     private val deviceStorageRepository: DeviceStorageRepository
 ) : DownloadFilesUseCase {
 
-    override suspend fun invoke(announcementId: String, fileIdList: List<String>) {
-        downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, true))
-        fileIdList.forEachIndexed { index, fileId ->
-            val downloadedFile = fileRepository.getFile(fileId)
-            deviceStorageRepository.saveFile(
-                announcementId,
-                downloadedFile.name,
-                downloadedFile.data.toByteArray()
-            )
-            downloadProgressNotifier.emit(DownloadProgress(fileIdList.size, index + 1))
+    override suspend fun invoke(announcementId: String, fileIdList: List<String>): DownloadResult {
+        try {
+            downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, true))
+            fileIdList.forEachIndexed { index, fileId ->
+                val downloadedFile = fileRepository.getFile(fileId)
+                deviceStorageRepository.saveFile(
+                    announcementId,
+                    downloadedFile.name,
+                    downloadedFile.data.toByteArray()
+                )
+                downloadProgressNotifier.emit(DownloadProgress(fileIdList.size, index + 1))
+            }
+            downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, false))
+            return DownloadResult.Success
+        } catch (t: Throwable) {
+            downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, false))
+            return DownloadResult.Error
         }
-        downloadAnnouncementNotifier.emit(DownloadFileStatus(announcementId, false))
     }
 }

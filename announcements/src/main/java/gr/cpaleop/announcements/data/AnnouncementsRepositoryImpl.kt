@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import com.google.gson.Gson
+import gr.cpaleop.announcements.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
@@ -15,6 +15,7 @@ import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 class AnnouncementsRepositoryImpl(
     @IODispatcher
@@ -23,8 +24,8 @@ class AnnouncementsRepositoryImpl(
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
-    private val gson: Gson
-) : gr.cpaleop.announcements.domain.repositories.AnnouncementsRepository {
+    private val json: Json
+) : AnnouncementsRepository {
 
     private var dataPagingSource: PagingSource<Int, Announcement>? = null
     private var filterQuery: String? = null
@@ -44,7 +45,7 @@ class AnnouncementsRepositoryImpl(
                         appDatabase,
                         announcementMapper,
                         filterQuery,
-                        gson
+                        json
                     ).also {
                         dataPagingSource = it
                         // Empty values because this class' object will be singleton.

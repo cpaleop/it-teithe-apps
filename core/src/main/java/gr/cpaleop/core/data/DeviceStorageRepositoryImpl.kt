@@ -28,7 +28,6 @@ class DeviceStorageRepositoryImpl(
         withContext(Dispatchers.IO) {
             val destinationFile = File(folder.absolutePath + "/" + fileName)
             val bufferedSink: BufferedSink = destinationFile.appendingSink().buffer()
-            bufferedSink.write(fileData)
             try {
                 bufferedSink.use {
                     it.write(fileData)

@@ -1,10 +1,12 @@
 package gr.cpaleop.core.data.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteToken(
-    @SerializedName("access_token")
+    @SerialName("access_token")
     val accessToken: String? = "",
-    @SerializedName("refresh_token")
+    @SerialName("refresh_token")
     val refreshToken: String? = ""
 )

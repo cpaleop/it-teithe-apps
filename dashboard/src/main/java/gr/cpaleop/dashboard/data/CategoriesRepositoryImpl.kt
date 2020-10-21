@@ -1,6 +1,5 @@
 package gr.cpaleop.dashboard.data
 
-import com.google.gson.Gson
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
@@ -9,9 +8,11 @@ import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.repositories.CategoriesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class CategoriesRepositoryImpl(
-    private val gson: Gson,
+    private val json: Json,
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
     private val categoryMapper: CategoryMapper
@@ -32,8 +33,8 @@ class CategoriesRepositoryImpl(
         registeredCategories: List<String>,
         nonRegisteredCategories: List<String>
     ) = withContext(Dispatchers.IO) {
-        val registeredCategoriesString = gson.toJson(registeredCategories)
-        val nonegisteredCategoriesString = gson.toJson(nonRegisteredCategories)
+        val registeredCategoriesString = json.encodeToString(registeredCategories)
+        val nonegisteredCategoriesString = json.encodeToString(nonRegisteredCategories)
         categoriesApi.updateRegisteredCategories(
             registeredCategoriesString,
             nonegisteredCategoriesString

@@ -1,9 +1,11 @@
 package gr.cpaleop.core.data.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteAnnouncementTitle(
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String? = null,
     val title: String? = null,
     val titleEn: String? = null

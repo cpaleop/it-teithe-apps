@@ -1,18 +1,19 @@
 package gr.cpaleop.core.data.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteFile(
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String?,
     val name: String?,
     val contentType: String?,
-    val data: RemoteData?,
-    @SerializedName("_announcement")
-    val announcement: Any?
+    val data: RemoteData?
 )
 
+@Serializable
 data class RemoteData(
     val type: String?,
-    val data: List<Byte>
+    val data: List<Int>
 )

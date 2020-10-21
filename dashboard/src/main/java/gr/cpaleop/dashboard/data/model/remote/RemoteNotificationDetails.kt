@@ -1,15 +1,18 @@
 package gr.cpaleop.dashboard.data.model.remote
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteNotificationDetails(
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String,
-    @SerializedName("_notification")
+    @SerialName("_notification")
     val remoteNotification: RemoteNotification?,
     val seen: Boolean?
 )
 
+@Serializable
 data class RemoteNotification(
     val date: String,
     val nameEl: String,
@@ -17,19 +20,22 @@ data class RemoteNotification(
     val related: RemoteRelated
 )
 
+@Serializable
 data class RemoteRelated(
     val id: RemoteRelatedAnnouncement
 )
 
+@Serializable
 data class RemoteRelatedAnnouncement(
-    @SerializedName("_about")
+    @SerialName("_about")
     val about: RemoteRelatedAnnouncementAbout,
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String,
     val title: String,
     val titleEn: String
 )
 
+@Serializable
 data class RemoteRelatedAnnouncementAbout(
     val name: String
 )
