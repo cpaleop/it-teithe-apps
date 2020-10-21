@@ -3,6 +3,7 @@ package gr.cpaleop.documents.presentation
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.transition.platform.MaterialArcMotion
@@ -57,9 +59,11 @@ class DocumentsFragment :
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
     private var documentSortDrawableMap: MutableMap<Boolean, Drawable?>? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var gridLayoutManager: GridLayoutManager
     private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
-        Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
-        Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
+        Pair(DocumentPreview.FILE, R.drawable.folder_to_list_anim),
+        Pair(DocumentPreview.FOLDER, R.drawable.list_to_folder_anim),
     )
     private var inSelectionMode: Boolean = false
 
@@ -115,10 +119,13 @@ class DocumentsFragment :
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
-        refreshViewState()
+        viewModel.presentDocuments(announcementId)
+        viewModel.presentDocumentSortSelected()
     }
 
     private fun setupViews() {
+        linearLayoutManager = LinearLayoutManager(requireContext())
+        gridLayoutManager = GridLayoutManager(requireContext(), 2)
         documentSortDrawableMap = mutableMapOf(
             Pair(true, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down)),
             Pair(false, ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up))
@@ -176,7 +183,6 @@ class DocumentsFragment :
 
     private fun observeViewModel() {
         viewModel.run {
-            refresh.observe(viewLifecycleOwner, { refreshViewState() })
             documentPreview.observe(viewLifecycleOwner, Observer(::updatePreviewPreference))
             documents.observe(viewLifecycleOwner, Observer(::updateDocuments))
             documentsAnySelected.observe(viewLifecycleOwner, Observer(::updateDeleteImage))
@@ -264,11 +270,6 @@ class DocumentsFragment :
         viewModel.clearSelections()
     }
 
-    private fun refreshViewState() {
-        viewModel.presentDocuments(announcementId)
-        viewModel.presentDocumentSortSelected()
-    }
-
     private fun openFile(documentUri: String, fileAbsolutePath: String) {
         try {
             if (inSelectionMode) {
@@ -316,22 +317,41 @@ class DocumentsFragment :
 
     private fun updatePreviewPreference(@DocumentPreview documentPreview: Int) {
         binding.documentsSearchTextView.setText("")
+        togglePreview(documentPreview)
+        toggleAdapter(documentPreview)
+    }
+
+    private fun togglePreview(@DocumentPreview documentPreview: Int) {
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
-                setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
                 if (!isVisible) isVisible = true
+                val shouldAnimate = this.drawable != null
+                setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
+                when (val drawable = this.drawable) {
+                    is AnimatedVectorDrawableCompat -> {
+                        if (!drawable.isRunning && shouldAnimate)
+                            drawable.start()
+                    }
+                    is AnimatedVectorDrawable -> {
+                        if (!drawable.isRunning && shouldAnimate)
+                            drawable.start()
+                    }
+                }
             }
         }
+    }
+
+    private fun toggleAdapter(@DocumentPreview documentPreview: Int) {
         when (documentPreview) {
             DocumentPreview.FILE -> {
                 binding.documentsRecyclerView.run {
-                    layoutManager = LinearLayoutManager(requireContext())
+                    layoutManager = linearLayoutManager
                     adapter = documentsAdapter
                 }
             }
             DocumentPreview.FOLDER -> {
                 binding.documentsRecyclerView.run {
-                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    layoutManager = gridLayoutManager
                     adapter = announcementFolderAdapter
                 }
             }
@@ -347,8 +367,8 @@ class DocumentsFragment :
     }
 
     private fun updateEmptyDocumentsView(documentsEmpty: Boolean) {
-        binding.documentsEmptyImageView.animateVisibilty(documentsEmpty).start()
-        binding.documentsEmptyTextView.animateVisibilty(documentsEmpty).start()
+        binding.documentsEmptyImageView.animateVisibiltyWithScale(documentsEmpty).start()
+        binding.documentsEmptyTextView.animateVisibiltyWithScale(documentsEmpty).start()
     }
 
     private fun updateSortView(documentSortOption: DocumentSortOption) {

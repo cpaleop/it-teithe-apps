@@ -8,7 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import gr.cpaleop.common.extensions.animateVisibilty
+import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.dashboard.R
 import gr.cpaleop.dashboard.databinding.FragmentNotificationsBinding
@@ -87,8 +87,8 @@ class NotificationsFragment :
     }
 
     private fun showNotificationsNotFound(notificationsNotFound: Boolean) {
-        binding.notificationsEmptyTextView.animateVisibilty(notificationsNotFound).start()
-        binding.notificationsEmptyImageView.animateVisibilty(notificationsNotFound).start()
+        binding.notificationsEmptyTextView.animateVisibiltyWithScale(notificationsNotFound).start()
+        binding.notificationsEmptyImageView.animateVisibiltyWithScale(notificationsNotFound).start()
     }
 
     private fun openCategoriesFilterDialog() {

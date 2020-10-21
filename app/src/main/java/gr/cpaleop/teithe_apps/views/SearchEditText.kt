@@ -42,7 +42,7 @@ class SearchEditText @JvmOverloads constructor(
         )
 
         doOnTextChanged { text, _, _, _ ->
-            var animDrawable: AnimatedVectorDrawableCompat? = null
+            var animDrawable: AnimatedVectorDrawableCompat?
             if (text?.isEmpty() == true) {
                 (compoundDrawables[2] as Animatable2Compat).apply {
                     if (!hasSearchViewAnimatedToSearch) {

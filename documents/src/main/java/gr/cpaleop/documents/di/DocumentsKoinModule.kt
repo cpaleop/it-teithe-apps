@@ -58,7 +58,11 @@ val documentsModule = module {
     single { AnnouncementFolderPresentationMapper() }
     single { FileDocumentMapper(get(named<DefaultDispatcher>()), get()) }
     single<ToggleDocumentPreviewPreferenceUseCase> { ToggleDocumentPreviewPreferenceUseCaseImpl(get()) }
-    single<GetDocumentPreviewPreferenceUseCase> { GetDocumentPreviewPreferenceUseCaseImpl(get()) }
+    single<ObserveDocumentPreviewPreferenceUseCase> {
+        ObserveDocumentPreviewPreferenceUseCaseImpl(
+            get()
+        )
+    }
     single<ObserveDocumentsAnnouncementFoldersUseCase> {
         ObserveDocumentsAnnouncementFoldersUseCaseImpl(
             get(named<DefaultDispatcher>()),

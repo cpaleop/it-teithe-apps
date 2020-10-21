@@ -22,6 +22,7 @@ import gr.cpaleop.documents.presentation.document.LastModified
 import gr.cpaleop.documents.presentation.options.DocumentDetails
 import gr.cpaleop.documents.presentation.options.DocumentOption
 import gr.cpaleop.documents.presentation.options.DocumentOptionMapper
+import gr.cpaleop.documents.presentation.sort.DocumentSortOption
 import gr.cpaleop.documents.presentation.sort.DocumentSortOptionMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -89,7 +90,7 @@ class DocumentsViewModelTest {
     private lateinit var observeDocumentSortUseCase: ObserveDocumentSortUseCase
 
     @MockK
-    private lateinit var getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase
+    private lateinit var observeDocumentPreviewPreferenceUseCase: ObserveDocumentPreviewPreferenceUseCase
 
     @MockK
     private lateinit var toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase
@@ -116,7 +117,7 @@ class DocumentsViewModelTest {
             observeDocumentSortUseCase,
             observeDocumentsAnnouncementFoldersUseCase,
             announcementFolderPresentationMapper,
-            getDocumentPreviewPreferenceUseCase,
+            observeDocumentPreviewPreferenceUseCase,
             toggleDocumentPreviewPreferenceUseCase,
             filterStream
         )
@@ -129,7 +130,11 @@ class DocumentsViewModelTest {
             emit(documentList)
         }
         coEvery { observeDocumentsUseCase(null) } returns documentListFlow
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns flow {
+            emit(
+                DocumentPreview.FILE
+            )
+        }
         coEvery { fileDocumentMapper(documentList[0]) } returns fileDocumentList[0]
         coEvery { fileDocumentMapper(documentList[1]) } returns fileDocumentList[1]
         every { filterStream.value } returns ""
@@ -142,7 +147,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments success with empty list`() {
         val expected = emptyList<FileDocument>()
         val emptyDocumentListFlow = flow<List<Document>> { emit(emptyList()) }
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         coEvery { observeDocumentsUseCase(null) } returns emptyDocumentListFlow
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.documents)).isEqualTo(expected)
@@ -153,7 +158,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches exception and has message when failure while observing documents`() {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsUseCase(null) } throws Throwable()
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -162,7 +167,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches cancellation exception and has no message when failure while observing documents`() {
         val expectedMessage = null
         coEvery { observeDocumentsUseCase(null) } throws CancellationException()
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FILE
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -171,7 +176,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches exception and has message when failure while observing announcement folders`() {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws Throwable()
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -180,7 +185,7 @@ class DocumentsViewModelTest {
     fun `presentDocuments catches cancellation exception and has no message when failure while observing announcement folders`() {
         val expectedMessage = null
         coEvery { observeDocumentsAnnouncementFoldersUseCase() } throws CancellationException()
-        coEvery { getDocumentPreviewPreferenceUseCase(null) } returns DocumentPreview.FOLDER
+        coEvery { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
         viewModel.presentDocuments(null)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
@@ -275,10 +280,8 @@ class DocumentsViewModelTest {
     fun `deleteDocument success`() {
         val expectedMessage = Message(R.string.documents_delete_success_message)
         val givenUri = "uri"
-        val expected = Unit
         coEvery { deleteDocumentsUseCase(listOf(givenUri)) } returns Unit
         viewModel.deleteDocuments(listOf(givenUri))
-        assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(expected)
         assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
@@ -295,16 +298,10 @@ class DocumentsViewModelTest {
     fun `renameDocument success`() {
         val givenUri = "uri"
         val givenNewName = "newName"
-        val expected = Unit
+        val expectedMessage = Message(R.string.documents_rename_success_message, givenNewName)
         coEvery { renameDocumentUseCase(givenUri, givenNewName) } returns Unit
         viewModel.renameDocument(givenUri, givenNewName)
-        assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(
-            Message(
-                R.string.documents_rename_success_message,
-                givenNewName
-            )
-        )
+        assertThat(LiveDataTest.getValue(viewModel.message)).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -338,19 +335,21 @@ class DocumentsViewModelTest {
     @Test
     fun `togglePreview when type is FILE and becomes FOLDER is successful`() {
         val expected = DocumentPreview.FOLDER
-        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FOLDER
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns Unit
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FOLDER
+        viewModel.presentDocuments(null)
         viewModel.togglePreview()
         assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
     }
 
     @Test
     fun `togglePreview when type is FOLDER and becomes FILE is successful`() {
         val expected = DocumentPreview.FILE
-        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns DocumentPreview.FILE
+        coEvery { toggleDocumentPreviewPreferenceUseCase() } returns Unit
+        every { observeDocumentPreviewPreferenceUseCase(null) } returns FLOW_PREVIEW_FILE
+        viewModel.presentDocuments(null)
         viewModel.togglePreview()
         assertThat(LiveDataTest.getValue(viewModel.documentPreview)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.refresh)).isEqualTo(Unit)
     }
 
     @Test
@@ -363,8 +362,11 @@ class DocumentsViewModelTest {
 
     companion object {
 
+        private val FLOW_PREVIEW_FILE = flow { emit(DocumentPreview.FILE) }
+        private val FLOW_PREVIEW_FOLDER = flow { emit(DocumentPreview.FOLDER) }
+
         private val selectedDocumentSortOption =
-            gr.cpaleop.documents.presentation.sort.DocumentSortOption(
+            DocumentSortOption(
                 type = DocumentSortType.DATE,
                 imageResource = R.drawable.ic_arrow_down,
                 labelResource = R.string.documents_sort_date,

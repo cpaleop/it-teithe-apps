@@ -11,7 +11,7 @@ interface PreferencesRepository {
     suspend fun updateDocumentSort(documentSort: DocumentSort)
 
     @DocumentPreview
-    suspend fun getDocumentPreviewPreference(): Int
+    fun getDocumentPreviewPreferenceFlow(): Flow<Int>
 
     suspend fun updateDocumentPreviewPreference(@DocumentPreview documentPreview: Int)
 }

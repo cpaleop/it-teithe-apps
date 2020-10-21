@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import gr.cpaleop.categoryfilter.R
 import gr.cpaleop.categoryfilter.databinding.FragmentCategoryFilterBinding
-import gr.cpaleop.common.extensions.animateVisibilty
+import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
@@ -94,8 +94,8 @@ class CategoryFilterFragment :
     }
 
     private fun updateEmptyView(isEmpty: Boolean) {
-        binding.categoryAnnouncementsEmptyTextView.animateVisibilty(isEmpty).start()
-        binding.categoryAnnouncementsEmptyImageView.animateVisibilty(isEmpty).start()
+        binding.categoryAnnouncementsEmptyTextView.animateVisibiltyWithScale(isEmpty).start()
+        binding.categoryAnnouncementsEmptyImageView.animateVisibiltyWithScale(isEmpty).start()
     }
 
     private fun updateLoader(shouldLoad: Boolean) {

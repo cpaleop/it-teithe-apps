@@ -139,9 +139,8 @@
         app:layout_constraintBottom_toBottomOf="@id/filesSortingTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/filesSortingTextView"
-        app:srcCompat="@drawable/ic_view_list"
         app:tint="?attr/colorPrimary"
-        tools:drawableEndCompat="@drawable/ic_arrow_down"
+        tools:srcCompat="@drawable/folder_to_list_anim"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -6,7 +6,6 @@ import gr.cpaleop.documents.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
 class PreferencesRepositoryImpl(
@@ -24,8 +23,8 @@ class PreferencesRepositoryImpl(
             preferencesRepository.updateDocumentSort(documentSort)
         }
 
-    override suspend fun getDocumentPreviewPreference(): Int = withContext(ioDispatcher) {
-        preferencesRepository.getDocumentPreviewFlow().first()
+    override fun getDocumentPreviewPreferenceFlow(): Flow<Int> {
+        return preferencesRepository.getDocumentPreviewFlow()
     }
 
     override suspend fun updateDocumentPreviewPreference(documentPreview: Int) =

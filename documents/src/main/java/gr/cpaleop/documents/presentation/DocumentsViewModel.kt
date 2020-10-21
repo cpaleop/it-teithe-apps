@@ -51,16 +51,13 @@ class DocumentsViewModel(
     private val observeDocumentSortUseCase: ObserveDocumentSortUseCase,
     private val observeDocumentsAnnouncementFoldersUseCase: ObserveDocumentsAnnouncementFoldersUseCase,
     private val announcementFolderPresentationMapper: AnnouncementFolderPresentationMapper,
-    private val getDocumentPreviewPreferenceUseCase: GetDocumentPreviewPreferenceUseCase,
+    private val observeDocumentPreviewPreferenceUseCase: ObserveDocumentPreviewPreferenceUseCase,
     private val toggleDocumentPreviewPreferenceUseCase: ToggleDocumentPreviewPreferenceUseCase,
     private val filterStream: FilterStream
 ) : BaseViewModel() {
 
     private var documentsJob: Job? = null
     private var announcementFoldersJob: Job? = null
-
-    private val _refresh = MutableLiveData<Unit>()
-    val refresh: LiveData<Unit> = _refresh.toSingleEvent()
 
     private val _document = MutableLiveData<Document>()
     val document: LiveData<Document> = _document.toSingleEvent()
@@ -133,8 +130,6 @@ class DocumentsViewModel(
     private val _dismissOptionDialog = MutableLiveData<Unit>()
     val dismissOptionDialog: LiveData<Unit> = _dismissOptionDialog.toSingleEvent()
 
-    fun getFilterValue(): String = filterStream.value
-
     fun updateSelection(documentUri: String) {
         viewModelScope.launch(mainDispatcher) {
             try {
@@ -206,14 +201,15 @@ class DocumentsViewModel(
     fun presentDocuments(announcementId: String?) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                var documentPreview: Int
-                _documentPreview.value = getDocumentPreviewPreferenceUseCase(announcementId).also {
-                    documentPreview = it
-                }
-                when (documentPreview) {
-                    DocumentPreview.FILE -> observeDocuments(announcementId)
-                    DocumentPreview.FOLDER -> observeAnnouncementFolders()
-                }
+                //Document presentation depends on preview preference
+                observeDocumentPreviewPreferenceUseCase(announcementId)
+                    .collect { documentPreview ->
+                        _documentPreview.value = documentPreview
+                        when (documentPreview) {
+                            DocumentPreview.FILE -> observeDocuments(announcementId)
+                            DocumentPreview.FOLDER -> observeAnnouncementFolders()
+                        }
+                    }
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
@@ -233,7 +229,7 @@ class DocumentsViewModel(
                                 fileDocument,
                                 filterStream.value
                             )
-                        }/*(fileDocumentMapper::invoke)*/
+                        }
                     }
                     .flowOn(defaultDispatcher)
                     .collect(_documents::setValue)
@@ -345,7 +341,7 @@ class DocumentsViewModel(
     fun deleteDocuments(documentUriList: List<String>) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _refresh.value = deleteDocumentsUseCase(documentUriList)
+                deleteDocumentsUseCase(documentUriList)
                 _dismissOptionDialog.value = Unit
                 _message.value =
                     if (documentUriList.size > 1) Message(
@@ -363,7 +359,7 @@ class DocumentsViewModel(
     fun renameDocument(documentUri: String, newName: String) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _refresh.value = renameDocumentUseCase(documentUri, newName)
+                renameDocumentUseCase(documentUri, newName)
                 _message.value = Message(R.string.documents_rename_success_message, newName)
             } catch (t: Throwable) {
                 Timber.e(t)
@@ -389,8 +385,7 @@ class DocumentsViewModel(
     fun togglePreview() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _documentPreview.value = toggleDocumentPreviewPreferenceUseCase()
-                _refresh.value = Unit
+                toggleDocumentPreviewPreferenceUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

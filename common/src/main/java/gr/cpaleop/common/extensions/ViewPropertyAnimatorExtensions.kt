@@ -3,7 +3,7 @@ package gr.cpaleop.common.extensions
 import android.animation.Animator
 import android.view.ViewPropertyAnimator
 
-fun ViewPropertyAnimator.setEndListener(listener: (Animator?) -> Unit): ViewPropertyAnimator {
+inline fun ViewPropertyAnimator.setEndListener(crossinline listener: (Animator?) -> Unit): ViewPropertyAnimator {
 
     this.setListener(object : Animator.AnimatorListener {
 
@@ -26,7 +26,7 @@ fun ViewPropertyAnimator.setEndListener(listener: (Animator?) -> Unit): ViewProp
     return this
 }
 
-fun ViewPropertyAnimator.setStartListener(listener: (Animator?) -> Unit): ViewPropertyAnimator {
+inline fun ViewPropertyAnimator.setStartListener(crossinline listener: (Animator?) -> Unit): ViewPropertyAnimator {
 
     this.setListener(object : Animator.AnimatorListener {
 
