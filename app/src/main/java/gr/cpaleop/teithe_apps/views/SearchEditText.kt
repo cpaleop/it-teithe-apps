@@ -1,6 +1,7 @@
 package gr.cpaleop.teithe_apps.views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatEditText
@@ -16,18 +17,13 @@ class SearchEditText @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
 
-    private var hasSearchViewAnimatedToCancel: Boolean = false
-    private var hasSearchViewAnimatedToSearch: Boolean = false
-    private var isLeftDrawableEnabled: Boolean = false
+    // Depicts the state of the drawable regardless of text state
+    private var stateEmpty = true
 
-    private val endDrawable = AnimatedVectorDrawableCompat.create(
+    private var leftDrawable: Drawable? = null
+    private val rightDrawable = AnimatedVectorDrawableCompat.create(
         context,
         R.drawable.search_to_cancel
-    )
-
-    private val startDrawable = ContextCompat.getDrawable(
-        context,
-        R.drawable.ic_left_arrow
     )
 
     private var leftDrawableListener: () -> Boolean = { false }
@@ -35,68 +31,46 @@ class SearchEditText @JvmOverloads constructor(
 
     init {
         this.setCompoundDrawablesWithIntrinsicBounds(
+            leftDrawable,
             null,
-            null,
-            endDrawable,
+            rightDrawable,
             null
         )
 
         doOnTextChanged { text, _, _, _ ->
             var animDrawable: AnimatedVectorDrawableCompat?
-            if (text?.isEmpty() == true) {
-                (compoundDrawables[2] as Animatable2Compat).apply {
-                    if (!hasSearchViewAnimatedToSearch) {
+            if (text.isNullOrEmpty()) {
+                if (!stateEmpty) {
+                    (compoundDrawables[2] as Animatable2Compat).apply {
                         animDrawable = AnimatedVectorDrawableCompat.create(
                             context,
                             R.drawable.cancel_to_search
                         )
-                        if (isLeftDrawableEnabled) {
-                            setCompoundDrawablesWithIntrinsicBounds(
-                                startDrawable,
-                                null,
-                                animDrawable,
-                                null
-                            )
-                        } else {
-                            setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                null,
-                                animDrawable,
-                                null
-                            )
-                        }
-
-                        animDrawable?.start()
-                        hasSearchViewAnimatedToCancel = false
-                        hasSearchViewAnimatedToSearch = !hasSearchViewAnimatedToSearch
+                        setCompoundDrawablesWithIntrinsicBounds(
+                            leftDrawable,
+                            null,
+                            animDrawable,
+                            null
+                        )
+                        (compoundDrawables[2] as AnimatedVectorDrawableCompat?)?.start()
                     }
+                    stateEmpty = true
                 }
             } else {
-                (compoundDrawables[2] as Animatable2Compat).apply {
-                    if (!hasSearchViewAnimatedToCancel) {
+                if (stateEmpty) {
+                    (compoundDrawables[2] as Animatable2Compat).apply {
                         animDrawable = AnimatedVectorDrawableCompat.create(
                             context,
                             R.drawable.search_to_cancel
                         )
-                        if (isLeftDrawableEnabled) {
-                            setCompoundDrawablesWithIntrinsicBounds(
-                                startDrawable,
-                                null,
-                                animDrawable,
-                                null
-                            )
-                        } else {
-                            setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                null,
-                                animDrawable,
-                                null
-                            )
-                        }
-
-                        animDrawable?.start()
-                        hasSearchViewAnimatedToSearch = false
-                        hasSearchViewAnimatedToCancel = !hasSearchViewAnimatedToCancel
+                        setCompoundDrawablesWithIntrinsicBounds(
+                            leftDrawable,
+                            null,
+                            animDrawable,
+                            null
+                        )
+                        (compoundDrawables[2] as AnimatedVectorDrawableCompat?)?.start()
+                        stateEmpty = false
                     }
                 }
             }
@@ -105,12 +79,18 @@ class SearchEditText @JvmOverloads constructor(
 
     @Keep
     fun enableLeftDrawable(enable: Boolean) {
-        isLeftDrawableEnabled = enable
-        val backButton = if (enable) startDrawable else null
+        leftDrawable = if (enable) {
+            ContextCompat.getDrawable(
+                context,
+                R.drawable.ic_left_arrow
+            )
+        } else {
+            null
+        }
         this.setCompoundDrawablesWithIntrinsicBounds(
-            backButton,
+            leftDrawable,
             null,
-            endDrawable,
+            rightDrawable,
             null
         )
     }
