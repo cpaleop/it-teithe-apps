@@ -4,10 +4,12 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -56,12 +58,18 @@ class DocumentsFragment :
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
-    private var documentSortDrawableMap: MutableMap<Boolean, AnimatedVectorDrawableCompat?>? = null
+    private var documentSortAnimatedDrawableMap: MutableMap<Boolean, AnimatedVectorDrawableCompat?>? =
+        null
+    private var documentSortDrawableMap: MutableMap<Boolean, Drawable?>? = null
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var gridLayoutManager: GridLayoutManager
-    private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
+    private var documentPreviewAnimatedDrawableResourceMap: Map<Int, Int> = mapOf(
         Pair(DocumentPreview.FILE, R.drawable.folder_to_list_anim),
         Pair(DocumentPreview.FOLDER, R.drawable.list_to_folder_anim),
+    )
+    private var documentPreviewDrawableResourceMap: Map<Int, Int> = mapOf(
+        Pair(DocumentPreview.FILE, R.drawable.ic_view_list),
+        Pair(DocumentPreview.FOLDER, R.drawable.ic_view_folder),
     )
     private var inSelectionMode: Boolean = false
 
@@ -124,7 +132,7 @@ class DocumentsFragment :
     private fun setupViews() {
         linearLayoutManager = LinearLayoutManager(requireContext())
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
-        documentSortDrawableMap = mutableMapOf(
+        documentSortAnimatedDrawableMap = mutableMapOf(
             Pair(
                 true, AnimatedVectorDrawableCompat.create(
                     requireContext(),
@@ -135,6 +143,20 @@ class DocumentsFragment :
                 false, AnimatedVectorDrawableCompat.create(
                     requireContext(),
                     R.drawable.sort_desc_to_asc_anin
+                )
+            )
+        )
+        documentSortDrawableMap = mutableMapOf(
+            Pair(
+                true, ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_arrow_down
+                )
+            ),
+            Pair(
+                false, ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_arrow_up
                 )
             )
         )
@@ -335,16 +357,25 @@ class DocumentsFragment :
         binding.documentsPreviewImage.run {
             if (announcementId == null) {
                 if (!isVisible) isVisible = true
-                setImageResource(documentPreviewDrawableResourceMap[documentPreview] ?: return@run)
-                when (val drawable = this.drawable) {
-                    is AnimatedVectorDrawableCompat -> {
-                        if (!drawable.isRunning)
-                            drawable.start()
+                val shouldAnimate = this.drawable != null
+                if (shouldAnimate) {
+                    setImageResource(
+                        documentPreviewAnimatedDrawableResourceMap[documentPreview] ?: return@run
+                    )
+                    when (val drawable = this.drawable) {
+                        is AnimatedVectorDrawableCompat -> {
+                            if (!drawable.isRunning)
+                                drawable.start()
+                        }
+                        is AnimatedVectorDrawable -> {
+                            if (!drawable.isRunning)
+                                drawable.start()
+                        }
                     }
-                    is AnimatedVectorDrawable -> {
-                        if (!drawable.isRunning)
-                            drawable.start()
-                    }
+                } else {
+                    setImageResource(
+                        documentPreviewDrawableResourceMap[documentPreview] ?: return@run
+                    )
                 }
             }
         }
@@ -384,14 +415,25 @@ class DocumentsFragment :
         binding.filesSortingTextView.run {
             isVisible = true
             setText(documentSortOption.labelResource)
-            val drawable = documentSortDrawableMap?.get(documentSortOption.descending)
-            setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                drawable,
-                null
-            )
-            (this.compoundDrawables[2] as AnimatedVectorDrawableCompat?)?.start()
+
+            if (this.compoundDrawables[2] == null) {
+                val drawable = documentSortDrawableMap?.get(documentSortOption.descending)
+                setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    drawable,
+                    null
+                )
+            } else {
+                val drawable = documentSortAnimatedDrawableMap?.get(documentSortOption.descending)
+                setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    drawable,
+                    null
+                )
+                (this.compoundDrawables[2] as AnimatedVectorDrawableCompat?)?.start()
+            }
         }
     }
 
