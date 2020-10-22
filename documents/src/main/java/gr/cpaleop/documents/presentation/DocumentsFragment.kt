@@ -80,13 +80,13 @@ class DocumentsFragment :
             exitTransition = null
             reenterTransition = null
             returnTransition = null
-            postponeEnterTransition()
+            /*postponeEnterTransition()*/
             sharedElementEnterTransition = MaterialContainerTransform().apply {
                 duration = resources.getInteger(gr.cpaleop.teithe_apps.R.integer.animation_duration)
                     .toLong()
                 scrimColor = Color.TRANSPARENT
                 containerColor = Color.TRANSPARENT
-                fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+                fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
                 isElevationShadowEnabled = false
                 this.pathMotion = MaterialArcMotion()
             }
@@ -119,7 +119,7 @@ class DocumentsFragment :
         if (announcementId != null) {
             binding.documentsRecyclerView.transitionName =
                 "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
-            startPostponedEnterTransition()
+            /*startPostponedEnterTransition()*/
         }
         super.onViewCreated(view, savedInstanceState)
         binding.root.hideKeyboard()
@@ -230,12 +230,6 @@ class DocumentsFragment :
                 viewLifecycleOwner,
                 Observer(::showDeleteConfirmationDialog)
             )
-        }
-    }
-
-    private fun scrollToTop() {
-        if (binding.documentsSearchTextView.text.toString().isEmpty()) {
-            binding.documentsRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 
@@ -399,7 +393,7 @@ class DocumentsFragment :
     }
 
     private fun updateAnnouncementFolders(announcementFolders: List<AnnouncementFolderPresentation>) {
-        announcementFolderAdapter?.submitList(announcementFolders, ::scrollToTop)
+        announcementFolderAdapter?.submitList(announcementFolders)
     }
 
     private fun updateDocuments(documents: List<FileDocument>) {

@@ -76,14 +76,8 @@ class NotificationsFragment :
         }
     }
 
-    private fun scrollToTop() {
-        if (binding.notificationsSearchTextView.text.toString().isEmpty()) {
-            binding.notificationsRecyclerView.layoutManager?.scrollToPosition(0)
-        }
-    }
-
     private fun updateNotifications(notifications: List<NotificationPresentation>) {
-        notificationAdapter?.submitList(notifications, ::scrollToTop)
+        notificationAdapter?.submitList(notifications)
     }
 
     private fun showNotificationsNotFound(notificationsNotFound: Boolean) {

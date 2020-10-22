@@ -78,19 +78,13 @@ class CategoryFilterFragment :
         }
     }
 
-    private fun scrollToTop() {
-        if (binding.categoryAnnouncementsSearchTextView.text.toString().isEmpty()) {
-            binding.categoryAnnouncementsRecyclerView.layoutManager?.scrollToPosition(0)
-        }
-    }
-
     private fun updateCategoryName(categoryName: String) {
         binding.categoryAnnouncementsSearchTextView.hint =
             getString(R.string.category_filter_search_hint, categoryName)
     }
 
     private fun updateAnnouncements(announcements: List<AnnouncementPresentation>) {
-        announcementsAdapter?.submitList(announcements, ::scrollToTop)
+        announcementsAdapter?.submitList(announcements)
     }
 
     private fun updateEmptyView(isEmpty: Boolean) {
