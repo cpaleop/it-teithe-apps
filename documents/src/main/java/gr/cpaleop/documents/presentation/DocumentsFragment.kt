@@ -261,21 +261,23 @@ class DocumentsFragment :
     }
 
     private fun closeSelectionMode() {
-        inSelectionMode = false
-        binding.run {
-            documentsActionModeLayout.animate()
-                .setDuration(200)
-                .alpha(0f)
-                .setEndListener { documentsActionModeLayout.visibility = View.INVISIBLE }
-                .start()
+        if (inSelectionMode) {
+            inSelectionMode = false
+            binding.run {
+                documentsActionModeLayout.animate()
+                    .setDuration(200)
+                    .alpha(0f)
+                    .setEndListener { documentsActionModeLayout.visibility = View.INVISIBLE }
+                    .start()
 
-            documentsSearchTextViewParent.animate()
-                .setDuration(200)
-                .alpha(1f)
-                .setEndListener { documentsSearchTextViewParent.visibility = View.VISIBLE }
-                .start()
+                documentsSearchTextViewParent.animate()
+                    .setDuration(200)
+                    .alpha(1f)
+                    .setEndListener { documentsSearchTextViewParent.visibility = View.VISIBLE }
+                    .start()
+            }
+            viewModel.clearSelections()
         }
-        viewModel.clearSelections()
     }
 
     private fun openFile(documentUri: String, fileAbsolutePath: String) {

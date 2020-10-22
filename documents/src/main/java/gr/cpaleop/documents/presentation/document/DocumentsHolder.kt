@@ -33,10 +33,9 @@ class DocumentsHolder(
             }
 
             documentMoreImageView.run {
-                /*isVisible = !item.inSelectionMode*/
                 setOnClickListener { moreClickListener(item.uri) }
             }
-            documentTitleTextView.text = item.name
+            bindTitle(item.name)
             documentLastModifiedTextView.text = binding.root.context.getString(
                 item.lastModifiedDate.labelRes,
                 item.lastModifiedDate.dateHumanReadable

@@ -27,11 +27,10 @@ class TokenPreferencesMigration(private val userPreferences: DataStore<UserPrefe
     }
 
     override suspend fun migrate(currentData: TokenPreferences): TokenPreferences {
-        val new = currentData.toBuilder()
+        return currentData.toBuilder()
             .setAccessToken(userPreferences.data.first().accessToken)
             .setRefreshToken(userPreferences.data.first().refreshToken)
             .build()
-        return new
     }
 
     override suspend fun shouldMigrate(currentData: TokenPreferences): Boolean {
@@ -59,7 +58,7 @@ class SystemPreferencesMigration(private val userPreferences: DataStore<UserPref
     }
 
     override suspend fun shouldMigrate(currentData: SystemPreferences): Boolean {
-        return (currentData.languageCode.isEmpty())
+        return false
     }
 }
 
