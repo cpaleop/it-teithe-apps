@@ -18,34 +18,34 @@ class DocumentsHolder(
 
     fun bind(item: FileDocument) {
         binding.run {
+            bindSelection(item.isSelected)
+            bindTitle(item.name)
+            documentPreview.setImageResource(item.previewDrawable)
+            documentLastModifiedTextView.text = root.context.getString(
+                item.lastModifiedDate.labelRes,
+                item.lastModifiedDate.dateHumanReadable
+            )
+            documentMoreImageView.setOnClickListener { moreClickListener(item.uri) }
             root.run {
                 setOnLongClickListener { onLongClickListener(item.uri); true }
                 setOnClickListener { onClickListener(item.uri, item.absolutePath) }
             }
-
-            documentConstraintLayoutParent.run {
-                val color = if (item.isSelected) {
-                    ContextCompat.getColor(root.context, appR.color.pink_200_40op)
-                } else {
-                    Color.TRANSPARENT
-                }
-                setBackgroundColor(color)
-            }
-
-            documentMoreImageView.run {
-                setOnClickListener { moreClickListener(item.uri) }
-            }
-            bindTitle(item.name)
-            documentLastModifiedTextView.text = binding.root.context.getString(
-                item.lastModifiedDate.labelRes,
-                item.lastModifiedDate.dateHumanReadable
-            )
-            documentPreview.setImageResource(item.previewDrawable)
         }
     }
 
     fun bindTitle(name: SpannableString) {
         binding.documentTitleTextView.text = name
+    }
+
+    fun bindSelection(isSelected: Boolean) {
+        binding.documentConstraintLayoutParent.run {
+            val color = if (isSelected) {
+                ContextCompat.getColor(binding.root.context, appR.color.pink_200_40op)
+            } else {
+                Color.TRANSPARENT
+            }
+            setBackgroundColor(color)
+        }
     }
 
     companion object {

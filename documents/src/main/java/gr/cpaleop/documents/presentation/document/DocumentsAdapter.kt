@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import timber.log.Timber
 
 class DocumentsAdapter(
     private val onLongClickListener: (String) -> Unit,
@@ -34,10 +35,13 @@ class DocumentsAdapter(
         else {
             payloads.forEach { bundle ->
                 bundle as Bundle
-                if (!bundle.getString(PAYLOAD_TITLE).isNullOrEmpty())
+
+                if (!bundle.getString(PAYLOAD_TITLE).isNullOrEmpty()) {
                     holder.bindTitle(currentList[position].name)
-                else {
-                    super.onBindViewHolder(holder, position, payloads)
+                }
+                if (!bundle.getString(PAYLOAD_SELECTION).isNullOrEmpty()) {
+                    Timber.e("BIND SELECTION")
+                    holder.bindSelection(currentList[position].isSelected)
                 }
             }
         }
@@ -46,6 +50,7 @@ class DocumentsAdapter(
     companion object {
 
         private const val PAYLOAD_TITLE = "PAYLOAD_TITLE"
+        private const val PAYLOAD_SELECTION = "PAYLOAD_SELECTION"
 
         private val FILES_DIFF_UTIL = object : DiffUtil.ItemCallback<FileDocument>() {
 
@@ -66,6 +71,12 @@ class DocumentsAdapter(
                         putString(
                             PAYLOAD_TITLE,
                             PAYLOAD_TITLE
+                        )
+                    }
+                    if (oldItem.isSelected != newItem.isSelected) {
+                        putString(
+                            PAYLOAD_SELECTION,
+                            PAYLOAD_SELECTION
                         )
                     }
                 }
