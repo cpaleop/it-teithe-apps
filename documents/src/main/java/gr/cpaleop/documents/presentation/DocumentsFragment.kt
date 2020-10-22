@@ -80,10 +80,10 @@ class DocumentsFragment :
             exitTransition = null
             reenterTransition = null
             returnTransition = null
-            /*postponeEnterTransition()*/
             sharedElementEnterTransition = MaterialContainerTransform().apply {
-                duration = resources.getInteger(gr.cpaleop.teithe_apps.R.integer.animation_duration)
-                    .toLong()
+                duration =
+                    resources.getInteger(gr.cpaleop.teithe_apps.R.integer.shared_animation_duration)
+                        .toLong()
                 scrimColor = Color.TRANSPARENT
                 containerColor = Color.TRANSPARENT
                 fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
@@ -119,7 +119,6 @@ class DocumentsFragment :
         if (announcementId != null) {
             binding.documentsRecyclerView.transitionName =
                 "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
-            /*startPostponedEnterTransition()*/
         }
         super.onViewCreated(view, savedInstanceState)
         binding.root.hideKeyboard()

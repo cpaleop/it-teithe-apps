@@ -2,4 +2,5 @@
 <resources>
 
     <item name="animation_duration" type="integer">300</item>
+    <item name="shared_animation_duration" type="integer">400</item>
 </resources>
