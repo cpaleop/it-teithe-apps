@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.domain.usecases
 
+import gr.cpaleop.common.extensions.removeIntonation
 import gr.cpaleop.dashboard.domain.entities.Notification
 import gr.cpaleop.dashboard.domain.repositories.NotificationsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,8 +22,10 @@ class ObserveNotificationsUseCaseImpl(private val notificationsRepository: Notif
         }.combine(filterStream) { notifications, filter ->
             if (filter.isEmpty()) return@combine notifications
             notifications.filter { notification ->
-                notification.announcement.title.contains(filter, true) ||
-                        notification.announcement.publisherName.contains(filter, true)
+                notification.announcement.title.removeIntonation()
+                    .contains(filter.removeIntonation(), true) ||
+                        notification.announcement.publisherName.removeIntonation()
+                            .contains(filter.removeIntonation(), true)
             }
         }
     }

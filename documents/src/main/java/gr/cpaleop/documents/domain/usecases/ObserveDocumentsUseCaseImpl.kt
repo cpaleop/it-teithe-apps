@@ -1,5 +1,6 @@
 package gr.cpaleop.documents.domain.usecases
 
+import gr.cpaleop.common.extensions.removeIntonation
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.DocumentSort
@@ -47,7 +48,7 @@ class ObserveDocumentsUseCaseImpl(
     ): List<Document> {
         return documentList.filter { document ->
             if (query.isEmpty()) return@filter true
-            document.name.contains(query, true)
+            document.name.removeIntonation().contains(query.removeIntonation(), true)
         }
     }
 

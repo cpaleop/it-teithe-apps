@@ -1,6 +1,7 @@
 package gr.cpaleop.categoryfilter.domain.usecases
 
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
+import gr.cpaleop.common.extensions.removeIntonation
 import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +22,12 @@ class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsReposit
             .combine(filterStream) { announcements, filterQuery ->
                 if (filterQuery.isEmpty()) return@combine announcements
                 announcements.filter { announcement ->
-                    announcement.title.contains(filterQuery, true) ||
-                            announcement.text.contains(filterQuery, true) ||
-                            announcement.publisherName.contains(filterQuery, true)
+                    announcement.title.removeIntonation()
+                        .contains(filterQuery.removeIntonation(), true) ||
+                            announcement.text.removeIntonation()
+                                .contains(filterQuery.removeIntonation(), true) ||
+                            announcement.publisherName.removeIntonation()
+                                .contains(filterQuery.removeIntonation(), true)
                 }
             }
     }

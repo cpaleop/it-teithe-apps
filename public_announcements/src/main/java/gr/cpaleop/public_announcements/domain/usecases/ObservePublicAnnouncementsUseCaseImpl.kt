@@ -1,5 +1,6 @@
 package gr.cpaleop.public_announcements.domain.usecases
 
+import gr.cpaleop.common.extensions.removeIntonation
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.public_announcements.domain.repositories.AnnouncementsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,8 +19,10 @@ class ObservePublicAnnouncementsUseCaseImpl(private val announcementsRepository:
             .combine(filterStateFlow) { announcementList, filterQuery ->
                 if (filterQuery.isEmpty()) return@combine announcementList
                 announcementList.filter { announcement ->
-                    announcement.title.contains(filterQuery, true) ||
-                            announcement.text.contains(filterQuery, true)
+                    announcement.title.removeIntonation()
+                        .contains(filterQuery.removeIntonation(), true) ||
+                            announcement.text.removeIntonation()
+                                .contains(filterQuery.removeIntonation(), true)
                 }
             }
     }
