@@ -10,8 +10,13 @@ import androidx.navigation.fragment.findNavController
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.favorites.R
 import gr.cpaleop.favorites.databinding.FragmentFavoritesBinding
+import gr.cpaleop.favorites.di.favoritesKoinModule
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
+@ExperimentalCoroutinesApi
 class FavoritesFragment :
     BaseApiFragment<FragmentFavoritesBinding, FavoritesViewModel>(FavoritesViewModel::class) {
 
@@ -23,6 +28,20 @@ class FavoritesFragment :
         container: ViewGroup?
     ): FragmentFavoritesBinding {
         return FragmentFavoritesBinding.inflate(inflater, container, false)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        loadKoinModules(favoritesKoinModule)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        unloadKoinModules(favoritesKoinModule)
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
