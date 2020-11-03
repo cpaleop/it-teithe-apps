@@ -5,6 +5,7 @@
     <string name="profile_bottom_navigation_menu_title" translatable="false">Profile</string>
     <string name="notifications_bottom_navigation_menu_title" translatable="false">Notifications</string>
     <string name="saved_files_bottom_navigation_menu_title" translatable="false">Documents</string>
+    <string name="favorites_bottom_navigation_menu_title" translatable="false">Favorites</string>
 
     <!-- Notifications -->
     <string name="notifications_not_found">No notifications found</string>

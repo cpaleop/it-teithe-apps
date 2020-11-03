@@ -26,6 +26,11 @@
     </fragment>
 
     <include-dynamic
+        android:id="@+id/favoritesFragment"
+        app:graphResName="graph_favorites"
+        app:moduleName="favorites" />
+
+    <include-dynamic
         android:id="@+id/documentsFragment"
         app:graphResName="graph_documents"
         app:moduleName="documents" />

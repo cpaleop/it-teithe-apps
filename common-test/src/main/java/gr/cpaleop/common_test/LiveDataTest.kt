@@ -5,6 +5,11 @@ import androidx.lifecycle.Observer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+val <T : Any> LiveData<T>.testValue: T
+    get() {
+        return LiveDataTest.getValue(this)
+    }
+
 object LiveDataTest {
 
     /**

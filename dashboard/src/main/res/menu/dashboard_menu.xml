@@ -15,6 +15,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/selector_favorites"
+        android:title="@string/favorites_bottom_navigation_menu_title"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/documentsFragment"
         android:icon="@drawable/selector_storage"
         android:title="@string/saved_files_bottom_navigation_menu_title"

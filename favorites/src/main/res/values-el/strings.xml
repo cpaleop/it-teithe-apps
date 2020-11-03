@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="favorites_search_announcements">Αναζήτηση αγαπημένων</string>
+    <string name="favorites_announcement_has_attachments">Συνημμένα</string>
+</resources>
