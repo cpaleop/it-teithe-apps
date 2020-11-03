@@ -16,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -32,6 +33,9 @@ class FavoritesViewModel(
     private val _announcements = MutableLiveData<List<AnnouncementPresentation>>()
     val announcements: LiveData<List<AnnouncementPresentation>> = _announcements.toSingleEvent()
 
+    private val _announcementsEmpty = MutableLiveData<Boolean>()
+    val announcementsEmpty: LiveData<Boolean> = _announcementsEmpty.toSingleEvent()
+
     fun presentAnnouncements() {
         viewModelScope.launch(mainDispatcher) {
             try {
@@ -45,6 +49,7 @@ class FavoritesViewModel(
                         }
                     }
                     .flowOn(defaultDispatcher)
+                    .onEach { _announcementsEmpty.value = it.isEmpty() }
                     .collect(_announcements::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)

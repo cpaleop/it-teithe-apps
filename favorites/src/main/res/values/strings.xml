@@ -2,5 +2,6 @@
 <resources>
 
     <string name="favorites_search_announcements">Search favorites</string>
+    <string name="favorites_empty">No favorite announcements found</string>
     <string name="favorites_announcement_has_attachments">Attachments</string>
 </resources>

@@ -84,5 +84,34 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_favorite_announcement" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <TextView
+            android:id="@+id/favoriteAnnouncementsEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/commissioner_medium"
+            android:text="@string/favorites_empty"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favoriteAnnouncementsEmptyImageView" />
+
+        <ImageView
+            android:id="@+id/favoriteAnnouncementsEmptyImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/empty"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3"
+            app:srcCompat="@drawable/ic_magnifying_glass" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

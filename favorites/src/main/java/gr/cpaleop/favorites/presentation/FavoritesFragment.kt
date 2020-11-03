@@ -8,6 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.favorites.R
@@ -74,11 +75,17 @@ class FavoritesFragment :
     private fun observeViewModel() {
         viewModel.run {
             announcements.observe(viewLifecycleOwner, Observer(::updateFavoriteAnnouncements))
+            announcementsEmpty.observe(viewLifecycleOwner, Observer(::updateEmptyViews))
         }
     }
 
     private fun updateFavoriteAnnouncements(announcementList: List<AnnouncementPresentation>) {
         favoriteAnnouncementsAdapter?.submitList(announcementList)
+    }
+
+    private fun updateEmptyViews(shouldShow: Boolean) {
+        binding.favoriteAnnouncementsEmptyImageView.animateVisibiltyWithScale(shouldShow).start()
+        binding.favoriteAnnouncementsEmptyTextView.animateVisibiltyWithScale(shouldShow).start()
     }
 
     private fun navigateToAnnouncement(announcementId: String) {
