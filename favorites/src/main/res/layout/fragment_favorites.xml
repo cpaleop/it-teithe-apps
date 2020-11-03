@@ -76,7 +76,7 @@
             android:transitionGroup="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/announcementsRecyclerView"
+                android:id="@+id/favoriteAnnouncementsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipChildren="false"
