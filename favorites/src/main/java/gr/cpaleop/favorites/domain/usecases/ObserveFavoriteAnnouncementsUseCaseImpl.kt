@@ -14,7 +14,7 @@ class ObserveFavoriteAnnouncementsUseCaseImpl(private val announcementsRepositor
 
     private val filterFlow = MutableStateFlow("")
 
-    override fun invoke(): Flow<List<Announcement>> {
+    override suspend fun invoke(): Flow<List<Announcement>> {
         return announcementsRepository.getFavoritesFlow()
             .combine(filterFlow) { announcementList, filter ->
                 if (filter.isEmpty()) return@combine announcementList

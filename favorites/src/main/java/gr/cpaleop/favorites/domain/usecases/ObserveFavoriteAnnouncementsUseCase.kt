@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ObserveFavoriteAnnouncementsUseCase {
 
-    operator fun invoke(): Flow<List<Announcement>>
+    suspend operator fun invoke(): Flow<List<Announcement>>
 
     fun filter(filterQuery: String)
 }

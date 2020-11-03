@@ -2,10 +2,12 @@ package gr.cpaleop.announcement.domain.usecases
 
 import gr.cpaleop.download.domain.DownloadAnnouncementNotifier
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 class ObserveDownloadNotifierUseCaseImpl(private val downloadAnnouncementNotifier: DownloadAnnouncementNotifier) :
     ObserveDownloadNotifierUseCase {

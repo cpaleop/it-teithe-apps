@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnnouncementsRepository {
 
-    fun getFavoritesFlow(): Flow<List<Announcement>>
+    suspend fun getFavoritesFlow(): Flow<List<Announcement>>
 }

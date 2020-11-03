@@ -6,6 +6,7 @@ import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.mappers.TokenMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
+import gr.cpaleop.core.data.model.local.CreateSavedAnnouncementsTableMigration
 import gr.cpaleop.core.data.model.local.Migration
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.data.remote.CategoriesApi
@@ -38,6 +39,9 @@ val coreModule = module {
     single { AnnouncementMapper() }
     single<DateFormatter> { DateFormatterImpl() }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
+    single { get<AppDatabase>().remoteAnnouncementsDao() }
+    single { get<AppDatabase>().savedAnnouncementDao() }
+    single { get<AppDatabase>().remoteCategoryDao() }
     single { provideAppDatabase(get()) }
     single { provideAnnouncementsApi(get()) }
     single { provideCategoriesApi(get()) }
@@ -60,7 +64,7 @@ private fun provideAppDatabase(applicationContext: Context): AppDatabase {
         applicationContext,
         AppDatabase::class.java, "it-teithe-apps-db"
     )
-        .addMigrations(Migration())
+        .addMigrations(Migration(), CreateSavedAnnouncementsTableMigration())
         .build()
 }
 

@@ -1,6 +1,7 @@
 package gr.cpaleop.favorites.di
 
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.favorites.data.AnnouncementsRepositoryImpl
 import gr.cpaleop.favorites.domain.repositories.AnnouncementsRepository
@@ -23,5 +24,14 @@ val favoritesKoinModule = module {
         )
     }
     single<ObserveFavoriteAnnouncementsUseCase> { ObserveFavoriteAnnouncementsUseCaseImpl(get()) }
-    single<AnnouncementsRepository> { AnnouncementsRepositoryImpl() }
+    single<AnnouncementsRepository> {
+        AnnouncementsRepositoryImpl(
+            get(named<IODispatcher>()),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }

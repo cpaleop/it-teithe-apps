@@ -10,8 +10,8 @@ import gr.cpaleop.core.data.model.response.RemoteCategory
 import gr.cpaleop.core.domain.entities.Document
 
 @Database(
-    entities = [RemoteAnnouncement::class, RemoteCategory::class, Document::class],
-    version = 5,
+    entities = [RemoteAnnouncement::class, RemoteCategory::class, Document::class, SavedAnnouncement::class],
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(
@@ -21,6 +21,8 @@ import gr.cpaleop.core.domain.entities.Document
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun remoteAnnouncementsDao(): RemoteAnnouncementsDao
+
+    abstract fun savedAnnouncementDao(): SavedAnnouncementDao
 
     abstract fun remoteCategoryDao(): RemoteCategoryDao
 

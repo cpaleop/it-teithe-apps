@@ -13,9 +13,11 @@ import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.databinding.DialogFragmentCategoriesFilterBinding
 import gr.cpaleop.dashboard.presentation.notifications.NotificationsViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class CategoriesFilterDialogFragment :
     BaseBottomSheetDialog<DialogFragmentCategoriesFilterBinding>() {
 
