@@ -11,7 +11,7 @@ import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.favorites.domain.repositories.AnnouncementsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AnnouncementsRepositoryImpl(
@@ -25,17 +25,17 @@ class AnnouncementsRepositoryImpl(
 ) : AnnouncementsRepository {
 
     override suspend fun getFavoritesFlow(): Flow<List<Announcement>> = withContext(ioDispatcher) {
-        val savedAnnouncements = savedAnnouncementsDao.fetchAll()
-        val announcements = savedAnnouncements.mapAsyncSuspended { savedAnnouncement ->
-            val cached = remoteAnnouncementsDao.fetchFromId(savedAnnouncement.announcementId)
-            val remoteAnnouncement = if (cached.isEmpty()) {
-                announcementsApi.fetchAnnouncementById(savedAnnouncement.announcementId)
-            } else {
-                cached.first()
+        savedAnnouncementsDao.fetchAllAsFlow().map { savedAnnouncements ->
+            savedAnnouncements.mapAsyncSuspended { savedAnnouncement ->
+                val cached = remoteAnnouncementsDao.fetchFromId(savedAnnouncement.announcementId)
+                val remoteAnnouncement = if (cached.isEmpty()) {
+                    announcementsApi.fetchAnnouncementById(savedAnnouncement.announcementId)
+                } else {
+                    cached.first()
+                }
+                val category = remoteCategoryDao.fetchFromId(remoteAnnouncement.about)
+                announcementMapper(remoteAnnouncement, category)
             }
-            val category = remoteCategoryDao.fetchFromId(remoteAnnouncement.about)
-            announcementMapper(remoteAnnouncement, category)
         }
-        return@withContext flow { emit(announcements) }
     }
 }

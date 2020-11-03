@@ -12,12 +12,14 @@ import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.favorites.domain.usecases.ObserveFavoriteAnnouncementsUseCase
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 class FavoritesViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
@@ -35,7 +37,12 @@ class FavoritesViewModel(
             try {
                 observeFavoriteAnnouncementsUseCase()
                     .map { announcementList ->
-                        announcementList.mapAsync(announcementPresentationMapper::invoke)
+                        announcementList.mapAsync { announcement ->
+                            announcementPresentationMapper(
+                                announcement,
+                                observeFavoriteAnnouncementsUseCase.filter
+                            )
+                        }
                     }
                     .flowOn(defaultDispatcher)
                     .collect(_announcements::setValue)
@@ -43,5 +50,9 @@ class FavoritesViewModel(
                 Timber.e(t)
             }
         }
+    }
+
+    fun filter(query: String) {
+        observeFavoriteAnnouncementsUseCase.filter = query
     }
 }

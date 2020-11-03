@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.favorites.R
 import gr.cpaleop.favorites.databinding.FragmentFavoritesBinding
@@ -54,6 +56,19 @@ class FavoritesFragment :
     private fun setupViews() {
         favoriteAnnouncementsAdapter = FavoriteAnnouncementsAdapter(::navigateToAnnouncement)
         binding.favoriteAnnouncementsRecyclerView.adapter = favoriteAnnouncementsAdapter
+
+        binding.favoriteAnnnouncementsSearchTextView.run {
+            enableLeftDrawable(false)
+            doOnTextChanged { text, _, _, _ ->
+                viewModel.filter(text.toString())
+            }
+            setRightDrawableListener {
+                text?.clear()
+                clearFocus()
+                binding.root.hideKeyboard()
+                return@setRightDrawableListener true
+            }
+        }
     }
 
     private fun observeViewModel() {

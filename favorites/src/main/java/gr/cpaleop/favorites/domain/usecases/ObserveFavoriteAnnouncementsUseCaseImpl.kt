@@ -12,6 +12,12 @@ import kotlinx.coroutines.flow.combine
 class ObserveFavoriteAnnouncementsUseCaseImpl(private val announcementsRepository: AnnouncementsRepository) :
     ObserveFavoriteAnnouncementsUseCase {
 
+    override var filter: String
+        get() = filterFlow.value
+        set(value) {
+            filterFlow.value = value
+        }
+
     private val filterFlow = MutableStateFlow("")
 
     override suspend fun invoke(): Flow<List<Announcement>> {
@@ -27,9 +33,5 @@ class ObserveFavoriteAnnouncementsUseCaseImpl(private val announcementsRepositor
                                 .contains(filter.removeIntonation(), true)
                 }
             }
-    }
-
-    override fun filter(filterQuery: String) {
-        filterFlow.value = filterQuery
     }
 }
