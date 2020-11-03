@@ -60,12 +60,17 @@ class AnnouncementActivity :
         binding.announcementDownloadAttachmentButton.setOnClickListener {
             viewModel.downloadAttachments(announcementId)
         }
+
+        binding.announcementFavoriteImageView.setOnClickListener {
+            viewModel.favoriteAnnouncement(announcementId)
+        }
     }
 
     private fun observeViewModel() {
         viewModel.run {
             val lifecycleOwner = this@AnnouncementActivity
             announcement.observe(lifecycleOwner, Observer(::updateAnnouncement))
+            isFavorite.observe(lifecycleOwner, Observer(::updateFavorite))
             downloadStatus.observe(lifecycleOwner, Observer(::updateDownloadStatus))
             attachmentFileId.observe(lifecycleOwner, Observer(::initiateDownload))
         }
@@ -89,6 +94,11 @@ class AnnouncementActivity :
         binding.announcementContent.text = announcement.text
         binding.announcementDownloadAttachmentButton.visibility =
             if (announcement.attachments.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun updateFavorite(isFavorite: Boolean) {
+        val resource = if (isFavorite) appR.drawable.ic_star else appR.drawable.ic_star_outline
+        binding.announcementFavoriteImageView.setImageResource(resource)
     }
 
     private fun initiateDownload(announcementDocument: AnnouncementDocument) {

@@ -25,7 +25,7 @@ class AnnouncementsRepositoryImpl(
 ) : AnnouncementsRepository {
 
     override suspend fun getFavoritesFlow(): Flow<List<Announcement>> = withContext(ioDispatcher) {
-        val savedAnnouncements = savedAnnouncementsDao.getAll()
+        val savedAnnouncements = savedAnnouncementsDao.fetchAll()
         val announcements = savedAnnouncements.mapAsyncSuspended { savedAnnouncement ->
             val cached = remoteAnnouncementsDao.fetchFromId(savedAnnouncement.announcementId)
             val remoteAnnouncement = if (cached.isEmpty()) {

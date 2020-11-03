@@ -8,6 +8,7 @@ import gr.cpaleop.core.data.model.local.converters.RemotePublisherConverter
 import gr.cpaleop.core.data.model.response.RemoteAnnouncement
 import gr.cpaleop.core.data.model.response.RemoteCategory
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.domain.entities.SavedAnnouncement
 
 @Database(
     entities = [RemoteAnnouncement::class, RemoteCategory::class, Document::class, SavedAnnouncement::class],

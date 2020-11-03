@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
+import gr.cpaleop.announcement.domain.usecases.ObserveFavoriteUseCase
+import gr.cpaleop.announcement.domain.usecases.ToggleFavoriteUseCase
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.Message
@@ -23,11 +25,24 @@ class AnnouncementViewModel(
     private val mainDispatcher: CoroutineDispatcher,
     private val getAnnouncementUseCase: GetAnnouncementUseCase,
     private val announcementDetailsMapper: AnnouncementDetailsMapper,
-    private val observeDownloadNotifierUseCase: ObserveDownloadNotifierUseCase
+    private val observeDownloadNotifierUseCase: ObserveDownloadNotifierUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val observeFavoriteUseCase: ObserveFavoriteUseCase
 ) : BaseViewModel() {
 
     private val _announcement = MutableLiveData<AnnouncementDetails>()
     val announcement: LiveData<AnnouncementDetails> = _announcement.toSingleEvent()
+
+    val isFavorite: MediatorLiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(announcement) { announcementDetails ->
+                viewModelScope.launch(mainDispatcher) {
+                    observeFavoriteUseCase(announcementDetails.id)
+                        .collect(this@apply::setValue)
+                }
+            }
+        }
+    }
 
     val downloadStatus: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
@@ -61,6 +76,17 @@ class AnnouncementViewModel(
             } catch (t: NoConnectionException) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_no_internet_connection)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_generic)
+            }
+        }
+    }
+
+    fun favoriteAnnouncement(id: String) {
+        viewModelScope.launch {
+            try {
+                toggleFavoriteUseCase(id)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_generic)
