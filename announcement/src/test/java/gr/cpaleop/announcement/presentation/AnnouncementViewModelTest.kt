@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.announcement.domain.usecases.GetAnnouncementUseCase
 import gr.cpaleop.announcement.domain.usecases.ObserveDownloadNotifierUseCase
+import gr.cpaleop.announcement.domain.usecases.ObserveFavoriteUseCase
+import gr.cpaleop.announcement.domain.usecases.ToggleFavoriteUseCase
 import gr.cpaleop.common_test.LiveDataTest
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
@@ -36,6 +38,12 @@ class AnnouncementViewModelTest {
     @MockK
     private lateinit var observeDownloadNotifierUseCase: ObserveDownloadNotifierUseCase
 
+    @MockK
+    private lateinit var toggleFavoriteUseCase: ToggleFavoriteUseCase
+
+    @MockK
+    private lateinit var observeFavoriteUseCase: ObserveFavoriteUseCase
+
     private lateinit var viewModel: AnnouncementViewModel
 
     @Before
@@ -45,7 +53,9 @@ class AnnouncementViewModelTest {
             testCoroutineDispatcher,
             getAnnouncementUseCase,
             announcementDetailsMapper,
-            observeDownloadNotifierUseCase
+            observeDownloadNotifierUseCase,
+            toggleFavoriteUseCase,
+            observeFavoriteUseCase
         )
     }
 
