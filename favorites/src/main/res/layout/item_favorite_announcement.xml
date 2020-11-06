@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementTitle"
             style="@style/Theme.AnnouncementTitle"
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ANNOUNCEMENTTITLEANNOUNCEMENTTITLEANNOUNCEMENTTITLEANNOUNCEMENTTITLEANNOUNCEMENTTITLE" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementCategory"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@id/favoriteAnnouncementTitle"
             tools:text="6ο ΕΞΑΜΗΝΟ" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementHasAttachments"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             app:layout_constraintStart_toEndOf="@id/favoriteAnnouncementCategory"
             app:layout_constraintTop_toTopOf="@id/favoriteAnnouncementCategory" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementContent"
             style="@style/Theme.AnnouncementBody"
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@id/favoriteAnnouncementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementPublisher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             app:layout_constraintWidth_percent="0.5"
             tools:text="Κ. ΒΙΤΣΑΣ" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/favoriteAnnouncementDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
