@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/layer_pdf" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/documentTitleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TESTANAKOINWSH TEST" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/documentLastModifiedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

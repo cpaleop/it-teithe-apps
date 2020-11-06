@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.documents.databinding.ItemDocumentBinding
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -21,7 +22,7 @@ class DocumentsHolder(
             bindSelection(item.isSelected)
             bindTitle(item.name)
             documentPreview.setImageResource(item.previewDrawable)
-            documentLastModifiedTextView.text = root.context.getString(
+            documentLastModifiedTextView.futureText = root.context.getString(
                 item.lastModifiedDate.labelRes,
                 item.lastModifiedDate.dateHumanReadable
             )
@@ -34,7 +35,7 @@ class DocumentsHolder(
     }
 
     fun bindTitle(name: SpannableString) {
-        binding.documentTitleTextView.text = name
+        binding.documentTitleTextView.futureText = name
     }
 
     fun bindSelection(isSelected: Boolean) {

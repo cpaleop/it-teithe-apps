@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.categoryfilter.databinding.ItemAnnouncementCategoryBinding
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 
 class AnnouncementHolder(
@@ -15,23 +16,23 @@ class AnnouncementHolder(
 
     fun bind(item: AnnouncementPresentation) {
         binding.root.setOnClickListener { onClickListener(item.id) }
-        binding.announcementTitle.text = item.title
-        binding.announcementContent.text = item.content
-        binding.announcementDate.text = item.date
-        binding.announcementPublisher.text = item.publisherName
+        binding.announcementTitle.futureText = item.title
+        binding.announcementContent.futureText = item.content
+        binding.announcementDate.futureText = item.date
+        binding.announcementPublisher.futureText = item.publisherName
         binding.announcementCategory.isVisible = item.hasAttachments
     }
 
     fun bindTitle(title: SpannableString) {
-        binding.announcementTitle.text = title
+        binding.announcementTitle.futureText = title
     }
 
     fun bindContent(content: SpannableString) {
-        binding.announcementContent.text = content
+        binding.announcementContent.futureText = content
     }
 
     fun bindPublisherName(publisherName: SpannableString) {
-        binding.announcementPublisher.text = publisherName
+        binding.announcementPublisher.futureText = publisherName
     }
 
     companion object {

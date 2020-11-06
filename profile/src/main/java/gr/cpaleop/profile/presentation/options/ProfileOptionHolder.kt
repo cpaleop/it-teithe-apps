@@ -3,6 +3,7 @@ package gr.cpaleop.profile.presentation.options
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.profile.databinding.ItemProfileOptionBinding
 
 class ProfileOptionHolder(
@@ -13,7 +14,7 @@ class ProfileOptionHolder(
     fun bind(item: ProfileOption) {
         binding.root.setOnClickListener { clickListener(item.labelRes) }
         binding.profileOptionImageView.setImageResource(item.iconResource)
-        binding.profileOptionLabel.setText(item.labelRes)
+        binding.profileOptionLabel.futureText = binding.root.context.getString(item.labelRes)
     }
 
     companion object {

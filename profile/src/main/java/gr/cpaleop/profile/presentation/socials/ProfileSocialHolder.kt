@@ -3,6 +3,7 @@ package gr.cpaleop.profile.presentation.socials
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.profile.databinding.ItemProfileSocialBinding
 import gr.cpaleop.profile.domain.entities.Social
 import gr.cpaleop.profile.presentation.ProfileSocialDetails
@@ -22,11 +23,11 @@ class ProfileSocialHolder(
             )
         }
         binding.profileSocialLogoImageView.setImageResource(item.socialLogoResource)
-        binding.profileSocialContentTextView.text = item.value
+        bindContent(item.value)
     }
 
     fun bindContent(item: String) {
-        binding.profileSocialContentTextView.text = item
+        binding.profileSocialContentTextView.futureText = item
     }
 
     companion object {

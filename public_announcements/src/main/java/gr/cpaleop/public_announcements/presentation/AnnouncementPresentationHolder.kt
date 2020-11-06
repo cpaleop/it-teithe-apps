@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.core.presentation.AnnouncementPresentation
 import gr.cpaleop.public_announcements.databinding.ItemPublicAnnouncementBinding
 
@@ -15,11 +16,11 @@ class AnnouncementPresentationHolder(
     fun bind(item: AnnouncementPresentation) {
         binding.run {
             root.setOnClickListener { onClickListener(item.id) }
-            publicAnnouncementTitle.text = item.title
-            publicAnnouncementContent.text = item.content
-            publicAnnouncementCategory.text = item.category
-            publicAnnouncementDate.text = item.date
-            publicAnnouncementPublisher.text = item.publisherName
+            publicAnnouncementTitle.futureText = item.title
+            publicAnnouncementContent.futureText = item.content
+            publicAnnouncementCategory.futureText = item.category
+            publicAnnouncementDate.futureText = item.date
+            publicAnnouncementPublisher.futureText = item.publisherName
             publicAnnouncementHasAttachments.isVisible = item.hasAttachments
         }
     }

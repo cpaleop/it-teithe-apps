@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.documents.databinding.ItemAnnouncementFolderBinding
 
 class AnnouncementFolderHolder(
@@ -16,11 +17,11 @@ class AnnouncementFolderHolder(
         binding.root.run {
             setOnClickListener { onClickListener(it, item.id) }
         }
-        binding.announcementFolderTitleText.text = item.title
+        bindTitle(item.title)
     }
 
     fun bindTitle(title: SpannableString) {
-        binding.announcementFolderTitleText.text = title
+        binding.announcementFolderTitleText.futureText = title
     }
 
     companion object {

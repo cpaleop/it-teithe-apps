@@ -3,6 +3,7 @@ package gr.cpaleop.profile.presentation.personal
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.profile.databinding.ItemProfilePersonalDetailBinding
 import gr.cpaleop.profile.domain.entities.Personal
 import gr.cpaleop.profile.presentation.ProfilePersonalDetails
@@ -21,8 +22,8 @@ class ProfilePersonalHolder(
                     ), item.type
                 )
             }
-            profileDetailLabelTextView.setText(item.label)
-            profileDetailValueTextView.text = item.value
+            profileDetailLabelTextView.futureText = root.context.getString(item.label)
+            profileDetailValueTextView.futureText = item.value
         }
     }
 

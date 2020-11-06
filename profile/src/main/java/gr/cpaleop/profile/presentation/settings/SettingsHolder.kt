@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.profile.databinding.ItemSettingBinding
 
 class SettingsHolder(
@@ -15,17 +16,17 @@ class SettingsHolder(
         binding.run {
             root.setOnClickListener { onClickListener(item.titleRes) }
             item.iconRes?.let(settingIconImageView::setImageResource)
-            settingTitleTextView.setText(item.titleRes)
+            settingTitleTextView.futureText = root.context.getString(item.titleRes)
             settingValueTextView.run {
                 isVisible = item.valueRes != null || item.argument != null
 
                 if (item.valueRes != null) {
-                    this.text = binding.root.context.getString(
+                    this.futureText = binding.root.context.getString(
                         item.valueRes,
                         item.argument
                     )
                 } else {
-                    this.text = ""
+                    this.futureText = ""
                 }
             }
         }

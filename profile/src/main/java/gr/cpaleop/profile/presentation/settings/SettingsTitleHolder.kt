@@ -3,13 +3,15 @@ package gr.cpaleop.profile.presentation.settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.profile.databinding.ItemSettingsSectionBinding
 
 class SettingsTitleHolder(private val binding: ItemSettingsSectionBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Setting) {
-        binding.settingsSectionTitleTextView.setText(item.titleRes)
+        binding.settingsSectionTitleTextView.futureText =
+            binding.root.context.getString(item.titleRes)
     }
 
     companion object {

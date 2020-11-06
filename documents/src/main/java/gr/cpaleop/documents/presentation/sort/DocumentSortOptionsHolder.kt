@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.documents.databinding.ItemOptionSortBinding
 
 class DocumentSortOptionsHolder(
@@ -17,7 +18,7 @@ class DocumentSortOptionsHolder(
             isSelected = item.selected
         }
         binding.optionLabel.run {
-            setText(item.labelResource)
+            futureText = binding.root.context.getString(item.labelResource)
             isSelected = item.selected
         }
         binding.optionImageView.run {
