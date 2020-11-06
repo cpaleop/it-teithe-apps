@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="@id/option_label"
         app:tint="?attr/colorPrimary" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/option_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

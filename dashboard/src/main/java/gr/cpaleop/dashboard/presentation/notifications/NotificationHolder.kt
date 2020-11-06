@@ -4,6 +4,7 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.dashboard.databinding.ItemNotificationBinding
 
 class NotificationHolder(
@@ -13,18 +14,18 @@ class NotificationHolder(
 
     fun bind(item: NotificationPresentation) {
         binding.root.setOnClickListener { onClickListener(item.id) }
-        binding.announcementTitle.text = item.title
-        binding.announcementDate.text = item.date
-        binding.announcementCategory.text = item.category
-        binding.announcementPublisher.text = item.publisherName
+        bindTitle(item.title)
+        binding.announcementDate.futureText = item.date
+        binding.announcementCategory.futureText = item.category
+        bindPublisherName(item.publisherName)
     }
 
     fun bindTitle(title: SpannableString) {
-        binding.announcementTitle.text = title
+        binding.announcementTitle.futureText = title
     }
 
     fun bindPublisherName(publisherName: SpannableString) {
-        binding.announcementPublisher.text = publisherName
+        binding.announcementPublisher.futureText = publisherName
     }
 
     companion object {

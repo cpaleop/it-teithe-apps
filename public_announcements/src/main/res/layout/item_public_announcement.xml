@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementTitle"
             style="@style/Theme.AnnouncementTitle"
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementCategory"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@id/publicAnnouncementTitle"
             tools:text="6ο ΕΞΑΜΗΝΟ" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementHasAttachments"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             app:layout_constraintStart_toEndOf="@id/publicAnnouncementCategory"
             app:layout_constraintTop_toTopOf="@id/publicAnnouncementCategory" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementContent"
             style="@style/Theme.AnnouncementBody"
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@id/publicAnnouncementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementPublisher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             app:layout_constraintWidth_percent="0.5"
             tools:text="Κ. ΒΙΤΣΑΣ" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/publicAnnouncementDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

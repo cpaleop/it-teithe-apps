@@ -3,6 +3,7 @@ package gr.cpaleop.dashboard.presentation.notifications.categories
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.databinding.ItemCategoryFilterBinding
 
@@ -13,15 +14,11 @@ class CategoryFilterHolder(
 
     fun bind(item: Category) {
         binding.categoryFilterName.run {
-            /*binding.categoryFilterName.isCloseIconVisible = item.isRegistered*/
             binding.categoryFilterName.isSelected = item.isRegistered
-            binding.categoryFilterName.text = item.name
+            binding.categoryFilterName.futureText = item.name
             setOnClickListener {
                 onClickListener(item.id, !item.isRegistered)
             }
-            /*setOnCloseIconClickListener {
-                onClickListener(item.id, false)
-            }*/
         }
     }
 

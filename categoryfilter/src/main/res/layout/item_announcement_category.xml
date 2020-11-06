@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/announcementTitle"
             style="@style/Theme.AnnouncementTitle"
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ANNOUNCEMENT TITLEANNOUNCEMENT TITLE" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/announcementCategory"
             style="@style/Theme.FilterStyle"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="@id/announcementContent"
             app:layout_constraintTop_toBottomOf="@id/announcementTitle" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/announcementContent"
             style="@style/Theme.AnnouncementBody"
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@id/announcementCategory"
             tools:text="ANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT contentANNOUNCEMENT content" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/announcementPublisher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             app:layout_constraintWidth_percent="0.5"
             tools:text="Κ. ΒΙΤΣΑΣ" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/announcementDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

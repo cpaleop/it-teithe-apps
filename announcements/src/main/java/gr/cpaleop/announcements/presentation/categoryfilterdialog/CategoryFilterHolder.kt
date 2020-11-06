@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import gr.cpaleop.announcements.databinding.ItemCategoryBinding
+import gr.cpaleop.common.extensions.futureText
 
 class CategoryFilterHolder(
     private val binding: ItemCategoryBinding,
@@ -13,7 +14,7 @@ class CategoryFilterHolder(
     fun bind(item: CategoryFilter) {
         binding.root.setOnClickListener { onClickListener(item.id) }
         binding.categoryFilterLabel.run {
-            text = item.name
+            futureText = item.name
             isSelected = item.selected
         }
     }

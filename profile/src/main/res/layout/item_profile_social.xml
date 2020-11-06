@@ -33,7 +33,7 @@
         tools:srcCompat="@drawable/ic_facebook"
         tools:text="Username" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/profileSocialContentTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

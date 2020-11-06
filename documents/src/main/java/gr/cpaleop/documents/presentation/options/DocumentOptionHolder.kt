@@ -3,6 +3,7 @@ package gr.cpaleop.documents.presentation.options
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import gr.cpaleop.common.extensions.futureText
 import gr.cpaleop.documents.databinding.ItemDocumentOptionBinding
 import gr.cpaleop.documents.domain.entities.DocumentOptionType
 
@@ -14,7 +15,7 @@ class DocumentOptionHolder(
     fun bind(item: DocumentOption) {
         binding.root.setOnClickListener { onClickListener(item.type) }
         binding.documentOptionImageView.setImageResource(item.iconResource)
-        binding.documentOptionLabel.setText(item.name)
+        binding.documentOptionLabel.futureText = binding.root.context.getString(item.name)
     }
 
     companion object {

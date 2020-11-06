@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_edit" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/document_option_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
