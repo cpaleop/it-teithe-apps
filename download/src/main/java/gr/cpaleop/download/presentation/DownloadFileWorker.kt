@@ -3,8 +3,8 @@ package gr.cpaleop.download.presentation
 import android.content.Context
 import androidx.work.*
 import gr.cpaleop.download.domain.DownloadProgressNotifier
+import gr.cpaleop.download.domain.entities.DownloadResult
 import gr.cpaleop.download.domain.usecases.DownloadFilesUseCase
-import gr.cpaleop.download.domain.usecases.DownloadResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import org.koin.core.KoinComponent

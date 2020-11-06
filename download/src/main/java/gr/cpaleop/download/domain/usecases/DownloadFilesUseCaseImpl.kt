@@ -5,6 +5,7 @@ import gr.cpaleop.download.domain.DownloadAnnouncementNotifier
 import gr.cpaleop.download.domain.DownloadProgressNotifier
 import gr.cpaleop.download.domain.entities.DownloadFileStatus
 import gr.cpaleop.download.domain.entities.DownloadProgress
+import gr.cpaleop.download.domain.entities.DownloadResult
 import gr.cpaleop.download.domain.repositories.FileRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
