@@ -261,10 +261,10 @@ class DocumentsFragment :
     private fun startSelectionMode() {
         inSelectionMode = true
         binding.run {
-            documentsSearchTextViewParent.animate()
+            documentsSearchTextView.animate()
                 .setDuration(200)
                 .alpha(0f)
-                .setEndListener { documentsSearchTextViewParent.visibility = View.INVISIBLE }
+                .setEndListener { documentsSearchTextView.visibility = View.INVISIBLE }
                 .start()
 
             documentsActionModeLayout.animate()
@@ -285,10 +285,10 @@ class DocumentsFragment :
                     .setEndListener { documentsActionModeLayout.visibility = View.INVISIBLE }
                     .start()
 
-                documentsSearchTextViewParent.animate()
+                documentsSearchTextView.animate()
                     .setDuration(200)
                     .alpha(1f)
-                    .setEndListener { documentsSearchTextViewParent.visibility = View.VISIBLE }
+                    .setEndListener { documentsSearchTextView.visibility = View.VISIBLE }
                     .start()
             }
             viewModel.clearSelections()

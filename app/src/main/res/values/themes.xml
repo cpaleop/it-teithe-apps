@@ -38,6 +38,11 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog_Rounded</item>
     </style>
 
+    <style name="Theme.Itteitheapps.SearchEditText">
+        <item name="backgroundTint">?attr/colorSurface</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
     <style name="Theme.Itteitheapps.CardActivity" parent="Theme.Itteitheapps">
         <item name="android:statusBarColor">@color/colorBackgroundCard</item>
     </style>

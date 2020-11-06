@@ -20,41 +20,27 @@
             android:transitionGroup="true"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <gr.cpaleop.teithe_apps.views.SearchEditText
+                android:id="@+id/favoriteAnnnouncementsSearchTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
-                android:transitionGroup="true">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.92">
-
-                    <gr.cpaleop.teithe_apps.views.SearchEditText
-                        android:id="@+id/favoriteAnnnouncementsSearchTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:fontFamily="@font/commissioner_regular"
-                        android:gravity="center"
-                        android:hint="@string/favorites_search_announcements"
-                        android:imeOptions="actionGo"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:padding="12dp"
-                        android:textColor="@color/colorOnPrimary_87"
-                        android:textSize="16sp"
-                        android:transitionGroup="true" />
-                </com.google.android.material.card.MaterialCardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="4dp"
+                android:background="@null"
+                android:elevation="2dp"
+                android:fontFamily="@font/commissioner_regular"
+                android:gravity="center"
+                android:hint="@string/favorites_search_announcements"
+                android:imeOptions="actionGo"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/colorOnPrimary_87"
+                android:textSize="16sp"
+                android:transitionGroup="true"
+                app:cornerSize="8dp" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

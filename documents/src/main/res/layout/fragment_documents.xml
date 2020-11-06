@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:background="?attr/colorPrimary"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/documentsSearchTextViewParent"
+        app:layout_constraintBottom_toBottomOf="@id/documentsSearchTextView"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
@@ -71,7 +71,32 @@
             app:tint="?attr/colorOnPrimary" />
     </RelativeLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <gr.cpaleop.teithe_apps.views.SearchEditText
+        android:id="@+id/documentsSearchTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@null"
+        android:elevation="2dp"
+        android:fontFamily="@font/commissioner_regular"
+        android:gravity="center"
+        android:hint="@string/documents_search"
+        android:imeOptions="actionGo"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textColor="@color/colorOnPrimary_87"
+        android:textSize="16sp"
+        android:transitionGroup="true"
+        app:cornerSize="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<com.google.android.material.card.MaterialCardView
         android:id="@+id/documentsSearchTextViewParent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -101,7 +126,7 @@
             android:textColor="@color/colorOnPrimary_87"
             android:textSize="16sp"
             android:transitionGroup="true" />
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>-->
 
     <TextView
         android:id="@+id/filesSortingTextView"
@@ -120,7 +145,7 @@
         app:drawableTint="?attr/colorPrimary"
         app:layout_constraintBottom_toTopOf="@id/documentsRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/documentsSearchTextViewParent"
+        app:layout_constraintTop_toBottomOf="@id/documentsSearchTextView"
         tools:drawableEndCompat="@drawable/ic_arrow_down"
         tools:visibility="visible" />
 
