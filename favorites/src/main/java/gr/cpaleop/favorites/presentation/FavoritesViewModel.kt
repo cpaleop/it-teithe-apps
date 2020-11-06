@@ -8,8 +8,10 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.favorites.domain.usecases.ObserveFavoriteAnnouncementsUseCase
+import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,6 +55,7 @@ class FavoritesViewModel(
                     .collect(_announcements::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(R.string.error_generic)
             }
         }
     }

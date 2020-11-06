@@ -9,9 +9,12 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.favorites.domain.usecases.ObserveFavoriteAnnouncementsUseCase
+import gr.cpaleop.teithe_apps.R
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,15 +57,39 @@ class FavoritesViewModelTest {
     }
 
     @Test
-    fun `showsCorrectItems when no filter`() = runBlocking {
+    fun `presentAnnouncements has correct values`() = runBlocking {
         val expectedAnnouncementList = announcementPresentationList
-        every { observeFavoriteAnnouncementsUseCase() } returns flow {
+        val expectedIsEmpty = false
+        coEvery { observeFavoriteAnnouncementsUseCase() } returns flow {
             emit(announcementList)
         }
+        every { observeFavoriteAnnouncementsUseCase.filter } returns ""
         every { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
         every { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
         viewModel.presentAnnouncements()
+        assertThat(viewModel.announcementsEmpty.testValue).isEqualTo(expectedIsEmpty)
         assertThat(viewModel.announcements.testValue).isEqualTo(expectedAnnouncementList)
+    }
+
+    @Test
+    fun `presentAnnouncements has correct values when they are no announcements`() = runBlocking {
+        val expectedAnnouncementList = emptyList<AnnouncementPresentation>()
+        val expectedIsEmpty = true
+        coEvery { observeFavoriteAnnouncementsUseCase() } returns flow {
+            emit(emptyList<Announcement>())
+        }
+        every { observeFavoriteAnnouncementsUseCase.filter } returns ""
+        viewModel.presentAnnouncements()
+        assertThat(viewModel.announcementsEmpty.testValue).isEqualTo(expectedIsEmpty)
+        assertThat(viewModel.announcements.testValue).isEqualTo(expectedAnnouncementList)
+    }
+
+    @Test
+    fun `presentAnnouncements catches exception and has message when failure`() = runBlocking {
+        val expectedMessage = Message(R.string.error_generic)
+        coEvery { observeFavoriteAnnouncementsUseCase() } throws Throwable()
+        viewModel.presentAnnouncements()
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
 
     companion object {
