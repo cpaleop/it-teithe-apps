@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="create_announcement_choose_category">Choose category</string>
+    <string name="create_announcement_english">English</string>
+    <string name="create_announcement_greek">Greek</string>
+    <string name="create_announcement_submit">Create</string>
+    <string name="create_announcement_content_title_hint">Title</string>
+    <string name="create_announcement_content_body_hint">Text</string>
+</resources>

@@ -51,4 +51,10 @@
             app:argType="string"
             app:nullable="false" />-->
     </activity>
+
+    <activity
+        android:id="@+id/createAnnouncementActivity"
+        android:name="gr.cpaleop.create_announcement.presentation.CreateAnnouncementActivity"
+        android:label="CreateAnnouncementActivity"
+        app:moduleName="create_announcement" />
 </navigation>
