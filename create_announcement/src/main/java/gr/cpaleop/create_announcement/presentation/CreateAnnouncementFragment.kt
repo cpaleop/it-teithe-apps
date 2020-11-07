@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
+import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.create_announcement.databinding.FragmentCreateAnnouncementBinding
 import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
@@ -42,17 +44,10 @@ class CreateAnnouncementFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
+        observeViewModel()
     }
 
     private fun setupViews() {
-        binding.createAnnouncementBackImageView.setOnClickListener {
-            activity?.finish()
-        }
-
-        binding.createAnnouncementClearImageView.setOnClickListener {
-            //TODO: Prompt dialog to clear announcement details
-        }
-
         createAnnouncementContentStateAdapter = CreateAnnouncementContentStateAdapter(this)
         binding.createAnnouncementContentViewPager.run {
             adapter = createAnnouncementContentStateAdapter
@@ -65,5 +60,27 @@ class CreateAnnouncementFragment :
         ) { tab, position ->
             tab.setText(CreateAnnouncementContentStateAdapter.titles[position])
         }.attach()
+
+        binding.createAnnouncementBackImageView.setOnClickListener {
+            activity?.finish()
+        }
+
+        binding.createAnnouncementClearImageView.setOnClickListener {
+            //TODO: Prompt dialog to clear announcement details
+        }
+
+        binding.createAnnouncementSubmitButton.setOnClickListener {
+            viewModel.createAnnouncement()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.run {
+            category.observe(viewLifecycleOwner, Observer(::updateSelectedCategory))
+        }
+    }
+
+    private fun updateSelectedCategory(category: Category) {
+        binding.createAnnouncementCategoryTextView.text = category.name
     }
 }
