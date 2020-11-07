@@ -19,6 +19,19 @@
             app:navGraph="@navigation/dashboard_graph" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/createAnnouncementFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/ic_add"
+        android:transitionName="fab_transition"
+        app:backgroundTint="?attr/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@id/dashboardBottomNavigationView"
+        app:layout_constraintEnd_toEndOf="@id/dashboardBottomNavigationView"
+        app:layout_constraintStart_toStartOf="@id/dashboardBottomNavigationView" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dashboardBottomNavigationView"
         android:layout_width="match_parent"

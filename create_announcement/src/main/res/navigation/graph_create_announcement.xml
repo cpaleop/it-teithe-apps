@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_create_announcement"
+    app:startDestination="@id/createAnnouncementFragment">
+
+    <fragment
+        android:id="@+id/createAnnouncementFragment"
+        android:name="gr.cpaleop.create_announcement.presentation.CreateAnnouncementFragment"
+        app:moduleName="create_announcement"
+        tools:layout="@layout/fragment_create_announcement" />
+</navigation>

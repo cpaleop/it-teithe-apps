@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="create_announcement_english">Αγγλικά</string>
+    <string name="create_announcement_greek">Ελληνικά</string>
+    <string name="create_announcement_submit">Δημιουργία</string>
+    <string name="create_announcement_content_title_hint">Τίτλος</string>
+    <string name="create_announcement_content_body_hint">Κείμενο</string>
+</resources>

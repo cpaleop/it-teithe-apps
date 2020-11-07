@@ -1,5 +1,6 @@
 package gr.cpaleop.dashboard.presentation
 
+import android.app.ActivityOptions
 import android.graphics.Color
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+
 
 @ExperimentalCoroutinesApi
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
@@ -51,6 +53,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
         binding.dashboardBottomNavigationView.run {
             setupWithNavController(navController)
             setOnNavigationItemReselectedListener { }
+        }
+
+        binding.createAnnouncementFab.setOnClickListener {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                it,
+                "fab_transition"
+            )
+            navController.navigate(R.id.createAnnouncementActivity, options.toBundle())
         }
     }
 

@@ -4,22 +4,17 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.Keep
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.getDimensionOrThrow
-import androidx.core.content.withStyledAttributes
 import androidx.core.widget.doOnTextChanged
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import com.google.android.material.shape.MaterialShapeDrawable
 import gr.cpaleop.common.CompoundDrawableTouchListener
-import gr.cpaleop.common.extensions.toDp
 import gr.cpaleop.teithe_apps.R
 
 class SearchEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : AppCompatEditText(context, attrs) {
+) : MaterialEditText(context, attrs) {
 
     // Depicts the state of the drawable regardless of text state
     private var stateEmpty = true
@@ -33,10 +28,8 @@ class SearchEditText @JvmOverloads constructor(
     private var leftDrawableListener: () -> Boolean = { false }
     private var rightDrawableListener: () -> Boolean = { false }
 
-    private var materialShapeDrawable: MaterialShapeDrawable? = null
-
     init {
-        materialShapeDrawable = MaterialShapeDrawable(
+        /*materialShapeDrawable = MaterialShapeDrawable(
             context, attrs, R.attr.searchEditTextStyle, R.style.Theme_Itteitheapps_SearchEditText
         ).apply {
             initializeElevationOverlay(context)
@@ -55,7 +48,7 @@ class SearchEditText @JvmOverloads constructor(
             backgroundTintList = backgroundTint
             setElevation(elevation)
             materialShapeDrawable?.setCornerSize(cornerSize)
-        }
+        }*/
 
         this.setCompoundDrawablesWithIntrinsicBounds(
             leftDrawable,
@@ -142,16 +135,5 @@ class SearchEditText @JvmOverloads constructor(
                 rightTouchListener = listener
             )
         )
-    }
-
-    override fun setElevation(elevation: Float) {
-        super.setElevation(elevation)
-        materialShapeDrawable?.elevation = elevation
-    }
-
-    @Keep
-    fun setCornerSize(cornerSize: Float) {
-        materialShapeDrawable?.setCornerSize(cornerSize)
-        invalidate()
     }
 }
