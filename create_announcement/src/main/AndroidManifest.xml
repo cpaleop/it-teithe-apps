@@ -17,6 +17,6 @@
         <activity
             android:name=".presentation.CreateAnnouncementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Itteitheapps" />
+            android:theme="@style/Theme.Itteitheapps.CardActivity" />
     </application>
 </manifest>

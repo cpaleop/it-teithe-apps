@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/categorySelectionLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_ripple_dialog_item"
+        android:fontFamily="@font/commissioner_medium"
+        android:padding="14dp"
+        android:textColor="@color/colorOnPrimary_87"
+        tools:text="6o Εξαμηνο" />
+</FrameLayout>

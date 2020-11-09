@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.hideKeyboard
@@ -20,6 +22,7 @@ class CreateAnnouncementFragment :
         CreateAnnouncementViewModel::class
     ) {
 
+    private val navController: NavController by lazy { findNavController() }
     private var createAnnouncementContentStateAdapter: CreateAnnouncementContentStateAdapter? = null
 
     override fun inflateViewBinding(
@@ -72,6 +75,10 @@ class CreateAnnouncementFragment :
             tab.setText(CreateAnnouncementContentStateAdapter.titles[position])
         }.attach()
 
+        binding.createAnnouncementCategoryTextView.setOnClickListener {
+            navigateToCategorySelection()
+        }
+
         binding.createAnnouncementBackImageView.setOnClickListener {
             activity?.finish()
         }
@@ -88,6 +95,15 @@ class CreateAnnouncementFragment :
     }
 
     private fun updateSelectedCategory(category: Category) {
-        binding.createAnnouncementCategoryTextView.text = category.name
+        binding.createAnnouncementCategoryTextView.run {
+            text = category.name
+            setCompoundDrawables(null, null, null, null)
+        }
+    }
+
+    private fun navigateToCategorySelection() {
+        val directions =
+            CreateAnnouncementFragmentDirections.createAnnouncementToCategorySelectionDialog()
+        navController.navigate(directions)
     }
 }

@@ -9,5 +9,15 @@
         android:id="@+id/createAnnouncementFragment"
         android:name="gr.cpaleop.create_announcement.presentation.CreateAnnouncementFragment"
         app:moduleName="create_announcement"
-        tools:layout="@layout/fragment_create_announcement" />
+        tools:layout="@layout/fragment_create_announcement">
+
+        <action
+            android:id="@+id/createAnnouncementToCategorySelectionDialog"
+            app:destination="@id/categorySelectionDialogFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/categorySelectionDialogFragment"
+        android:name="gr.cpaleop.create_announcement.presentation.category_selection.CategorySelectionFragment"
+        tools:layout="@layout/dialog_fragment_category_selection" />
 </navigation>

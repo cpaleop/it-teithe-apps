@@ -39,6 +39,9 @@ class CreateAnnouncementViewModel(
     private val _category = MutableLiveData<Category>()
     val category: LiveData<Category> = _category.toSingleEvent()
 
+    private val _categorySelected = MutableLiveData<Unit>()
+    val categorySelected: LiveData<Unit> = _categorySelected.toSingleEvent()
+
     private val _announcementCreated = MutableLiveData<Unit>()
     val announcementCreated: LiveData<Unit> = _announcementCreated.toSingleEvent()
 
@@ -89,6 +92,8 @@ class CreateAnnouncementViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _category.value = getCategoryUseCase(id)
+                newAnnouncement = newAnnouncement.copy(category = id)
+                _categorySelected.value = Unit
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
