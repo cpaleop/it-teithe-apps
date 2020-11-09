@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.mappers.CategoryMapper
+import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
 import gr.cpaleop.core.data.mappers.TokenMapper
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.model.local.CreateSavedAnnouncementsTableMigration
@@ -35,6 +36,7 @@ import retrofit2.Retrofit
 val coreModule = module {
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single { TokenMapper() }
+    single { CategoryRegisteredMapper() }
     single { CategoryMapper() }
     single { AnnouncementMapper() }
     single<DateFormatter> { DateFormatterImpl() }

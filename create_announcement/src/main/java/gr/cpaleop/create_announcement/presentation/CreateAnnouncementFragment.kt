@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.create_announcement.databinding.FragmentCreateAnnouncementBinding
 import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
@@ -54,6 +56,15 @@ class CreateAnnouncementFragment :
             offscreenPageLimit = 2
         }
 
+        binding.createAnnouncementContentViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.root.hideKeyboard()
+            }
+        })
+
         TabLayoutMediator(
             binding.createAnnouncementContentTabLayout,
             binding.createAnnouncementContentViewPager
@@ -63,10 +74,6 @@ class CreateAnnouncementFragment :
 
         binding.createAnnouncementBackImageView.setOnClickListener {
             activity?.finish()
-        }
-
-        binding.createAnnouncementClearImageView.setOnClickListener {
-            //TODO: Prompt dialog to clear announcement details
         }
 
         binding.createAnnouncementSubmitButton.setOnClickListener {

@@ -13,7 +13,7 @@ interface RemoteCategoryDao {
     suspend fun fetchAll(): List<RemoteCategory>
 
     @Query("SELECT * FROM remotecategory WHERE id = :id")
-    suspend fun fetchFromId(id: String?): RemoteCategory?
+    suspend fun fetchFromId(id: String?): RemoteCategory
 
     @Query("SELECT * FROM remotecategory WHERE id = :id")
     suspend fun fetchAllFromId(id: String?): List<RemoteCategory>

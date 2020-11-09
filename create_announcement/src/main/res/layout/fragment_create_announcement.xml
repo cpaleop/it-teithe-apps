@@ -5,19 +5,6 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/createAnnouncementClearImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/empty"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close" />
-
-    <ImageView
         android:id="@+id/createAnnouncementBackImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,11 +21,16 @@
         android:id="@+id/createAnnouncementCategoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:drawablePadding="8dp"
         android:fontFamily="@font/commissioner_bold"
+        android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/create_announcement_choose_category"
         android:textColor="@color/colorOnPrimary_87"
         android:textSize="18sp"
+        app:drawableEndCompat="@drawable/ic_add_circle"
+        app:drawableTint="@color/colorOnPrimary_87"
         app:layout_constraintBottom_toTopOf="@id/createAnnouncementContentTabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
