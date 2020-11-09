@@ -27,7 +27,6 @@ import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.common.extensions.setEndListener
 import gr.cpaleop.common.extensions.setStartListener
-import gr.cpaleop.core.Authority
 import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.file_viewer.FileViewer
@@ -44,7 +43,6 @@ import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
 
 @FlowPreview
@@ -54,8 +52,6 @@ class DocumentsFragment :
 
     private val navController: NavController by lazy { findNavController() }
 
-    @Authority
-    private val authority: String by inject(named<Authority>())
     private val fileViewer: FileViewer by inject()
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null

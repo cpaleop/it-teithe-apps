@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -90,7 +91,6 @@ class CreateAnnouncementFragment :
 
         binding.createAnnouncementAddAttachmentsFab.setOnClickListener {
             navigateToAttachments()
-            /*showFileChooser()*/
         }
     }
 
@@ -126,7 +126,12 @@ class CreateAnnouncementFragment :
     private fun navigateToAttachments() {
         val directions =
             CreateAnnouncementFragmentDirections.createAnnouncementToAttachments()
-        navController.navigate(directions)
+        val extras =
+            FragmentNavigatorExtras(
+                binding.createAnnouncementAddAttachmentsFab
+                        to binding.createAnnouncementAddAttachmentsFab.transitionName
+            )
+        navController.navigate(directions, extras)
     }
 
     private fun navigateToCategorySelection() {

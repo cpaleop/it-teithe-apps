@@ -112,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
+        android:transitionName="attachments_transition"
         android:contentDescription="@string/empty"
         android:src="@drawable/ic_attachment"
         android:transitionGroup="true"

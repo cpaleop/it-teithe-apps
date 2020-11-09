@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.google.android.material.transition.platform.MaterialArcMotion
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.file_chooser.FileChooser
@@ -15,6 +18,7 @@ import gr.cpaleop.create_announcement.presentation.CreateAnnouncementActivity
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import org.koin.android.ext.android.inject
+import gr.cpaleop.teithe_apps.R as appR
 
 class AttachmentsFragment : BaseApiFragment<FragmentAttachmentsBinding,
         CreateAnnouncementViewModel>(CreateAnnouncementViewModel::class) {
@@ -27,6 +31,22 @@ class AttachmentsFragment : BaseApiFragment<FragmentAttachmentsBinding,
         container: ViewGroup?
     ): FragmentAttachmentsBinding {
         return FragmentAttachmentsBinding.inflate(inflater, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = null
+        exitTransition = null
+        reenterTransition = null
+        returnTransition = null
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = resources.getInteger(appR.integer.shared_animation_duration).toLong()
+            scrimColor = ContextCompat.getColor(requireContext(), appR.color.colorBackground)
+            containerColor = ContextCompat.getColor(requireContext(), appR.color.colorBackground)
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+            isElevationShadowEnabled = false
+            this.pathMotion = MaterialArcMotion()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
