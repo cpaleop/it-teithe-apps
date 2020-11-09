@@ -55,11 +55,11 @@ class CreateAnnouncementViewModel(
     }
 
     fun addTextEn(textEn: String) {
-        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.title.copy(en = textEn))
+        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.text.copy(en = textEn))
     }
 
     fun addTextGr(textGr: String) {
-        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.title.copy(gr = textGr))
+        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.text.copy(gr = textGr))
     }
 
     fun addCategory(category: String) {
@@ -111,9 +111,5 @@ class CreateAnnouncementViewModel(
                 _message.value = Message(appR.string.error_generic)
             }
         }
-    }
-
-    fun addAttachments() {
-
     }
 }

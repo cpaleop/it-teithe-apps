@@ -60,14 +60,21 @@ class CreateAnnouncementViewModelTest {
         val textEn = "textEn"
         val textGr = "textGr"
         val category = "id3"
+        val attachmentUriList = listOf("uri1", "uri2")
         val givenNewAnnouncement = NewAnnouncement(
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
-            category = category
+            category = category,
+            attachmentUriList = attachmentUriList
         )
         val expectedResult = Unit
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } returns Unit
-        viewModel.updateAnnouncementValues(titleEn, titleGr, textEn, textGr, category)
+        viewModel.addTitleEn(titleEn)
+        viewModel.addTitleGr(titleGr)
+        viewModel.addTextEn(textEn)
+        viewModel.addTextGr(textGr)
+        viewModel.addCategory(category)
+        viewModel.addAttachments(attachmentUriList)
         viewModel.createAnnouncement()
         assertThat(viewModel.announcementCreated.testValue).isEqualTo(expectedResult)
     }
@@ -79,14 +86,21 @@ class CreateAnnouncementViewModelTest {
         val textEn = "textEn"
         val textGr = "textGr"
         val category = "id3"
+        val attachmentUriList = listOf("uri1", "uri2")
         val givenNewAnnouncement = NewAnnouncement(
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
-            category = category
+            category = category,
+            attachmentUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_title_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTitleException()
-        viewModel.updateAnnouncementValues(titleEn, titleGr, textEn, textGr, category)
+        viewModel.addTitleEn(titleEn)
+        viewModel.addTitleGr(titleGr)
+        viewModel.addTextEn(textEn)
+        viewModel.addTextGr(textGr)
+        viewModel.addCategory(category)
+        viewModel.addAttachments(attachmentUriList)
         viewModel.createAnnouncement()
         assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
@@ -98,14 +112,21 @@ class CreateAnnouncementViewModelTest {
         val textEn = ""
         val textGr = ""
         val category = "id3"
+        val attachmentUriList = listOf("uri1", "uri2")
         val givenNewAnnouncement = NewAnnouncement(
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
-            category = category
+            category = category,
+            attachmentUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_text_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTextException()
-        viewModel.updateAnnouncementValues(titleEn, titleGr, textEn, textGr, category)
+        viewModel.addTitleEn(titleEn)
+        viewModel.addTitleGr(titleGr)
+        viewModel.addTextEn(textEn)
+        viewModel.addTextGr(textGr)
+        viewModel.addCategory(category)
+        viewModel.addAttachments(attachmentUriList)
         viewModel.createAnnouncement()
         assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
@@ -117,14 +138,21 @@ class CreateAnnouncementViewModelTest {
         val textEn = "textEn"
         val textGr = "textGr"
         val category = ""
+        val attachmentUriList = listOf("uri1", "uri2")
         val givenNewAnnouncement = NewAnnouncement(
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
-            category = category
+            category = category,
+            attachmentUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_category_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyCategoryException()
-        viewModel.updateAnnouncementValues(titleEn, titleGr, textEn, textGr, category)
+        viewModel.addTitleEn(titleEn)
+        viewModel.addTitleGr(titleGr)
+        viewModel.addTextEn(textEn)
+        viewModel.addTextGr(textGr)
+        viewModel.addCategory(category)
+        viewModel.addAttachments(attachmentUriList)
         viewModel.createAnnouncement()
         assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
