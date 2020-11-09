@@ -2,6 +2,8 @@
 <resources>
 
     <string name="create_announcement_choose_category">Επιλέξτε κατηγορία</string>
+    <string name="create_announcement_attachments_title">Συνημμένα</string>
+    <string name="create_announcement_attachments_empty">Δεν έχουν επιλεχθεί συνημμένα</string>
     <string name="create_announcement_english">Αγγλικά</string>
     <string name="create_announcement_greek">Ελληνικά</string>
     <string name="create_announcement_submit">Δημιουργία</string>

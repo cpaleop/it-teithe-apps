@@ -2,6 +2,7 @@ package gr.cpaleop.create_announcement.presentation
 
 import android.content.ClipData
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import gr.cpaleop.create_announcement.databinding.ActivityCreateAnnouncementBinding
 import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
@@ -29,19 +30,24 @@ class CreateAnnouncementActivity : BaseApiActivity<ActivityCreateAnnouncementBin
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             CODE_FILE_SELECTION -> if (resultCode == RESULT_OK) {
-                handleFileSelection(data?.clipData)
+                handleFileSelection(data?.clipData, data?.data)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun handleFileSelection(resultClipData: ClipData?) {
-        val itemCount = resultClipData?.itemCount ?: return
-        val attachmentUriList = mutableListOf<String>()
-        for (i in 0 until itemCount) {
-            attachmentUriList.add(resultClipData.getItemAt(i).uri.toString())
+    private fun handleFileSelection(resultClipData: ClipData?, uri: Uri?) {
+        if (resultClipData != null) {
+            val itemCount = resultClipData.itemCount
+            val attachmentUriList = mutableListOf<String>()
+            for (i in 0 until itemCount) {
+                attachmentUriList.add(resultClipData.getItemAt(i).uri.toString())
+            }
+            viewModel.addAttachments(attachmentUriList)
+        } else {
+            val uriList = listOf(uri?.toString() ?: return)
+            viewModel.addAttachments(uriList)
         }
-        viewModel.addAttachments(attachmentUriList)
     }
 
     companion object {

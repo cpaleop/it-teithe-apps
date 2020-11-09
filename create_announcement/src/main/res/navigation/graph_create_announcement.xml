@@ -12,9 +12,19 @@
         tools:layout="@layout/fragment_create_announcement">
 
         <action
+            android:id="@+id/createAnnouncementToAttachments"
+            app:destination="@id/attachmentsFragment" />
+
+        <action
             android:id="@+id/createAnnouncementToCategorySelectionDialog"
             app:destination="@id/categorySelectionDialogFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/attachmentsFragment"
+        android:name="gr.cpaleop.create_announcement.presentation.attachments.AttachmentsFragment"
+        app:moduleName="create_announcement"
+        tools:layout="@layout/fragment_attachments" />
 
     <dialog
         android:id="@+id/categorySelectionDialogFragment"

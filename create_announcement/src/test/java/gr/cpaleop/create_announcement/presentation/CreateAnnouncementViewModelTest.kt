@@ -65,7 +65,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachmentUriList = attachmentUriList
+            attachments = attachmentUriList
         )
         val expectedResult = Unit
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } returns Unit
@@ -91,7 +91,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachmentUriList = attachmentUriList
+            attachments = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_title_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTitleException()
@@ -117,7 +117,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachmentUriList = attachmentUriList
+            attachments = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_text_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTextException()
@@ -143,7 +143,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachmentUriList = attachmentUriList
+            attachments = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_category_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyCategoryException()

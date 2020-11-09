@@ -2,6 +2,8 @@
 <resources>
 
     <string name="create_announcement_choose_category">Choose category</string>
+    <string name="create_announcement_attachments_title">Attachments</string>
+    <string name="create_announcement_attachments_empty">No attachments selected</string>
     <string name="create_announcement_english">English</string>
     <string name="create_announcement_greek">Greek</string>
     <string name="create_announcement_submit">Create</string>

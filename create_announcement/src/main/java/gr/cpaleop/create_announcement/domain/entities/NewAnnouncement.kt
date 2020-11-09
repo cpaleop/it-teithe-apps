@@ -4,7 +4,7 @@ data class NewAnnouncement(
     val title: MultilanguageText,
     val text: MultilanguageText,
     val category: String,
-    val attachmentUriList: List<String>
+    val attachments: List<Attachment>
 )
 
 data class MultilanguageText(

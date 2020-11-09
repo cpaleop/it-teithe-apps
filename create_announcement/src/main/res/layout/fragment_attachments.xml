@@ -7,7 +7,7 @@
     android:transitionGroup="false">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/createAnnouncementMaterialCardView"
+        android:id="@+id/attachmentsMaterialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:transitionGroup="false"
@@ -20,7 +20,7 @@
             android:transitionGroup="false">
 
             <ImageView
-                android:id="@+id/createAnnouncementBackImageView"
+                android:id="@+id/attachmentsBackImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -41,84 +41,64 @@
                 android:fontFamily="@font/commissioner_bold"
                 android:includeFontPadding="false"
                 android:padding="16dp"
-                android:text="@string/create_announcement_choose_category"
+                android:text="@string/create_announcement_attachments_title"
                 android:textColor="@color/colorOnPrimary_87"
                 android:textSize="18sp"
-                app:drawableEndCompat="@drawable/ic_add_circle"
-                app:drawableTint="@color/colorOnPrimary_87"
-                app:layout_constraintBottom_toTopOf="@id/createAnnouncementContentTabLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/createAnnouncementContentTabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@id/createAnnouncementCategoryTextView"
-                app:tabIndicator="@drawable/shape_tab_indicator"
-                app:tabIndicatorColor="?attr/colorPrimary"
-                app:tabIndicatorFullWidth="false"
-                app:tabIndicatorHeight="3dp"
-                app:tabSelectedTextColor="?attr/colorPrimary"
-                app:tabTextAppearance="@style/Theme.Itteitheapps.TabLayout.TextAppearanceTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/createAnnouncementContentViewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/attachmentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/createAnnouncementAddAttachmentsFab"
-        app:layout_constraintTop_toBottomOf="@id/createAnnouncementMaterialCardView" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/createAnnouncementSubmitButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/commissioner_medium"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:text="@string/create_announcement_submit"
-        android:textSize="14sp"
-        android:transitionGroup="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createAnnouncementContentViewPager"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintTop_toBottomOf="@id/attachmentsMaterialCardView"
+        tools:listitem="@layout/item_attachment" />
 
     <TextView
-        android:id="@+id/attachmentsCounterBadgeTextView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/shape_badge_secondary"
-        android:elevation="12dp"
-        android:fontFamily="@font/commissioner_regular"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:outlineProvider="none"
-        android:textColor="@color/white"
-        android:textSize="12sp"
+        android:id="@+id/attachmentsEmptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/commissioner_medium"
+        android:text="@string/create_announcement_attachments_empty"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="14sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/createAnnouncementAddAttachmentsFab"
-        app:layout_constraintTop_toTopOf="@id/createAnnouncementAddAttachmentsFab"
-        tools:text="2" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/attachmentsEmptyImageView" />
+
+    <ImageView
+        android:id="@+id/attachmentsEmptyImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3"
+        app:srcCompat="@drawable/ic_magnifying_glass" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createAnnouncementAddAttachmentsFab"
+        android:id="@+id/attachmentsAddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
         android:contentDescription="@string/empty"
-        android:src="@drawable/ic_attachment"
+        android:src="@drawable/ic_add"
         android:transitionGroup="true"
         app:backgroundTint="?attr/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createAnnouncementContentViewPager"
         app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

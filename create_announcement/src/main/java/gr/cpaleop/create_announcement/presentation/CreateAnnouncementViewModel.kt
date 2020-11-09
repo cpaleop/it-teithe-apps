@@ -1,17 +1,20 @@
 package gr.cpaleop.create_announcement.presentation
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.R
 import gr.cpaleop.create_announcement.domain.entities.*
-import gr.cpaleop.create_announcement.domain.usecases.CreateAnnouncementUseCase
-import gr.cpaleop.create_announcement.domain.usecases.GetCategoriesUseCase
-import gr.cpaleop.create_announcement.domain.usecases.GetCategoryUseCase
+import gr.cpaleop.create_announcement.domain.usecases.*
+import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentation
+import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentationMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -21,9 +24,15 @@ import gr.cpaleop.teithe_apps.R as appR
 class CreateAnnouncementViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getCategoryUseCase: GetCategoryUseCase,
-    private val createAnnouncementUseCase: CreateAnnouncementUseCase
+    private val createAnnouncementUseCase: CreateAnnouncementUseCase,
+    private val getSelectedAttachmentsUseCase: GetSelectedAttachmentsUseCase,
+    private val addAttachmentsUseCase: AddAttachmentsUseCase,
+    private val removeAttachmentsUseCase: RemoveAttachmentsUseCase,
+    private val attachmentPresentationMapper: AttachmentPresentationMapper
 ) : BaseViewModel() {
 
     // The announcement that will be submitted
@@ -39,6 +48,45 @@ class CreateAnnouncementViewModel(
 
     private val _category = MutableLiveData<Category>()
     val category: LiveData<Category> = _category.toSingleEvent()
+
+    private val _attachments = MutableLiveData<List<Attachment>>()
+    val attachments: LiveData<List<AttachmentPresentation>> by lazy {
+        MediatorLiveData<List<AttachmentPresentation>>().apply {
+            addSource(_attachments) {
+                newAnnouncement = newAnnouncement.copy(
+                    attachments = it
+                )
+                viewModelScope.launch(mainDispatcher) {
+                    this@apply.value = it.mapAsync(attachmentPresentationMapper::invoke)
+                }
+            }
+        }
+    }
+
+    val attachmentsEmpty: LiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(attachments) {
+                this.value = it.isEmpty()
+            }
+        }
+    }
+
+    val attachmentsCounterVisibility: LiveData<Boolean> by lazy {
+        MediatorLiveData<Boolean>().apply {
+            addSource(attachments) {
+                this.value = it.isNotEmpty()
+            }
+        }
+    }
+
+    val attachmentsCounter: LiveData<String> by lazy {
+        MediatorLiveData<String>().apply {
+            addSource(attachments) {
+                this.value = if (it.size > 10) "9+"
+                else it.size.toString()
+            }
+        }
+    }
 
     private val _categorySelected = MutableLiveData<Unit>()
     val categorySelected: LiveData<Unit> = _categorySelected.toSingleEvent()
@@ -64,10 +112,6 @@ class CreateAnnouncementViewModel(
 
     fun addCategory(category: String) {
         newAnnouncement = newAnnouncement.copy(category = category)
-    }
-
-    fun addAttachments(attachmentUriList: List<String>) {
-        newAnnouncement = newAnnouncement.copy(attachmentUriList = attachmentUriList)
     }
 
     fun createAnnouncement() {
@@ -109,6 +153,38 @@ class CreateAnnouncementViewModel(
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)
+            }
+        }
+    }
+
+    fun addAttachments(attachmentUriList: List<String>) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                addAttachmentsUseCase(attachmentUriList)
+                _attachments.value = getSelectedAttachmentsUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun removeAttachment(uri: String) {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                removeAttachmentsUseCase(listOf(uri))
+                _attachments.value = getSelectedAttachmentsUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+    }
+
+    fun presentAttachments() {
+        viewModelScope.launch(mainDispatcher) {
+            try {
+                _attachments.value = getSelectedAttachmentsUseCase()
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
         }
     }
