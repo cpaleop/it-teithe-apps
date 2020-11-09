@@ -2,6 +2,7 @@ package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import gr.cpaleop.core.Authority
 import gr.cpaleop.core.data.AuthenticationRepositoryImpl
 import gr.cpaleop.core.data.remote.AuthenticationApi
 import gr.cpaleop.core.dispatchers.DefaultDispatcher

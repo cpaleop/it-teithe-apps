@@ -26,11 +26,11 @@ class AnnouncementContentEnglishFragment :
 
     private fun setupViews() {
         binding.createAnnouncementContentTitleEditText.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateAnnouncementValues(titleEn = text.toString())
+            viewModel.addTitleEn(text.toString())
         }
 
         binding.createAnnouncementContentBodyEditText.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateAnnouncementValues(textEn = text.toString())
+            viewModel.addTextEn(text.toString())
         }
     }
 }

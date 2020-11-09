@@ -5,6 +5,7 @@
     <string name="create_announcement_english">Αγγλικά</string>
     <string name="create_announcement_greek">Ελληνικά</string>
     <string name="create_announcement_submit">Δημιουργία</string>
+    <string name="create_announcement_install_file_manager">Εγκαταστήστε έναν διαχειριστή αρχείων</string>
     <string name="create_announcement_error_title_empty">Ο τίτλος δεν μπορεί να είναι κενός</string>
     <string name="create_announcement_error_text_empty">Το κείμενο δεν μπορεί να είναι
         κενό</string>

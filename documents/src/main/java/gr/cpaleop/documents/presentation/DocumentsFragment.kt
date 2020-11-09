@@ -1,7 +1,6 @@
 package gr.cpaleop.documents.presentation
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -25,9 +23,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
-import gr.cpaleop.common.extensions.*
+import gr.cpaleop.common.extensions.animateVisibiltyWithScale
+import gr.cpaleop.common.extensions.hideKeyboard
+import gr.cpaleop.common.extensions.setEndListener
+import gr.cpaleop.common.extensions.setStartListener
+import gr.cpaleop.core.Authority
 import gr.cpaleop.core.domain.entities.DocumentPreview
 import gr.cpaleop.core.presentation.Message
+import gr.cpaleop.core.presentation.file_viewer.FileViewer
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.FragmentDocumentsBinding
 import gr.cpaleop.documents.di.DocumentsKoinLoader
@@ -37,14 +40,12 @@ import gr.cpaleop.documents.presentation.document.DocumentsAdapter
 import gr.cpaleop.documents.presentation.document.FileDocument
 import gr.cpaleop.documents.presentation.options.DocumentDetails
 import gr.cpaleop.documents.presentation.sort.DocumentSortOption
-import gr.cpaleop.teithe_apps.di.Authority
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
-import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -55,6 +56,7 @@ class DocumentsFragment :
 
     @Authority
     private val authority: String by inject(named<Authority>())
+    private val fileViewer: FileViewer by inject()
     private val announcementId: String? by lazy { navArgs<DocumentsFragmentArgs>().value.announcementId }
     private var documentsAdapter: DocumentsAdapter? = null
     private var announcementFolderAdapter: AnnouncementFolderAdapter? = null
@@ -300,7 +302,8 @@ class DocumentsFragment :
             if (inSelectionMode) {
                 viewModel.updateSelection(documentUri)
             } else {
-                val file = File(fileAbsolutePath)
+                fileViewer(requireContext(), documentUri)
+                /*val file = File(fileAbsolutePath)
                 val uri = FileProvider.getUriForFile(requireContext(), authority, file)
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(uri, file.getMimeType())
@@ -311,7 +314,7 @@ class DocumentsFragment :
                 val chooserIntent =
                     Intent.createChooser(intent, context?.getString(R.string.documents_choose_file))
                 chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context?.startActivity(chooserIntent)
+                context?.startActivity(chooserIntent)*/
             }
         } catch (t: ActivityNotFoundException) {
             Timber.e(t)

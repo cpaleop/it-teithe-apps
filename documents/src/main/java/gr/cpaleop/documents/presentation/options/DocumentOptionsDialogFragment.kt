@@ -1,6 +1,5 @@
 package gr.cpaleop.documents.presentation.options
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,24 @@ import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import gr.cpaleop.core.Authority
 import gr.cpaleop.core.domain.entities.Document
+import gr.cpaleop.core.presentation.share.FileShare
 import gr.cpaleop.documents.R
 import gr.cpaleop.documents.databinding.DialogFragmentDocumentOptionsBinding
 import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.qualifier.named
 
 @ExperimentalCoroutinesApi
 class DocumentOptionsDialogFragment :
     BaseBottomSheetDialog<DialogFragmentDocumentOptionsBinding>() {
 
+    @Authority
+    private val authority: String by inject(named<Authority>())
+    private val fileShare: FileShare by inject()
     private val viewModel: gr.cpaleop.documents.presentation.DocumentsViewModel by sharedViewModel()
     private val navController: NavController by lazy { findNavController() }
     private var documentOptionAdapter: DocumentOptionAdapter? = null
@@ -109,17 +115,7 @@ class DocumentOptionsDialogFragment :
     }
 
     private fun shareFile(documentShareOptionData: DocumentShareOptionData) {
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, documentShareOptionData.uri)
-            type = documentShareOptionData.mimeType
-        }
-        startActivity(
-            Intent.createChooser(
-                shareIntent,
-                resources.getText(R.string.documents_share_file_send_to)
-            )
-        )
+        fileShare(requireContext(), documentShareOptionData.uri)
         dismiss()
     }
 }

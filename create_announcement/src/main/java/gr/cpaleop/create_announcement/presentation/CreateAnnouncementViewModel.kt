@@ -30,7 +30,8 @@ class CreateAnnouncementViewModel(
     private var newAnnouncement = NewAnnouncement(
         MultilanguageText("", ""),
         MultilanguageText("", ""),
-        ""
+        "",
+        emptyList()
     )
 
     private val _categories = MutableLiveData<List<Category>>()
@@ -45,17 +46,28 @@ class CreateAnnouncementViewModel(
     private val _announcementCreated = MutableLiveData<Unit>()
     val announcementCreated: LiveData<Unit> = _announcementCreated.toSingleEvent()
 
-    // Observe input values and update the entity
-    fun updateAnnouncementValues(
-        titleEn: String = "", titleGr: String = "",
-        textEn: String = "", textGr: String = "",
-        category: String = ""
-    ) {
-        newAnnouncement = newAnnouncement.copy(
-            title = MultilanguageText(titleEn, titleGr),
-            text = MultilanguageText(textEn, textGr),
-            category = category
-        )
+    fun addTitleEn(titleEn: String) {
+        newAnnouncement = newAnnouncement.copy(title = newAnnouncement.title.copy(en = titleEn))
+    }
+
+    fun addTitleGr(titleGr: String) {
+        newAnnouncement = newAnnouncement.copy(title = newAnnouncement.title.copy(gr = titleGr))
+    }
+
+    fun addTextEn(textEn: String) {
+        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.title.copy(en = textEn))
+    }
+
+    fun addTextGr(textGr: String) {
+        newAnnouncement = newAnnouncement.copy(text = newAnnouncement.title.copy(gr = textGr))
+    }
+
+    fun addCategory(category: String) {
+        newAnnouncement = newAnnouncement.copy(category = category)
+    }
+
+    fun addAttachments(attachmentUriList: List<String>) {
+        newAnnouncement = newAnnouncement.copy(attachmentUriList = attachmentUriList)
     }
 
     fun createAnnouncement() {
@@ -99,5 +111,9 @@ class CreateAnnouncementViewModel(
                 _message.value = Message(appR.string.error_generic)
             }
         }
+    }
+
+    fun addAttachments() {
+
     }
 }

@@ -1,4 +1,4 @@
-package gr.cpaleop.teithe_apps.di
+package gr.cpaleop.core
 
 /**
  * FileProvider authority. Authority needs to be replaced for tests since each Provider's authority

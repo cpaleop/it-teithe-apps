@@ -26,11 +26,11 @@ class AnnouncementContentGreekFragment :
 
     private fun setupViews() {
         binding.createAnnouncementContentTitleEditText.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateAnnouncementValues(titleGr = text.toString())
+            viewModel.addTitleGr(text.toString())
         }
 
         binding.createAnnouncementContentBodyEditText.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateAnnouncementValues(textGr = text.toString())
+            viewModel.addTextGr(text.toString())
         }
     }
 }

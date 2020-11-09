@@ -2,6 +2,7 @@ package gr.cpaleop.teithe_apps.di
 
 import android.content.Context
 import androidx.room.Room
+import gr.cpaleop.core.Authority
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
@@ -15,8 +16,14 @@ import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
+import gr.cpaleop.core.presentation.file_chooser.FileChooser
+import gr.cpaleop.core.presentation.file_chooser.FileChooserImpl
+import gr.cpaleop.core.presentation.file_viewer.FileViewer
+import gr.cpaleop.core.presentation.file_viewer.FileViewerImpl
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapperImpl
+import gr.cpaleop.core.presentation.share.FileShare
+import gr.cpaleop.core.presentation.share.FileShareImpl
 import gr.cpaleop.network.connection.Connection
 import gr.cpaleop.network.connection.InternetConnection
 import gr.cpaleop.network.connection.MobileConnection
@@ -39,6 +46,9 @@ val coreModule = module {
     single { CategoryRegisteredMapper() }
     single { CategoryMapper() }
     single { AnnouncementMapper() }
+    single<FileShare> { FileShareImpl(get(named<Authority>())) }
+    single<FileViewer> { FileViewerImpl(get(named<Authority>())) }
+    single<FileChooser> { FileChooserImpl() }
     single<DateFormatter> { DateFormatterImpl() }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
     single { get<AppDatabase>().remoteAnnouncementsDao() }
