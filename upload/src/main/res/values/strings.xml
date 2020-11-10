@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="create_announcement_upload_notification_title">Creating announcement</string>
+    <string name="create_announcement_upload_notification_text_success">Announcement
+        created successfully</string>
+    <string name="create_announcement_upload_notification_text_failure">Failed to create
+        announcement</string>
+</resources>

@@ -1,38 +1,43 @@
 package gr.cpaleop.create_announcement.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
+import androidx.lifecycle.*
+import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
-import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.R
-import gr.cpaleop.create_announcement.domain.entities.*
+import gr.cpaleop.create_announcement.domain.entities.Attachment
+import gr.cpaleop.create_announcement.domain.entities.EmptyCategoryException
+import gr.cpaleop.create_announcement.domain.entities.EmptyTextException
+import gr.cpaleop.create_announcement.domain.entities.EmptyTitleException
 import gr.cpaleop.create_announcement.domain.usecases.*
 import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentation
 import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentationMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
+import gr.cpaleop.upload.domain.entities.MultilanguageText
+import gr.cpaleop.upload.domain.entities.NewAnnouncement
+import gr.cpaleop.upload.domain.entities.UploadProgress
+import gr.cpaleop.upload.domain.entities.UploadProgressNotifier
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CreateAnnouncementViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getCategoryUseCase: GetCategoryUseCase,
-    private val createAnnouncementUseCase: CreateAnnouncementUseCase,
     private val getSelectedAttachmentsUseCase: GetSelectedAttachmentsUseCase,
     private val addAttachmentsUseCase: AddAttachmentsUseCase,
     private val removeAttachmentsUseCase: RemoveAttachmentsUseCase,
-    private val attachmentPresentationMapper: AttachmentPresentationMapper
+    private val attachmentPresentationMapper: AttachmentPresentationMapper,
+    uploadProgressNotifier: UploadProgressNotifier
 ) : BaseViewModel() {
 
     // The announcement that will be submitted
@@ -43,21 +48,26 @@ class CreateAnnouncementViewModel(
         emptyList()
     )
 
+    val uploadProgress: LiveData<UploadProgress> = uploadProgressNotifier.asFlow()
+        .asLiveData(mainDispatcher).toSingleEvent()
+
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories.toSingleEvent()
 
     private val _category = MutableLiveData<Category>()
-    val category: LiveData<Category> = _category.toSingleEvent()
+    val category: LiveData<Category> = _category
 
     private val _attachments = MutableLiveData<List<Attachment>>()
     val attachments: LiveData<List<AttachmentPresentation>> by lazy {
         MediatorLiveData<List<AttachmentPresentation>>().apply {
-            addSource(_attachments) {
+            addSource(_attachments) { attachmentList ->
                 newAnnouncement = newAnnouncement.copy(
-                    attachments = it
+                    attachmentsUriList = attachmentList.map { it.uri }
                 )
                 viewModelScope.launch(mainDispatcher) {
-                    this@apply.value = it.mapAsync(attachmentPresentationMapper::invoke)
+                    this@apply.value = attachmentList.mapAsyncSuspended {
+                        attachmentPresentationMapper(it.uri)
+                    }
                 }
             }
         }
@@ -94,6 +104,9 @@ class CreateAnnouncementViewModel(
     private val _announcementCreated = MutableLiveData<Unit>()
     val announcementCreated: LiveData<Unit> = _announcementCreated.toSingleEvent()
 
+    private val _enqueueAnnouncement = MutableLiveData<NewAnnouncement>()
+    val enqueueAnnouncement: LiveData<NewAnnouncement> = _enqueueAnnouncement.toSingleEvent()
+
     fun addTitleEn(titleEn: String) {
         newAnnouncement = newAnnouncement.copy(title = newAnnouncement.title.copy(en = titleEn))
     }
@@ -117,7 +130,8 @@ class CreateAnnouncementViewModel(
     fun createAnnouncement() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _announcementCreated.value = createAnnouncementUseCase(newAnnouncement)
+                _enqueueAnnouncement.value = newAnnouncement
+                /*_announcementCreated.value = createAnnouncementUseCase(newAnnouncement)*/
             } catch (t: EmptyTitleException) {
                 Timber.e(t)
                 _message.value = Message(R.string.create_announcement_error_title_empty)

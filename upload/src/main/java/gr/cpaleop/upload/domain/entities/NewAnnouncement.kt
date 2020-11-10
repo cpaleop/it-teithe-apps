@@ -1,10 +1,10 @@
-package gr.cpaleop.create_announcement.domain.entities
+package gr.cpaleop.upload.domain.entities
 
 data class NewAnnouncement(
     val title: MultilanguageText,
     val text: MultilanguageText,
     val category: String,
-    val attachments: List<Attachment>
+    val attachmentsUriList: List<String>
 )
 
 data class MultilanguageText(

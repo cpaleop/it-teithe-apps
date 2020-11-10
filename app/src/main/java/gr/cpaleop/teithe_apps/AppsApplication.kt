@@ -7,6 +7,7 @@ import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.download.di.downloadModule
 import gr.cpaleop.teithe_apps.di.coreModule
 import gr.cpaleop.teithe_apps.di.networkModule
+import gr.cpaleop.teithe_apps.di.uploadKoinModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.first
@@ -29,7 +30,7 @@ class AppsApplication : Application() {
 
         startKoin {
             androidContext(this@AppsApplication)
-            modules(networkModule, coreModule, downloadModule)
+            modules(networkModule, coreModule, downloadModule, uploadKoinModule)
         }
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.DEBUG)

@@ -1,6 +1,5 @@
 package gr.cpaleop.create_announcement.di
 
-import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.create_announcement.data.AttachmentsRepositoryImpl
@@ -10,15 +9,18 @@ import gr.cpaleop.create_announcement.domain.repositories.CategoriesRepository
 import gr.cpaleop.create_announcement.domain.usecases.*
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementViewModel
 import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentationMapper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 val createAnnouncementKoinModule = module {
     viewModel {
         CreateAnnouncementViewModel(
             get(named<MainDispatcher>()),
-            get(named<DefaultDispatcher>()),
             get(),
             get(),
             get(),
@@ -28,8 +30,7 @@ val createAnnouncementKoinModule = module {
             get()
         )
     }
-    single { AttachmentPresentationMapper() }
-    single<CreateAnnouncementUseCase> { CreateAnnouncementUseCaseImpl() }
+    single { AttachmentPresentationMapper(get(named<IODispatcher>()), get()) }
     single<GetCategoryUseCase> { GetCategoryUseCaseImpl(get()) }
     single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
     single<GetSelectedAttachmentsUseCase> { GetSelectedAttachmentsUseCaseImpl(get()) }
@@ -38,7 +39,8 @@ val createAnnouncementKoinModule = module {
     single<AttachmentsRepository> { AttachmentsRepositoryImpl(get(named<IODispatcher>()), get()) }
     single<CategoriesRepository> {
         CategoriesRepositoryImpl(
-            get(named<IODispatcher>()), get(),
+            get(named<IODispatcher>()),
+            get(),
             get()
         )
     }

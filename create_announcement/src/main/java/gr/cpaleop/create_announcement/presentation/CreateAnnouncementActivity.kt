@@ -7,9 +7,13 @@ import android.os.Bundle
 import gr.cpaleop.create_announcement.databinding.ActivityCreateAnnouncementBinding
 import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CreateAnnouncementActivity : BaseApiActivity<ActivityCreateAnnouncementBinding,
         CreateAnnouncementViewModel>(CreateAnnouncementViewModel::class) {
 

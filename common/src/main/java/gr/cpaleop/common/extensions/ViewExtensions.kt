@@ -37,3 +37,50 @@ fun View.animateVisibiltyWithScale(
 
     return animator
 }
+
+fun View.animateVisibilty(
+    shouldShow: Boolean,
+    duration: Long = 200
+): ViewPropertyAnimator {
+    val alpha = if (shouldShow) 1f else 0f
+
+    val animator = this.animate()
+        .setDuration(duration)
+        .alpha(alpha)
+
+    if (shouldShow) {
+        animator.setStartListener {
+            this.isVisible = shouldShow
+        }
+    } else {
+        animator.setEndListener {
+            this.isVisible = shouldShow
+        }
+    }
+
+    return animator
+}
+
+fun View.animateSoftVisibilty(
+    shouldShow: Boolean,
+    duration: Long = 200
+): ViewPropertyAnimator {
+    val alpha = if (shouldShow) 1f else 0f
+    val visibility = if (shouldShow) View.VISIBLE else View.INVISIBLE
+
+    val animator = this.animate()
+        .setDuration(duration)
+        .alpha(alpha)
+
+    if (shouldShow) {
+        animator.setStartListener {
+            this.visibility = visibility
+        }
+    } else {
+        animator.setEndListener {
+            this.visibility = visibility
+        }
+    }
+
+    return animator
+}

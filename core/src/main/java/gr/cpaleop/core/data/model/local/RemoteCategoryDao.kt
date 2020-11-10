@@ -9,6 +9,9 @@ import gr.cpaleop.core.data.model.response.RemoteCategory
 @Dao
 interface RemoteCategoryDao {
 
+    @Query("DELETE FROM remotecategory")
+    suspend fun nukeTable()
+
     @Query("SELECT * FROM remotecategory")
     suspend fun fetchAll(): List<RemoteCategory>
 

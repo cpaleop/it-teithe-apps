@@ -2,9 +2,9 @@ package gr.cpaleop.core.data.remote
 
 import gr.cpaleop.core.data.model.response.RemoteAnnouncement
 import gr.cpaleop.core.data.model.response.RemoteAnnouncementTitle
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 interface AnnouncementsApi {
 
@@ -35,4 +35,15 @@ interface AnnouncementsApi {
 
     @GET("announcements/")
     suspend fun fetchAnnouncementsByCategory(@Query("q") query: String): List<RemoteAnnouncement>
+
+    @POST("announcements/")
+    @Multipart
+    suspend fun createAnnouncement(
+        @Part files: MultipartBody.Part?,
+        @Part("title") title: RequestBody,
+        @Part("titleEn") titleEn: RequestBody,
+        @Part("text") text: RequestBody,
+        @Part("textEn") textEn: RequestBody,
+        @Part("about") about: RequestBody
+    )
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="create_announcement_upload_notification_title">Δημιουργία ανακοίνωσης</string>
+    <string name="create_announcement_upload_notification_text_success">Η ανακοίνωση
+        δημιουργήθηκε επιτυχώς</string>
+    <string name="create_announcement_upload_notification_text_failure">Αποτυχία δημιουργία
+    ανακοίνωσης</string>
+</resources>

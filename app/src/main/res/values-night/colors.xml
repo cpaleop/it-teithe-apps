@@ -36,4 +36,5 @@
     <color name="black_900">#000000</color>
     <color name="filter_stroke">@color/pink_200</color>
     <color name="yellow">#FFEE58</color>
+    <color name="white_opaque">#80000000</color>
 </resources>

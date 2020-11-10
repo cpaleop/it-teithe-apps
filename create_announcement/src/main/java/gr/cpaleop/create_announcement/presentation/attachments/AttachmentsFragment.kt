@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import gr.cpaleop.common.extensions.animateVisibiltyWithScale
+import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.file_chooser.FileChooser
 import gr.cpaleop.create_announcement.R
@@ -17,9 +18,13 @@ import gr.cpaleop.create_announcement.databinding.FragmentAttachmentsBinding
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementActivity
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import gr.cpaleop.teithe_apps.R as appR
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class AttachmentsFragment : BaseApiFragment<FragmentAttachmentsBinding,
         CreateAnnouncementViewModel>(CreateAnnouncementViewModel::class) {
 
@@ -51,6 +56,7 @@ class AttachmentsFragment : BaseApiFragment<FragmentAttachmentsBinding,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.root.hideKeyboard()
         setupViews()
         observeViewModel()
     }

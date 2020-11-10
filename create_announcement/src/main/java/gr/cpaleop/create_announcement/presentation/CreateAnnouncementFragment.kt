@@ -5,20 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import gr.cpaleop.common.extensions.animateSoftVisibilty
+import gr.cpaleop.common.extensions.animateVisibilty
 import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.domain.entities.Category
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.databinding.FragmentCreateAnnouncementBinding
-import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
+import gr.cpaleop.upload.domain.entities.NewAnnouncement
+import gr.cpaleop.upload.domain.entities.UploadProgress
+import gr.cpaleop.upload.presentation.UploadAnnouncementWorker
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import gr.cpaleop.teithe_apps.R as appR
+import gr.cpaleop.upload.R as uploadR
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CreateAnnouncementFragment :
     BaseApiFragment<FragmentCreateAnnouncementBinding, CreateAnnouncementViewModel>(
         CreateAnnouncementViewModel::class
@@ -32,20 +44,6 @@ class CreateAnnouncementFragment :
         container: ViewGroup?
     ): FragmentCreateAnnouncementBinding {
         return FragmentCreateAnnouncementBinding.inflate(inflater, container, false)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        loadKoinModules(createAnnouncementKoinModule)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        unloadKoinModules(createAnnouncementKoinModule)
-        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +103,44 @@ class CreateAnnouncementFragment :
                 viewLifecycleOwner,
                 Observer(::updateAttachmentsCounterBadge)
             )
+            enqueueAnnouncement.observe(viewLifecycleOwner, Observer(::createWorker))
+            uploadProgress.observe(viewLifecycleOwner, Observer(::handleProgress))
         }
+    }
+
+    private fun handleProgress(uploadProgress: UploadProgress) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            when (uploadProgress) {
+                is UploadProgress.Uploading -> showProgress(true)
+                UploadProgress.Success -> {
+                    showProgress(false)
+                    showSnackbarMessage(Message(uploadR.string.create_announcement_upload_notification_text_success))
+                    delay(2000)
+                    activity?.finish()
+                }
+                is UploadProgress.Failure -> {
+                    showProgress(false)
+                    showSnackbarMessage(Message(appR.string.error_generic))
+                }
+            }
+        }
+    }
+
+    private fun createWorker(newAnnouncement: NewAnnouncement) {
+        UploadAnnouncementWorker.enqueue(
+            context = requireContext(),
+            title = newAnnouncement.title.gr,
+            titleEn = newAnnouncement.title.en,
+            text = newAnnouncement.text.gr,
+            textEn = newAnnouncement.title.en,
+            categoryId = newAnnouncement.category,
+            attachmentUriList = newAnnouncement.attachmentsUriList.toTypedArray()
+        )
+    }
+
+    private fun showProgress(shouldShow: Boolean) {
+        binding.createAnnouncementCoverView.animateVisibilty(shouldShow).start()
+        binding.createAnnouncementUploadProgressBar.animateSoftVisibilty(shouldShow).start()
     }
 
     private fun updateSelectedCategory(category: Category) {

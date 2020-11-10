@@ -7,10 +7,13 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.R
-import gr.cpaleop.create_announcement.domain.entities.*
-import gr.cpaleop.create_announcement.domain.usecases.CreateAnnouncementUseCase
+import gr.cpaleop.create_announcement.domain.entities.EmptyCategoryException
+import gr.cpaleop.create_announcement.domain.entities.EmptyTextException
+import gr.cpaleop.create_announcement.domain.entities.EmptyTitleException
 import gr.cpaleop.create_announcement.domain.usecases.GetCategoriesUseCase
 import gr.cpaleop.create_announcement.domain.usecases.GetCategoryUseCase
+import gr.cpaleop.upload.domain.entities.MultilanguageText
+import gr.cpaleop.upload.domain.entities.NewAnnouncement
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -38,7 +41,7 @@ class CreateAnnouncementViewModelTest {
     private lateinit var getCategoryUseCase: GetCategoryUseCase
 
     @MockK
-    private lateinit var createAnnouncementUseCase: CreateAnnouncementUseCase
+    private lateinit var createAnnouncementUseCase: gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase
 
     private lateinit var viewModel: CreateAnnouncementViewModel
 
@@ -65,7 +68,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachments = attachmentUriList
+            attachmentsUriList = attachmentUriList
         )
         val expectedResult = Unit
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } returns Unit
@@ -91,7 +94,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachments = attachmentUriList
+            attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_title_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTitleException()
@@ -117,7 +120,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachments = attachmentUriList
+            attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_text_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTextException()
@@ -143,7 +146,7 @@ class CreateAnnouncementViewModelTest {
             title = MultilanguageText(titleEn, titleGr),
             text = MultilanguageText(textEn, textGr),
             category = category,
-            attachments = attachmentUriList
+            attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_category_empty)
         coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyCategoryException()

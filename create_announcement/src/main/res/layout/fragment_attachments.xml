@@ -86,7 +86,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.3"
-        app:srcCompat="@drawable/ic_magnifying_glass" />
+        app:srcCompat="@drawable/ic_attachment_logo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/attachmentsAddFab"
