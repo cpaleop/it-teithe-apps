@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import gr.cpaleop.create_announcement.databinding.ActivityCreateAnnouncementBinding
 import gr.cpaleop.create_announcement.di.createAnnouncementKoinModule
+import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -29,6 +30,11 @@ class CreateAnnouncementActivity : BaseApiActivity<ActivityCreateAnnouncementBin
     override fun onDestroy() {
         unloadKoinModules(createAnnouncementKoinModule)
         super.onDestroy()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.wait_anim, R.anim.slide_out_bottom)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
