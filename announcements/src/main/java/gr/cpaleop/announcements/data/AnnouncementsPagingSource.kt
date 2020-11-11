@@ -55,10 +55,7 @@ class AnnouncementsPagingSource(
                 val cachedRemoteCategory = appDatabase.remoteCategoryDao().fetchFromId(it.about)
                 if (cachedRemoteCategory == null) {
                     val remoteCategories = categoriesApi.fetchCategories()
-                    appDatabase.remoteCategoryDao().run {
-                        nukeTable()
-                        insertAll(remoteCategories)
-                    }
+                    appDatabase.remoteCategoryDao().insertAll(remoteCategories)
                     return@forEach
                 }
             }

@@ -22,29 +22,33 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun createAnnouncement(newAnnouncement: NewAnnouncement) =
         withContext(ioDispatcher) {
-            var requestBody: RequestBody? = null
-            var multiPartBody: MultipartBody.Part? = null
-            var name = ""
+            val requestBodyList = mutableListOf<RequestBody?>()
+            val multiPartBodyList = mutableListOf<MultipartBody.Part>()
+            var nameList = mutableListOf<String>()
 
             newAnnouncement.attachmentsUriList.forEach {
                 val uri = Uri.parse(it)
                 applicationContext.contentResolver.openInputStream(uri)?.use { inputStream ->
                     val bytes = inputStream.readBytes()
-                    name = getFileName(uri)
-                    requestBody = bytes.toRequestBody()
+                    nameList.add(getFileName(uri))
+                    requestBodyList.add(bytes.toRequestBody())
                 }
             }
 
-            requestBody?.let {
-                multiPartBody = MultipartBody.Part.createFormData(
-                    name = "uploads",
-                    filename = name,
-                    body = it
-                )
+            requestBodyList.forEachIndexed { index, requestBody ->
+                requestBody?.let {
+                    multiPartBodyList.add(
+                        MultipartBody.Part.createFormData(
+                            name = "uploads",
+                            filename = nameList[index],
+                            body = it
+                        )
+                    )
+                }
             }
 
             announcementsApi.createAnnouncement(
-                files = multiPartBody,
+                files = multiPartBodyList,
                 title = newAnnouncement.title.gr.toRequestBody(),
                 titleEn = newAnnouncement.title.en.toRequestBody(),
                 text = newAnnouncement.text.gr.toRequestBody(),

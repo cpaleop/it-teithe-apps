@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import okio.BufferedSink
-import okio.appendingSink
 import okio.buffer
+import okio.sink
 import timber.log.Timber
 import java.io.File
 import java.net.URI
@@ -27,7 +27,7 @@ class DeviceStorageRepositoryImpl(
     override suspend fun saveFile(announcementId: String, fileName: String, fileData: ByteArray) =
         withContext(Dispatchers.IO) {
             val destinationFile = File(folder.absolutePath + "/" + fileName)
-            val bufferedSink: BufferedSink = destinationFile.appendingSink().buffer()
+            val bufferedSink: BufferedSink = destinationFile.sink(append = false).buffer()
             try {
                 bufferedSink.use {
                     it.write(fileData)

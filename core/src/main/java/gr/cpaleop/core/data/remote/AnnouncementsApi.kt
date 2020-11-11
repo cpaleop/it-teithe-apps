@@ -31,7 +31,7 @@ interface AnnouncementsApi {
     suspend fun fetchAnnouncementTitleById(
         @Path("announcementId") announcementId: String,
         @Query("fields") query: String = "title,titleEn"
-    ): List<RemoteAnnouncementTitle>
+    ): RemoteAnnouncementTitle
 
     @GET("announcements/")
     suspend fun fetchAnnouncementsByCategory(@Query("q") query: String): List<RemoteAnnouncement>
@@ -39,7 +39,7 @@ interface AnnouncementsApi {
     @POST("announcements/")
     @Multipart
     suspend fun createAnnouncement(
-        @Part files: MultipartBody.Part?,
+        @Part files: List<MultipartBody.Part?>?,
         @Part("title") title: RequestBody,
         @Part("titleEn") titleEn: RequestBody,
         @Part("text") text: RequestBody,

@@ -54,6 +54,10 @@ class AnnouncementsFragment :
         setupPagingAdapter()
         setupViews()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.presentAnnouncements()
     }
 

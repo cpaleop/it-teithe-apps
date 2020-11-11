@@ -1,6 +1,5 @@
 package gr.cpaleop.documents.data
 
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.dispatchers.IODispatcher
@@ -21,15 +20,12 @@ class AnnouncementsRepositoryImpl(
             val cachedAnnouncements =
                 appDatabase.remoteAnnouncementsDao().fetchFromId(announcementId)
 
-            if (cachedAnnouncements.isEmpty()) {
-                val remoteAnnouncementsTitles =
-                    announcementsApi.fetchAnnouncementTitleById(announcementId)
-                        .mapAsync { it.title ?: it.titleEn }
-                announcementName = remoteAnnouncementsTitles.filterNotNull().first()
+            announcementName = if (cachedAnnouncements.isEmpty()) {
+                val remoteAnnouncement = announcementsApi.fetchAnnouncementTitleById(announcementId)
+                remoteAnnouncement.title ?: remoteAnnouncement.titleEn ?: ""
             } else {
                 val firstCachedAnnouncement = cachedAnnouncements.first()
-                announcementName =
-                    firstCachedAnnouncement.title ?: firstCachedAnnouncement.titleEn ?: ""
+                firstCachedAnnouncement.title ?: firstCachedAnnouncement.titleEn ?: ""
 
             }
             return@withContext announcementName
