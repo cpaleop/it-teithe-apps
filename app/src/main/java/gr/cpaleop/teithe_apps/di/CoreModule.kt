@@ -3,6 +3,7 @@ package gr.cpaleop.teithe_apps.di
 import android.content.Context
 import androidx.room.Room
 import gr.cpaleop.core.Authority
+import gr.cpaleop.core.data.CategoriesRepositoryImpl
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
@@ -15,6 +16,7 @@ import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.DateFormatter
 import gr.cpaleop.core.domain.DateFormatterImpl
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
+import gr.cpaleop.core.domain.repositories.CategoriesRepository
 import gr.cpaleop.core.domain.repositories.PreferencesRepository
 import gr.cpaleop.core.presentation.file_chooser.FileChooser
 import gr.cpaleop.core.presentation.file_chooser.FileChooserImpl
@@ -50,6 +52,7 @@ val coreModule = module {
     single<FileViewer> { FileViewerImpl(get(named<Authority>())) }
     single<FileChooser> { FileChooserImpl() }
     single<DateFormatter> { DateFormatterImpl() }
+    single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get(), get()) }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
     single { get<AppDatabase>().remoteAnnouncementsDao() }
     single { get<AppDatabase>().savedAnnouncementDao() }

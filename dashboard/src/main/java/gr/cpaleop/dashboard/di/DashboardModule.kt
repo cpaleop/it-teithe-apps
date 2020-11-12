@@ -42,7 +42,6 @@ val dashboardModule = module {
         CategoriesRepositoryImpl(
             get(),
             get(),
-            get(),
             get()
         )
     }

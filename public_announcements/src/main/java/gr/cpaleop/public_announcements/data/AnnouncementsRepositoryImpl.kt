@@ -25,8 +25,8 @@ class AnnouncementsRepositoryImpl(
         withContext(ioDispatcher) {
             val remoteAnnouncements = announcementsApi.fetchPublicAnnouncements()
             val remoteCategories = categoriesApi.fetchPublicCategories()
-            appDatabase.remoteCategoryDao().insertAll(remoteCategories)
-            appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncements)
+            appDatabase.remoteCategoryDao().nukeAndInsertAll(remoteCategories)
+            appDatabase.remoteAnnouncementsDao().nukeAndInsertAll(remoteAnnouncements)
             flow {
                 emit(remoteAnnouncements.mapAsyncSuspended {
                     val remoteCategory = appDatabase.remoteCategoryDao().fetchFromId(it.about)

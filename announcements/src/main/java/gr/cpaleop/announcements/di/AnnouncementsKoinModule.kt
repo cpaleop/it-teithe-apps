@@ -26,11 +26,10 @@ val announcementsModule = module {
     viewModel { AnnouncementCategoryFilterViewModel(get(), get()) }
     single { CategoryFilterMapper() }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
-    single<GetCachedCategoriesUseCase> { GetCachedCategoriesUseCaseImpl(get()) }
+    single<ObserveCategoriesUseCase> { ObserveCategoriesUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
     single<CategoriesRepository> {
         CategoriesRepositoryImpl(
-            get(),
             get(),
             get(),
             get()

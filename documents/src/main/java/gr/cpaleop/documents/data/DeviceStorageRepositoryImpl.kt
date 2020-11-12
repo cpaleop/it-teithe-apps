@@ -38,14 +38,6 @@ class DeviceStorageRepositoryImpl(
                     )
                 }
             }
-
-            /*val announcementFolders = deviceStorageRepository.getDocumentsFlow().map { document ->
-                AnnouncementFolder(
-                    id = document.announcementId,
-                    title = announcementsRepository.getAnnouncementTitleById(document.announcementId),
-                    lastModified = document.lastModified
-                )
-            }*/
         }
 
     override suspend fun getDocumentByUri(uri: String): Document =

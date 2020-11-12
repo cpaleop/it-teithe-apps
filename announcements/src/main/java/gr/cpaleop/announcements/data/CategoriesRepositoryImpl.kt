@@ -1,13 +1,10 @@
 package gr.cpaleop.announcements.data
 
 import gr.cpaleop.announcements.domain.repositories.CategoriesRepository
-import gr.cpaleop.common.extensions.mapAsync
-import gr.cpaleop.common.extensions.mapAsyncSuspended
-import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
-import gr.cpaleop.core.data.model.local.AppDatabase
 import gr.cpaleop.core.data.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Category
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -15,35 +12,16 @@ import kotlinx.serialization.json.Json
 class CategoriesRepositoryImpl(
     private val json: Json,
     private val categoriesApi: CategoriesApi,
-    private val appDatabase: AppDatabase,
-    private val categoryRegisteredMapper: CategoryRegisteredMapper
+    private val categoriesRepository: gr.cpaleop.core.domain.repositories.CategoriesRepository
 ) : CategoriesRepository {
 
     override suspend fun getCategories(): List<Category> = withContext(Dispatchers.IO) {
-        val remoteCategories = appDatabase.remoteCategoryDao().fetchAll()
-        val remoteRegisteredCategories = categoriesApi.fetchRegisteredCategories()
-        return@withContext remoteCategories.mapAsyncSuspended {
-            categoryRegisteredMapper(
-                it,
-                remoteRegisteredCategories
-            )
-        }.filterNotNull()
+        categoriesRepository.getCategories()
     }
 
-    /**
-     * We dont care if its registered or not for this call
-     */
-    override suspend fun getCachedCategories(): List<Category> =
-        withContext(Dispatchers.IO) {
-            val cachedRemoteCategories = appDatabase.remoteCategoryDao().fetchAll()
-            cachedRemoteCategories.mapAsync {
-                Category(
-                    id = it.id,
-                    name = it.name ?: "",
-                    isRegistered = false
-                )
-            }
-        }
+    override suspend fun getCategoriesFlow(): Flow<List<Category>> = withContext(Dispatchers.IO) {
+        categoriesRepository.getCategoriesFlow()
+    }
 
     override suspend fun updateRegisteredCategories(
         registeredCategories: List<String>,

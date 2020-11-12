@@ -1,27 +1,34 @@
 package gr.cpaleop.core.data.model.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import gr.cpaleop.core.data.model.response.RemoteAnnouncement
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RemoteAnnouncementsDao {
+abstract class RemoteAnnouncementsDao {
+
+    suspend fun nukeAndInsertAll(remoteAnnouncementList: List<RemoteAnnouncement>) {
+        nuke()
+        insertAll(remoteAnnouncementList)
+    }
+
+    @Transaction
+    @Query("DELETE from remoteannouncement")
+    abstract suspend fun nuke()
 
     @Query("SELECT * FROM remoteannouncement")
-    suspend fun fetchAll(): List<RemoteAnnouncement>
+    abstract suspend fun fetchAll(): List<RemoteAnnouncement>
 
     @Query("SELECT * FROM remoteannouncement")
-    fun observeAll(): Flow<List<RemoteAnnouncement>>
+    abstract fun observeAll(): Flow<List<RemoteAnnouncement>>
 
     @Query("SELECT * FROM remoteannouncement WHERE about = (:categoryId)")
-    fun observeByCategoryId(categoryId: String): Flow<List<RemoteAnnouncement>>
+    abstract fun observeByCategoryId(categoryId: String): Flow<List<RemoteAnnouncement>>
 
     @Query("SELECT * FROM remoteannouncement WHERE id= :id")
-    suspend fun fetchFromId(id: String): List<RemoteAnnouncement>
+    abstract suspend fun fetchFromId(id: String): List<RemoteAnnouncement>
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(remoteAnnouncementList: List<RemoteAnnouncement>)
+    abstract suspend fun insertAll(remoteAnnouncementList: List<RemoteAnnouncement>)
 }
