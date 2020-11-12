@@ -15,7 +15,6 @@ import gr.cpaleop.common.extensions.animateSoftVisibilty
 import gr.cpaleop.common.extensions.animateVisibilty
 import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
-import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.databinding.FragmentCreateAnnouncementBinding
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
@@ -24,7 +23,6 @@ import gr.cpaleop.upload.domain.entities.UploadProgress
 import gr.cpaleop.upload.presentation.UploadAnnouncementWorker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import gr.cpaleop.teithe_apps.R as appR
 import gr.cpaleop.upload.R as uploadR
@@ -117,8 +115,6 @@ class CreateAnnouncementFragment :
                 UploadProgress.Success -> {
                     showProgress(false)
                     showSnackbarMessage(Message(uploadR.string.create_announcement_upload_notification_text_success))
-                    delay(2000)
-                    activity?.finish()
                 }
                 is UploadProgress.Failure -> {
                     showProgress(false)
@@ -129,15 +125,7 @@ class CreateAnnouncementFragment :
     }
 
     private fun createWorker(newAnnouncement: NewAnnouncement) {
-        UploadAnnouncementWorker.enqueue(
-            context = requireContext(),
-            title = newAnnouncement.title.gr,
-            titleEn = newAnnouncement.title.en,
-            text = newAnnouncement.text.gr,
-            textEn = newAnnouncement.title.en,
-            categoryId = newAnnouncement.category,
-            attachmentUriList = newAnnouncement.attachmentsUriList.toTypedArray()
-        )
+        UploadAnnouncementWorker.enqueue(requireContext(), newAnnouncement)
     }
 
     private fun showProgress(shouldShow: Boolean) {
@@ -145,9 +133,9 @@ class CreateAnnouncementFragment :
         binding.createAnnouncementUploadProgressBar.animateSoftVisibilty(shouldShow).start()
     }
 
-    private fun updateSelectedCategory(category: Category) {
+    private fun updateSelectedCategory(categoryName: String) {
         binding.createAnnouncementCategoryTextView.run {
-            text = category.name
+            text = categoryName
             setCompoundDrawables(null, null, null, null)
         }
     }

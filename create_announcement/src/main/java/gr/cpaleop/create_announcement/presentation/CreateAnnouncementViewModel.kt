@@ -22,6 +22,7 @@ import gr.cpaleop.upload.domain.entities.UploadProgress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
@@ -49,14 +50,15 @@ class CreateAnnouncementViewModel(
     )
 
     val uploadProgress: LiveData<UploadProgress> = uploadProgressNotifier
+        .asFlow()
         .asLiveData(mainDispatcher)
         .toSingleEvent()
 
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories.toSingleEvent()
 
-    private val _category = MutableLiveData<Category>()
-    val category: LiveData<Category> = _category
+    private val _category = MutableLiveData<String>()
+    val category: LiveData<String> = _category
 
     private val _attachments = MutableLiveData<List<Attachment>>()
     val attachments: LiveData<List<AttachmentPresentation>> by lazy {
@@ -162,7 +164,7 @@ class CreateAnnouncementViewModel(
     fun selectCategory(id: String) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _category.value = getCategoryUseCase(id)
+                _category.value = getCategoryUseCase(id).name
                 newAnnouncement = newAnnouncement.copy(category = id)
                 _categorySelected.value = Unit
             } catch (t: Throwable) {

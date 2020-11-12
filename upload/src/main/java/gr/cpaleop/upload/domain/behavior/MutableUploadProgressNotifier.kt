@@ -3,14 +3,17 @@ package gr.cpaleop.upload.domain.behavior
 import gr.cpaleop.upload.domain.entities.UploadProgress
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.channels.BroadcastChannel
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal object MutableUploadProgressNotifier : MutableStateFlow<UploadProgress> by
-MutableStateFlow(UploadProgress.Idle) {
+internal object MutableUploadProgressNotifier : BroadcastChannel<UploadProgress> by
+BroadcastChannel(2) {
 
-    fun notify(value: UploadProgress) {
-        this.value = value
+    suspend fun notify(element: UploadProgress) {
+        this.send(element)
+        if (element == UploadProgress.Success) {
+            this.send(UploadProgress.Idle)
+        }
     }
 }

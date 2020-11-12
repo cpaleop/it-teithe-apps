@@ -9,7 +9,6 @@ import gr.cpaleop.upload.domain.entities.UploadProgress
 import gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
@@ -28,13 +27,10 @@ class UploadAnnouncementWorker(
 
     override suspend fun doWork(): Result {
         return try {
-            val newAnnouncement = handleInput() ?: throw IllegalArgumentException(
-                "Invalid worker parameters"
-            )
+            val newAnnouncement = handleInput() ?: throw IllegalArgumentException("Invalid worker parameters")
             uploadProgressNotifier.notify(UploadProgress.Uploading)
             setupNotification()
             createAnnouncementUseCase(newAnnouncement)
-            delay(5000)
             uploadNotificationManager.showSuccess()
             uploadProgressNotifier.notify(UploadProgress.Success)
             Result.success()
@@ -47,19 +43,13 @@ class UploadAnnouncementWorker(
     }
 
     private fun handleInput(): NewAnnouncement? {
-        val announcementTitle = workerParameters.inputData.getString(ANNOUNCEMENT_TITLE)
-            ?: return null
-        val announcementTitleEn = workerParameters.inputData.getString(ANNOUNCEMENT_TITLE_EN)
-            ?: return null
-        val announcementText = workerParameters.inputData.getString(ANNOUNCEMENT_TEXT)
-            ?: return null
-        val announcementTextEn = workerParameters.inputData.getString(ANNOUNCEMENT_TEXT_EN)
-            ?: return null
-        val announcementCategoryId = workerParameters.inputData.getString(ANNOUNCEMENT_CATEGORY_ID)
-            ?: return null
+        val announcementTitle = workerParameters.inputData.getString(ANNOUNCEMENT_TITLE) ?: return null
+        val announcementTitleEn = workerParameters.inputData.getString(ANNOUNCEMENT_TITLE_EN) ?: return null
+        val announcementText = workerParameters.inputData.getString(ANNOUNCEMENT_TEXT) ?: return null
+        val announcementTextEn = workerParameters.inputData.getString(ANNOUNCEMENT_TEXT_EN) ?: return null
+        val announcementCategoryId = workerParameters.inputData.getString(ANNOUNCEMENT_CATEGORY_ID) ?: return null
         val announcementAttachmentUriList =
-            workerParameters.inputData.getStringArray(ANNOUNCEMENT_ATTACHMENTS_URI_LIST)
-                ?: return null
+            workerParameters.inputData.getStringArray(ANNOUNCEMENT_ATTACHMENTS_URI_LIST) ?: return null
 
         return NewAnnouncement(
             title = MultilanguageText(gr = announcementTitle, en = announcementTitleEn),
@@ -72,7 +62,6 @@ class UploadAnnouncementWorker(
     private suspend fun setupNotification() {
         val notificationId = uploadNotificationManager.notificationId
         val notification = uploadNotificationManager.notification
-        // Make service foreground to avoid process restarts during download
         val foregroundInfo = ForegroundInfo(notificationId, notification)
         setForeground(foregroundInfo)
     }
@@ -86,22 +75,14 @@ class UploadAnnouncementWorker(
         const val ANNOUNCEMENT_CATEGORY_ID = "ANNOUNCEMENT_CATEGORY_ID"
         const val ANNOUNCEMENT_ATTACHMENTS_URI_LIST = "ANNOUNCEMENT_ATTACHMENTS_URI_LIST"
 
-        fun enqueue(
-            context: Context,
-            title: String,
-            titleEn: String,
-            text: String,
-            textEn: String,
-            categoryId: String,
-            attachmentUriList: Array<String>
-        ) {
+        fun enqueue(context: Context, newAnnouncement: NewAnnouncement) {
             val inputData = Data.Builder().apply {
-                putString(ANNOUNCEMENT_TITLE, title)
-                putString(ANNOUNCEMENT_TITLE_EN, titleEn)
-                putString(ANNOUNCEMENT_TEXT, text)
-                putString(ANNOUNCEMENT_TEXT_EN, textEn)
-                putString(ANNOUNCEMENT_CATEGORY_ID, categoryId)
-                putStringArray(ANNOUNCEMENT_ATTACHMENTS_URI_LIST, attachmentUriList)
+                putString(ANNOUNCEMENT_TITLE, newAnnouncement.title.gr)
+                putString(ANNOUNCEMENT_TITLE_EN, newAnnouncement.title.en)
+                putString(ANNOUNCEMENT_TEXT, newAnnouncement.text.gr)
+                putString(ANNOUNCEMENT_TEXT_EN, newAnnouncement.text.en)
+                putString(ANNOUNCEMENT_CATEGORY_ID, newAnnouncement.category)
+                putStringArray(ANNOUNCEMENT_ATTACHMENTS_URI_LIST, newAnnouncement.attachmentsUriList.toTypedArray())
             }.build()
 
             val constraints = Constraints.Builder()

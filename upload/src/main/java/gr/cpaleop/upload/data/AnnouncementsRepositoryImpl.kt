@@ -24,7 +24,7 @@ class AnnouncementsRepositoryImpl(
         withContext(ioDispatcher) {
             val requestBodyList = mutableListOf<RequestBody?>()
             val multiPartBodyList = mutableListOf<MultipartBody.Part>()
-            var nameList = mutableListOf<String>()
+            val nameList = mutableListOf<String>()
 
             newAnnouncement.attachmentsUriList.forEach {
                 val uri = Uri.parse(it)

@@ -8,7 +8,11 @@ import androidx.core.widget.doOnTextChanged
 import gr.cpaleop.create_announcement.databinding.FragmentContentBinding
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class AnnouncementContentGreekFragment :
     BaseApiFragment<FragmentContentBinding, CreateAnnouncementViewModel>(CreateAnnouncementViewModel::class) {
 
