@@ -3,7 +3,6 @@ package gr.cpaleop.documents.presentation.sort
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
@@ -40,7 +39,7 @@ class DocumentSortOptionsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _documentSortOptions.value = withContext(defaultDispatcher) {
-                    getDocumentSortOptionsUseCase().mapAsync(documentSortOptionMapper::invoke)
+                    getDocumentSortOptionsUseCase().map(documentSortOptionMapper::invoke)
                 }
             } catch (t: Throwable) {
                 Timber.e(t)

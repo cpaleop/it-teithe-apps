@@ -1,9 +1,9 @@
 package gr.cpaleop.announcements.data
 
 import androidx.paging.PagingSource
+import androidx.room.withTransaction
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTitleFilter
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
 import gr.cpaleop.core.datasource.model.local.AppDatabase
 import gr.cpaleop.core.datasource.remote.AnnouncementsApi
@@ -55,13 +55,15 @@ class AnnouncementsPagingSource(
                 val cachedRemoteCategory = appDatabase.remoteCategoryDao().fetchFromId(it.about)
                 if (cachedRemoteCategory == null) {
                     val remoteCategories = categoriesApi.fetchCategories()
-                    appDatabase.remoteCategoryDao().nukeAndInsertAll(remoteCategories)
+                    appDatabase.withTransaction {
+                        appDatabase.remoteCategoryDao().nukeAndInsertAll(remoteCategories)
+                    }
                     return@forEach
                 }
             }
 
             val announcements =
-                remoteAnnouncementList.mapAsyncSuspended { remoteAnnouncement ->
+                remoteAnnouncementList.map { remoteAnnouncement ->
                     val category =
                         appDatabase.remoteCategoryDao().fetchFromId(remoteAnnouncement.about)
                     announcementMapper(remoteAnnouncement, category)

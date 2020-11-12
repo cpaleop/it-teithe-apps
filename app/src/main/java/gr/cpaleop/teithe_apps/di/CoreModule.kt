@@ -39,11 +39,13 @@ import gr.cpaleop.network.interceptors.ConnectionInterceptor
 import gr.cpaleop.network.interceptors.RefreshTokenInterceptor
 import gr.cpaleop.network.interceptors.TokenInterceptor
 import gr.cpaleop.teithe_apps.data.PreferencesRepositoryImpl
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+@ExperimentalCoroutinesApi
 val coreModule = module {
     single<AnnouncementPresentationMapper> { AnnouncementPresentationMapperImpl(get()) }
     single { TokenMapper() }
@@ -55,8 +57,8 @@ val coreModule = module {
     single<FileChooser> { FileChooserImpl() }
     single<DateFormatter> { DateFormatterImpl() }
     single<PreferencesRepository> { PreferencesRepositoryImpl(get()) }
-    single<CategoriesDataSource> { CategoriesDataSourceImpl(get(), get(), get()) }
-    single<AnnouncementsDataSource> { AnnouncementsDataSourceImpl(get(), get(), get(), get()) }
+    single<CategoriesDataSource> { CategoriesDataSourceImpl(get(), get(), get(), get()) }
+    single<AnnouncementsDataSource> { AnnouncementsDataSourceImpl(get(), get(), get(), get(), get()) }
     single { get<AppDatabase>().remoteAnnouncementsDao() }
     single { get<AppDatabase>().savedAnnouncementDao() }
     single { get<AppDatabase>().remoteCategoryDao() }

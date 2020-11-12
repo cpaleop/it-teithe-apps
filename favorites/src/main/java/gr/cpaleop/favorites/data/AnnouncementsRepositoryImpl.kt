@@ -1,6 +1,5 @@
 package gr.cpaleop.favorites.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
@@ -22,7 +21,7 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getFavoritesFlow(): Flow<List<Announcement>> = withContext(ioDispatcher) {
         announcementsDataSource.fetchSavedAnnouncementsFlow().map {
-            it.mapAsyncSuspended {
+            it.map {
                 val remoteCategory = categoriesDataSource.fetchCategoryById(it.about)
                 announcementMapper(it, remoteCategory)
             }

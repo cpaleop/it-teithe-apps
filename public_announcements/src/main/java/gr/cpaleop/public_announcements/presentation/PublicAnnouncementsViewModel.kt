@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
@@ -50,7 +49,7 @@ class PublicAnnouncementsViewModel(
             try {
                 _loading.value = true
                 observePublicAnnouncementsUseCase()
-                    .map { it.mapAsync(announcementPresentationMapper::invoke) }
+                    .map { it.map { announcementPresentationMapper(it, observePublicAnnouncementsUseCase.filter) } }
                     .flowOn(defaultDispatcher)
                     .onStart { _loading.value = true }
                     .onEach { _loading.value = false }
@@ -68,6 +67,6 @@ class PublicAnnouncementsViewModel(
     }
 
     fun search(query: String) {
-        observePublicAnnouncementsUseCase.filter(query)
+        observePublicAnnouncementsUseCase.filter = query
     }
 }

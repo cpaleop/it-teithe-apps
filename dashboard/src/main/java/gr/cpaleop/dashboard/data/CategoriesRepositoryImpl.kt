@@ -1,6 +1,5 @@
 package gr.cpaleop.dashboard.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
 import gr.cpaleop.core.domain.entities.Category
@@ -15,7 +14,7 @@ class CategoriesRepositoryImpl(
 
     override suspend fun getCategories(): List<Category> = withContext(Dispatchers.IO) {
         val remoteRegisteredCategories = categoriesDataSource.fetchRegisteredCategories()
-        categoriesDataSource.fetchCategories().mapAsyncSuspended {
+        categoriesDataSource.fetchCategories().map {
             categoriesRegisteredMapper(it, remoteRegisteredCategories)
         }.filterNotNull()
     }

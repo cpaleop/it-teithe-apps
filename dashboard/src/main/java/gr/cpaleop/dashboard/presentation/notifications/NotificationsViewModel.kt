@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
@@ -82,7 +81,7 @@ class NotificationsViewModel(
                 _loading.value = true
                 observeNotificationsUseCase()
                     .map { notificationList ->
-                        notificationList.mapAsync {
+                        notificationList.map {
                             notificationPresentationMapper(
                                 it,
                                 observeNotificationsUseCase.filterStream.value

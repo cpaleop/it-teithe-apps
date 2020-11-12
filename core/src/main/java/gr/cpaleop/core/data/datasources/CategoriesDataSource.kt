@@ -10,7 +10,7 @@ interface CategoriesDataSource {
 
     suspend fun fetchCategories(): List<RemoteCategory>
 
-    suspend fun fetchCategoriesFlow(): Flow<List<RemoteCategory>>
+    suspend fun fetchCategoriesFlow(cache: Boolean = false): Flow<List<RemoteCategory>>
 
     suspend fun fetchRegisteredCategories(): List<RemoteRegisteredCategory>
 

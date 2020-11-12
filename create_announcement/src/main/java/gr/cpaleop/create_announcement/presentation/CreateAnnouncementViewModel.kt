@@ -1,7 +1,6 @@
 package gr.cpaleop.create_announcement.presentation
 
 import androidx.lifecycle.*
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
@@ -68,7 +67,7 @@ class CreateAnnouncementViewModel(
                     attachmentsUriList = attachmentList.map { it.uri }
                 )
                 viewModelScope.launch(mainDispatcher) {
-                    this@apply.value = attachmentList.mapAsyncSuspended {
+                    this@apply.value = attachmentList.map {
                         attachmentPresentationMapper(it.uri)
                     }
                 }

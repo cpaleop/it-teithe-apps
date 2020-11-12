@@ -13,6 +13,11 @@ class ObservePublicAnnouncementsUseCaseImpl(private val announcementsRepository:
     ObservePublicAnnouncementsUseCase {
 
     private val filterStateFlow = MutableStateFlow("")
+    override var filter: String
+        get() = filterStateFlow.value
+        set(value) {
+            filterStateFlow.value = value
+        }
 
     override suspend fun invoke(): Flow<List<Announcement>> {
         return announcementsRepository.getPublicAnnouncementsFlow()
@@ -25,9 +30,5 @@ class ObservePublicAnnouncementsUseCaseImpl(private val announcementsRepository:
                                 .contains(filterQuery.removeIntonation(), true)
                 }
             }
-    }
-
-    override fun filter(filterQuery: String) {
-        filterStateFlow.value = filterQuery
     }
 }

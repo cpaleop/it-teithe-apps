@@ -35,6 +35,6 @@ class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsReposit
     }
 
     override suspend fun refresh(categoryId: String) {
-        announcementsRepository.updateCachedAnnouncementsByCategoryFlow(categoryId)
+        announcementsRepository.updateCachedAnnouncementsByCategory(categoryId)
     }
 }

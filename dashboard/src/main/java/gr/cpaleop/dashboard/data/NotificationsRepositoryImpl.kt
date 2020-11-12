@@ -1,6 +1,5 @@
 package gr.cpaleop.dashboard.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.dashboard.data.mappers.NotificationMapper
 import gr.cpaleop.dashboard.data.remote.NotificationsApi
 import gr.cpaleop.dashboard.domain.entities.Notification
@@ -15,7 +14,7 @@ class NotificationsRepositoryImpl(
 
     override suspend fun getNotifications(): List<Notification> = withContext(Dispatchers.IO) {
         val remoteNotifications = notificationsApi.fetchNotifications()
-        remoteNotifications.notifications.mapAsyncSuspended(notificationMapper::invoke)
+        remoteNotifications.notifications.map { notificationMapper(it) }
     }
 
     override suspend fun readAllNotifications() = withContext(Dispatchers.IO) {

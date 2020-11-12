@@ -1,6 +1,5 @@
 package gr.cpaleop.create_announcement.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.dispatchers.IODispatcher
@@ -17,7 +16,7 @@ class CategoriesRepositoryImpl(
 ) : CategoriesRepository {
 
     override suspend fun getCategories(): List<Category> = withContext(ioDispatcher) {
-        categoriesDataSource.fetchCategories().mapAsyncSuspended(categoryMapper::invoke)
+        categoriesDataSource.fetchCategories().map(categoryMapper::invoke)
     }
 
     override suspend fun getCategoryById(id: String): Category = withContext(ioDispatcher) {

@@ -40,7 +40,7 @@ class CategoryFilterFragment :
     override fun onResume() {
         super.onResume()
         viewModel.presentCategoryName()
-        /*viewModel.refreshAnnouncements()*/
+        viewModel.refreshAnnouncements()
     }
 
     private fun setupViews() {

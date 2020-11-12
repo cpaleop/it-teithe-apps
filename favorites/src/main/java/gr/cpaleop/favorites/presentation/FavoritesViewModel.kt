@@ -3,7 +3,6 @@ package gr.cpaleop.favorites.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
@@ -43,7 +42,7 @@ class FavoritesViewModel(
             try {
                 observeFavoriteAnnouncementsUseCase()
                     .map { announcementList ->
-                        announcementList.mapAsync { announcement ->
+                        announcementList.map { announcement ->
                             announcementPresentationMapper(
                                 announcement,
                                 observeFavoriteAnnouncementsUseCase.filter

@@ -1,7 +1,6 @@
 package gr.cpaleop.categoryfilter.data
 
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
@@ -23,7 +22,7 @@ class AnnouncementsRepositoryImpl(
     private val categoriesDataSource: CategoriesDataSource
 ) : AnnouncementsRepository {
 
-    override suspend fun updateCachedAnnouncementsByCategoryFlow(category: String) =
+    override suspend fun updateCachedAnnouncementsByCategory(category: String) =
         withContext(ioDispatcher) {
             announcementsDataSource.updateCachedAnnouncementsByCategoryId(category)
         }
@@ -34,7 +33,7 @@ class AnnouncementsRepositoryImpl(
                 val category = categoriesDataSource.fetchCategoryById(categoryId)
                 remoteAnnouncementList
                     .sortedByDescending { it.date }
-                    .mapAsyncSuspended { announcementMapper(it, category) }
+                    .map { announcementMapper(it, category) }
             }.flowOn(ioDispatcher)
     }
 }

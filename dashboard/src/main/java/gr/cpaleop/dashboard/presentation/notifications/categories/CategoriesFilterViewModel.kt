@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
@@ -80,10 +79,10 @@ class CategoriesFilterViewModel(
             try {
                 _loading.value = true
                 val registeredCategories =
-                    _categories.value?.filter { it.isRegistered }?.mapAsync { it.id }
+                    _categories.value?.filter { it.isRegistered }?.map { it.id }
                         ?: return@launch
                 val nonRegisteredCategories =
-                    _categories.value?.filter { !it.isRegistered }?.mapAsync { it.id }
+                    _categories.value?.filter { !it.isRegistered }?.map { it.id }
                         ?: return@launch
                 _dismissDialog.value =
                     updateRegisteredCategoriesUseCase(registeredCategories, nonRegisteredCategories)

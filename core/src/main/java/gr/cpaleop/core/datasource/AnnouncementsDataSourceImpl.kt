@@ -1,7 +1,8 @@
 package gr.cpaleop.core.datasource
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
+import androidx.room.withTransaction
 import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
+import gr.cpaleop.core.datasource.model.local.AppDatabase
 import gr.cpaleop.core.datasource.model.local.RemoteAnnouncementsDao
 import gr.cpaleop.core.datasource.model.local.SavedAnnouncementDao
 import gr.cpaleop.core.datasource.model.response.AnnouncementCategoryFilter
@@ -17,6 +18,7 @@ import okhttp3.RequestBody
 
 class AnnouncementsDataSourceImpl(
     private val announcementsApi: AnnouncementsApi,
+    private val appDatabase: AppDatabase,
     private val remoteAnnouncementsDao: RemoteAnnouncementsDao,
     private val savedAnnouncementsDao: SavedAnnouncementDao,
     private val json: Json
@@ -24,9 +26,9 @@ class AnnouncementsDataSourceImpl(
 
     override suspend fun fetchSavedAnnouncementsFlow(): Flow<List<RemoteAnnouncement>> {
         return savedAnnouncementsDao.fetchAllAsFlow().map { savedAnnouncements ->
-            savedAnnouncements.mapAsyncSuspended { savedAnnouncement ->
+            savedAnnouncements.map { savedAnnouncement ->
                 val cached = remoteAnnouncementsDao.fetchFromId(savedAnnouncement.announcementId)
-                return@mapAsyncSuspended if (cached.isEmpty()) {
+                if (cached.isEmpty()) {
                     announcementsApi.fetchAnnouncementById(savedAnnouncement.announcementId)
                 } else {
                     cached.first()
@@ -52,27 +54,29 @@ class AnnouncementsDataSourceImpl(
     }
 
     override suspend fun fetchPublicAnnouncements(): List<RemoteAnnouncement> {
-        val remoteAnnouncements = announcementsApi.fetchPublicAnnouncements()
-        remoteAnnouncementsDao.nukeAndInsertAll(remoteAnnouncements)
-        return remoteAnnouncements
+        return announcementsApi.fetchPublicAnnouncements().also {
+            appDatabase.withTransaction {
+                remoteAnnouncementsDao.nukeAndInsertAll(it)
+            }
+        }
     }
 
     override suspend fun fetchAnnouncementById(id: String): RemoteAnnouncement {
         val cachedAnnouncements =
             remoteAnnouncementsDao.fetchFromId(id)
 
-        val remoteAnnouncement = if (cachedAnnouncements.isEmpty()) {
+        return if (cachedAnnouncements.isEmpty()) {
             announcementsApi.fetchAnnouncementById(id)
         } else {
             cachedAnnouncements.first()
         }
-        return remoteAnnouncement
     }
 
     override suspend fun updateCachedAnnouncementsByCategoryId(categoryId: String) {
         val filterQuery = json.encodeToString(AnnouncementCategoryFilter(about = categoryId))
-        val remoteAnnouncements = announcementsApi.fetchAnnouncementsByCategory(filterQuery)
-        remoteAnnouncementsDao.insertAll(remoteAnnouncements)
+        announcementsApi.fetchAnnouncementsByCategory(filterQuery).also {
+            remoteAnnouncementsDao.insertAll(it)
+        }
     }
 
     override suspend fun getCachedAnnouncementsByCategoryIdFlow(categoryId: String): Flow<List<RemoteAnnouncement>> {

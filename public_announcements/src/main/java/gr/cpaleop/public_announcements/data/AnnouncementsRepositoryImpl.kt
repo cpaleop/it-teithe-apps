@@ -1,6 +1,5 @@
 package gr.cpaleop.public_announcements.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
@@ -24,7 +23,7 @@ class AnnouncementsRepositoryImpl(
         withContext(ioDispatcher) {
             flow {
                 emit(
-                    announcementsDataSource.fetchPublicAnnouncements().mapAsyncSuspended {
+                    announcementsDataSource.fetchPublicAnnouncements().map {
                         val remoteCategory = categoriesDataSource.fetchCategoryById(it.about)
                         announcementMapper(it, remoteCategory)
                     }

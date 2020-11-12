@@ -1,7 +1,6 @@
 package gr.cpaleop.announcements.data
 
 import gr.cpaleop.announcements.domain.repositories.CategoriesRepository
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.CategoryMapper
 import gr.cpaleop.core.dispatchers.IODispatcher
@@ -18,13 +17,14 @@ class CategoriesRepositoryImpl(
     private val categoryMapper: CategoryMapper
 ) : CategoriesRepository {
 
-    override suspend fun getCategories(): List<Category> = withContext(ioDispatcher) {
-        categoriesDataSource.fetchCategories().mapAsync(categoryMapper::invoke)
+    override suspend fun refreshCategories() = withContext(ioDispatcher) {
+        categoriesDataSource.fetchCategories()
+        return@withContext
     }
 
     override suspend fun getCategoriesFlow(): Flow<List<Category>> = withContext(ioDispatcher) {
-        categoriesDataSource.fetchCategoriesFlow().map {
-            it.mapAsync(categoryMapper::invoke)
+        categoriesDataSource.fetchCategoriesFlow(true).map {
+            it.map(categoryMapper::invoke)
         }
     }
 

@@ -10,4 +10,8 @@ class ObserveCategoriesUseCaseImpl(private val categoriesRepository: CategoriesR
     override suspend fun invoke(): Flow<List<Category>> {
         return categoriesRepository.getCategoriesFlow()
     }
+
+    override suspend fun refresh() {
+        categoriesRepository.refreshCategories()
+    }
 }

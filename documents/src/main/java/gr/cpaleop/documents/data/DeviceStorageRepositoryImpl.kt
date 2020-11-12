@@ -1,6 +1,5 @@
 package gr.cpaleop.documents.data
 
-import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.documents.domain.entities.AnnouncementFolder
@@ -30,7 +29,7 @@ class DeviceStorageRepositoryImpl(
     override suspend fun getAnnouncementFoldersFlow(): Flow<List<AnnouncementFolder>> =
         withContext(ioDispatcher) {
             return@withContext deviceStorageRepository.getDocumentsFlow().map { documentList ->
-                documentList.mapAsyncSuspended { document ->
+                documentList.map { document ->
                     AnnouncementFolder(
                         id = document.announcementId,
                         title = announcementsRepository.getAnnouncementTitleById(document.announcementId),

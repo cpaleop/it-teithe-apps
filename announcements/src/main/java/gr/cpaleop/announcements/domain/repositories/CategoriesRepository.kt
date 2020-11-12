@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
 
-    suspend fun getCategories(): List<Category>
+    suspend fun refreshCategories()
 
     suspend fun getCategoriesFlow(): Flow<List<Category>>
 

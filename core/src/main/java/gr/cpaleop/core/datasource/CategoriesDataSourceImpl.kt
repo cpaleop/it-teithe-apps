@@ -1,6 +1,8 @@
 package gr.cpaleop.core.datasource
 
+import androidx.room.withTransaction
 import gr.cpaleop.core.data.datasources.CategoriesDataSource
+import gr.cpaleop.core.datasource.model.local.AppDatabase
 import gr.cpaleop.core.datasource.model.local.RemoteCategoryDao
 import gr.cpaleop.core.datasource.model.response.RemoteCategory
 import gr.cpaleop.core.datasource.model.response.RemoteCategoryFilter
@@ -14,25 +16,34 @@ import kotlinx.serialization.json.Json
 @ExperimentalCoroutinesApi
 class CategoriesDataSourceImpl(
     private val categoriesApi: CategoriesApi,
+    private val appDatabase: AppDatabase,
     private val remoteCategoryDao: RemoteCategoryDao,
     private val json: Json
 ) : CategoriesDataSource {
 
     override suspend fun fetchPublicCategories(): List<RemoteCategory> {
         return categoriesApi.fetchPublicCategories().also {
-            remoteCategoryDao.nukeAndInsertAll(it)
+            appDatabase.withTransaction {
+                remoteCategoryDao.nukeAndInsertAll(it)
+            }
         }
     }
 
     override suspend fun fetchCategories(): List<RemoteCategory> {
         return categoriesApi.fetchCategories().also {
-            remoteCategoryDao.nukeAndInsertAll(it)
+            appDatabase.withTransaction {
+                remoteCategoryDao.nukeAndInsertAll(it)
+            }
         }
     }
 
-    override suspend fun fetchCategoriesFlow(): Flow<List<RemoteCategory>> {
-        categoriesApi.fetchCategories().also {
-            remoteCategoryDao.nukeAndInsertAll(it)
+    override suspend fun fetchCategoriesFlow(cache: Boolean): Flow<List<RemoteCategory>> {
+        if (!cache) {
+            categoriesApi.fetchCategories().also {
+                appDatabase.withTransaction {
+                    remoteCategoryDao.nukeAndInsertAll(it)
+                }
+            }
         }
         return remoteCategoryDao.fetchAllFlow()
     }

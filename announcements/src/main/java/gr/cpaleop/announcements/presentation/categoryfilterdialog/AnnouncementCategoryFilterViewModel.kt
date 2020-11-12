@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.announcements.domain.usecases.ObserveCategoriesUseCase
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.teithe_apps.R
@@ -32,10 +31,21 @@ class AnnouncementCategoryFilterViewModel(
                 _loading.value = true
                 observeCategoriesUseCase()
                     .map {
-                        it.mapAsync(categoryFilterMapper::invoke)
+                        it.map(categoryFilterMapper::invoke)
                     }
                     .onEach { _loading.value = false }
                     .collect(_categories::setValue)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_generic)
+            } finally {
+                _loading.value = false
+            }
+        }
+
+        viewModelScope.launch {
+            try {
+                observeCategoriesUseCase.refresh()
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_generic)

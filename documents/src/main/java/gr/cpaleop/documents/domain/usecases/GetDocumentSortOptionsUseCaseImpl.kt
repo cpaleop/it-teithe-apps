@@ -1,6 +1,5 @@
 package gr.cpaleop.documents.domain.usecases
 
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.core.domain.entities.DocumentSort
 import gr.cpaleop.core.domain.entities.DocumentSortType
 import gr.cpaleop.documents.domain.repositories.PreferencesRepository
@@ -26,7 +25,7 @@ class GetDocumentSortOptionsUseCaseImpl(private val preferencesRepository: Prefe
         )
 
         return documentSortOptions
-            .mapAsync { if (it.type == currentDocumentSort.type) currentDocumentSort else it }
+            .map { if (it.type == currentDocumentSort.type) currentDocumentSort else it }
             .sortedByDescending { it.type }
     }
 }

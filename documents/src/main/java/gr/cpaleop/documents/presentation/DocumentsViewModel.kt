@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import gr.cpaleop.common.extensions.*
+import gr.cpaleop.common.extensions.getMimeType
+import gr.cpaleop.common.extensions.toSingleEvent
+import gr.cpaleop.common.extensions.toSingleMediatorEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Document
@@ -224,7 +226,7 @@ class DocumentsViewModel(
             try {
                 observeDocumentsUseCase(announcementId)
                     .map {
-                        it.mapAsyncSuspended { fileDocument ->
+                        it.map { fileDocument ->
                             fileDocumentMapper(
                                 fileDocument,
                                 filterStream.value
@@ -249,7 +251,7 @@ class DocumentsViewModel(
             try {
                 observeDocumentsAnnouncementFoldersUseCase()
                     .map { announcementFolderList ->
-                        announcementFolderList.mapAsync {
+                        announcementFolderList.map {
                             announcementFolderPresentationMapper(
                                 it,
                                 filterStream.value
@@ -293,7 +295,7 @@ class DocumentsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _documentOptions.value =
-                    getDocumentOptionsUseCase().mapAsync(documentOptionMapper::invoke)
+                    getDocumentOptionsUseCase().map(documentOptionMapper::invoke)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

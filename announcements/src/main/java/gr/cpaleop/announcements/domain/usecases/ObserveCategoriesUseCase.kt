@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface ObserveCategoriesUseCase {
 
     suspend operator fun invoke(): Flow<List<Category>>
+
+    suspend fun refresh()
 }

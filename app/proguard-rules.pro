@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 # Application classes that will be serialized/deserialized over Gson
--keep class gr.cpaleop.core.data.model** { *; }
+-keep class gr.cpaleop.core.datasource.model** { *; }
 -keep class gr.cpaleop.profile.data.model** { *; }
 -keep class gr.cpaleop.profile.domain.entities.Personal { *; }
 -keep class gr.cpaleop.profile.domain.entities.Social { *; }

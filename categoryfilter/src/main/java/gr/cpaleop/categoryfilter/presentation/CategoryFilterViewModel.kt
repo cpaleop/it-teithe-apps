@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
-import gr.cpaleop.common.extensions.mapAsync
 import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
@@ -71,7 +70,7 @@ class CategoryFilterViewModel(
             try {
                 observeAnnouncementsByCategoryUseCase(categoryId)
                     .map {
-                        it.mapAsync { announcement ->
+                        it.map { announcement ->
                             announcementPresentationMapper(
                                 announcement,
                                 observeAnnouncementsByCategoryUseCase.filter
