@@ -13,10 +13,8 @@ import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
 import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncementsUseCase
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
 
@@ -29,6 +27,8 @@ class PublicAnnouncementsViewModel(
     private val observePublicAnnouncementsUseCase: ObservePublicAnnouncementsUseCase,
     private val announcementPresentationMapper: AnnouncementPresentationMapper
 ) : BaseViewModel() {
+
+    private var observeAnnouncementsJob: Job? = null
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading.toSingleEvent()
@@ -48,15 +48,38 @@ class PublicAnnouncementsViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 _loading.value = true
+                observeAnnouncementsJob?.cancel()
+                observeAnnouncementsJob = observeAnnouncements()
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_no_internet_connection)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    private fun observeAnnouncements(): Job {
+        return viewModelScope.launch(mainDispatcher) {
+            try {
+                _loading.value = true
                 observePublicAnnouncementsUseCase()
                     .map { it.map { announcementPresentationMapper(it, observePublicAnnouncementsUseCase.filter) } }
                     .flowOn(defaultDispatcher)
                     .onStart { _loading.value = true }
                     .onEach { _loading.value = false }
-                    .collect(_announcements::setValue)
+                    .collect {
+                        Timber.e("COLLECTING")
+                        _announcements.value = it
+                    }
             } catch (t: NoConnectionException) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_no_internet_connection)
+            } catch (t: CancellationException) {
+                Timber.e(t)
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

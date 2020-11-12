@@ -21,6 +21,7 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getPublicAnnouncementsFlow(): Flow<List<Announcement>> =
         withContext(ioDispatcher) {
+            categoriesDataSource.fetchPublicCategories()
             flow {
                 emit(
                     announcementsDataSource.fetchPublicAnnouncements().map {
