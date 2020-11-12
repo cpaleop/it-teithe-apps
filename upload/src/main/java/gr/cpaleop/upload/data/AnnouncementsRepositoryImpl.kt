@@ -3,7 +3,7 @@ package gr.cpaleop.upload.data
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import gr.cpaleop.core.data.remote.AnnouncementsApi
+import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.upload.domain.entities.NewAnnouncement
 import gr.cpaleop.upload.domain.repositories.AnnouncementsRepository
@@ -17,7 +17,7 @@ class AnnouncementsRepositoryImpl(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher,
     private val applicationContext: Context,
-    private val announcementsApi: AnnouncementsApi
+    private val announcementsDataSource: AnnouncementsDataSource
 ) : AnnouncementsRepository {
 
     override suspend fun createAnnouncement(newAnnouncement: NewAnnouncement) =
@@ -47,7 +47,7 @@ class AnnouncementsRepositoryImpl(
                 }
             }
 
-            announcementsApi.createAnnouncement(
+            announcementsDataSource.createAnnouncement(
                 files = multiPartBodyList,
                 title = newAnnouncement.title.gr.toRequestBody(),
                 titleEn = newAnnouncement.title.en.toRequestBody(),

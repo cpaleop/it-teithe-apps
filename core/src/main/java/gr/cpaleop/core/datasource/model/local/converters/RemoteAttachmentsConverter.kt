@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.model.local.converters
+package gr.cpaleop.core.datasource.model.local.converters
 
 import androidx.room.TypeConverter
 import kotlinx.serialization.decodeFromString

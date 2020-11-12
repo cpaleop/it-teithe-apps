@@ -1,7 +1,7 @@
-package gr.cpaleop.core.data.model.local.converters
+package gr.cpaleop.core.datasource.model.local.converters
 
 import androidx.room.TypeConverter
-import gr.cpaleop.core.data.model.response.RemotePublisher
+import gr.cpaleop.core.datasource.model.response.RemotePublisher
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

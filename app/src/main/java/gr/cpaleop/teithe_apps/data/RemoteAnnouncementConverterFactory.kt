@@ -1,6 +1,6 @@
 package gr.cpaleop.teithe_apps.data
 
-import gr.cpaleop.core.data.model.response.RemoteAnnouncement
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncement
 import kotlinx.serialization.json.Json
 import okhttp3.RequestBody
 import okhttp3.ResponseBody

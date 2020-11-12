@@ -29,8 +29,6 @@ val favoritesKoinModule = module {
             get(named<IODispatcher>()),
             get(),
             get(),
-            get(),
-            get(),
             get()
         )
     }

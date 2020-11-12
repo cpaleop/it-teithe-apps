@@ -1,7 +1,7 @@
 package gr.cpaleop.announcement.data
 
-import gr.cpaleop.core.data.model.response.RemoteAnnouncement
-import gr.cpaleop.core.data.model.response.RemoteCategory
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncement
+import gr.cpaleop.core.datasource.model.response.RemoteCategory
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import kotlinx.coroutines.Dispatchers

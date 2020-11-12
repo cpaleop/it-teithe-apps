@@ -30,7 +30,6 @@ val publicAnnouncementsModule = module {
                 get(named<IODispatcher>()),
                 get(),
                 get(),
-                get(),
                 get()
             )
         }

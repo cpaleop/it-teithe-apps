@@ -1,4 +1,4 @@
-package gr.cpaleop.categoryfilter.data.model
+package gr.cpaleop.core.datasource.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

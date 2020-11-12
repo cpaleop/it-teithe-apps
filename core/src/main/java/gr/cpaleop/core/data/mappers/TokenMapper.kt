@@ -1,6 +1,6 @@
 package gr.cpaleop.core.data.mappers
 
-import gr.cpaleop.core.data.model.response.RemoteToken
+import gr.cpaleop.core.datasource.model.response.RemoteToken
 import gr.cpaleop.core.domain.entities.Token
 
 class TokenMapper {

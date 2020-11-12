@@ -5,9 +5,9 @@ import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTextFilter
 import gr.cpaleop.announcements.data.model.remote.RemoteAnnouncementTitleFilter
 import gr.cpaleop.common.extensions.mapAsyncSuspended
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
-import gr.cpaleop.core.data.model.local.AppDatabase
-import gr.cpaleop.core.data.remote.AnnouncementsApi
-import gr.cpaleop.core.data.remote.CategoriesApi
+import gr.cpaleop.core.datasource.model.local.AppDatabase
+import gr.cpaleop.core.datasource.remote.AnnouncementsApi
+import gr.cpaleop.core.datasource.remote.CategoriesApi
 import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

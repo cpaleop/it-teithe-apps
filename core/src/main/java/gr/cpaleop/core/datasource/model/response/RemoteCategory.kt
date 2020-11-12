@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.model.response
+package gr.cpaleop.core.datasource.model.response
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

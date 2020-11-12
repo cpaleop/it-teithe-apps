@@ -1,32 +1,29 @@
 package gr.cpaleop.dashboard.data
 
-import gr.cpaleop.core.data.remote.CategoriesApi
+import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.datasources.CategoriesDataSource
+import gr.cpaleop.core.data.mappers.CategoryRegisteredMapper
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.dashboard.domain.repositories.CategoriesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class CategoriesRepositoryImpl(
-    private val json: Json,
-    private val categoriesApi: CategoriesApi,
-    private val categoriesRepository: gr.cpaleop.core.domain.repositories.CategoriesRepository
+    private val categoriesDataSource: CategoriesDataSource,
+    private val categoriesRegisteredMapper: CategoryRegisteredMapper
 ) : CategoriesRepository {
 
     override suspend fun getCategories(): List<Category> = withContext(Dispatchers.IO) {
-        categoriesRepository.getRegisteredCategories()
+        val remoteRegisteredCategories = categoriesDataSource.fetchRegisteredCategories()
+        categoriesDataSource.fetchCategories().mapAsyncSuspended {
+            categoriesRegisteredMapper(it, remoteRegisteredCategories)
+        }.filterNotNull()
     }
 
     override suspend fun updateRegisteredCategories(
         registeredCategories: List<String>,
         nonRegisteredCategories: List<String>
     ) = withContext(Dispatchers.IO) {
-        val registeredCategoriesString = json.encodeToString(registeredCategories)
-        val nonegisteredCategoriesString = json.encodeToString(nonRegisteredCategories)
-        categoriesApi.updateRegisteredCategories(
-            registeredCategoriesString,
-            nonegisteredCategoriesString
-        )
+        categoriesDataSource.updateRegisteredCategories(registeredCategories, nonRegisteredCategories)
     }
 }

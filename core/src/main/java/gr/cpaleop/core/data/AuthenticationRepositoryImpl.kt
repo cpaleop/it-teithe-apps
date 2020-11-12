@@ -2,7 +2,7 @@ package gr.cpaleop.core.data
 
 import gr.cpaleop.core.BuildConfig
 import gr.cpaleop.core.data.mappers.TokenMapper
-import gr.cpaleop.core.data.remote.AuthenticationApi
+import gr.cpaleop.core.datasource.remote.AuthenticationApi
 import gr.cpaleop.core.domain.entities.Token
 import gr.cpaleop.core.domain.repositories.AuthenticationRepository
 import kotlinx.coroutines.Dispatchers

@@ -1,11 +1,10 @@
 package gr.cpaleop.categoryfilter.data
 
-import gr.cpaleop.categoryfilter.data.model.AnnouncementCategoryFilter
 import gr.cpaleop.categoryfilter.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.common.extensions.mapAsyncSuspended
+import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
+import gr.cpaleop.core.data.datasources.CategoriesDataSource
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
-import gr.cpaleop.core.data.model.local.AppDatabase
-import gr.cpaleop.core.data.remote.AnnouncementsApi
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,30 +13,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @ExperimentalCoroutinesApi
 class AnnouncementsRepositoryImpl(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher,
-    private val announcementsApi: AnnouncementsApi,
     private val announcementMapper: AnnouncementMapper,
-    private val appDatabase: AppDatabase,
-    private val json: Json
+    private val announcementsDataSource: AnnouncementsDataSource,
+    private val categoriesDataSource: CategoriesDataSource
 ) : AnnouncementsRepository {
 
     override suspend fun updateCachedAnnouncementsByCategoryFlow(category: String) =
         withContext(ioDispatcher) {
-            val filterQuery = json.encodeToString(AnnouncementCategoryFilter(about = category))
-            val remoteAnnouncements = announcementsApi.fetchAnnouncementsByCategory(filterQuery)
-            appDatabase.remoteAnnouncementsDao().insertAll(remoteAnnouncements)
+            announcementsDataSource.updateCachedAnnouncementsByCategoryId(category)
         }
 
-    override fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>> {
-        return appDatabase.remoteAnnouncementsDao().observeByCategoryId(categoryId)
+    override suspend fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>> {
+        return announcementsDataSource.getCachedAnnouncementsByCategoryIdFlow(categoryId)
             .map { remoteAnnouncementList ->
-                val category = appDatabase.remoteCategoryDao().fetchFromId(categoryId)
+                val category = categoriesDataSource.fetchCategoryById(categoryId)
                 remoteAnnouncementList
                     .sortedByDescending { it.date }
                     .mapAsyncSuspended { announcementMapper(it, category) }

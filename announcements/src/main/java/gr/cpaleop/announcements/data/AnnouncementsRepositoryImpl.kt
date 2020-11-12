@@ -5,10 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import gr.cpaleop.announcements.domain.repositories.AnnouncementsRepository
+import gr.cpaleop.core.data.datasources.AnnouncementsDataSource
 import gr.cpaleop.core.data.mappers.AnnouncementMapper
-import gr.cpaleop.core.data.model.local.AppDatabase
-import gr.cpaleop.core.data.remote.AnnouncementsApi
-import gr.cpaleop.core.data.remote.CategoriesApi
+import gr.cpaleop.core.datasource.model.local.AppDatabase
+import gr.cpaleop.core.datasource.remote.AnnouncementsApi
+import gr.cpaleop.core.datasource.remote.CategoriesApi
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,7 +24,8 @@ class AnnouncementsRepositoryImpl(
     private val categoriesApi: CategoriesApi,
     private val appDatabase: AppDatabase,
     private val announcementMapper: AnnouncementMapper,
-    private val json: Json
+    private val json: Json,
+    private val announcementsDataSource: AnnouncementsDataSource
 ) : AnnouncementsRepository {
 
     private var dataPagingSource: PagingSource<Int, Announcement>? = null
@@ -56,17 +58,8 @@ class AnnouncementsRepositoryImpl(
 
     override suspend fun getAnnouncementTitleById(announcementId: String): String =
         withContext(ioDispatcher) {
-            val cachedAnnouncements =
-                appDatabase.remoteAnnouncementsDao().fetchFromId(announcementId)
-
-            return@withContext if (cachedAnnouncements.isEmpty()) {
-                val remoteAnnouncement = announcementsApi.fetchAnnouncementTitleById(announcementId)
-                remoteAnnouncement.title ?: remoteAnnouncement.titleEn ?: ""
-            } else {
-                val firstCachedAnnouncement = cachedAnnouncements.first()
-                firstCachedAnnouncement.title ?: firstCachedAnnouncement.titleEn ?: ""
-
-            }
+            val remoteAnnouncement = announcementsDataSource.fetchAnnouncementById(announcementId)
+            remoteAnnouncement.title ?: remoteAnnouncement.titleEn ?: ""
         }
 
     override suspend fun filter(filterQuery: String) {

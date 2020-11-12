@@ -1,6 +1,6 @@
 package gr.cpaleop.core.data.mappers
 
-import gr.cpaleop.core.data.model.response.RemoteCategory
+import gr.cpaleop.core.datasource.model.response.RemoteCategory
 import gr.cpaleop.core.domain.entities.Category
 
 class CategoryMapper {

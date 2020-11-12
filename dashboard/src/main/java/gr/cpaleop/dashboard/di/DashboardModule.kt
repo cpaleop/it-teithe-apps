@@ -41,7 +41,6 @@ val dashboardModule = module {
     single<CategoriesRepository> {
         CategoriesRepositoryImpl(
             get(),
-            get(),
             get()
         )
     }

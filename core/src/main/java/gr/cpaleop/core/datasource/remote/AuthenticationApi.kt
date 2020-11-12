@@ -1,6 +1,6 @@
-package gr.cpaleop.core.data.remote
+package gr.cpaleop.core.datasource.remote
 
-import gr.cpaleop.core.data.model.response.RemoteToken
+import gr.cpaleop.core.datasource.model.response.RemoteToken
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

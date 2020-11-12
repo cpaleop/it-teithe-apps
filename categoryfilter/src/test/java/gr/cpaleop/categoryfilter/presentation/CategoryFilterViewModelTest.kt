@@ -105,7 +105,7 @@ class CategoryFilterViewModelTest {
             coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow.flowOn(
                 testMainCoroutineDispatcher
             )
-            every { observeAnnouncementsByCategoryUseCase.filterStream.value } returns ""
+            every { observeAnnouncementsByCategoryUseCase.filter } returns ""
             every { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
             every { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
 

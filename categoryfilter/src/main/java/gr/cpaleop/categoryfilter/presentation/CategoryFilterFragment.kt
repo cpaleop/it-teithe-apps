@@ -34,12 +34,13 @@ class CategoryFilterFragment :
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
+        viewModel.presentAnnouncements()
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.presentCategoryName()
-        viewModel.presentAnnouncements()
+        /*viewModel.refreshAnnouncements()*/
     }
 
     private fun setupViews() {
@@ -48,7 +49,7 @@ class CategoryFilterFragment :
 
         binding.categoryAnnouncementsSwipeRefreshLayout.setOnRefreshListener {
             viewModel.presentCategoryName()
-            viewModel.presentAnnouncements()
+            viewModel.refreshAnnouncements()
         }
 
         binding.categoryAnnouncementsSearchTextView.run {

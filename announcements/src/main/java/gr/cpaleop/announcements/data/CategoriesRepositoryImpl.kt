@@ -1,37 +1,37 @@
 package gr.cpaleop.announcements.data
 
 import gr.cpaleop.announcements.domain.repositories.CategoriesRepository
-import gr.cpaleop.core.data.remote.CategoriesApi
+import gr.cpaleop.common.extensions.mapAsync
+import gr.cpaleop.core.data.datasources.CategoriesDataSource
+import gr.cpaleop.core.data.mappers.CategoryMapper
+import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Category
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class CategoriesRepositoryImpl(
-    private val json: Json,
-    private val categoriesApi: CategoriesApi,
-    private val categoriesRepository: gr.cpaleop.core.domain.repositories.CategoriesRepository
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    private val categoriesDataSource: CategoriesDataSource,
+    private val categoryMapper: CategoryMapper
 ) : CategoriesRepository {
 
-    override suspend fun getCategories(): List<Category> = withContext(Dispatchers.IO) {
-        categoriesRepository.getCategories()
+    override suspend fun getCategories(): List<Category> = withContext(ioDispatcher) {
+        categoriesDataSource.fetchCategories().mapAsync(categoryMapper::invoke)
     }
 
-    override suspend fun getCategoriesFlow(): Flow<List<Category>> = withContext(Dispatchers.IO) {
-        categoriesRepository.getCategoriesFlow()
+    override suspend fun getCategoriesFlow(): Flow<List<Category>> = withContext(ioDispatcher) {
+        categoriesDataSource.fetchCategoriesFlow().map {
+            it.mapAsync(categoryMapper::invoke)
+        }
     }
 
     override suspend fun updateRegisteredCategories(
         registeredCategories: List<String>,
         nonRegisteredCategories: List<String>
-    ) = withContext(Dispatchers.IO) {
-        val registeredCategoriesString = json.encodeToString(registeredCategories)
-        val nonegisteredCategoriesString = json.encodeToString(nonRegisteredCategories)
-        categoriesApi.updateRegisteredCategories(
-            registeredCategoriesString,
-            nonegisteredCategoriesString
-        )
+    ) = withContext(ioDispatcher) {
+        categoriesDataSource.updateRegisteredCategories(registeredCategories, nonRegisteredCategories)
     }
 }

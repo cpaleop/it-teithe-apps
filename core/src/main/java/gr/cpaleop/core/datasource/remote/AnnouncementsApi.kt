@@ -1,7 +1,7 @@
-package gr.cpaleop.core.data.remote
+package gr.cpaleop.core.datasource.remote
 
-import gr.cpaleop.core.data.model.response.RemoteAnnouncement
-import gr.cpaleop.core.data.model.response.RemoteAnnouncementTitle
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncement
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncementTitle
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

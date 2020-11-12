@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ObserveFavoriteUseCase {
 
-    operator fun invoke(announcementId: String): Flow<Boolean>
+    suspend operator fun invoke(announcementId: String): Flow<Boolean>
 }

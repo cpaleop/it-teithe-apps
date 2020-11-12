@@ -1,7 +1,7 @@
 package gr.cpaleop.download.data
 
 import gr.cpaleop.common.extensions.mapAsync
-import gr.cpaleop.core.data.model.response.RemoteFile
+import gr.cpaleop.core.datasource.model.response.RemoteFile
 import gr.cpaleop.download.domain.entities.DownloadedFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

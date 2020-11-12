@@ -1,4 +1,4 @@
-package gr.cpaleop.core.data.model.local
+package gr.cpaleop.core.datasource.model.local
 
 import androidx.room.*
 import gr.cpaleop.core.domain.entities.SavedAnnouncement

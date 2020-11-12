@@ -1,12 +1,12 @@
-package gr.cpaleop.core.data.model.local
+package gr.cpaleop.core.datasource.model.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import gr.cpaleop.core.data.model.local.converters.RemoteAttachmentsConverter
-import gr.cpaleop.core.data.model.local.converters.RemotePublisherConverter
-import gr.cpaleop.core.data.model.response.RemoteAnnouncement
-import gr.cpaleop.core.data.model.response.RemoteCategory
+import gr.cpaleop.core.datasource.model.local.converters.RemoteAttachmentsConverter
+import gr.cpaleop.core.datasource.model.local.converters.RemotePublisherConverter
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncement
+import gr.cpaleop.core.datasource.model.response.RemoteCategory
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.entities.SavedAnnouncement
 

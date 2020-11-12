@@ -8,7 +8,7 @@ interface AnnouncementsRepository {
 
     suspend fun getAnnouncementById(id: String): Announcement
 
-    fun getSavedAnnouncementByIdFlow(id: String): Flow<SavedAnnouncement?>
+    suspend fun getSavedAnnouncementByIdFlow(id: String): Flow<SavedAnnouncement?>
 
     suspend fun isAnnouncementSaved(id: String): Boolean
 

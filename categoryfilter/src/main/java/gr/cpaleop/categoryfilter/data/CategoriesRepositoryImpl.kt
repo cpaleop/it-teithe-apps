@@ -1,9 +1,9 @@
 package gr.cpaleop.categoryfilter.data
 
-import gr.cpaleop.categoryfilter.data.model.RemoteCategoryFilter
 import gr.cpaleop.categoryfilter.domain.repositories.CategoriesRepository
-import gr.cpaleop.core.data.model.local.AppDatabase
-import gr.cpaleop.core.data.remote.CategoriesApi
+import gr.cpaleop.core.datasource.model.local.AppDatabase
+import gr.cpaleop.core.datasource.model.response.RemoteCategoryFilter
+import gr.cpaleop.core.datasource.remote.CategoriesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString

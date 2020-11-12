@@ -1,7 +1,7 @@
-package gr.cpaleop.core.data.model.local
+package gr.cpaleop.core.datasource.model.local
 
 import androidx.room.*
-import gr.cpaleop.core.data.model.response.RemoteAnnouncement
+import gr.cpaleop.core.datasource.model.response.RemoteAnnouncement
 import kotlinx.coroutines.flow.Flow
 
 @Dao

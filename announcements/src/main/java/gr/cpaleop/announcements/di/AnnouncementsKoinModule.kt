@@ -15,29 +15,17 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val announcementsModule = module {
-    viewModel {
-        AnnouncementsViewModel(
-            get(named<MainDispatcher>()),
-            get(),
-            get(),
-            get()
-        )
-    }
+    viewModel { AnnouncementsViewModel(get(named<MainDispatcher>()), get(), get(), get()) }
     viewModel { AnnouncementCategoryFilterViewModel(get(), get()) }
     single { CategoryFilterMapper() }
     single<FilterAnnouncementsUseCase> { FilterAnnouncementsUseCaseImpl(get()) }
     single<ObserveCategoriesUseCase> { ObserveCategoriesUseCaseImpl(get()) }
     single<ObserveAnnouncementsUseCase> { ObserveAnnouncementsUseCaseImpl(get()) }
-    single<CategoriesRepository> {
-        CategoriesRepositoryImpl(
-            get(),
-            get(),
-            get()
-        )
-    }
+    single<CategoriesRepository> { CategoriesRepositoryImpl(get(named<IODispatcher>()), get(), get()) }
     single<AnnouncementsRepository> {
         AnnouncementsRepositoryImpl(
             get(named<IODispatcher>()),
+            get(),
             get(),
             get(),
             get(),

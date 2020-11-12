@@ -7,5 +7,5 @@ interface AnnouncementsRepository {
 
     suspend fun updateCachedAnnouncementsByCategoryFlow(category: String)
 
-    fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>>
+    suspend fun getCachedAnnouncementsByCategoryFlow(categoryId: String): Flow<List<Announcement>>
 }

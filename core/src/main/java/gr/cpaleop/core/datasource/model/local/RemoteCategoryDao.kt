@@ -1,7 +1,7 @@
-package gr.cpaleop.core.data.model.local
+package gr.cpaleop.core.datasource.model.local
 
 import androidx.room.*
-import gr.cpaleop.core.data.model.response.RemoteCategory
+import gr.cpaleop.core.datasource.model.response.RemoteCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,7 +23,7 @@ abstract class RemoteCategoryDao {
     abstract fun fetchAllFlow(): Flow<List<RemoteCategory>>
 
     @Query("SELECT * FROM remotecategory WHERE id = :id")
-    abstract suspend fun fetchFromId(id: String?): RemoteCategory
+    abstract suspend fun fetchFromId(id: String?): RemoteCategory?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAll(remoteCategorytList: List<RemoteCategory>)

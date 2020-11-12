@@ -3,7 +3,7 @@ package gr.cpaleop.core.data
 import androidx.core.net.toUri
 import gr.cpaleop.common.extensions.diff
 import gr.cpaleop.core.data.mappers.DocumentMapper
-import gr.cpaleop.core.data.model.local.AppDatabase
+import gr.cpaleop.core.datasource.model.local.AppDatabase
 import gr.cpaleop.core.domain.behavior.DownloadFolder
 import gr.cpaleop.core.domain.entities.Document
 import gr.cpaleop.core.domain.repositories.DeviceStorageRepository

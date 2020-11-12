@@ -96,7 +96,6 @@ val documentsModule = module {
     single<AnnouncementsRepository> {
         AnnouncementsRepositoryImpl(
             get(named<IODispatcher>()),
-            get(),
             get()
         )
     }

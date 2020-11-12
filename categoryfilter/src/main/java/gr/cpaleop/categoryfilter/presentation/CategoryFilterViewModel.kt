@@ -1,6 +1,9 @@
 package gr.cpaleop.categoryfilter.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
 import gr.cpaleop.common.extensions.mapAsync
@@ -15,8 +18,7 @@ import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -39,29 +41,8 @@ class CategoryFilterViewModel(
     private val _categoryName = MutableLiveData<String>()
     val categoryName: LiveData<String> = _categoryName.toSingleEvent()
 
-    val announcements: LiveData<List<AnnouncementPresentation>> by lazy {
-        try {
-            observeAnnouncementsByCategoryUseCase(categoryId)
-                .map {
-                    it.mapAsync { announcement ->
-                        announcementPresentationMapper(
-                            announcement,
-                            observeAnnouncementsByCategoryUseCase.filterStream.value
-                        )
-                    }
-                }
-                .flowOn(defaultDispatcher)
-                .asLiveData(mainDispatcher)
-        } catch (t: NoConnectionException) {
-            Timber.e(t)
-            _message.value = Message(R.string.error_no_internet_connection)
-            return@lazy MutableLiveData()
-        } catch (t: Throwable) {
-            Timber.e(t)
-            _message.value = Message(R.string.error_generic)
-            return@lazy MutableLiveData()
-        }
-    }
+    private val _announcements = MutableLiveData<List<AnnouncementPresentation>>()
+    val announcements: LiveData<List<AnnouncementPresentation>> = _announcements.toSingleEvent()
 
     val announcementsEmpty: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
@@ -88,7 +69,33 @@ class CategoryFilterViewModel(
     fun presentAnnouncements() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _loading.value = true
+                observeAnnouncementsByCategoryUseCase(categoryId)
+                    .map {
+                        it.mapAsync { announcement ->
+                            announcementPresentationMapper(
+                                announcement,
+                                observeAnnouncementsByCategoryUseCase.filter
+                            )
+                        }
+                    }
+                    .flowOn(defaultDispatcher)
+                    .onStart { _loading.value = true }
+                    .onEach { _loading.value = false }
+                    .flowOn(mainDispatcher)
+                    .collect(_announcements::setValue)
+            } catch (t: NoConnectionException) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_no_internet_connection)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(R.string.error_generic)
+            }
+        }
+    }
+
+    fun refreshAnnouncements() {
+        viewModelScope.launch {
+            try {
                 observeAnnouncementsByCategoryUseCase.refresh(categoryId)
             } catch (t: NoConnectionException) {
                 Timber.e(t)
@@ -96,8 +103,6 @@ class CategoryFilterViewModel(
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_generic)
-            } finally {
-                _loading.value = false
             }
         }
     }
@@ -105,7 +110,7 @@ class CategoryFilterViewModel(
     fun filterAnnouncements(query: String) {
         viewModelScope.launch(mainDispatcher) {
             try {
-                observeAnnouncementsByCategoryUseCase.filter(query)
+                observeAnnouncementsByCategoryUseCase.filter = query
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_generic)
