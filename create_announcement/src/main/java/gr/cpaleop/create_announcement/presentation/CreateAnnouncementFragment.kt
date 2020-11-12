@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import gr.cpaleop.common.extensions.animateSoftVisibilty
-import gr.cpaleop.common.extensions.animateVisibilty
 import gr.cpaleop.common.extensions.animateVisibiltyWithScale
 import gr.cpaleop.common.extensions.hideKeyboard
 import gr.cpaleop.core.presentation.Message
@@ -129,7 +128,8 @@ class CreateAnnouncementFragment :
     }
 
     private fun showProgress(shouldShow: Boolean) {
-        binding.createAnnouncementCoverView.animateVisibilty(shouldShow).start()
+        binding.createAnnouncementSubmitButton.isEnabled = !shouldShow
+        binding.createAnnouncementAddAttachmentsFab.isEnabled = !shouldShow
         binding.createAnnouncementUploadProgressBar.animateSoftVisibilty(shouldShow).start()
     }
 
