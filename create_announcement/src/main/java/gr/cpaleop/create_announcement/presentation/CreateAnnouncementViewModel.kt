@@ -15,10 +15,10 @@ import gr.cpaleop.create_announcement.domain.usecases.*
 import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentation
 import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentationMapper
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
+import gr.cpaleop.upload.domain.behavior.UploadProgressNotifier
 import gr.cpaleop.upload.domain.entities.MultilanguageText
 import gr.cpaleop.upload.domain.entities.NewAnnouncement
 import gr.cpaleop.upload.domain.entities.UploadProgress
-import gr.cpaleop.upload.domain.entities.UploadProgressNotifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -48,8 +48,9 @@ class CreateAnnouncementViewModel(
         emptyList()
     )
 
-    val uploadProgress: LiveData<UploadProgress> = uploadProgressNotifier.asFlow()
-        .asLiveData(mainDispatcher).toSingleEvent()
+    val uploadProgress: LiveData<UploadProgress> = uploadProgressNotifier
+        .asLiveData(mainDispatcher)
+        .toSingleEvent()
 
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories.toSingleEvent()

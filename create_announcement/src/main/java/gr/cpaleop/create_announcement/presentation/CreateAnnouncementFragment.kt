@@ -111,6 +111,8 @@ class CreateAnnouncementFragment :
     private fun handleProgress(uploadProgress: UploadProgress) {
         viewLifecycleOwner.lifecycleScope.launch {
             when (uploadProgress) {
+                is UploadProgress.Idle -> {
+                }
                 is UploadProgress.Uploading -> showProgress(true)
                 UploadProgress.Success -> {
                     showProgress(false)

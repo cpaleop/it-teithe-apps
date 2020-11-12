@@ -2,7 +2,7 @@ package gr.cpaleop.teithe_apps.di
 
 import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.upload.data.AnnouncementsRepositoryImpl
-import gr.cpaleop.upload.domain.entities.UploadProgressNotifier
+import gr.cpaleop.upload.domain.behavior.UploadProgressNotifier
 import gr.cpaleop.upload.domain.repositories.AnnouncementsRepository
 import gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase
 import gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCaseImpl

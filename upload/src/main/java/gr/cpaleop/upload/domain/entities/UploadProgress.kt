@@ -2,6 +2,8 @@ package gr.cpaleop.upload.domain.entities
 
 sealed class UploadProgress {
 
+    object Idle : UploadProgress()
+
     object Uploading : UploadProgress()
 
     object Success : UploadProgress()

@@ -2,10 +2,11 @@ package gr.cpaleop.upload.presentation
 
 import android.content.Context
 import androidx.work.*
+import gr.cpaleop.upload.domain.behavior.MutableUploadProgressNotifier
 import gr.cpaleop.upload.domain.entities.MultilanguageText
 import gr.cpaleop.upload.domain.entities.NewAnnouncement
 import gr.cpaleop.upload.domain.entities.UploadProgress
-import gr.cpaleop.upload.domain.entities.UploadProgressNotifier
+import gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -22,25 +23,25 @@ class UploadAnnouncementWorker(
 ) : CoroutineWorker(context, workerParameters), KoinComponent {
 
     private val uploadNotificationManager: UploadNotificationManager by inject()
-    private val uploadProgressNotifier: UploadProgressNotifier by inject()
-    private val createAnnouncementUseCase: gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase by inject()
+    private val uploadProgressNotifier = MutableUploadProgressNotifier
+    private val createAnnouncementUseCase: CreateAnnouncementUseCase by inject()
 
     override suspend fun doWork(): Result {
         return try {
             val newAnnouncement = handleInput() ?: throw IllegalArgumentException(
                 "Invalid worker parameters"
             )
-            uploadProgressNotifier.emit(UploadProgress.Uploading)
+            uploadProgressNotifier.notify(UploadProgress.Uploading)
             setupNotification()
             createAnnouncementUseCase(newAnnouncement)
             delay(5000)
             uploadNotificationManager.showSuccess()
-            uploadProgressNotifier.emit(UploadProgress.Success)
+            uploadProgressNotifier.notify(UploadProgress.Success)
             Result.success()
         } catch (t: Throwable) {
             Timber.e(t)
             uploadNotificationManager.showFailure()
-            uploadProgressNotifier.emit(UploadProgress.Failure(t))
+            uploadProgressNotifier.notify(UploadProgress.Failure(t))
             Result.failure()
         }
     }
