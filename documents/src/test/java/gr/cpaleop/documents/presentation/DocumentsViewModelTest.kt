@@ -440,7 +440,7 @@ class DocumentsViewModelTest {
                 size = 10000L,
                 absolutePath = "absolute_path/name",
                 lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),
-                previewDrawable = R.drawable.ic_pdf
+                previewDrawable = appR.drawable.ic_pdf
             ),
             FileDocument(
                 uri = "uri1",
@@ -448,7 +448,7 @@ class DocumentsViewModelTest {
                 size = 10000L,
                 absolutePath = "absolute_path/name1",
                 lastModifiedDate = LastModified(R.string.documents_modified, "last_modified_date"),
-                previewDrawable = R.drawable.ic_docx
+                previewDrawable = appR.drawable.ic_docx
             )
         )
     }

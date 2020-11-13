@@ -5,28 +5,30 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import gr.cpaleop.categoryfilter.domain.usecases.GetCategoryNameUseCase
 import gr.cpaleop.categoryfilter.domain.usecases.ObserveAnnouncementsByCategoryUseCase
-import gr.cpaleop.common_test.LiveDataTest
+import gr.cpaleop.common_test.testValue
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Announcement
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.AnnouncementPresentation
+import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.core.presentation.mappers.AnnouncementPresentationMapper
+import gr.cpaleop.network.connection.NoConnectionException
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import gr.cpaleop.teithe_apps.R as appR
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -67,74 +69,94 @@ class CategoryFilterViewModelTest {
     }
 
     @Test
-    fun `presentCategoryName has correct value`() {
+    fun `presentCategoryName has correct value`() = runBlocking {
         val expectedValue = "category_name"
         coEvery { getCategoryNameUseCase(viewModel.categoryId) } returns expectedValue
         viewModel.presentCategoryName()
-        assertThat(LiveDataTest.getValue(viewModel.categoryName)).isEqualTo(expectedValue)
+        assertThat(viewModel.categoryName.testValue).isEqualTo(expectedValue)
     }
 
     @Test
-    fun `presentCategoryName catches exception when failure`() {
+    fun `presentCategoryName catches exception when failure`() = runBlocking {
         coEvery { getCategoryNameUseCase(viewModel.categoryId) } throws Throwable()
         viewModel.presentCategoryName()
     }
 
     @Test
-    fun `presentAnnouncements is success`() {
+    fun `refreshAnnouncements is success`() = runBlocking {
         coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } returns Unit
-        viewModel.presentAnnouncements()
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        viewModel.refreshAnnouncements()
+        assertThat(viewModel.loading.testValue).isEqualTo(false)
     }
 
     @Test
-    fun `presentAnnouncements catches exception when failure`() {
+    fun `refreshAnnouncements has correct message when error`() = runBlocking {
+        val expectedMessage = Message(appR.string.error_generic)
         coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } throws Throwable()
-        viewModel.presentAnnouncements()
-        assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
+        viewModel.refreshAnnouncements()
+        assertThat(viewModel.loading.testValue).isEqualTo(false)
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
 
     @Test
-    fun `announcements livedata correct values with no filter`() =
-        testMainCoroutineDispatcher.runBlockingTest {
-            Dispatchers.setMain(testMainCoroutineDispatcher)
-            val expectedAnnouncementList = announcementPresentationList
-            val expectedFlow = flow {
-                emit(announcementList)
-            }
-            coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow.flowOn(
-                testMainCoroutineDispatcher
-            )
-            every { observeAnnouncementsByCategoryUseCase.filter } returns ""
-            every { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
-            every { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
-
-            assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(
-                expectedAnnouncementList
-            )
-            assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(false)
-        }
+    fun `refreshAnnouncements has correct message when no internet connection`() = runBlocking {
+        val expectedMessage = Message(appR.string.error_no_internet_connection)
+        coEvery { observeAnnouncementsByCategoryUseCase.refresh(viewModel.categoryId) } throws NoConnectionException()
+        viewModel.refreshAnnouncements()
+        assertThat(viewModel.loading.testValue).isEqualTo(false)
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
+    }
 
     @Test
-    fun `announcements livedata empty list`() = testMainCoroutineDispatcher.runBlockingTest {
-        Dispatchers.setMain(testMainCoroutineDispatcher)
-        val announcementList = emptyList<Announcement>()
-        val expected = emptyList<AnnouncementPresentation>()
+    fun `presentAnnouncements has correct values with no filter`() = runBlocking {
+        val expectedAnnouncementList = announcementPresentationList
         val expectedFlow = flow {
             emit(announcementList)
         }
-        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
-        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
-        assertThat(LiveDataTest.getValue(viewModel.announcementsEmpty)).isEqualTo(true)
+        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow.flowOn(
+            testMainCoroutineDispatcher
+        )
+        every { observeAnnouncementsByCategoryUseCase.filter } returns ""
+        every { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
+        every { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
+        viewModel.presentAnnouncements()
+        assertThat(viewModel.announcements.testValue).isEqualTo(expectedAnnouncementList)
+        assertThat(viewModel.announcementsEmpty.testValue).isEqualTo(false)
     }
 
     @Test
-    fun `announcements livedata throws exception`() = testMainCoroutineDispatcher.runBlockingTest {
-        val expected = null
-        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } throws Throwable(
-            ""
-        )
-        assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
+    fun `presentAnnouncements empty list`() = runBlocking {
+        val announcementList = emptyList<Announcement>()
+        val expected = emptyList<AnnouncementPresentation>()
+        val expectedFlow = flow { emit(announcementList) }
+        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } returns expectedFlow
+        viewModel.presentAnnouncements()
+        assertThat(viewModel.announcements.testValue).isEqualTo(expected)
+        assertThat(viewModel.announcementsEmpty.testValue).isEqualTo(true)
+    }
+
+    @Test
+    fun `presentAnnouncements has correct message when error`() = testMainCoroutineDispatcher.runBlockingTest {
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { observeAnnouncementsByCategoryUseCase(viewModel.categoryId) } throws Throwable()
+        viewModel.presentAnnouncements()
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `filterAnnouncements success`() = runBlocking {
+        val givenQuery = "query"
+        every { observeAnnouncementsByCategoryUseCase.filter = givenQuery } returns Unit
+        viewModel.filterAnnouncements(givenQuery)
+    }
+
+    @Test
+    fun `filterAnnouncements has correct message when error`() = runBlocking {
+        val givenQuery = "query"
+        val expectedMessage = Message(appR.string.error_generic)
+        every { observeAnnouncementsByCategoryUseCase.filter = givenQuery } throws Throwable()
+        viewModel.filterAnnouncements(givenQuery)
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
 
     companion object {

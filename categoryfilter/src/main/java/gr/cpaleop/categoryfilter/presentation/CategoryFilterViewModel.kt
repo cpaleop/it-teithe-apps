@@ -17,7 +17,9 @@ import gr.cpaleop.teithe_apps.R
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -78,8 +80,6 @@ class CategoryFilterViewModel(
                         }
                     }
                     .flowOn(defaultDispatcher)
-                    .onStart { _loading.value = true }
-                    .onEach { _loading.value = false }
                     .flowOn(mainDispatcher)
                     .collect(_announcements::setValue)
             } catch (t: NoConnectionException) {
@@ -95,6 +95,7 @@ class CategoryFilterViewModel(
     fun refreshAnnouncements() {
         viewModelScope.launch {
             try {
+                _loading.value = true
                 observeAnnouncementsByCategoryUseCase.refresh(categoryId)
             } catch (t: NoConnectionException) {
                 Timber.e(t)
@@ -102,6 +103,8 @@ class CategoryFilterViewModel(
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(R.string.error_generic)
+            } finally {
+                _loading.value = false
             }
         }
     }

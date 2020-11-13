@@ -52,7 +52,7 @@ class ObservePublicAnnouncementsUseCaseImplTest {
         val givenQuery = "title1"
         val expected = listOf(announcementList[1])
         coEvery { announcementsRepository.getPublicAnnouncementsFlow() } returns announcementListFlow
-        observePublicAnnouncementsUseCaseImpl.filter(givenQuery)
+        observePublicAnnouncementsUseCaseImpl.filter = givenQuery
         val actual = observePublicAnnouncementsUseCaseImpl().first()
         assertThat(actual).isEqualTo(expected)
     }
@@ -62,7 +62,7 @@ class ObservePublicAnnouncementsUseCaseImplTest {
         val givenQuery = "title11"
         val expected = emptyList<Announcement>()
         coEvery { announcementsRepository.getPublicAnnouncementsFlow() } returns announcementListFlow
-        observePublicAnnouncementsUseCaseImpl.filter(givenQuery)
+        observePublicAnnouncementsUseCaseImpl.filter = givenQuery
         val actual = observePublicAnnouncementsUseCaseImpl().first()
         assertThat(actual).isEqualTo(expected)
     }

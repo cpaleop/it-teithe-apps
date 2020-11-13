@@ -6,6 +6,7 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.R
+import gr.cpaleop.create_announcement.domain.behavior.AnnouncementValidator
 import gr.cpaleop.create_announcement.domain.entities.Attachment
 import gr.cpaleop.create_announcement.domain.entities.EmptyCategoryException
 import gr.cpaleop.create_announcement.domain.entities.EmptyTextException
@@ -36,6 +37,7 @@ class CreateAnnouncementViewModel(
     private val getSelectedAttachmentsUseCase: GetSelectedAttachmentsUseCase,
     private val addAttachmentsUseCase: AddAttachmentsUseCase,
     private val removeAttachmentsUseCase: RemoveAttachmentsUseCase,
+    private val announcementValidator: AnnouncementValidator,
     private val attachmentPresentationMapper: AttachmentPresentationMapper,
     uploadProgressNotifier: UploadProgressNotifier
 ) : BaseViewModel() {
@@ -103,9 +105,6 @@ class CreateAnnouncementViewModel(
     private val _categorySelected = MutableLiveData<Unit>()
     val categorySelected: LiveData<Unit> = _categorySelected.toSingleEvent()
 
-    private val _announcementCreated = MutableLiveData<Unit>()
-    val announcementCreated: LiveData<Unit> = _announcementCreated.toSingleEvent()
-
     private val _enqueueAnnouncement = MutableLiveData<NewAnnouncement>()
     val enqueueAnnouncement: LiveData<NewAnnouncement> = _enqueueAnnouncement.toSingleEvent()
 
@@ -132,8 +131,7 @@ class CreateAnnouncementViewModel(
     fun createAnnouncement() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _enqueueAnnouncement.value = newAnnouncement
-                /*_announcementCreated.value = createAnnouncementUseCase(newAnnouncement)*/
+                _enqueueAnnouncement.value = announcementValidator(newAnnouncement)
             } catch (t: EmptyTitleException) {
                 Timber.e(t)
                 _message.value = Message(R.string.create_announcement_error_title_empty)
@@ -177,9 +175,11 @@ class CreateAnnouncementViewModel(
         viewModelScope.launch(mainDispatcher) {
             try {
                 addAttachmentsUseCase(attachmentUriList)
+                newAnnouncement = newAnnouncement.copy(attachmentsUriList = attachmentUriList)
                 _attachments.value = getSelectedAttachmentsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -191,6 +191,7 @@ class CreateAnnouncementViewModel(
                 _attachments.value = getSelectedAttachmentsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }
@@ -201,6 +202,7 @@ class CreateAnnouncementViewModel(
                 _attachments.value = getSelectedAttachmentsUseCase()
             } catch (t: Throwable) {
                 Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
             }
         }
     }

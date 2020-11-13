@@ -1,4 +1,4 @@
-package gr.cpaleop.create_announcement.domain
+package gr.cpaleop.create_announcement.domain.behavior
 
 import gr.cpaleop.create_announcement.domain.entities.EmptyCategoryException
 import gr.cpaleop.create_announcement.domain.entities.EmptyTextException
@@ -8,5 +8,5 @@ import gr.cpaleop.upload.domain.entities.NewAnnouncement
 interface AnnouncementValidator {
 
     @Throws(EmptyTitleException::class, EmptyTextException::class, EmptyCategoryException::class)
-    operator fun invoke(newAnnouncement: NewAnnouncement): Boolean
+    operator fun invoke(newAnnouncement: NewAnnouncement): NewAnnouncement
 }

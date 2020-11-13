@@ -9,8 +9,12 @@ import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.create_announcement.databinding.DialogFragmentCategorySelectionBinding
 import gr.cpaleop.create_announcement.presentation.CreateAnnouncementViewModel
 import gr.cpaleop.teithe_apps.presentation.base.BaseBottomSheetDialog
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CategorySelectionFragment : BaseBottomSheetDialog<DialogFragmentCategorySelectionBinding>() {
 
     private val viewModel: CreateAnnouncementViewModel by sharedViewModel()

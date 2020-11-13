@@ -7,17 +7,22 @@ import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.create_announcement.R
+import gr.cpaleop.create_announcement.domain.behavior.AnnouncementValidator
+import gr.cpaleop.create_announcement.domain.entities.Attachment
 import gr.cpaleop.create_announcement.domain.entities.EmptyCategoryException
 import gr.cpaleop.create_announcement.domain.entities.EmptyTextException
 import gr.cpaleop.create_announcement.domain.entities.EmptyTitleException
-import gr.cpaleop.create_announcement.domain.usecases.GetCategoriesUseCase
-import gr.cpaleop.create_announcement.domain.usecases.GetCategoryUseCase
+import gr.cpaleop.create_announcement.domain.usecases.*
+import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentation
+import gr.cpaleop.create_announcement.presentation.attachments.AttachmentPresentationMapper
+import gr.cpaleop.upload.domain.behavior.UploadProgressNotifier
 import gr.cpaleop.upload.domain.entities.MultilanguageText
 import gr.cpaleop.upload.domain.entities.NewAnnouncement
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
@@ -25,6 +30,7 @@ import org.junit.Rule
 import org.junit.Test
 import gr.cpaleop.teithe_apps.R as appR
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 class CreateAnnouncementViewModelTest {
 
@@ -41,7 +47,22 @@ class CreateAnnouncementViewModelTest {
     private lateinit var getCategoryUseCase: GetCategoryUseCase
 
     @MockK
-    private lateinit var createAnnouncementUseCase: gr.cpaleop.upload.domain.usecases.CreateAnnouncementUseCase
+    private lateinit var getSelectedAttachmentsUseCase: GetSelectedAttachmentsUseCase
+
+    @MockK
+    private lateinit var addAttachmentsUseCase: AddAttachmentsUseCase
+
+    @MockK
+    private lateinit var removeAttachmentsUseCase: RemoveAttachmentsUseCase
+
+    @MockK
+    private lateinit var announcementValidator: AnnouncementValidator
+
+    @MockK
+    private lateinit var attachmentPresentationMapper: AttachmentPresentationMapper
+
+    @MockK
+    private lateinit var uploadProgressNotifier: UploadProgressNotifier
 
     private lateinit var viewModel: CreateAnnouncementViewModel
 
@@ -52,7 +73,12 @@ class CreateAnnouncementViewModelTest {
             testMainDispatcher,
             getCategoriesUseCase,
             getCategoryUseCase,
-            createAnnouncementUseCase
+            getSelectedAttachmentsUseCase,
+            addAttachmentsUseCase,
+            removeAttachmentsUseCase,
+            announcementValidator,
+            attachmentPresentationMapper,
+            uploadProgressNotifier
         )
     }
 
@@ -70,8 +96,9 @@ class CreateAnnouncementViewModelTest {
             category = category,
             attachmentsUriList = attachmentUriList
         )
-        val expectedResult = Unit
-        coEvery { createAnnouncementUseCase(givenNewAnnouncement) } returns Unit
+        val expectedAnnouncement = givenNewAnnouncement
+        coEvery { addAttachmentsUseCase(attachmentUriList) } returns Unit
+        coEvery { announcementValidator(givenNewAnnouncement) } returns givenNewAnnouncement
         viewModel.addTitleEn(titleEn)
         viewModel.addTitleGr(titleGr)
         viewModel.addTextEn(textEn)
@@ -79,11 +106,11 @@ class CreateAnnouncementViewModelTest {
         viewModel.addCategory(category)
         viewModel.addAttachments(attachmentUriList)
         viewModel.createAnnouncement()
-        assertThat(viewModel.announcementCreated.testValue).isEqualTo(expectedResult)
+        assertThat(viewModel.enqueueAnnouncement.testValue).isEqualTo(expectedAnnouncement)
     }
 
     @Test
-    fun `createAnnouncement has message when title is empty`() = runBlocking {
+    fun `createAnnouncement has correct message when title is empty`() = runBlocking {
         val titleEn = ""
         val titleGr = ""
         val textEn = "textEn"
@@ -97,7 +124,8 @@ class CreateAnnouncementViewModelTest {
             attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_title_empty)
-        coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTitleException()
+        coEvery { addAttachmentsUseCase(attachmentUriList) } returns Unit
+        coEvery { announcementValidator(givenNewAnnouncement) } throws EmptyTitleException()
         viewModel.addTitleEn(titleEn)
         viewModel.addTitleGr(titleGr)
         viewModel.addTextEn(textEn)
@@ -109,7 +137,7 @@ class CreateAnnouncementViewModelTest {
     }
 
     @Test
-    fun `createAnnouncement has message when text is empty`() = runBlocking {
+    fun `createAnnouncement has correct message when text is empty`() = runBlocking {
         val titleEn = "titleEn"
         val titleGr = "titleGr"
         val textEn = ""
@@ -123,7 +151,8 @@ class CreateAnnouncementViewModelTest {
             attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_text_empty)
-        coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyTextException()
+        coEvery { addAttachmentsUseCase(attachmentUriList) } returns Unit
+        coEvery { announcementValidator(givenNewAnnouncement) } throws EmptyTextException()
         viewModel.addTitleEn(titleEn)
         viewModel.addTitleGr(titleGr)
         viewModel.addTextEn(textEn)
@@ -135,7 +164,7 @@ class CreateAnnouncementViewModelTest {
     }
 
     @Test
-    fun `createAnnouncement has message when category is empty`() = runBlocking {
+    fun `createAnnouncement has correct message when category is empty`() = runBlocking {
         val titleEn = "titleEn"
         val titleGr = "titleGr"
         val textEn = "textEn"
@@ -149,7 +178,8 @@ class CreateAnnouncementViewModelTest {
             attachmentsUriList = attachmentUriList
         )
         val expectedMessage = Message(R.string.create_announcement_error_category_empty)
-        coEvery { createAnnouncementUseCase(givenNewAnnouncement) } throws EmptyCategoryException()
+        coEvery { addAttachmentsUseCase(attachmentUriList) } returns Unit
+        coEvery { announcementValidator(givenNewAnnouncement) } throws EmptyCategoryException()
         viewModel.addTitleEn(titleEn)
         viewModel.addTitleGr(titleGr)
         viewModel.addTextEn(textEn)
@@ -169,7 +199,7 @@ class CreateAnnouncementViewModelTest {
     }
 
     @Test
-    fun `presentCategories has message when error`() = runBlocking {
+    fun `presentCategories has correct message when error`() = runBlocking {
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { getCategoriesUseCase() } throws Throwable()
         viewModel.presentCategories()
@@ -179,14 +209,14 @@ class CreateAnnouncementViewModelTest {
     @Test
     fun `selectCategory has correct value`() = runBlocking {
         val givenCategoryId = "id1"
-        val expectedCategory = categoryList[0]
+        val expectedCategory = categoryList[0].name
         coEvery { getCategoryUseCase(givenCategoryId) } returns categoryList[0]
         viewModel.selectCategory(givenCategoryId)
         assertThat(viewModel.category.testValue).isEqualTo(expectedCategory)
     }
 
     @Test
-    fun `selectCategory has message when error`() = runBlocking {
+    fun `selectCategory has correct message when error`() = runBlocking {
         val givenCategoryId = "id1"
         val expectedMessage = Message(appR.string.error_generic)
         coEvery { getCategoryUseCase(givenCategoryId) } throws Throwable()
@@ -194,19 +224,120 @@ class CreateAnnouncementViewModelTest {
         assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }
 
-    companion object {
-
-        private val categoryList = listOf(
-            Category(
-                name = "name1",
-                id = "id1",
-                isRegistered = false
-            ),
-            Category(
-                name = "name2",
-                id = "id2",
-                isRegistered = false
-            )
-        )
+    @Test
+    fun `addAttachments has correct value`() = runBlocking {
+        val givenAttachmentUriList = listOf("uri1", "uri2")
+        val expected = attachmentPresentationList
+        val expectedCounterValue = "2"
+        coEvery { addAttachmentsUseCase(givenAttachmentUriList) } returns Unit
+        coEvery { getSelectedAttachmentsUseCase() } returns attachmentList
+        coEvery { attachmentPresentationMapper(attachmentList[0].uri) } returns attachmentPresentationList[0]
+        coEvery { attachmentPresentationMapper(attachmentList[1].uri) } returns attachmentPresentationList[1]
+        viewModel.addAttachments(givenAttachmentUriList)
+        assertThat(viewModel.attachments.testValue).isEqualTo(expected)
+        assertThat(viewModel.attachmentsEmpty.testValue).isEqualTo(false)
+        assertThat(viewModel.attachmentsCounterVisibility.testValue).isEqualTo(true)
+        assertThat(viewModel.attachmentsCounter.testValue).isEqualTo(expectedCounterValue)
     }
+
+    @Test
+    fun `addAttachments has message when error`() = runBlocking {
+        val givenAttachmentUriList = listOf("uri1", "uri2")
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { addAttachmentsUseCase(givenAttachmentUriList) } throws Throwable()
+        viewModel.addAttachments(givenAttachmentUriList)
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `removeAttachment has correct value`() = runBlocking {
+        val givenUri = "uri1"
+        val toBeRemovedAttachmentUriList = listOf(givenUri)
+        val expected = attachmentPresentationList
+        val expectedCounterValue = "2"
+        coEvery { removeAttachmentsUseCase(toBeRemovedAttachmentUriList) } returns Unit
+        coEvery { getSelectedAttachmentsUseCase() } returns attachmentList
+        coEvery { attachmentPresentationMapper(attachmentList[0].uri) } returns attachmentPresentationList[0]
+        coEvery { attachmentPresentationMapper(attachmentList[1].uri) } returns attachmentPresentationList[1]
+        viewModel.removeAttachment(givenUri)
+        assertThat(viewModel.attachments.testValue).isEqualTo(expected)
+        assertThat(viewModel.attachmentsEmpty.testValue).isEqualTo(false)
+        assertThat(viewModel.attachmentsCounterVisibility.testValue).isEqualTo(true)
+        assertThat(viewModel.attachmentsCounter.testValue).isEqualTo(expectedCounterValue)
+    }
+
+    @Test
+    fun `removeAttachment has correct message when error`() = runBlocking {
+        val givenUri = "uri1"
+        val toBeRemovedAttachmentUriList = listOf(givenUri)
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { removeAttachmentsUseCase(toBeRemovedAttachmentUriList) } throws Throwable()
+        viewModel.removeAttachment(givenUri)
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
+    }
+
+    @Test
+    fun `presentAttachments has correct value`() {
+        val expectedList = attachmentPresentationList
+        val expectedCounterValue = "2"
+        coEvery { getSelectedAttachmentsUseCase() } returns attachmentList
+        coEvery { attachmentPresentationMapper(attachmentList[0].uri) } returns attachmentPresentationList[0]
+        coEvery { attachmentPresentationMapper(attachmentList[1].uri) } returns attachmentPresentationList[1]
+        viewModel.presentAttachments()
+        assertThat(viewModel.attachments.testValue).isEqualTo(expectedList)
+        assertThat(viewModel.attachmentsEmpty.testValue).isEqualTo(false)
+        assertThat(viewModel.attachmentsCounterVisibility.testValue).isEqualTo(true)
+        assertThat(viewModel.attachmentsCounter.testValue).isEqualTo(expectedCounterValue)
+    }
+
+    @Test
+    fun `presentAttachments has correct message when error`() {
+        val expectedMessage = Message(appR.string.error_generic)
+        coEvery { getSelectedAttachmentsUseCase() } throws Throwable()
+        viewModel.presentAttachments()
+        assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
+    }
+
+    companion object
+
+    private
+
+    val attachmentPresentationList = listOf(
+        AttachmentPresentation(
+            uri = "uri1",
+            name = "name",
+            typeDrawableRes = appR.drawable.ic_pdf
+        ),
+        AttachmentPresentation(
+            uri = "uri2",
+            name = "name",
+            typeDrawableRes = appR.drawable.ic_pdf
+        )
+    )
+
+    private val attachmentList = listOf(
+        Attachment(
+            uri = "uri1",
+            name = "name",
+            type = "application/pdf"
+        ),
+        Attachment(
+            uri = "uri2",
+            name = "name",
+            type = "application/pdf"
+        )
+    )
+
+    private val categoryList = listOf(
+        Category(
+            name = "name1",
+            id = "id1",
+            isRegistered = false
+        ),
+        Category(
+            name = "name2",
+            id = "id2",
+            isRegistered = false
+        )
+    )
 }

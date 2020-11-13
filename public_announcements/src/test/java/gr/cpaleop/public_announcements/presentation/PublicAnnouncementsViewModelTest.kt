@@ -14,6 +14,7 @@ import gr.cpaleop.network.connection.NoConnectionException
 import gr.cpaleop.public_announcements.domain.usecases.ObservePublicAnnouncementsUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -61,6 +62,7 @@ class PublicAnnouncementsViewModelTest {
         coEvery { observePublicAnnouncementsUseCase() } returns flow { emit(announcementList) }
         coEvery { announcementPresentationMapper(announcementList[0]) } returns announcementPresentationList[0]
         coEvery { announcementPresentationMapper(announcementList[1]) } returns announcementPresentationList[1]
+        every { observePublicAnnouncementsUseCase.filter } returns ""
         viewModel.presentAnnouncements()
         assertThat(LiveDataTest.getValue(viewModel.loading)).isEqualTo(false)
         assertThat(LiveDataTest.getValue(viewModel.announcements)).isEqualTo(expected)
