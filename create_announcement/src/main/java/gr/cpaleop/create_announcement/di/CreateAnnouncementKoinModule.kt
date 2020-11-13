@@ -36,7 +36,7 @@ val createAnnouncementKoinModule = module {
     single { AttachmentPresentationMapper(get(named<IODispatcher>()), get()) }
     single<AnnouncementValidator> { AnnouncementValidatorImpl() }
     single<GetCategoryUseCase> { GetCategoryUseCaseImpl(get()) }
-    single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
+    single<ObserveCategoriesUseCase> { ObserveCategoriesUseCaseImpl(get()) }
     single<GetSelectedAttachmentsUseCase> { GetSelectedAttachmentsUseCaseImpl(get()) }
     single<AddAttachmentsUseCase> { AddAttachmentsUseCaseImpl(get()) }
     single<RemoveAttachmentsUseCase> { RemoveAttachmentsUseCaseImpl(get()) }

@@ -80,7 +80,6 @@ class CategoryFilterViewModel(
                         }
                     }
                     .flowOn(defaultDispatcher)
-                    .flowOn(mainDispatcher)
                     .collect(_announcements::setValue)
             } catch (t: NoConnectionException) {
                 Timber.e(t)

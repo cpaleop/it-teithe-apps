@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.afollestad.materialdialogs.MaterialDialog
@@ -24,6 +25,7 @@ import gr.cpaleop.profile.presentation.personal.PersonalOptionData
 import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import gr.cpaleop.teithe_apps.R as appR
 
 class ProfileFragment :
     BaseApiFragment<FragmentProfileBinding, ProfileViewModel>(ProfileViewModel::class) {
@@ -53,6 +55,7 @@ class ProfileFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), appR.color.colorBackgroundCard)
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()

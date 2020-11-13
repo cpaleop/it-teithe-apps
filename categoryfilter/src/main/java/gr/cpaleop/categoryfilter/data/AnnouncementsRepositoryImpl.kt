@@ -32,7 +32,6 @@ class AnnouncementsRepositoryImpl(
             .map { remoteAnnouncementList ->
                 val category = categoriesDataSource.fetchCategoryById(categoryId)
                 remoteAnnouncementList
-                    .sortedByDescending { it.date }
                     .map { announcementMapper(it, category) }
             }.flowOn(ioDispatcher)
     }

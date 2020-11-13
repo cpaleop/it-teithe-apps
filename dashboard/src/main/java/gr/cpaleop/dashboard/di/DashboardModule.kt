@@ -2,6 +2,7 @@ package gr.cpaleop.dashboard.di
 
 import gr.cpaleop.core.data.mappers.DocumentMapper
 import gr.cpaleop.core.dispatchers.DefaultDispatcher
+import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.dispatchers.MainDispatcher
 import gr.cpaleop.dashboard.data.CategoriesRepositoryImpl
 import gr.cpaleop.dashboard.data.NotificationsRepositoryImpl
@@ -36,10 +37,11 @@ val dashboardModule = module {
     single { DocumentMapper(get(named<DefaultDispatcher>())) }
     single<ReadAllNotificationsUseCase> { ReadAllNotificationsUseCaseImpl(get()) }
     single<UpdateRegisteredCategoriesUseCase> { UpdateRegisteredCategoriesUseCaseImpl(get()) }
-    single<GetCategoriesUseCase> { GetCategoriesUseCaseImpl(get()) }
+    single<ObserveCategoriesUseCase> { ObserveCategoriesUseCaseImpl(get()) }
     single<ObserveNotificationsUseCase> { ObserveNotificationsUseCaseImpl(get()) }
     single<CategoriesRepository> {
         CategoriesRepositoryImpl(
+            get(named<IODispatcher>()),
             get(),
             get()
         )

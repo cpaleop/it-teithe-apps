@@ -6,6 +6,8 @@ import gr.cpaleop.core.dispatchers.IODispatcher
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.create_announcement.domain.repositories.CategoriesRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CategoriesRepositoryImpl(
@@ -15,8 +17,15 @@ class CategoriesRepositoryImpl(
     private val categoryMapper: CategoryMapper
 ) : CategoriesRepository {
 
-    override suspend fun getCategories(): List<Category> = withContext(ioDispatcher) {
-        categoriesDataSource.fetchCategories().map(categoryMapper::invoke)
+    override suspend fun refreshCategories() = withContext(ioDispatcher) {
+        categoriesDataSource.fetchCategories()
+        return@withContext
+    }
+
+    override suspend fun getCategoriesFlow(): Flow<List<Category>> = withContext(ioDispatcher) {
+        categoriesDataSource.fetchCategoriesFlow(true).map {
+            it.map(categoryMapper::invoke)
+        }
     }
 
     override suspend fun getCategoryById(id: String): Category = withContext(ioDispatcher) {

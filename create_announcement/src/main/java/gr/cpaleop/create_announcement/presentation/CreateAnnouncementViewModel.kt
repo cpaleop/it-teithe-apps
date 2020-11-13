@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import gr.cpaleop.teithe_apps.R as appR
@@ -32,7 +33,7 @@ import gr.cpaleop.teithe_apps.R as appR
 class CreateAnnouncementViewModel(
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val getCategoryUseCase: GetCategoryUseCase,
     private val getSelectedAttachmentsUseCase: GetSelectedAttachmentsUseCase,
     private val addAttachmentsUseCase: AddAttachmentsUseCase,
@@ -150,7 +151,16 @@ class CreateAnnouncementViewModel(
     fun presentCategories() {
         viewModelScope.launch(mainDispatcher) {
             try {
-                _categories.value = getCategoriesUseCase()
+                observeCategoriesUseCase().collect(_categories::setValue)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                _message.value = Message(appR.string.error_generic)
+            }
+        }
+
+        viewModelScope.launch {
+            try {
+                observeCategoriesUseCase.refresh()
             } catch (t: Throwable) {
                 Timber.e(t)
                 _message.value = Message(appR.string.error_generic)

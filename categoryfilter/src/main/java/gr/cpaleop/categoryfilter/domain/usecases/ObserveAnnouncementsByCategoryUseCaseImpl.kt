@@ -22,7 +22,7 @@ class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsReposit
     override suspend fun invoke(categoryId: String): Flow<List<Announcement>> {
         return announcementsRepository.getCachedAnnouncementsByCategoryFlow(categoryId)
             .combine(_filterStream) { announcements, filterQuery ->
-                if (filterQuery.isEmpty()) return@combine announcements
+                if (filterQuery.isEmpty()) return@combine announcements.sortedByDescending { it.date }
                 announcements.filter { announcement ->
                     announcement.title.removeIntonation()
                         .contains(filterQuery.removeIntonation(), true) ||
@@ -30,7 +30,7 @@ class ObserveAnnouncementsByCategoryUseCaseImpl(private val announcementsReposit
                                 .contains(filterQuery.removeIntonation(), true) ||
                             announcement.publisherName.removeIntonation()
                                 .contains(filterQuery.removeIntonation(), true)
-                }
+                }.sortedByDescending { it.date }
             }
     }
 

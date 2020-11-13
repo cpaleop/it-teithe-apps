@@ -8,16 +8,17 @@ import gr.cpaleop.common.extensions.toSingleEvent
 import gr.cpaleop.core.domain.entities.Category
 import gr.cpaleop.core.presentation.Message
 import gr.cpaleop.dashboard.R
-import gr.cpaleop.dashboard.domain.usecases.GetCategoriesUseCase
+import gr.cpaleop.dashboard.domain.usecases.ObserveCategoriesUseCase
 import gr.cpaleop.dashboard.domain.usecases.UpdateRegisteredCategoriesUseCase
 import gr.cpaleop.teithe_apps.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CategoriesFilterViewModel(
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val updateRegisteredCategoriesUseCase: UpdateRegisteredCategoriesUseCase
 ) : BaseViewModel() {
 
@@ -41,11 +42,18 @@ class CategoriesFilterViewModel(
     fun presentCategories() {
         viewModelScope.launch {
             try {
-                _loading.value = true
-                _categories.value = getCategoriesUseCase()
+                observeCategoriesUseCase().collect(_categories::setValue)
             } catch (t: Throwable) {
                 Timber.e(t)
+            }
+        }
 
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                observeCategoriesUseCase.refresh()
+            } catch (t: Throwable) {
+                Timber.e(t)
             } finally {
                 _loading.value = false
             }

@@ -44,6 +44,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import gr.cpaleop.teithe_apps.R as appR
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -119,6 +120,7 @@ class DocumentsFragment :
                 "$SHARED_ELEMENT_CONTAINER_NAME$announcementId"
         }
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), appR.color.colorBackground)
         binding.root.hideKeyboard()
         setupViews()
         observeViewModel()

@@ -23,6 +23,7 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
@@ -41,7 +42,7 @@ class CreateAnnouncementViewModelTest {
     private val testMainDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private lateinit var getCategoriesUseCase: GetCategoriesUseCase
+    private lateinit var observeCategoriesUseCase: ObserveCategoriesUseCase
 
     @MockK
     private lateinit var getCategoryUseCase: GetCategoryUseCase
@@ -71,7 +72,7 @@ class CreateAnnouncementViewModelTest {
         MockKAnnotations.init(this, relaxUnitFun = false)
         viewModel = CreateAnnouncementViewModel(
             testMainDispatcher,
-            getCategoriesUseCase,
+            observeCategoriesUseCase,
             getCategoryUseCase,
             getSelectedAttachmentsUseCase,
             addAttachmentsUseCase,
@@ -193,7 +194,7 @@ class CreateAnnouncementViewModelTest {
     @Test
     fun `presentCategories has correct value`() = runBlocking {
         val expectedCategoryList = categoryList
-        coEvery { getCategoriesUseCase() } returns categoryList
+        coEvery { observeCategoriesUseCase() } returns flow { emit(categoryList) }
         viewModel.presentCategories()
         assertThat(viewModel.categories.testValue).isEqualTo(expectedCategoryList)
     }
@@ -201,7 +202,7 @@ class CreateAnnouncementViewModelTest {
     @Test
     fun `presentCategories has correct message when error`() = runBlocking {
         val expectedMessage = Message(appR.string.error_generic)
-        coEvery { getCategoriesUseCase() } throws Throwable()
+        coEvery { observeCategoriesUseCase() } throws Throwable()
         viewModel.presentCategories()
         assertThat(viewModel.message.testValue).isEqualTo(expectedMessage)
     }

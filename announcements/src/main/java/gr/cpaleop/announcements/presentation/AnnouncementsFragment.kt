@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import gr.cpaleop.teithe_apps.presentation.base.BaseApiFragment
 import kotlinx.coroutines.launch
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import gr.cpaleop.teithe_apps.R as appR
 
 class AnnouncementsFragment :
     BaseApiFragment<FragmentAnnouncementsBinding, AnnouncementsViewModel>(AnnouncementsViewModel::class) {
@@ -50,6 +52,7 @@ class AnnouncementsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), appR.color.colorBackground)
         binding.root.hideKeyboard()
         setupPagingAdapter()
         setupViews()
